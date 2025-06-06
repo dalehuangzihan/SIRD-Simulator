@@ -182,6 +182,20 @@ struct RequestIdTuple
                                 cl_thread_id_(cl_thread_id),
                                 sr_thread_id_(sr_thread_id),
                                 ts_(ts) {}
+    // >Dale: track number of requests sent by app, so we can use it calculate first()
+    RequestIdTuple(long app_level_id,
+                   long reqs_sent,
+                   int32_t cl_addr,
+                   int32_t sr_addr,
+                   int cl_thread_id,
+                   int sr_thread_id,
+                   double ts) : app_level_id_(app_level_id),
+                                reqs_sent_(reqs_sent),
+                                cl_addr_(cl_addr),
+                                sr_addr_(sr_addr),
+                                cl_thread_id_(cl_thread_id),
+                                sr_thread_id_(sr_thread_id),
+                                ts_(ts) {}
     RequestIdTuple(long app_level_id, int cl_thread_id) : app_level_id_(app_level_id),
                                                           cl_thread_id_(cl_thread_id) {}
     RequestIdTuple(request_id req_id, int app_level_id) : req_id_(req_id),
@@ -198,6 +212,8 @@ struct RequestIdTuple
     bool is_request_;     // else it is a reply
     int32_t client_port_; // used to figure out which connection to use to send reply
     double ts_;
+    // >Dale: track number of requests sent by app
+    long reqs_sent_;
 };
 
 #endif

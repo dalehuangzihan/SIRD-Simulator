@@ -64,6 +64,7 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
     auto srch = thrd_id_to_req_id_.find(thread_id);
     if (srch != thrd_id_to_req_id_.end())
     {
+        // >Dale: TODO: might need to nod do the increment, to keep rid constant across multiple msgs from same source.
         current_rid = ++srch->second;
     }
     else
@@ -75,7 +76,8 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
 
     ClientRequestState *client_request_state = new ClientRequestState();
     hdr_r2p2 r2p2_hdr;
-    r2p2_hdr.first() = true;
+    // >Dale: explicitly compute first() so subsequent byteloads are not interpreted as first msg.
+    r2p2_hdr.first() = request_id_tuple.reqs_sent_ == 0; 
     r2p2_hdr.last() = single_pkt_rpc;
     r2p2_hdr.msg_type() = hdr_r2p2::REQUEST;
     r2p2_hdr.policy() = hdr_r2p2::UNRESTRICTED;

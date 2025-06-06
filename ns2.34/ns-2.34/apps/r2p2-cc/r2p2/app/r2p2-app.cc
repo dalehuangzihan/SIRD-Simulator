@@ -117,12 +117,14 @@ void R2p2Application::send_request(RequestIdTuple *, size_t)
     {
         trace_state("srq", srvr_addr, -1, reqs_sent_, -1, next_req_size, -1, 0);
     }
-    MsgTracer::app_init_msg(reqs_sent_, local_addr_, local_addr_, srvr_addr, next_req_size, "Request");
+    // >Dale: (?) set app_level_id to const value so app interprets successive byteloads as part of same msg
+    long app_level_id = 0;
+    MsgTracer::app_init_msg(app_level_id , local_addr_, local_addr_, srvr_addr, next_req_size, "Request");
     assert(srvr_addr != local_addr_); // don't send to self
     int srvr_thread = SERVER_THREAD_BASE;
     int clnt_thread = thread_id_;
-    slog::log4(debug_, local_addr_, "R2p2Application::send_request(). srvr_addr:", srvr_addr, "srvr_thread:", srvr_thread, "app_level_id_:", reqs_sent_);
-    r2p2_layer_->r2p2_send_req(next_req_size, RequestIdTuple(reqs_sent_,
+    slog::log4(debug_, local_addr_, "R2p2Application::send_request(). srvr_addr:", srvr_addr, "srvr_thread:", srvr_thread, "app_level_id_:", app_level_id, "reqs_sent_:", reqs_sent_);
+    r2p2_layer_->r2p2_send_req(next_req_size, RequestIdTuple(app_level_id, reqs_sent_,
                                                              local_addr_, srvr_addr,
                                                              clnt_thread, srvr_thread,
                                                              Scheduler::instance().clock()));

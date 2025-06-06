@@ -623,6 +623,7 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
     hysup::OutboundMsgState *msg_state = outbound_inactive_->find(req_id);
 
     // set missing info of msg_state
+    // >Dale: TODO: this assertion fails when the 2nd byteload has first() set to false; is cuz msg extension is not associated with any existing msg state. Investigate req_id, see how we can keep it constant across diff requests from the same sender... check how req_id is set in R2p2Client::send_req().
     assert(msg_state != nullptr);
     if ((msg_state->unsent_bytes_ == 14) && (!is_single_packet_msg(&r2p2_hdr) && r2p2_hdr.msg_type() == hdr_r2p2::REQUEST))
     {
