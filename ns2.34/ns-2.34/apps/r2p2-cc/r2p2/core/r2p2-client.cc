@@ -64,8 +64,12 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
     auto srch = thrd_id_to_req_id_.find(thread_id);
     if (srch != thrd_id_to_req_id_.end())
     {
-        // >Dale: TODO: might need to nod do the increment, to keep rid constant across multiple msgs from same source.
-        current_rid = ++srch->second;
+        if (request_id_tuple.is_msg_extension_) {
+            /* Dale: don't pre-increment, to keep rid constant across multiple msgs from same source.*/
+            current_rid = srch->second;
+        } else {
+            current_rid = ++srch->second;
+        }
     }
     else
     {
@@ -76,8 +80,7 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
 
     ClientRequestState *client_request_state = new ClientRequestState();
     hdr_r2p2 r2p2_hdr;
-    // >Dale: explicitly compute first() so subsequent byteloads are not interpreted as first msg.
-    r2p2_hdr.first() = request_id_tuple.reqs_sent_ == 0; 
+    r2p2_hdr.first() = true;
     r2p2_hdr.last() = single_pkt_rpc;
     r2p2_hdr.msg_type() = hdr_r2p2::REQUEST;
     r2p2_hdr.policy() = hdr_r2p2::UNRESTRICTED;
@@ -91,11 +94,14 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
     r2p2_hdr.sr_thread_id() = request_id_tuple.sr_thread_id_;
     // r2p2_hdr.msg_size_bytes() = reqn_payload;
     r2p2_hdr.msg_creation_time() = request_id_tuple.ts_;
+    /* Dale: carry is_msg_extension_ within hdr */
+    r2p2_hdr.is_msg_extension() = request_id_tuple.is_msg_extension_;
 
     slog::log4(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
                "R2p2Client::send_req(). app lvl id:", r2p2_hdr.app_level_id(), "req id:", r2p2_hdr.req_id(), "single pkt?", single_pkt_rpc, "from:", r2p2_hdr.cl_addr(),
                "thread:", r2p2_hdr.cl_thread_id(), ">to:",
-               r2p2_hdr.sr_addr(), "thread:", r2p2_hdr.sr_thread_id());
+               r2p2_hdr.sr_addr(), "thread:", r2p2_hdr.sr_thread_id(),
+               "is_msg_extension:", r2p2_hdr.is_msg_extension());
     // if the RPC does not fit in a single packet, the protocol sends a 64 byte packet -
     // given 50 bytes of headers, that leaves 14 bytes of data.
     client_request_state->req_bytes_left_ =

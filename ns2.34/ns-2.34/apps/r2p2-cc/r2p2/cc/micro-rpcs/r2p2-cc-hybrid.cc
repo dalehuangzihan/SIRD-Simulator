@@ -561,21 +561,29 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
 
 void R2p2CCHybrid::prep_msg_send(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
 {
+    slog::log4(debug_, this_addr_, "R2p2CCHybrid::prep_msg_send()", daddr, "req_id=(", r2p2_hdr.cl_addr(),
+        r2p2_hdr.cl_thread_id(), r2p2_hdr.req_id(), ") app_lvl_id=", r2p2_hdr.app_level_id(),
+        "payload=", payload);
+
     hysup::ReceiverState *rcvr_state = receivers_->find_or_create(daddr, this_addr_);
     assert(rcvr_state != nullptr);
 
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
                                            r2p2_hdr.req_id());
-    hysup::OutboundMsgState *msg_state = new hysup::OutboundMsgState(req_id, daddr,
-                                                                     new hdr_r2p2(r2p2_hdr),
-                                                                     rcvr_state);
 
-    msg_state->unsent_bytes_ = payload;
-    msg_state->total_bytes_ = payload;
+    /* Dale: if msg state already exists then update it (i.e. is msg extension), else make new */
+    hysup::OutboundMsgState *msg_state = outbound_inactive_->find(req_id);
+    bool msg_state_found = msg_state != nullptr;
+    if (!msg_state_found) 
+        msg_state = new hysup::OutboundMsgState(req_id, daddr, new hdr_r2p2(r2p2_hdr), rcvr_state);
+
+    msg_state->unsent_bytes_ += payload;
+    msg_state->total_bytes_ += payload;
     msg_state->is_request_ = true;
     msg_state->msg_creation_time_ = r2p2_hdr.msg_creation_time();
-    outbound_inactive_->append(msg_state);
+    /* Dale: don't append to outbound_inactive if msg_state already exists there */
+    if (!msg_state_found) outbound_inactive_->append(msg_state);
 }
 
 /**
@@ -623,9 +631,10 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
     hysup::OutboundMsgState *msg_state = outbound_inactive_->find(req_id);
 
     // set missing info of msg_state
-    // >Dale: TODO: this assertion fails when the 2nd byteload has first() set to false; is cuz msg extension is not associated with any existing msg state. Investigate req_id, see how we can keep it constant across diff requests from the same sender... check how req_id is set in R2p2Client::send_req().
     assert(msg_state != nullptr);
-    if ((msg_state->unsent_bytes_ == 14) && (!is_single_packet_msg(&r2p2_hdr) && r2p2_hdr.msg_type() == hdr_r2p2::REQUEST))
+    /* Dale: allow msg state update if is msg extension */
+    if ((r2p2_hdr.msg_type() == hdr_r2p2::REQUEST && r2p2_hdr.is_msg_extension()) ||
+        (msg_state->unsent_bytes_ == 14) && (!is_single_packet_msg(&r2p2_hdr) && r2p2_hdr.msg_type() == hdr_r2p2::REQUEST))
     {
         // ... only applies to multi-packet requests. Back compat..
         msg_state->unsent_bytes_ += payload;
@@ -646,6 +655,7 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
                msg_state->r2p2_hdr_->pkt_id());
     if (!((r2p2_hdr.msg_type() == hdr_r2p2::REQUEST) && is_single_packet_msg(&r2p2_hdr)))
     {
+        /* Dale: TODO: msg extension fails this assertion */
         assert(static_cast<int>(msg_state->unsent_bytes_) == payload + 14);
     }
 }
@@ -717,7 +727,8 @@ void R2p2CCHybrid::received_credit(Packet *pkt)
         {
             assert(!msg_state->active_);
             msg_state->active_ = true;
-            outbound_inactive_->remove(msg_state);
+            /** Dale: don't remove msg_state here, to allow for subsequent msg extensions to find the same msg_state*/
+            // outbound_inactive_->remove(msg_state);
             msg_state->rcvr_state_->add_outbound_msg(msg_state);
         } // else state may have been deleted
     }
@@ -906,7 +917,8 @@ void R2p2CCHybrid::send_data()
             slog::log5(debug_, this_addr_, "Activating message:", std::get<2>(msg_state->req_id_),
                        "Before, len of inactive:", outbound_inactive_->size());
             msg_state->active_ = true;
-            outbound_inactive_->remove(msg_state);
+            /** Dale: don't remove msg_state here, to allow for subsequent msg extensions to find the same msg_state*/
+            // outbound_inactive_->remove(msg_state);
             msg_state->rcvr_state_->add_outbound_msg(msg_state);
         }
     }

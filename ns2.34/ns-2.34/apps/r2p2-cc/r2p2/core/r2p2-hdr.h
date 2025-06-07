@@ -79,6 +79,9 @@ private:
     bool priority_flow_;
     double bw_ratio_;
 
+    /* Dale: track if this is part of a message extension */
+    bool is_msg_extension_;
+
 public:
     hdr_r2p2() : first_urpc_(false), credit_(0), credit_pad_(0), credit_req_(0),
                  umsg_id_(-1), grant_delay_s_(0.0), msg_creation_time_(-1.0), is_pfabric_app_msg_(false),
@@ -154,6 +157,9 @@ public:
     {
         return (hdr_r2p2 *)p->access(offset_);
     }
+
+    /* Dale: accessor for is_msg_extension_ */
+    bool &is_msg_extension() { return is_msg_extension_; }
 };
 
 struct RequestIdTuple
@@ -182,19 +188,19 @@ struct RequestIdTuple
                                 cl_thread_id_(cl_thread_id),
                                 sr_thread_id_(sr_thread_id),
                                 ts_(ts) {}
-    // >Dale: track number of requests sent by app, so we can use it calculate first()
+    /* Dale: track number of requests sent by app, so we can use it calculate first() */
     RequestIdTuple(long app_level_id,
-                   long reqs_sent,
                    int32_t cl_addr,
                    int32_t sr_addr,
                    int cl_thread_id,
                    int sr_thread_id,
+                   bool is_msg_extension,
                    double ts) : app_level_id_(app_level_id),
-                                reqs_sent_(reqs_sent),
                                 cl_addr_(cl_addr),
                                 sr_addr_(sr_addr),
                                 cl_thread_id_(cl_thread_id),
                                 sr_thread_id_(sr_thread_id),
+                                is_msg_extension_(is_msg_extension),
                                 ts_(ts) {}
     RequestIdTuple(long app_level_id, int cl_thread_id) : app_level_id_(app_level_id),
                                                           cl_thread_id_(cl_thread_id) {}
@@ -212,8 +218,8 @@ struct RequestIdTuple
     bool is_request_;     // else it is a reply
     int32_t client_port_; // used to figure out which connection to use to send reply
     double ts_;
-    // >Dale: track number of requests sent by app
-    long reqs_sent_;
+    /* Dale: create flag in req_id_tuple to indicate whether this is a msg extension */
+    bool is_msg_extension_;
 };
 
 #endif
