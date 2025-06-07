@@ -232,7 +232,10 @@ namespace hysup
               self_alloc_credit_(0), self_alloc_credit_data_(0),
               remaining_self_alloc_credit_data_(0),
               rcvr_state_(rstate),
-              msg_creation_time_(-1.0) {}
+              msg_creation_time_(-1.0),
+              is_msg_extension_(false),
+              is_msg_ext_serviced_(true),
+              credit_data_already_requested_(0){}
         hdr_r2p2 *r2p2_hdr_; // the REQRDY/"REP0" header
         uint32_t total_bytes_;
         uint32_t unsent_bytes_;
@@ -247,6 +250,11 @@ namespace hysup
         int remaining_self_alloc_credit_data_; // self credited data not yet spent
         ReceiverState *rcvr_state_;
         double msg_creation_time_;
+        /* Dale: track whether msg is a message extension, and whether extension has been serviced*/
+        bool is_msg_extension_;
+        bool is_msg_ext_serviced_;
+        /* Dale: track amount of credits already requested from previous message extensions */
+        int credit_data_already_requested_;
     };
 
     class OutboundMsgs
