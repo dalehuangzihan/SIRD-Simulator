@@ -369,7 +369,8 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
                "tx_bytes:", hdr_r2p2::access(pkt)->tx_bytes(),
                "ts:", hdr_r2p2::access(pkt)->ts(),
                "B:", hdr_r2p2::access(pkt)->B(),
-               "qlen:", hdr_r2p2::access(pkt)->qlen());
+               "qlen:", hdr_r2p2::access(pkt)->qlen(),
+               "is_msg_extension:", r2p2_hdr->is_msg_extension());
     assert(pkt_size >= MIN_ETHERNET_FRAME);
     assert(pkt_size <= MAX_ETHERNET_FRAME);
     hysup::SenderState *sender_state = update_sender_state(pkt);
@@ -444,12 +445,19 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
         // state already existed -> some invariants must hold
         assert(unsolicited_thresh_bytes_ == -1 ? msg_state->received_msg_info_ : true); // this may happen with partially solicited messages as data can arrive before the credit request (reordering at core)
     }
+    /* Dale: update msg is_msg_extension flag */
+    msg_state->is_msg_extension_ = r2p2_hdr->is_msg_extension();
 
     /**
      * Packet requests credit
      */
     bool packet_requests_credit = r2p2_hdr->credit_req() > 0;
     bool is_data_pkt = ((r2p2_hdr->msg_type() == hdr_r2p2::REQUEST || r2p2_hdr->msg_type() == hdr_r2p2::REPLY));
+
+    /* Dale: reset received_msg_info_ so we can process credit req sent by msg extension;
+     * ASSUMES credit req is sent only once per msg ext */
+    if (packet_requests_credit && msg_state->is_msg_extension_) msg_state->received_msg_info_ = false;  
+
     if (packet_requests_credit && !(msg_state->received_msg_info_))
     {
         assert(r2p2_hdr->credit() == 0);
@@ -524,6 +532,7 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
         {
             Packet::free(pkt);
             assert(!is_data_pkt);
+            /* Dale: TODO: grant req processing for msg ext fails at this assertion: */
             assert(msg_state->data_bytes_granted_ == 0);
             return;
         }
@@ -586,7 +595,7 @@ void R2p2CCHybrid::prep_msg_send(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
     /* Dale: update msg state to track if is msg extension */
     msg_state->is_msg_extension_ = r2p2_hdr.is_msg_extension();
     /* Dale: since this is new msg extension, it has not been serviced yet => make poller send new announcement */
-    msg_state->is_msg_ext_serviced_ = false;
+    msg_state->is_msg_ext_serviced_by_sendr_ = false;
     /* Dale: don't append to outbound_inactive if msg_state already exists there */
     if (!msg_state_found) outbound_inactive_->append(msg_state);
 }
@@ -889,10 +898,10 @@ void R2p2CCHybrid::send_data()
         slog::log6(debug_, this_addr_, "Considering Activating message:", std::get<2>(msg_state->req_id_),
                    "Before, len of inactive:", outbound_inactive_->size(),
                     "is_msg_extension_:", msg_state->is_msg_extension_,
-                    "is_msg_ext_serviced_", msg_state->is_msg_ext_serviced_);
+                    "is_msg_ext_serviced_by_sendr_", msg_state->is_msg_ext_serviced_by_sendr_);
 
         /* Dale: re-do announcement if this msg extension has not yet been serviced */
-        if (msg_state->is_msg_extension_ && ! msg_state->is_msg_ext_serviced_) msg_state->sent_anouncement_ = false;
+        if (msg_state->is_msg_extension_ && ! msg_state->is_msg_ext_serviced_by_sendr_) msg_state->sent_anouncement_ = false;
 
         if (!msg_state->sent_anouncement_)
         {
@@ -913,6 +922,8 @@ void R2p2CCHybrid::send_data()
                 hdr.msg_creation_time() = msg_state->msg_creation_time_;
                 hdr.unsol_credit() = 0;
                 hdr.unsol_credit_data() = 0;
+                /* Dale: carry is_msg_extension flag in header of credit request */
+                hdr.is_msg_extension() = msg_state->is_msg_extension_;
 
                 assert(unsolicited_thresh_bytes_ == 0 ? (hdr.unsol_credit() == 0) : true);
 
@@ -931,8 +942,8 @@ void R2p2CCHybrid::send_data()
                            "new data_pacer_backlog_:", data_pacer_backlog_, "hdr.unsol_credit()", hdr.unsol_credit());
 
                 msg_state->sent_anouncement_ = true;
-                /* Dale: mark msg extension as serviced */
-                msg_state->is_msg_ext_serviced_ = true;
+                /* Dale: mark msg extension as serviced by sender */
+                msg_state->is_msg_ext_serviced_by_sendr_ = true;
                 /* Dale: update amount of credit already requested */
                 msg_state->credit_data_already_requested_ += hdr.credit_req(); 
             }

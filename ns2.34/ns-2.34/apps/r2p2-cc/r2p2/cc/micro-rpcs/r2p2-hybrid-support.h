@@ -234,7 +234,7 @@ namespace hysup
               rcvr_state_(rstate),
               msg_creation_time_(-1.0),
               is_msg_extension_(false),
-              is_msg_ext_serviced_(true),
+              is_msg_ext_serviced_by_sendr_(true),
               credit_data_already_requested_(0){}
         hdr_r2p2 *r2p2_hdr_; // the REQRDY/"REP0" header
         uint32_t total_bytes_;
@@ -250,9 +250,9 @@ namespace hysup
         int remaining_self_alloc_credit_data_; // self credited data not yet spent
         ReceiverState *rcvr_state_;
         double msg_creation_time_;
-        /* Dale: track whether msg is a message extension, and whether extension has been serviced*/
+        /* Dale: track whether msg is a message extension, and whether extension has been serviced */
         bool is_msg_extension_;
-        bool is_msg_ext_serviced_;
+        bool is_msg_ext_serviced_by_sendr_;
         /* Dale: track amount of credits already requested from previous message extensions */
         int credit_data_already_requested_;
     };
@@ -384,6 +384,7 @@ namespace hysup
               data_bytes_received_(0),
               data_bytes_granted_(0),
               received_msg_info_(got_info),
+              is_msg_extension_(false),
               sender_state_(sender_state) { assert(sender_state != nullptr); }
         hdr_r2p2 *first_header_;
         uint64_t data_bytes_expected_;
@@ -391,6 +392,9 @@ namespace hysup
         uint64_t data_bytes_granted_;
         bool received_msg_info_; // either a grant_req or a first() pkt with credit req info has been received
         SenderState *sender_state_;
+
+        /* Dale: track whether msg is a message extension */
+        bool is_msg_extension_;
     };
 
     class InboundMsgs
