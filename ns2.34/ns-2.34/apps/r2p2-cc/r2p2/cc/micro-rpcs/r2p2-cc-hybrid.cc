@@ -475,7 +475,8 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
         slog::log4(debug_, this_addr_, "received grant_req for app lvl id:", r2p2_hdr->app_level_id(),
                    "r2p2_hdr->unsol_credit()", r2p2_hdr->unsol_credit(),
                    "r2p2_hdr->unsol_credit_data()", r2p2_hdr->unsol_credit_data());
-        msg_state->data_bytes_expected_ = expected;
+        /* Dale: cumulate expected data credits with every msg extension */
+        msg_state->data_bytes_expected_ += expected;
         msg_state->received_msg_info_ = true;
         slog::log5(debug_, this_addr_, "Set expected bytes to:",
                    msg_state->data_bytes_expected_);
@@ -532,13 +533,16 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
         {
             Packet::free(pkt);
             assert(!is_data_pkt);
-            /* Dale: TODO: grant req processing for msg ext fails at this assertion: */
-            assert(msg_state->data_bytes_granted_ == 0);
+            if (!msg_state->is_msg_extension_) {
+                /* Dale: is only for first ever GRANT_REQ of flow msg */
+                assert(msg_state->data_bytes_granted_ == 0);
+            } else {
+                assert(msg_state->data_bytes_granted_ > 0);
+            }
             return;
         }
         else
         {
-
             assert(msg_state->data_bytes_granted_ > 0);
         }
     }
@@ -739,6 +743,7 @@ void R2p2CCHybrid::received_credit(Packet *pkt)
         msg_state = outbound_inactive_->find(req_id);
         if (msg_state != nullptr)
         {
+            /* Dale: TODO: grant receipt from is_msg_extension==0 msg fails here */
             assert(!msg_state->active_);
             msg_state->active_ = true;
             /** Dale: don't remove msg_state here, to allow for subsequent msg extensions to find the same msg_state 
