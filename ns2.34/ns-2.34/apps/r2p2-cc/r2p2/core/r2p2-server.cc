@@ -134,6 +134,13 @@ void R2p2Server::handle_request_pkt(hdr_r2p2 &r2p2_hdr, int payload)
         // have all the packets been received?
         if (req_state->req_pkts_expected_ == req_state->req_pkts_received_)
         {
+            /** Dale: TODO:
+             * IMPORTANT
+             * figure out how to allow streamed chunks (msg extensions) to be passed one by one to the app,
+             * instead of only after all pkts from all msg extensions have been received...
+             * (is cuz currently, we update req_pkts_expected cumulatively as new msg extensions are created).
+             * */
+
             // the request can be forwarded to the application
             slog::log3(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
                        "Passing complete request to application. Req ID:", r2p2_hdr.req_id(),

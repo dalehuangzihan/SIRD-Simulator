@@ -388,10 +388,29 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
             assert(0);
             slog::log5(debug_, this_addr_, "Received the pkt of a single-packet REQUEST");
         }
-        else if (r2p2_hdr->msg_type() == hdr_r2p2::REPLY)
+        else if (r2p2_hdr->msg_type() == hdr_r2p2::REPLY) {
             slog::log6(debug_, this_addr_, "Received the pkt of a single-packet REPLY");
-        else
+
+            /* Dale: TODO: currently we don't remove any msg state from any outbound/inbound datastructure
+                => poller processes these msg states every iter (not sure if this is good) */
+
+            /* Dale: TODO: (?) do teardown (remove & delete msg states etc) upon reply receipt */
+            /*
+            slog::log6(debug_, this_addr_, "Cleaning up msg_state...");
+            uniq_req_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(), r2p2_hdr->cl_thread_id(), r2p2_hdr->req_id());
+            hysup::OutboundMsgState *msg_state_out = outbound_inactive_->find(req_id);
+            assert(msg_state_out != nullptr);
+            outbound_inactive_->remove(msg_state_out);
+            msg_state_out->rcvr_state_->remove_outbound_msg(msg_state_out);
+            delete msg_state_out->r2p2_hdr_;
+            delete msg_state_out;
+            hysup::InboundMsgState *msg_state_in = inbound_->find(req_id);
+            assert(msg_state_in != nullptr);
+            inbound_->remove(msg_state_in);
+            */
+        } else {
             throw std::invalid_argument("single packet message should be a request or a reply");
+        }
         r2p2_layer_->recv(pkt, h);
         return;
     }
@@ -710,6 +729,11 @@ void R2p2CCHybrid::sending_reply(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
     msg_state->sent_first_ = false;
     msg_state->is_request_ = false;
     msg_state->msg_creation_time_ = r2p2_hdr.msg_creation_time();
+    /**
+     * Dale: replies are not considered msg extensions;
+     * is_msg_ext_serviced remains as default (true) to not trigger re-servicing by poller
+     */
+    msg_state->is_msg_extension_ = false;
     outbound_inactive_->append(msg_state);
 }
 
@@ -743,8 +767,8 @@ void R2p2CCHybrid::received_credit(Packet *pkt)
         msg_state = outbound_inactive_->find(req_id);
         if (msg_state != nullptr)
         {
-            /* Dale: TODO: grant receipt from is_msg_extension==0 msg fails here */
-            assert(!msg_state->active_);
+            /* Dale: TODO: (?) since we don't remove msg_state from outbound_inactive_ anymore, this assertion may be irrelevant */
+            // assert(!msg_state->active_);
             msg_state->active_ = true;
             /** Dale: don't remove msg_state here, to allow for subsequent msg extensions to find the same msg_state 
               * TODO: design explicit signal to tear down connection 
@@ -906,7 +930,7 @@ void R2p2CCHybrid::send_data()
                     "is_msg_ext_serviced_by_sendr_", msg_state->is_msg_ext_serviced_by_sendr_);
 
         /* Dale: re-do announcement if this msg extension has not yet been serviced */
-        if (msg_state->is_msg_extension_ && ! msg_state->is_msg_ext_serviced_by_sendr_) msg_state->sent_anouncement_ = false;
+        if (msg_state->is_msg_extension_ && !msg_state->is_msg_ext_serviced_by_sendr_) msg_state->sent_anouncement_ = false;
 
         if (!msg_state->sent_anouncement_)
         {
@@ -1131,14 +1155,21 @@ void R2p2CCHybrid::send_data()
     // if unsent_packets = 0 -> delete msg state
     if (msg_state->unsent_bytes_ == 0)
     {
-        slog::log4(debug_, this_addr_, "Removing outbound state of:", std::get<2>(msg_state->req_id_),
-                   "Unsent bytes:", msg_state->unsent_bytes_, "Unsent bytes:", msg_state->unsent_bytes_,
-                   "all bytes:", msg_state->total_bytes_, "avail_credit_bytes_", msg_state->rcvr_state_->avail_credit_bytes_,
-                   "new data_pacer_backlog_:", data_pacer_backlog_);
-        // assert(msg_state->avail_credit_data_bytes_ == 0); // NOT PROPRELY UPDATED
-        msg_state->rcvr_state_->remove_outbound_msg(msg_state);
-        delete msg_state->r2p2_hdr_;
-        delete msg_state;
+        /* Dale: do not delete msg state even if unsent_bytes_==0, as msg extenion could happen later */
+        slog::log4(debug_, this_addr_, "Msg req_id:", std::get<2>(msg_state->req_id_), "has finished sending \
+                all oustanding bytes, awaiting potential msg extension... Unsent bytes:", msg_state->unsent_bytes_,
+                "all bytes:", msg_state->total_bytes_, "avail_credit_bytes_", msg_state->rcvr_state_->avail_credit_bytes_,
+                "new data_pacer_backlog_:", data_pacer_backlog_);
+        /* Dale: TODO: implement explicit flow teardown (incudes removing msg_state from outbound_inactive_) */
+
+        // slog::log4(debug_, this_addr_, "Removing outbound state of:", std::get<2>(msg_state->req_id_),
+        //            "Unsent bytes:", msg_state->unsent_bytes_, "Unsent bytes:", msg_state->unsent_bytes_,
+        //            "all bytes:", msg_state->total_bytes_, "avail_credit_bytes_", msg_state->rcvr_state_->avail_credit_bytes_,
+        //            "new data_pacer_backlog_:", data_pacer_backlog_);
+        // // assert(msg_state->avail_credit_data_bytes_ == 0); // NOT PROPRELY UPDATED
+        // msg_state->rcvr_state_->remove_outbound_msg(msg_state);
+        // delete msg_state->r2p2_hdr_;
+        // delete msg_state;
     }
     else
     {
@@ -1223,11 +1254,15 @@ void R2p2CCHybrid::received_data(Packet *pkt, hysup::InboundMsgState *msg_state)
     if (msg_state->data_bytes_received_ == msg_state->data_bytes_expected_ &&
         (msg_state->data_bytes_granted_ == msg_state->data_bytes_expected_)) // w/o this, msg_state may get deleted before all the bytes it requested are granted (bcs of commong grant pool)
     {
-        slog::log4(debug_, this_addr_, "Removing inbound message state of msg", std::get<2>(msg_state->req_id_));
+        /* Dale: TODO: (?) don't remove msg_state here, just in case there is msg extension later */
+        // slog::log4(debug_, this_addr_, "Removing inbound message state of msg", std::get<2>(msg_state->req_id_));
+        slog::log4(debug_, this_addr_, "Received ", msg_state->data_bytes_received_, "bytes of msg out of ",
+            msg_state->data_bytes_expected_, " bytes expected using ", msg_state->data_bytes_granted_, "bytes of credit.");
         inbound_->print_all(this_addr_);
         assert(msg_state->received_msg_info_);
         // delete state
-        inbound_->remove(msg_state);
+        /* Dale: TODO: (?) don't remove msg_state here, just in case there is msg extension later */
+        // inbound_->remove(msg_state);
     }
 }
 
@@ -1735,7 +1770,8 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
         // assert(msg_state->data_bytes_expected_ == msg_state->data_bytes_granted_); // not true because of fungible credit at sender
         // delete state
         // inbound_->print_all(this_addr_);
-        inbound_->remove(msg_state);
+        /* Dale: TODO: (?) don't remove msg_state here, just in case there is msg extension later */
+        // inbound_->remove(msg_state);
         return 2;
     }
     // retrieve sender state
