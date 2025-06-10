@@ -126,11 +126,19 @@ void R2p2Server::handle_request_pkt(hdr_r2p2 &r2p2_hdr, int payload)
             // assert(req_state->req_pkts_expected_ != -1); can happen if two+ ooo pkts are reveived before first()
             req_state->req_pkts_received_++;
             req_state->req_bytes_received_ += payload;
+            /* Dale: try... */
+            slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "DOODIES pkt_id():", r2p2_hdr.pkt_id());
+            req_state->req_pkts_expected_ = r2p2_hdr.pkt_id() + 1;
         }
     }
 
     if (req_state->req_pkts_expected_ != -1) // i.e., total message size is known
     {
+        slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
+                   "SERVER req_pkts_expected_:", req_state->req_pkts_expected_,
+                   "req_pkts_received_:", req_state->req_pkts_received_,
+                   "req_bytes_received_:", req_state->req_bytes_received_);
+
         // have all the packets been received?
         if (req_state->req_pkts_expected_ == req_state->req_pkts_received_)
         {

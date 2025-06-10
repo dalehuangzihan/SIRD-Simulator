@@ -17,9 +17,7 @@ public:
 
 R2p2Application::R2p2Application() : GenericApp(this),
                                     num_reqs_rcved_(0),
-                                    num_resp_rcved_(0),
-                                    /* Dale: default is_new_msg to true */
-                                    is_new_msg_(true)
+                                    num_resp_rcved_(0)
 {
     // These values agree with the values set at the tcl level when the
     // object is created ONLY if they are set universaly like so:
@@ -123,19 +121,16 @@ void R2p2Application::send_request(RequestIdTuple *, size_t)
     }
     /* Dale: (?) set app_level_id to const value so app interprets successive byteloads as part of same msg */
     long app_level_id = 0;
-    slog::log6(debug_, local_addr_, "Is app sending new message? = ", is_new_msg_);
     /**
      * Dale: create flag in req_id_tuple to indicate whether this is a msg extension
-     * TODO: may eventuall need to calculate is_msg_extension based on request id tuple (i.e. deeper in the call stack) to allow 1 app to send to multiple servers.  
+     * TODO: may eventually need to calculate is_msg_extension based on request id tuple (i.e. deeper in the call stack) to allow 1 app to send to multiple servers.  
      */
-    bool is_msg_extension = reqs_sent_ > 0 && !is_new_msg_;
-    /* Dale: set is new msg to false */
-    is_new_msg_ = false;
+    bool is_msg_extension = reqs_sent_ > 0;
     MsgTracer::app_init_msg(app_level_id , local_addr_, local_addr_, srvr_addr, next_req_size, "Request");
     assert(srvr_addr != local_addr_); // don't send to self
     int srvr_thread = SERVER_THREAD_BASE;
     int clnt_thread = thread_id_;
-    slog::log4(debug_, local_addr_, "R2p2Application::send_request(). srvr_addr:", srvr_addr, "srvr_thread:", srvr_thread, "clnt_thread:", clnt_thread, "app_level_id_:", app_level_id, "reqs_sent_:", reqs_sent_, "is_msg_extension:", is_msg_extension, "is_new_msg_:", is_new_msg_);
+    slog::log4(debug_, local_addr_, "R2p2Application::send_request(). srvr_addr:", srvr_addr, "srvr_thread:", srvr_thread, "clnt_thread:", clnt_thread, "app_level_id_:", app_level_id, "reqs_sent_:", reqs_sent_, "is_msg_extension:", is_msg_extension);
     r2p2_layer_->r2p2_send_req(next_req_size, RequestIdTuple(app_level_id,
                                                              local_addr_, srvr_addr,
                                                              clnt_thread, srvr_thread,
@@ -248,10 +243,6 @@ void R2p2Application::req_success(int resp_size, RequestIdTuple &&request_id_tup
                     app_req_id_to_req_info_.at(request_id_tuple.app_level_id_)->request_size_,
                     resp_size, 0);
     */
-
-    /* Dale: reset is_new_msg to true again so that next msg extension is treated as new msg */
-    is_new_msg_ = true;
-    slog::log6(debug_, local_addr_, "Request success, setting is_new_msg_ to true again. Now is_new_msg_:", is_new_msg_);
 }
 
 int R2p2Application::command(int argc, const char *const *argv)

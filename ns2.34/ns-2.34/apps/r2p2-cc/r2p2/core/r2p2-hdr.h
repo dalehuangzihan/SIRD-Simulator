@@ -188,7 +188,7 @@ struct RequestIdTuple
                                 cl_thread_id_(cl_thread_id),
                                 sr_thread_id_(sr_thread_id),
                                 ts_(ts) {}
-    /* Dale: track number of requests sent by app, so we can use it calculate first() */
+    /* Dale: track whether msg is a msg extension */
     RequestIdTuple(long app_level_id,
                    int32_t cl_addr,
                    int32_t sr_addr,
