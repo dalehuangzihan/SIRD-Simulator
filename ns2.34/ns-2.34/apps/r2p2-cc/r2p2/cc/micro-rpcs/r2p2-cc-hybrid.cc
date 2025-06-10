@@ -728,7 +728,12 @@ void R2p2CCHybrid::sending_reply(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
     {
         throw std::runtime_error("sending_reply() Cannot find state for receiver");
     }
-    /** Dale: TODO: figure out how to make request and reply message states co-exist in outbound_inactive_ */
+    /** Dale: TODO: IMPORTANT 
+     * Figure out how to make request and reply message states co-exist in outbound_inactive_.
+     * This is only a problem because outbound_inactive_ is uesd by both sender and receiver, and 
+     * the req_id does not hold enough context to figure out who put what msg state in there.
+     * Idea: augment req_id with bool r2p2_hdr.msg_type() == REPLY ...?
+     */
     hysup::OutboundMsgState *msg_state = outbound_inactive_->find(req_id);
     assert(msg_state == nullptr);
     msg_state = new hysup::OutboundMsgState(req_id, daddr, new hdr_r2p2(r2p2_hdr), rcvr_state);
