@@ -394,9 +394,32 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
             /* Dale: TODO: currently we don't remove any msg state from any outbound/inbound datastructure
                 => poller processes these msg states every iter (not sure if this is good) */
 
-            /* Dale: TODO: (?) do teardown (remove & delete msg states etc) upon reply receipt */
-            /*
-            slog::log6(debug_, this_addr_, "Cleaning up msg_state...");
+
+            /** Dale: TODO: VERIFY 
+             * Date: 10/06/2025
+             * 
+             * Assumption:
+             * Overall, a flow comprises multiple msg-extended msgs.
+             * Msg (with extensions) is only delivered to app when all currently-outstanding
+             * bytes have been received. Any msg extension after this (e.g. in case of intermittent flow)
+             * will be treated as a new msg. This breaks up flow into multiple extended msgs that are
+             * each delivered to the app. A msg-extended msg must wait for all outstanding bytes to arrive
+             * before being delivered to app, but diff msg-extended msgs need not wait for each other.
+             * 
+             * Idea:
+             * We can delete the OutboundMsgState here as we've received all outstanding bytes; 
+             * Vanilla R2p2CCHybrid::send_data() would have deleted msg_state anyway, regardless of
+             * whether is_ooo==true in R2p2Client::handle_reply_pkt().
+             * R2p2CCHybrid::prep_msg_send() will create new msg_state if new msg extension comes in.
+             * prep_msg_send() is called when is_req0_of_multipkt() is true, which is the case whenever
+             * a new msg_extension comes in. 
+             * R2p2Client will delete the corresponding client_request_state when it handles the reply pkt
+             * (if is_ooo != true).
+             * 
+             * Vanilla code already removes InboundMsgState from inbound_ when all currently-outstanding data
+             * has been received, so no need to delete here.
+             */
+            slog::log6(debug_, this_addr_, "Cleaning up outbound msg state...");
             uniq_req_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(), r2p2_hdr->cl_thread_id(), r2p2_hdr->req_id());
             hysup::OutboundMsgState *msg_state_out = outbound_inactive_->find(req_id);
             assert(msg_state_out != nullptr);
@@ -404,10 +427,6 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
             msg_state_out->rcvr_state_->remove_outbound_msg(msg_state_out);
             delete msg_state_out->r2p2_hdr_;
             delete msg_state_out;
-            hysup::InboundMsgState *msg_state_in = inbound_->find(req_id);
-            assert(msg_state_in != nullptr);
-            inbound_->remove(msg_state_in);
-            */
         } else {
             throw std::invalid_argument("single packet message should be a request or a reply");
         }
@@ -1261,8 +1280,7 @@ void R2p2CCHybrid::received_data(Packet *pkt, hysup::InboundMsgState *msg_state)
         inbound_->print_all(this_addr_);
         assert(msg_state->received_msg_info_);
         // delete state
-        /* Dale: TODO: (?) don't remove msg_state here, just in case there is msg extension later */
-        // inbound_->remove(msg_state);
+        inbound_->remove(msg_state);
     }
 }
 
@@ -1770,8 +1788,7 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
         // assert(msg_state->data_bytes_expected_ == msg_state->data_bytes_granted_); // not true because of fungible credit at sender
         // delete state
         // inbound_->print_all(this_addr_);
-        /* Dale: TODO: (?) don't remove msg_state here, just in case there is msg extension later */
-        // inbound_->remove(msg_state);
+        inbound_->remove(msg_state);
         return 2;
     }
     // retrieve sender state

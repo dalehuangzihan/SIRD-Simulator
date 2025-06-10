@@ -205,6 +205,18 @@ void R2p2Client::handle_reply_pkt(hdr_r2p2 &r2p2_hdr, int payload)
         r2p2_layer_->send_to_application(r2p2_hdr, client_request_state->reply_bytes_recvd_);
         // TODO: erase entry too (Although it will eventually wrap at 65k)
         delete client_request_state;
+
+        /** Dale: TODO: IMPORTANT
+         * 10/05/2025
+         * Might not be able to delete client_requeset_state here, cuz message
+         * extension might still happen after this in intermittent flows.
+         * ...
+         * (?) Or have post-delete msg extensions jump-start as new message?
+         * It seems like this could be done already.
+         * R2p2Client::send_req() currently creates a new client_request_state if
+         * an existing one cannot be found for the desired client thread id.
+         * TODO: Need to run test to see if this is true.
+         */
     }
     // TODO: Add check -> have more bytes than expected been received?
 }

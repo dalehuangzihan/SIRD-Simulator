@@ -41,6 +41,8 @@ protected:
     int n_;
     int num_reqs_rcved_;
     int num_resp_rcved_;
+    /* Dale: track whether this app is sending a new msg that's not part of a msg extension */
+    bool is_new_msg_;
 };
 
 #endif
