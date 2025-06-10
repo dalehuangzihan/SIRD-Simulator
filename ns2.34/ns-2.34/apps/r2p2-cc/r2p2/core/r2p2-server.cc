@@ -126,8 +126,10 @@ void R2p2Server::handle_request_pkt(hdr_r2p2 &r2p2_hdr, int payload)
             // assert(req_state->req_pkts_expected_ != -1); can happen if two+ ooo pkts are reveived before first()
             req_state->req_pkts_received_++;
             req_state->req_bytes_received_ += payload;
-            /* Dale: try... */
-            slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "DOODIES pkt_id():", r2p2_hdr.pkt_id());
+            /** Dale: update req_pkts_expected_ with new metadata from (possibly) mgs extensions.
+              * Currently, r2p2_hdr.pkt_id_ observes step increase every time a msg extension is made,
+              * thanks to R2p2CCHybrid::sending_request() that modifies pkt id.
+              */
             req_state->req_pkts_expected_ = r2p2_hdr.pkt_id() + 1;
         }
     }

@@ -101,7 +101,7 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
                "R2p2Client::send_req(). app lvl id:", r2p2_hdr.app_level_id(), "req id:", r2p2_hdr.req_id(), "single pkt?", single_pkt_rpc, "from:", r2p2_hdr.cl_addr(),
                "thread:", r2p2_hdr.cl_thread_id(), ">to:",
                r2p2_hdr.sr_addr(), "thread:", r2p2_hdr.sr_thread_id(),
-               "is_msg_extension:", r2p2_hdr.is_msg_extension());
+               "is_msg_extension:", r2p2_hdr.is_msg_extension(), "pkt_id:", r2p2_hdr.pkt_id());
     // if the RPC does not fit in a single packet, the protocol sends a 64 byte packet -
     // given 50 bytes of headers, that leaves 14 bytes of data.
     client_request_state->req_bytes_left_ =
