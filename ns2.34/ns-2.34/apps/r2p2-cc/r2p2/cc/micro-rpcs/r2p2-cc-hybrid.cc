@@ -723,6 +723,8 @@ void R2p2CCHybrid::sending_reply(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
                                            r2p2_hdr.cl_thread_id(),
                                            r2p2_hdr.req_id());
 
+    slog::log6(debug_, this_addr_, "&&& cl_addr():", r2p2_hdr.cl_addr(), "cl_thread_id():", r2p2_hdr.cl_thread_id(), "r2p2_hdr.req_id():", r2p2_hdr.req_id());
+                                           
     hysup::ReceiverState *rcvr_state = receivers_->find(daddr);
     if (rcvr_state == nullptr)
     {
@@ -771,8 +773,9 @@ void R2p2CCHybrid::received_credit(Packet *pkt)
     hysup::OutboundMsgState *msg_state = receivers_->find_outbound_msg(receiver, req_id);
     if (msg_state != nullptr)
     {
+        /* Dale: we currently do not remove msg state, so outbound_inactive_ would have it => assertion not valid anymore */
         // If state is found, it means that outbound_inactive_ must not have it.
-        assert(outbound_inactive_->find(req_id) == nullptr);
+        // assert(outbound_inactive_->find(req_id) == nullptr);
         assert(msg_state->active_);
     }
     else
