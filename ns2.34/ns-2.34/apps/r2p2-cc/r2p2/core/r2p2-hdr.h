@@ -105,6 +105,11 @@ public:
 
     static const char *get_pkt_type(int type);
 
+    /* Dale: only REQUEST msg types are msg extendable */ 
+    static bool is_maintain_msg_state(int type){
+        return type == hdr_r2p2::REQUEST;
+    }
+
     enum Policies
     {
         UNRESTRICTED,

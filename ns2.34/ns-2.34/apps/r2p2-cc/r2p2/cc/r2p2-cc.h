@@ -13,7 +13,16 @@
 
 class R2p2CCFifo;
 
-typedef std::tuple<int32_t, int, request_id> uniq_req_id_t; // I assume this is <client_addr, thread_id, req_id>
+/* Dale: this is <client_addr, thread_id, req_id, is_type_msg_extendable> */
+typedef std::tuple<int32_t, int, request_id, bool> uniq_req_id_t; 
+// typedef std::tuple<int32_t, int, request_id> uniq_req_id_t; // I assume this is <client_addr, thread_id, req_id>
+/* Dale: helper function */
+namespace ReqIdTuple {
+    static bool is_maintain_msg_state(uniq_req_id_t &req_id)
+    {
+        return std::get<3>(req_id);
+    }
+}
 typedef std::tuple<hdr_r2p2, int, int32_t> packet_info_t;
 
 class DownlinkTimer : public TimerHandler
