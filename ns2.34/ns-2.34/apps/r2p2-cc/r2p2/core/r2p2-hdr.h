@@ -105,9 +105,9 @@ public:
 
     static const char *get_pkt_type(int type);
 
-    /* Dale: only REQUEST msg types are msg extendable */ 
+    /* Dale: 12/06/2025 msg state is associated with REQUEST and GRANT_REQ msg types, so these states should be persisted */ 
     static bool is_maintain_msg_state(int type){
-        return type == hdr_r2p2::REQUEST;
+        return type == hdr_r2p2::REQUEST || type == hdr_r2p2::GRANT_REQ;
     }
 
     enum Policies

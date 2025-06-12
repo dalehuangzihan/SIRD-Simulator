@@ -442,6 +442,7 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
     }
 
     // Must retrieve message state
+    bool is_new_msg_state = false;
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
                                            r2p2_hdr->cl_thread_id(),
                                            r2p2_hdr->req_id(),
@@ -469,6 +470,7 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
                                                false,
                                                sender_state);
         inbound_->add(msg_state);
+        is_new_msg_state = true;
     }
     else
     {
@@ -484,9 +486,11 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
     bool packet_requests_credit = r2p2_hdr->credit_req() > 0;
     bool is_data_pkt = ((r2p2_hdr->msg_type() == hdr_r2p2::REQUEST || r2p2_hdr->msg_type() == hdr_r2p2::REPLY));
 
-    /* Dale: reset received_msg_info_ so we can process credit req sent by msg extension;
+    /** Dale: 
+     * Reset received_msg_info_ so we can process credit req sent by msg extension;
+     * 12/06/2025 Process credit request again if request's corresponding msg state has been persisted.
      * ASSUMES credit req is sent only once per msg ext */
-    if (packet_requests_credit && msg_state->is_msg_extension_) msg_state->received_msg_info_ = false;  
+    if (packet_requests_credit && ReqIdTuple::is_maintain_msg_state(msg_state->req_id_)) msg_state->received_msg_info_ = false;  
 
     slog::log6(debug_, this_addr_, "### packet_requests_credit:", packet_requests_credit, "received_msg_info_:", msg_state->received_msg_info_);
     /** Dale: TODO:
@@ -498,6 +502,7 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
      * would not have been reset above to false.
      * TODO: Check logs to see if msg state has been removed from inbound_ when receiver sends reply to sender. Ans = No.
      * TODO: bytes_expected_ in msg state seems to be stuck at 0 (not updating properly) after we switched to using augmented req_id...?
+     * (even though receiver seems to be able to send a first reply)
      */
     if (packet_requests_credit && !(msg_state->received_msg_info_))
     {
@@ -520,7 +525,8 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
         msg_state->data_bytes_expected_ += expected;
         msg_state->received_msg_info_ = true;
         slog::log5(debug_, this_addr_, "Set expected bytes to:",
-                   msg_state->data_bytes_expected_);
+                   msg_state->data_bytes_expected_, "req_id:", std::get<0>(msg_state->req_id_), std::get<1>(msg_state->req_id_),
+                   std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_));
 
         /**
          * For messages that have an unsolicited part
@@ -574,8 +580,11 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
         {
             Packet::free(pkt);
             assert(!is_data_pkt);
-            if (!msg_state->is_msg_extension_) {
-                /* Dale: is only for first ever GRANT_REQ of flow msg */
+            if (is_new_msg_state) {
+                /** Dale:
+                 * Is only for first ever GRANT_REQ of flow msg
+                 * 12/06/2025: First ever GRANT_REQ of flow msg would have new msg state created for it
+                 */
                 assert(msg_state->data_bytes_granted_ == 0);
             } else {
                 assert(msg_state->data_bytes_granted_ > 0);
