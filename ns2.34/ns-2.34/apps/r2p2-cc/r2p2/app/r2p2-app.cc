@@ -119,11 +119,14 @@ void R2p2Application::send_request(RequestIdTuple *, size_t)
     {
         trace_state("srq", srvr_addr, -1, reqs_sent_, -1, next_req_size, -1, 0);
     }
-    /* Dale: (?) set app_level_id to const value so app interprets successive byteloads as part of same msg */
+    /** Dale:
+     * (?) set app_level_id to const value for now
+     * TODO: not quite sure what app_level_id value is used for... */
     long app_level_id = 0;
     /**
-     * Dale: create flag in req_id_tuple to indicate whether this is a msg extension
-     * TODO: may eventually need to calculate is_msg_extension based on request id tuple (i.e. deeper in the call stack) to allow 1 app to send to multiple servers.  
+     * Dale:
+     * Create flag in req_id_tuple to indicate whether this is a msg extension
+     * TODO: may eventually need to calculate is_msg_extension based on srvr_addr etc (?) to allow 1 app to send to multiple servers.  
      */
     bool is_msg_extension = reqs_sent_ > 0;
     MsgTracer::app_init_msg(app_level_id , local_addr_, local_addr_, srvr_addr, next_req_size, "Request");

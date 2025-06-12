@@ -81,6 +81,8 @@ private:
 
     /* Dale: track if this is part of a message extension */
     bool is_msg_extension_;
+    /* Dale: track if we should ignore msg state persistence */
+    bool is_ignore_msg_state_persist_;
 
 public:
     hdr_r2p2() : first_urpc_(false), credit_(0), credit_pad_(0), credit_req_(0),
@@ -106,7 +108,8 @@ public:
     static const char *get_pkt_type(int type);
 
     /* Dale: 12/06/2025 msg state is associated with REQUEST and GRANT_REQ msg types, so these states should be persisted */ 
-    static bool is_maintain_msg_state(int type){
+    static bool is_persist_msg_state(int type)
+    {
         return type == hdr_r2p2::REQUEST || type == hdr_r2p2::GRANT_REQ;
     }
 
@@ -165,6 +168,8 @@ public:
 
     /* Dale: accessor for is_msg_extension_ */
     bool &is_msg_extension() { return is_msg_extension_; }
+    /* Dale: accessor for is_ignore_msg_state_persist_ */
+    bool &is_ignore_msg_state_persist() { return is_ignore_msg_state_persist_; }
 };
 
 struct RequestIdTuple

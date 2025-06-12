@@ -13,14 +13,28 @@
 
 class R2p2CCFifo;
 
-/* Dale: this is <client_addr, thread_id, req_id, is_type_msg_extendable> */
-typedef std::tuple<int32_t, int, request_id, bool> uniq_req_id_t; 
+/** Dale:
+ * This is <client_addr, thread_id, req_id, is_persist_msg_state, is_ignore_persist>
+ * 12/06/2025 is_ignore_persist is for overriding the persist decision; currently for allowing GRANT_REQ for REPLY msgs to be treated separately from GRANT_REQ for data.
+ */
+typedef std::tuple<int32_t, int, request_id, bool, bool> uniq_req_id_t; 
 // typedef std::tuple<int32_t, int, request_id> uniq_req_id_t; // I assume this is <client_addr, thread_id, req_id>
-/* Dale: helper function */
-namespace ReqIdTuple {
-    static bool is_maintain_msg_state(uniq_req_id_t &req_id)
+/* Dale: helper functions */
+namespace ReqIdTuple
+{
+    static bool is_persist_msg_state(uniq_req_id_t &req_id)
     {
         return std::get<3>(req_id);
+    }
+
+    static bool is_ignore_persistence(uniq_req_id_t &req_id)
+    {
+        return std::get<4>(req_id);
+    }
+
+    static void set_ignore_persistence(uniq_req_id_t &req_id)
+    {
+        std::get<4>(req_id) = true;
     }
 }
 typedef std::tuple<hdr_r2p2, int, int32_t> packet_info_t;

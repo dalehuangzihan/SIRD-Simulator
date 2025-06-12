@@ -27,11 +27,11 @@ void R2p2UplinkQueue::enque(packet_info_t message, int extra_prio)
     throw std::invalid_argument("R2p2UplinkQueue not supported");
     hdr_r2p2 r2p2_hdr = std::get<0>(message);
     int payload_sz = std::get<1>(message);
-    /* Dale: here assume is_REPLY doesn't matter so set to false */
+    /* Dale: here assume augmented fields don't matter so set to false */
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
                                            r2p2_hdr.req_id(),
-                                           false);
+                                           false, false);
     QueueItem item;
     item.req_id_ = req_id;
     item.pkt_info_ = message;

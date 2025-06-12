@@ -64,10 +64,13 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
     auto srch = thrd_id_to_req_id_.find(thread_id);
     if (srch != thrd_id_to_req_id_.end())
     {
-        if (request_id_tuple.is_msg_extension_) {
+        if (request_id_tuple.is_msg_extension_)
+        {
             /* Dale: don't pre-increment, to keep rid constant across multiple msgs from same source.*/
             current_rid = srch->second;
-        } else {
+        }
+        else
+        {
             current_rid = ++srch->second;
         }
     }
@@ -96,6 +99,8 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
     r2p2_hdr.msg_creation_time() = request_id_tuple.ts_;
     /* Dale: carry is_msg_extension_ within hdr */
     r2p2_hdr.is_msg_extension() = request_id_tuple.is_msg_extension_;
+    /* Dale: init is_ignore_persistence to default value (only cuz R2p2Client::send_req() is called only by the app layer) */
+    r2p2_hdr.is_ignore_msg_state_persist() = false;
 
     slog::log4(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
                "R2p2Client::send_req(). app lvl id:", r2p2_hdr.app_level_id(), "req id:", r2p2_hdr.req_id(), "single pkt?", single_pkt_rpc, "from:", r2p2_hdr.cl_addr(),

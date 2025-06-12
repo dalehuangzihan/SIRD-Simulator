@@ -114,11 +114,11 @@ void R2p2CCMicro::recv(Packet *pkt, Handler *h)
     if (r2p2_hdr->msg_type() == hdr_r2p2::GRANT_REQ)
     {
         // Some server wants to send a response to this client. Create state for the response.
-        /* Dale: here assume is_REPLY doesn't matter so set to false */
+        /* Dale: here assume augmented fields don't matter so set to false */
         uniq_req_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
                                                r2p2_hdr->cl_thread_id(),
                                                r2p2_hdr->req_id(),
-                                               false);
+                                               false, false);
         slog::log5(debug_, this_addr_, "GRANT_REQ unique req_id: ", r2p2_hdr->cl_addr(), r2p2_hdr->cl_thread_id(), r2p2_hdr->req_id());
 
         InboundMsgState *ims = find_ims(req_id);
@@ -177,11 +177,11 @@ void R2p2CCMicro::recv(Packet *pkt, Handler *h)
                 slog::log5(debug_, this_addr_, "Received pkt of a multipkt REQUEST");
             else
                 slog::log5(debug_, this_addr_, "Received pkt of a multipkt REPLY");
-            /* Dale: here assume is_REPLY doesn't matter so set to false */
+            /* Dale: here assume augmented fields don't matter so set to false */
             uniq_req_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
                                                    r2p2_hdr->cl_thread_id(),
                                                    r2p2_hdr->req_id(),
-                                                   false);
+                                                   false, false);
             slog::log5(debug_, this_addr_, "REQ/REP unique req_id: ", r2p2_hdr->cl_addr(), r2p2_hdr->cl_thread_id(), r2p2_hdr->req_id());
             InboundMsgState *ims = find_ims(req_id);
             if (ims == NULL)
@@ -294,11 +294,11 @@ void R2p2CCMicro::send_grant(hdr_r2p2 *const r2p2_hdr, int32_t daddr)
     // repetitive but I want to make this function independent for subclasses
     // (w/o changing it bcs it is a hassle)
     slog::log4(debug_, this_addr_, "R2p2CCMicro::send_grant()");
-    /* Dale: here assume is_REPLY doesn't matter so set to false */
+    /* Dale: here assume augmented fields don't matter so set to false */
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
                                            r2p2_hdr->cl_thread_id(),
                                            r2p2_hdr->req_id(),
-                                           false);
+                                           false, false);
     InboundMsgState *ims = find_ims(req_id);
     assert(ims);
     int credit_bytes = 0;
@@ -346,11 +346,11 @@ void R2p2CCMicro::forward_grant(hdr_r2p2 &r2p2_hdr, int32_t daddr)
 void R2p2CCMicro::handle_grant(hdr_r2p2 *const r2p2_hdr)
 {
     slog::log4(debug_, this_addr_, "R2p2CCMicro::handle_grant(). Credit =", r2p2_hdr->credit());
-    /* Dale: here assume is_REPLY doesn't matter so set to false */
+    /* Dale: here assume augmented fields don't matter so set to false */
     OutboundMsgState *oms = find_oms(std::make_tuple(r2p2_hdr->cl_addr(),
                                                      r2p2_hdr->cl_thread_id(),
                                                      r2p2_hdr->req_id(),
-                                                     false));
+                                                     false, false));
     if (oms == NULL)
     {
         slog::log4(debug_, this_addr_, "Sender received grant for non-existant outbound message "
@@ -381,11 +381,11 @@ void R2p2CCMicro::send_to_transport(hdr_r2p2 &r2p2_hdr, int payload, int32_t dad
     if (is_multi_pkt_req_but_not_req0 || is_multi_pkt_rep)
     {
         // NOT a single packet msg => must not forward immediately
-        /* Dale: here assume is_REPLY doesn't matter so set to false */
+        /* Dale: here assume augmented fields don't matter so set to false */
         uniq_req_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                                r2p2_hdr.cl_thread_id(),
                                                r2p2_hdr.req_id(),
-                                               false);
+                                               false, false);
         assert(find_oms(req_id) == NULL);
         OutboundMsgState *msg_state = new OutboundMsgState();
         msg_state->req_id_ = req_id;
@@ -428,11 +428,11 @@ void R2p2CCMicro::send_reqrdy(hdr_r2p2 &r2p2_hdr, int nbytes, int32_t daddr)
     slog::log4(debug_, this_addr_, "R2p2CCMicro::send_reqrdy()");
     r2p2_hdr.first_urpc() = false;
     // how much credit should this reqready packet provide...
-    /* Dale: here assume is_REPLY doesn't matter so set to false */
+    /* Dale: here assume augmented fields don't matter so set to false */
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
                                            r2p2_hdr.req_id(),
-                                           false);
+                                           false, false);
     InboundMsgState *ims = find_ims(req_id);
     assert(ims);
     assert(ims->pkts_uncredited_ > 0);

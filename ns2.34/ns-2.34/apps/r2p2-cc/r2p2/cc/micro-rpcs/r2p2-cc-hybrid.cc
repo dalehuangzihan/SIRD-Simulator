@@ -370,7 +370,8 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
                "ts:", hdr_r2p2::access(pkt)->ts(),
                "B:", hdr_r2p2::access(pkt)->B(),
                "qlen:", hdr_r2p2::access(pkt)->qlen(),
-               "is_msg_extension:", r2p2_hdr->is_msg_extension());
+               "is_msg_extension:", r2p2_hdr->is_msg_extension(),
+               "is_ignore_msg_state_persistence:", r2p2_hdr->is_ignore_msg_state_persist());
     assert(pkt_size >= MIN_ETHERNET_FRAME);
     assert(pkt_size <= MAX_ETHERNET_FRAME);
     hysup::SenderState *sender_state = update_sender_state(pkt);
@@ -388,7 +389,8 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
             assert(0);
             slog::log5(debug_, this_addr_, "Received the pkt of a single-packet REQUEST");
         }
-        else if (r2p2_hdr->msg_type() == hdr_r2p2::REPLY) {
+        else if (r2p2_hdr->msg_type() == hdr_r2p2::REPLY)
+        {
             slog::log6(debug_, this_addr_, "Received the pkt of a single-packet REPLY");
 
             /* Dale: TODO: currently we don't remove any msg state from any outbound/inbound datastructure
@@ -446,8 +448,10 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
                                            r2p2_hdr->cl_thread_id(),
                                            r2p2_hdr->req_id(),
-                                           /* Dale: track if msg type is extendable */
-                                           hdr_r2p2::is_maintain_msg_state(r2p2_hdr->msg_type()));
+                                           /* Dale: track if msg state should be persisted */
+                                           hdr_r2p2::is_persist_msg_state(r2p2_hdr->msg_type()),
+                                           /* Dale: whether to ignore persistence */
+                                           r2p2_hdr->is_ignore_msg_state_persist());
     hysup::InboundMsgState *msg_state = inbound_->find(req_id);
 
     if (msg_state == nullptr)
@@ -479,6 +483,11 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
     }
     /* Dale: update msg is_msg_extension flag */
     msg_state->is_msg_extension_ = r2p2_hdr->is_msg_extension();
+    /* Dale: update msg is_ignore_persistence */
+    if (r2p2_hdr->is_ignore_msg_state_persist())
+    {
+        ReqIdTuple::set_ignore_persistence(msg_state->req_id_);
+    }
 
     /**
      * Packet requests credit
@@ -490,9 +499,9 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
      * Reset received_msg_info_ so we can process credit req sent by msg extension;
      * 12/06/2025 Process credit request again if request's corresponding msg state has been persisted.
      * ASSUMES credit req is sent only once per msg ext */
-    if (packet_requests_credit && ReqIdTuple::is_maintain_msg_state(msg_state->req_id_)) msg_state->received_msg_info_ = false;  
+    slog::log6(debug_, this_addr_, "packet_requests_credit:", packet_requests_credit, "is_persist_msg_state", ReqIdTuple::is_persist_msg_state(msg_state->req_id_));
+    if (packet_requests_credit && ReqIdTuple::is_persist_msg_state(msg_state->req_id_)) msg_state->received_msg_info_ = false;  
 
-    slog::log6(debug_, this_addr_, "### packet_requests_credit:", packet_requests_credit, "received_msg_info_:", msg_state->received_msg_info_);
     /** Dale: TODO:
      * 11//06/2025
      * Repeated GRANT_REQ from receiver to sender does not enter this loop, causes is_data_pkt assertion to fail below.
@@ -526,7 +535,7 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
         msg_state->received_msg_info_ = true;
         slog::log5(debug_, this_addr_, "Set expected bytes to:",
                    msg_state->data_bytes_expected_, "req_id:", std::get<0>(msg_state->req_id_), std::get<1>(msg_state->req_id_),
-                   std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_));
+                   std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_), std::get<4>(msg_state->req_id_));
 
         /**
          * For messages that have an unsolicited part
@@ -580,13 +589,16 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
         {
             Packet::free(pkt);
             assert(!is_data_pkt);
-            if (is_new_msg_state) {
+            if (is_new_msg_state)
+            {
                 /** Dale:
                  * Is only for first ever GRANT_REQ of flow msg
                  * 12/06/2025: First ever GRANT_REQ of flow msg would have new msg state created for it
                  */
                 assert(msg_state->data_bytes_granted_ == 0);
-            } else {
+            }
+            else
+            {
                 assert(msg_state->data_bytes_granted_ > 0);
             }
             return;
@@ -634,13 +646,16 @@ void R2p2CCHybrid::prep_msg_send(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
                                            r2p2_hdr.req_id(),
-                                           /* Dale: track if msg type is extendable */
-                                           hdr_r2p2::is_maintain_msg_state(r2p2_hdr.msg_type()));
+                                           /* Dale: track if msg state should be persisted */
+                                           hdr_r2p2::is_persist_msg_state(r2p2_hdr.msg_type()),
+                                           /* Dale: whether to ignore persistence */
+                                           r2p2_hdr.is_ignore_msg_state_persist());
 
     /* Dale: if msg state already exists then update it (i.e. is msg extension), else make new */
     hysup::OutboundMsgState *msg_state = outbound_inactive_->find(req_id);
     bool msg_state_found = msg_state != nullptr;
-    if (!msg_state_found) {
+    if (!msg_state_found)
+    {
         msg_state = new hysup::OutboundMsgState(req_id, daddr, new hdr_r2p2(r2p2_hdr), rcvr_state);
     }
 
@@ -650,6 +665,11 @@ void R2p2CCHybrid::prep_msg_send(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
     msg_state->msg_creation_time_ = r2p2_hdr.msg_creation_time();
     /* Dale: update msg state to track if is msg extension */
     msg_state->is_msg_extension_ = r2p2_hdr.is_msg_extension();
+    /* Dale: update msg is_ignore_persistence */
+    if (r2p2_hdr.is_ignore_msg_state_persist())
+    {
+        ReqIdTuple::set_ignore_persistence(msg_state->req_id_);
+    }
     /* Dale: since this is new msg extension, it has not been serviced yet => make poller send new announcement */
     msg_state->is_msg_ext_serviced_by_sendr_ = false;
     /* Dale: don't append to outbound_inactive if msg_state already exists there */
@@ -698,8 +718,10 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
                                            r2p2_hdr.req_id(),
-                                           /* Dale: track if msg type is extendable */
-                                           hdr_r2p2::is_maintain_msg_state(r2p2_hdr.msg_type()));
+                                           /* Dale: track if msg state should be persisted */
+                                           hdr_r2p2::is_persist_msg_state(r2p2_hdr.msg_type()),
+                                           /* Dale: whether to ignore persistence */
+                                           r2p2_hdr.is_ignore_msg_state_persist());
     hysup::OutboundMsgState *msg_state = outbound_inactive_->find(req_id);
 
     // set missing info of msg_state
@@ -748,8 +770,13 @@ void R2p2CCHybrid::sending_reply(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
                                            r2p2_hdr.req_id(),
-                                           /* Dale: track if msg type is extendable */
-                                           hdr_r2p2::is_maintain_msg_state(r2p2_hdr.msg_type()));
+                                           /* Dale: track if msg state should be persisted */
+                                           hdr_r2p2::is_persist_msg_state(r2p2_hdr.msg_type()),
+                                           /* Dale: whether to ignore persistence */
+                                           r2p2_hdr.is_ignore_msg_state_persist());
+    /* Dale: ignore persistence for all msgs associated with replying (including GRANT_REQ for reply) */
+    ReqIdTuple::set_ignore_persistence(req_id);
+    slog::log6(debug_, this_addr_, "ignoring persistence; change req_id to:", std::get<0>(req_id), std::get<1>(req_id), std::get<2>(req_id), std::get<3>(req_id), std::get<4>(req_id));
 
     slog::log6(debug_, this_addr_, "&&& cl_addr():", r2p2_hdr.cl_addr(), "cl_thread_id():", r2p2_hdr.cl_thread_id(), "r2p2_hdr.req_id():", r2p2_hdr.req_id());
                                            
@@ -780,7 +807,7 @@ void R2p2CCHybrid::sending_reply(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
      */
     msg_state->is_msg_extension_ = false;
     outbound_inactive_->append(msg_state);
-    slog::log6(debug_, this_addr_, "@ appended reply msg state", std::get<0>(msg_state->req_id_), std::get<1>(msg_state->req_id_), std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_), "to outbound_inactive_", &outbound_inactive_);
+    slog::log6(debug_, this_addr_, "@ appended reply msg state", std::get<0>(msg_state->req_id_), std::get<1>(msg_state->req_id_), std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_), std::get<4>(msg_state->req_id_), "to outbound_inactive_", &outbound_inactive_);
 }
 
 void R2p2CCHybrid::received_credit(Packet *pkt)
@@ -799,8 +826,10 @@ void R2p2CCHybrid::received_credit(Packet *pkt)
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
                                            r2p2_hdr->cl_thread_id(),
                                            r2p2_hdr->req_id(),
-                                           /* Dale: track if msg type is extendable */
-                                           hdr_r2p2::is_maintain_msg_state(r2p2_hdr->msg_type()));
+                                           /* Dale: track if msg state should be persisted */
+                                           hdr_r2p2::is_persist_msg_state(r2p2_hdr->msg_type()),
+                                           /* Dale: whether to ignore persistence */
+                                           r2p2_hdr->is_ignore_msg_state_persist());
     hysup::OutboundMsgState *msg_state = receivers_->find_outbound_msg(receiver, req_id);
     if (msg_state != nullptr)
     {
@@ -823,13 +852,15 @@ void R2p2CCHybrid::received_credit(Packet *pkt)
               * 11/06/2025 Unless msg_state is for a msg type that is non-extensibe, then remove. 
               * TODO: design explicit signal to tear down connection 
               */
-            if (!ReqIdTuple::is_maintain_msg_state(msg_state->req_id_)) {
+            if (!ReqIdTuple::is_persist_msg_state(msg_state->req_id_) || ReqIdTuple::is_ignore_persistence(msg_state->req_id_))
+            {
                 /* Dale: req_id is for non-extensible msg type */
-                slog::log6(debug_, this_addr_, "@ remove from outbound_inactive_", &outbound_inactive_, "req_id:", std::get<0>(msg_state->req_id_), std::get<1>(msg_state->req_id_), std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_), "msg_type:", msg_state->r2p2_hdr_->msg_type());
+                slog::log6(debug_, this_addr_, "@ remove from outbound_inactive_", &outbound_inactive_, "req_id:", std::get<0>(msg_state->req_id_), std::get<1>(msg_state->req_id_), std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_), std::get<4>(msg_state->req_id_), "msg_type:", msg_state->r2p2_hdr_->msg_type());
                 outbound_inactive_->remove(msg_state);
             }
             /* Dale: add msg state to rcvr state if not present already */
-            if (msg_state->rcvr_state_->find_outbound_msg(msg_state->req_id_) == nullptr) {
+            if (msg_state->rcvr_state_->find_outbound_msg(msg_state->req_id_) == nullptr)
+            {
                 msg_state->rcvr_state_->add_outbound_msg(msg_state);
             }
         } // else state may have been deleted
@@ -978,10 +1009,11 @@ void R2p2CCHybrid::send_data()
     for (size_t i = 0; i < num_inactive; i++)
     {
         msg_state = outbound_inactive_->next();
-        slog::log6(debug_, this_addr_, "Considering Activating message:", std::get<2>(msg_state->req_id_),
+        slog::log6(debug_, this_addr_, "Considering Activating message in ", &outbound_inactive_,":", std::get<0>(msg_state->req_id_),
+                    std::get<1>(msg_state->req_id_), std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_), std::get<4>(msg_state->req_id_),
                    "Before, len of inactive:", outbound_inactive_->size(),
                     "is_msg_extension_:", msg_state->is_msg_extension_,
-                    "is_msg_ext_serviced_by_sendr_", msg_state->is_msg_ext_serviced_by_sendr_);
+                    "is_msg_ext_serviced_by_sendr_:", msg_state->is_msg_ext_serviced_by_sendr_);
 
         /* Dale: re-do announcement if this msg extension has not yet been serviced */
         if (msg_state->is_msg_extension_ && !msg_state->is_msg_ext_serviced_by_sendr_) msg_state->sent_anouncement_ = false;
@@ -1008,6 +1040,9 @@ void R2p2CCHybrid::send_data()
                 hdr.unsol_credit_data() = 0;
                 /* Dale: carry is_msg_extension flag in header of credit request */
                 hdr.is_msg_extension() = msg_state->is_msg_extension_;
+                /* Dale: carry is_ignore_msg_state_persist flag in header of credit req */
+                hdr.is_ignore_msg_state_persist() = ReqIdTuple::is_ignore_persistence(msg_state->req_id_);
+                slog::log6(debug_, this_addr_, "setting GRANT_REQ is_ignore_persistence to ", hdr.is_ignore_msg_state_persist());
 
                 assert(unsolicited_thresh_bytes_ == 0 ? (hdr.unsol_credit() == 0) : true);
 
@@ -1039,13 +1074,15 @@ void R2p2CCHybrid::send_data()
               * 11/06/2025 Unless msg_state is for a msg type that is non-extensibe, then remove. 
               * TODO: design explicit signal to tear down connection 
               */
-            if (!ReqIdTuple::is_maintain_msg_state(msg_state->req_id_)) {
+            if (!ReqIdTuple::is_persist_msg_state(msg_state->req_id_) || ReqIdTuple::is_ignore_persistence(msg_state->req_id_))
+            {
                 /* Dale: req_id is for non-extensible msg type */
-                slog::log6(debug_, this_addr_, "@ remove from outbound_inactive_", &outbound_inactive_, "req_id:", std::get<0>(msg_state->req_id_), std::get<1>(msg_state->req_id_), std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_), "msg_type:", msg_state->r2p2_hdr_->msg_type());
+                slog::log6(debug_, this_addr_, "@ remove from outbound_inactive_", &outbound_inactive_, "req_id:", std::get<0>(msg_state->req_id_), std::get<1>(msg_state->req_id_), std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_), std::get<4>(msg_state->req_id_), "msg_type:", msg_state->r2p2_hdr_->msg_type());
                 outbound_inactive_->remove(msg_state);
             }
             /* Dale: add msg state to rcvr state if not present already */
-            if (msg_state->rcvr_state_->find_outbound_msg(msg_state->req_id_) == nullptr) {
+            if (msg_state->rcvr_state_->find_outbound_msg(msg_state->req_id_) == nullptr)
+            {
                 msg_state->rcvr_state_->add_outbound_msg(msg_state);
             }
         }
@@ -1053,6 +1090,7 @@ void R2p2CCHybrid::send_data()
 
     if (((double)data_pacer_backlog_ > 1.5 * data_bytes_drained_per_loop_))
     {
+        slog::log6(debug_, this_addr_, "pacer backlog return");
         return;
     }
 
@@ -1066,6 +1104,7 @@ void R2p2CCHybrid::send_data()
 
     if (ps == nullptr)
     {
+        slog::log6(debug_, this_addr_, "ps null return");
         return;
     }
 
@@ -1217,7 +1256,7 @@ void R2p2CCHybrid::send_data()
     {
         /* Dale: do not delete msg state even if unsent_bytes_==0, as msg extenion could happen later */
         slog::log4(debug_, this_addr_, "Msg req_id:", std::get<0>(msg_state->req_id_), std::get<1>(msg_state->req_id_),
-                std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_), "has finished sending \
+                std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_), std::get<4>(msg_state->req_id_), "has finished sending \
                 all oustanding bytes, awaiting potential msg extension... Unsent bytes:", msg_state->unsent_bytes_,
                 "all bytes:", msg_state->total_bytes_, "avail_credit_bytes_", msg_state->rcvr_state_->avail_credit_bytes_,
                 "new data_pacer_backlog_:", data_pacer_backlog_);
@@ -1226,9 +1265,10 @@ void R2p2CCHybrid::send_data()
           * 11/06/2025 Unless msg_state is for a msg type that is non-extensibe, then remove. 
           * TODO: design explicit signal to tear down connection 
           */
-        if (!hdr_r2p2::is_maintain_msg_state(msg_state->r2p2_hdr_->msg_type())){
+        if (!hdr_r2p2::is_persist_msg_state(msg_state->r2p2_hdr_->msg_type()))
+        {
             slog::log4(debug_, this_addr_, "Removing outbound state of req_id:", std::get<0>(msg_state->req_id_),
-                    std::get<1>(msg_state->req_id_), std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_),
+                    std::get<1>(msg_state->req_id_), std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_), std::get<4>(msg_state->req_id_),
                     "msg_type:", msg_state->r2p2_hdr_->msg_type(),
                     "Unsent bytes:", msg_state->unsent_bytes_, "Unsent bytes:", msg_state->unsent_bytes_,
                     "all bytes:", msg_state->total_bytes_, "avail_credit_bytes_", msg_state->rcvr_state_->avail_credit_bytes_,
@@ -1331,7 +1371,8 @@ void R2p2CCHybrid::received_data(Packet *pkt, hysup::InboundMsgState *msg_state)
           * 11/06/2025 Unless msg_state is for a msg type that is non-extensibe, then remove. 
           * TODO: design explicit signal to tear down connection 
           */
-        if (!ReqIdTuple::is_maintain_msg_state(msg_state->req_id_)) {
+        if (!ReqIdTuple::is_persist_msg_state(msg_state->req_id_) || ReqIdTuple::is_ignore_persistence(msg_state->req_id_))
+        {
             /* Dale: msg type is not msg extendable */ 
             slog::log4(debug_, this_addr_, "Removing inbound message state of msg", std::get<2>(msg_state->req_id_));
             inbound_->remove(msg_state);
@@ -1846,7 +1887,8 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
           * 11/06/2025 Unless msg_state is for a msg type that is non-extensibe, then remove. 
           * TODO: design explicit signal to tear down connection 
           */
-        if (!ReqIdTuple::is_maintain_msg_state(msg_state->req_id_)) {
+        if (!ReqIdTuple::is_persist_msg_state(msg_state->req_id_) || ReqIdTuple::is_ignore_persistence(msg_state->req_id_))
+        {
             /* Dale: msg type is not msg extendable */ 
             slog::log4(debug_, this_addr_, "Removing inbound message state of msg", std::get<2>(msg_state->req_id_));
             inbound_->remove(msg_state);
@@ -1951,6 +1993,8 @@ void R2p2CCHybrid::forward_grant(hysup::InboundMsgState *msg_state, int credit_b
     hdr.app_level_id() = msg_state->first_header_->app_level_id();
     hdr.uniq_req_id() = msg_state->first_header_->uniq_req_id();
     hdr.msg_creation_time() = Scheduler::instance().clock();
+    /* Dale: update is_ignore_msg_state_persist (We ignore persistence for grants sent for replies) */
+    hdr.is_ignore_msg_state_persist() = ReqIdTuple::is_ignore_persistence(msg_state->req_id_);
     data_pacer_backlog_ += GRANT_MSG_SIZE + R2P2_ALL_HEADERS_SIZE + INTER_PKT_GAP_SIZE + ETHERNET_PREAMBLE_SIZE;
     stats->num_grants_sent_++;
 
