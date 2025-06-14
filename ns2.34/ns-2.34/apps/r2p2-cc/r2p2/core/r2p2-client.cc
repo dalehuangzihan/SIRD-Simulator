@@ -162,7 +162,8 @@ void R2p2Client::handle_reply_pkt(hdr_r2p2 &r2p2_hdr, int payload)
     client_request_state->reply_pkts_recvd_++;
     if (r2p2_hdr.first())
     {
-        client_request_state->reply_pkts_to_rec_ = r2p2_hdr.pkt_id();
+        /* Dale: cumultae reply_pkts_to_rec_ */
+        client_request_state->reply_pkts_to_rec_ += r2p2_hdr.pkt_id();
     }
     if (!r2p2_hdr.first() && client_request_state->reply_pkts_to_rec_ == 0)
     {

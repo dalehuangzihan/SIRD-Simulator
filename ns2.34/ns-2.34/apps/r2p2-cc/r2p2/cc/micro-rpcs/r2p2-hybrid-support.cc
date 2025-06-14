@@ -106,7 +106,8 @@ hysup::OutboundMsgState *hysup::Receivers::find_outbound_msg(int32_t receiver, u
     hysup::OutboundMsgState *msg = nullptr;
     try
     {
-        remotes_.at(receiver)->find_outbound_msg(req_id);
+        /* Dale: fix missing assignment of find result to msg ptr */
+        msg = remotes_.at(receiver)->find_outbound_msg(req_id);
     }
     catch (const std::out_of_range &e)
     {
@@ -391,19 +392,19 @@ size_t hysup::ReceiverState::num_outbound()
 
 hysup::OutboundMsgState *hysup::ReceiverState::find_outbound_msg(uniq_req_id_t req_id)
 {
-    slog::log6(debug_, this_addr_, "@@ receiver find_outbound_msg() from ", &out_msgs_);
+    slog::log6(debug_, this_addr_, "@@ receiver find_outbound_msg() from ", out_msgs_->get_msgs_states());
     return out_msgs_->find(req_id);
 }
 
 void hysup::ReceiverState::add_outbound_msg(hysup::OutboundMsgState *msg_state)
 {
-    slog::log6(debug_, this_addr_, "@@ receiver add_outbound_msg() to ", &out_msgs_);
+    slog::log6(debug_, this_addr_, "@@ receiver add_outbound_msg() to ", out_msgs_->get_msgs_states());
     out_msgs_->append(msg_state);
 }
 
 void hysup::ReceiverState::remove_outbound_msg(hysup::OutboundMsgState *msg_state)
 {
-    slog::log6(debug_, this_addr_, "@@ receiver remove_outbound_msg() from ", &out_msgs_);
+    slog::log6(debug_, this_addr_, "@@ receiver remove_outbound_msg() from ", out_msgs_->get_msgs_states());
     out_msgs_->remove(msg_state);
 }
 
@@ -534,6 +535,7 @@ hysup::OutboundMsgState *hysup::OutboundMsgs::find(const uniq_req_id_t &req_id)
         slog::log6(debug_, this_addr_, "@@@@", std::get<0>((*it)->req_id_), std::get<1>((*it)->req_id_), std::get<2>((*it)->req_id_), std::get<3>((*it)->req_id_), std::get<4>((*it)->req_id_));
         if ((*it)->req_id_ == req_id)
         {
+            slog::log6(debug_, this_addr_, "@@@@@ found");
             return *it;
         }
     }
@@ -821,6 +823,7 @@ hysup::InboundMsgState *hysup::InboundMsgs::find(const uniq_req_id_t &req_id)
         slog::log6(debug_, this_addr_, "$$$$", std::get<0>((*it)->req_id_), std::get<1>((*it)->req_id_), std::get<2>((*it)->req_id_), std::get<3>((*it)->req_id_), std::get<4>((*it)->req_id_));
         if ((*it)->req_id_ == req_id)
         {
+            slog::log6(debug_, this_addr_, "$$$$$ found");
             return *it;
         }
     }

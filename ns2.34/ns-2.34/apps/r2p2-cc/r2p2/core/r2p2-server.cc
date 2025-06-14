@@ -147,9 +147,7 @@ void R2p2Server::handle_request_pkt(hdr_r2p2 &r2p2_hdr, int payload)
             /** Dale: TODO: IMPORTANT
              * 09/06/2025: Figure out how to allow streamed chunks (msg extensions) to be passed one by one to the app,
              * instead of only after all pkts from all msg extensions have been received...
-             * (is cuz currently, we update req_pkts_expected cumulatively as new msg extensions are created).
-             * 
-             * 10/06/2025: May not need to worry here, refer to 10/06/2025 TODO in R2p2CCHybrid 
+             * 14/06/2025: Protocol delivers data to app whenever the currently-outstanding/expected amount of data has been received.
              */
 
             // the request can be forwarded to the application

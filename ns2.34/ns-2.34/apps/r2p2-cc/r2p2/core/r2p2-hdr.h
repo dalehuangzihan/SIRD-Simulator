@@ -107,10 +107,22 @@ public:
 
     static const char *get_pkt_type(int type);
 
-    /* Dale: 12/06/2025 msg state is associated with REQUEST and GRANT_REQ msg types, so these states should be persisted */ 
+    /** Dale:
+     * 12/06/2025 msg state is associated with REQUEST and GRANT_REQ msg types, so these states should be persisted
+     * 14/06/2025 we persist GRANT msg types too, so that GRANTs can find their corresponding msg state in outbound
+     * inactive (though this is not crucial for algo operation...?). We can still override persist if needed, using
+     * the override field in req_id.
+     * 14/06/2025 we also persist REPLY msg types, so a grant-reply pair can both have same rid: `* * * 1 1` and thus
+     * be able to have their msg states associted with each other.
+     * 14/06/2025 Currently, msg states associated with replies are kept separate from any others, via the
+     * is_ignore_state_persist flag in rid.
+     */ 
     static bool is_persist_msg_state(int type)
     {
-        return type == hdr_r2p2::REQUEST || type == hdr_r2p2::GRANT_REQ;
+        return (type == hdr_r2p2::REQUEST
+            || type == hdr_r2p2::GRANT_REQ
+            || type == hdr_r2p2::GRANT
+            || type == hdr_r2p2::REPLY);
     }
 
     enum Policies
