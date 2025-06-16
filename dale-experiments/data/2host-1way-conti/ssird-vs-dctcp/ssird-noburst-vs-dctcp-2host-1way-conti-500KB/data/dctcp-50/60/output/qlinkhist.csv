@@ -1,0 +1,13 @@
+protocol,load,node,link,histogram
+dctcp-50,60,tor_4,tor_4_6,5000:1.0|
+dctcp-50,60,tor_4,tor_4_5,5000:1.0|
+dctcp-50,60,tor_4,tor_4_7,5000:1.0|
+dctcp-50,60,tor_4,tor_4_8,5000:1.0|
+dctcp-50,60,tor_4,tor_4_0,5000:1.0|
+dctcp-50,60,tor_4,tor_4_1,5000:1.0|
+dctcp-50,60,tor_4,tor_4_2,5000:1.0|
+dctcp-50,60,tor_4,tor_4_3,5000:1.0|
+dctcp-50,60,aggr_7,aggr_7_4,5000:1.0|
+dctcp-50,60,aggr_5,aggr_5_4,5000:1.0|
+dctcp-50,60,aggr_8,aggr_8_4,5000:1.0|
+dctcp-50,60,aggr_6,aggr_6_4,5000:1.0|

@@ -40,8 +40,8 @@ CC_ID = "output/cc"
 id_to_options = {
     SLDWN_ID: Options(SLDWN_ID, "Slowdown", "Msg size (KB)", True, False),
     # QTS_ID: Options(QTS_ID, "Queue Size (KB)", "Time (ms)", True, True, lw=1),
-    # QTS_ID: Options(QTS_ID, "Queue Size (KB)", "Time (ms)", False, False, lw=1),
-    THRPT_ID: Options(QTS_ID, "Throughput (Gbps)", "Time (ms)", False, False, lw=1),
+    QTS_ID: Options(QTS_ID, "Queue Size (KB)", "Time (ms)", False, False, lw=1),
+    # THRPT_ID: Options(QTS_ID, "Throughput (Gbps)", "Time (ms)", False, False, lw=1),
     CC_ID: Options(CC_ID, "-", "Time (ms)", False, False, lw=1),
 }
 

@@ -1,0 +1,72 @@
+client_addr 0 1 2 3  
+server_addr 0 1 2 3  
+host_addr 0 1 2 3  
+tor_addr 4  
+aggr_addr 5 6 7 8 
+tor_4 0 1 2 3
+aggr_5 4 
+aggr_6 4 
+aggr_7 4 
+aggr_8 4 
+transport_protocol dctcp
+sim_start 10.0
+sim_dur 0.0004 
+num_aggr 4
+num_tors 1 
+num_hosts 4
+num_client_apps 4
+num_server_apps 4 
+leaf_link_speed_gbps 100
+core_link_latency_ms 0.0005 
+leaf_link_latency_ms 0.00125 
+mean_per_client_req_interval_us 16.246400000000001
+mean_service_time_us 0.00001 
+mean_req_size_B 121848
+mean_resp_size_B 20
+req_interval_distr manual 
+resp_proc_time_distr exponential
+req_size_distr manual
+resp_size_distr fixed 
+queue_size 300000
+r2p2_cc_scheme noop
+cc_pkt_cap_sr_thresh 25 
+router_latency_us 0.01 
+tcp_connections_per_thread_pair 40
+pfab_g 0.0625
+pfab_K 10000 
+pfab_min_rto 0.000024 
+per_server_capacity_rps 99999999999.999985
+total_server_capacity_rps 399999999999.99994 
+per_client_req_send_rate_rps 61552.097695489465
+per_server_resp_send_rate_rps 61552.097695489465 
+global_req_send_rate_rps 246208.39078195786
+mean_per_client_req_interval_us 16.246400000000001 
+estim_send_rate_per_client_gbps_bgrnd 60.0
+estim_send_rate_per_server_gbps_bgrnd 0.0098483356312783141 
+total_cl_send_rate_gbps 240.0
+total_sr_send_rate_gbps 0.039393342525113256 
+approx_app_load 6.1552097695489471e-05
+approx_req_nwrk_load_leaves 60.0 
+traffic_matrix_type uniform 
+traffic_matrix_ratio_interrack 0.8 
+approx_leaves_load 60.009848335631276 
+approx_core_load 60.009848335631276 
+approx_max_req_nwrk_load_core 60.0 
+approx_max_reply_nwrk_load_core 0.0098483356312783141 
+lognormal_sigma 1.8 
+core_capacity_gbps 400 
+core_link_speed_gbps 100 
+total_client_downlink_cap_gbps 400.0 
+total_server_downlink_cap_gbps 400.0 
+router_op_mode random
+state_polling_ival_s 0.000001 
+switch_subset_buf_mon_interval_s 0.000001 
+capture_pkt_trace 0
+capture_msg_trace 0 
+start_tracing_at 10.0 
+hf_aggr_addr 5 6 7 8  
+hf_tor_addr 4  
+hf_host_addr 0 1 2 3  
+hf_aggr_addr 5 6 7 8  
+hf_tor_addr 4  
+hf_host_addr 0 1 2 3  
