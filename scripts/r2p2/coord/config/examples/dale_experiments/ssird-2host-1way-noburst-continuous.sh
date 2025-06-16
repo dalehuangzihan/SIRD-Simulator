@@ -15,7 +15,7 @@ state_polling_ival_s='0.000001' # sample switch queue lengths every 1us
 req_interval_distr='manual'
 req_target_distr='manual' # manual or uniform
 req_size_distr='manual'
-manual_req_interval_file_l='dale/dale-simple-3host-1consec_1normal.csv'
+manual_req_interval_file_l='dale_experiments/2host-1way-continuous.csv'
 client_injection_rate_gbps_list='60' # value is meaningful only when req_interval_distr is not 'manual'
 duration_modifier_l='0.0004' # when manual, this specifies the sim duration in secods. For 3 1MB flows at 100Gbps, it takes approx 3*80us = 0.00024sec
 mean_req_size_B_l='121848' # only meanigful if req_size_distr is not manual

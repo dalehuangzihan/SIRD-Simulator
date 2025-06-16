@@ -39,8 +39,9 @@ CC_ID = "output/cc"
 
 id_to_options = {
     SLDWN_ID: Options(SLDWN_ID, "Slowdown", "Msg size (KB)", True, False),
-    QTS_ID: Options(QTS_ID, "Queue Size (KB)", "Time (ms)", False, False, lw=1),
-    # THRPT_ID: Options(QTS_ID, "Throughput (Gbps)", "Time (ms)", False, False, lw=1),
+    # QTS_ID: Options(QTS_ID, "Queue Size (KB)", "Time (ms)", True, True, lw=1),
+    # QTS_ID: Options(QTS_ID, "Queue Size (KB)", "Time (ms)", False, False, lw=1),
+    THRPT_ID: Options(QTS_ID, "Throughput (Gbps)", "Time (ms)", False, False, lw=1),
     CC_ID: Options(CC_ID, "-", "Time (ms)", False, False, lw=1),
 }
 
@@ -96,7 +97,7 @@ def main():
             ax1.plot(x, y, label=label, linewidth=options.lw)
             ax1.grid(True, linestyle="--", axis="y", linewidth=0.3)
             ax1.set_xlabel(options.x_title)
-            # ax1.set_ylabel(options.y_title)
+            ax1.set_ylabel(options.y_title)
             ax1.legend(loc="best")
             ax1.set_title(f"{title}")
             if options.log_x_axis:
@@ -108,6 +109,8 @@ def main():
         plt.tight_layout()
         fig.savefig(f"{save_dir}.png", format="png")
 
+        # Dale: print save_dir for easy finding
+        print(save_dir)
 
 if __name__ == "__main__":
     main()
