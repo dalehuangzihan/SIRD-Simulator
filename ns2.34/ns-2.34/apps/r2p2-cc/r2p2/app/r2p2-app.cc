@@ -115,14 +115,14 @@ void R2p2Application::send_request(RequestIdTuple *, size_t)
     if (next_req_size < 4)
         next_req_size = 4;
     int32_t srvr_addr = dst_thread_gen_->get_next();
-    if (do_trace_)
-    {
-        trace_state("srq", srvr_addr, -1, reqs_sent_, -1, next_req_size, -1, 0);
-    }
     /** Dale: TODO:
      * (?) set app_level_id to const value for now
      * TODO: not quite sure what app_level_id value is used for... */
     long app_level_id = 0;
+    if (do_trace_)
+    {
+        trace_state("srq", srvr_addr, -1, app_level_id, -1, next_req_size, -1, 0);
+    }
     /**
      * Dale: TODO:
      * Create flag in req_id_tuple to indicate whether this is a msg extension
