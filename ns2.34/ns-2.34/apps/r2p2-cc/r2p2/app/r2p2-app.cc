@@ -178,6 +178,7 @@ void R2p2Application::req_recv(int req_size, RequestIdTuple &&request_id_tuple)
     slog::log4(debug_, local_addr_, "R2p2Application::req_recv(). size", req_size, "duration:", (Scheduler::instance().clock() - msg_created_at),
                "From:", request_id_tuple.cl_addr_, "app_level_id_:", request_id_tuple.app_level_id_,
                "that was created on:", msg_created_at);
+    slog::log6(debug_, local_addr_, "## APP req_recv msg_created_at=", request_id_tuple.ts_);
     assert(msg_created_at > 9.9); // assumes sim starts at 10.0
     if (do_trace_)
     {

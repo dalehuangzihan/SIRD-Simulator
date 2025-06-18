@@ -143,6 +143,7 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
         client_request_state->is_update_msg_timestamp = false;
         if (is_new_client_request_state) (*thrd_id_to_pending_reqs_map_.at(thread_id))[current_rid] = client_request_state;
     } 
+    slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "### msg_creation_time=", r2p2_hdr.msg_creation_time(), "req_id_tuple.ts_=", request_id_tuple.ts_, "client_request_state->msg_creation_time_=", client_request_state->msg_creation_time_);
 
     int32_t daddr = -2; // -1 used to be destination: r2p2 router
     daddr = r2p2_hdr.sr_addr();
@@ -256,6 +257,7 @@ void R2p2Client::handle_reply_pkt(hdr_r2p2 &r2p2_hdr, int payload)
 
         /** Dale: set is_reply_received to true so that next client request can update msg
          * creation time (used for FCT measurement; is for msg extensions in intermittent flows)*/
+        slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "### reply recv, set is_update_timestamp = true");
         client_request_state->is_update_msg_timestamp = true;
     }
     // TODO: Add check -> have more bytes than expected been received?

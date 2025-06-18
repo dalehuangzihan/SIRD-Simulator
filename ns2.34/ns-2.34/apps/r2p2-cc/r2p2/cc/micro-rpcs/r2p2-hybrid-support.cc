@@ -392,16 +392,19 @@ size_t hysup::ReceiverState::num_outbound()
 
 hysup::OutboundMsgState *hysup::ReceiverState::find_outbound_msg(uniq_req_id_t req_id)
 {
+    slog::log6(debug_, this_addr_, "@@ receiver find_outbound_msg() from ", out_msgs_->get_msgs_states());
     return out_msgs_->find(req_id);
 }
 
 void hysup::ReceiverState::add_outbound_msg(hysup::OutboundMsgState *msg_state)
 {
+    slog::log6(debug_, this_addr_, "@@ receiver add_outbound_msg() to ", out_msgs_->get_msgs_states());
     out_msgs_->append(msg_state);
 }
 
 void hysup::ReceiverState::remove_outbound_msg(hysup::OutboundMsgState *msg_state)
 {
+    slog::log6(debug_, this_addr_, "@@ receiver remove_outbound_msg() from ", out_msgs_->get_msgs_states());
     out_msgs_->remove(msg_state);
 }
 
@@ -489,6 +492,7 @@ void hysup::OutboundMsgs::append(OutboundMsgState *const msg)
 
 void hysup::OutboundMsgs::remove(OutboundMsgState *const msg)
 {
+    slog::log6(debug_, this_addr_, "@@@ removing outbound rid", std::get<0>(msg->req_id_), std::get<1>(msg->req_id_), std::get<2>(msg->req_id_), std::get<3>(msg->req_id_), std::get<4>(msg->req_id_));
     assert(msg != nullptr);
     size_t pos = find_pos(msg);
     msgs_.erase(msgs_.begin() + pos);
@@ -525,10 +529,13 @@ size_t hysup::OutboundMsgs::find_pos(OutboundMsgState *const msg)
 
 hysup::OutboundMsgState *hysup::OutboundMsgs::find(const uniq_req_id_t &req_id)
 {
+    slog::log6(debug_, this_addr_, "@@@ finding outbound", std::get<0>(req_id), std::get<1>(req_id), std::get<2>(req_id), std::get<3>(req_id), std::get<4>(req_id), "OutboundMsgs.size()", msgs_.size(), "ptr addr:", &msgs_);
     for (auto it = msgs_.begin(); it != msgs_.end(); ++it)
     {
+        slog::log6(debug_, this_addr_, "@@@@", std::get<0>((*it)->req_id_), std::get<1>((*it)->req_id_), std::get<2>((*it)->req_id_), std::get<3>((*it)->req_id_), std::get<4>((*it)->req_id_));
         if ((*it)->req_id_ == req_id)
         {
+            slog::log6(debug_, this_addr_, "@@@@@ found");
             return *it;
         }
     }
@@ -745,6 +752,7 @@ void hysup::InboundMsgs::add(InboundMsgState *const msg)
 
 void hysup::InboundMsgs::remove(InboundMsgState *const msg)
 {
+    slog::log6(debug_, this_addr_, "$$$ removing InboundMsgState rid ", std::get<0>(msg->req_id_), std::get<1>(msg->req_id_), std::get<2>(msg->req_id_));
     assert(msg != nullptr);
     size_t pos = find_pos(msg);
     delete msg->first_header_;
@@ -809,10 +817,13 @@ std::string hysup::InboundMsgs::print_all(int32_t local_addr)
 
 hysup::InboundMsgState *hysup::InboundMsgs::find(const uniq_req_id_t &req_id)
 {
+    slog::log6(debug_, this_addr_, "$$$ finding inbound", std::get<0>(req_id), std::get<1>(req_id), std::get<2>(req_id), std::get<3>(req_id), std::get<4>(req_id), "InboundMsgs.size()", msgs_.size(), "ptr addr:", &msgs_);
     for (auto it = msgs_.begin(); it != msgs_.end(); ++it)
     {
+        slog::log6(debug_, this_addr_, "$$$$", std::get<0>((*it)->req_id_), std::get<1>((*it)->req_id_), std::get<2>((*it)->req_id_), std::get<3>((*it)->req_id_), std::get<4>((*it)->req_id_));
         if ((*it)->req_id_ == req_id)
         {
+            slog::log6(debug_, this_addr_, "$$$$$ found");
             return *it;
         }
     }
