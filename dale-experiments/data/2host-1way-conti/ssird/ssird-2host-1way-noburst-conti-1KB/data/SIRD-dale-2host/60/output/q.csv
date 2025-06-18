@@ -1,0 +1,10 @@
+protocol,load,node,tail99,tail999,max,median,mean
+SIRD-dale-2host,60,tor_4,0.0,0.03,0.05,0.0,0.0
+SIRD-dale-2host,60,host_1,0.0,0.0,0.0,0.0,0.0
+SIRD-dale-2host,60,host_2,0.0,0.0,0.0,0.0,0.0
+SIRD-dale-2host,60,host_0,0.0,0.04,0.05,0.0,0.0
+SIRD-dale-2host,60,host_3,0.0,0.0,0.0,0.0,0.0
+SIRD-dale-2host,60,aggr_7,0.0,0.0,0.0,0.0,0.0
+SIRD-dale-2host,60,aggr_5,0.0,0.0,0.0,0.0,0.0
+SIRD-dale-2host,60,aggr_8,0.0,0.0,0.0,0.0,0.0
+SIRD-dale-2host,60,aggr_6,0.0,0.0,0.0,0.0,0.0

@@ -1,0 +1,6 @@
+protocol,load,node,histogram
+dctcp-50,60,tor_4,20000:1.0|
+dctcp-50,60,aggr_7,20000:1.0|
+dctcp-50,60,aggr_5,20000:1.0|
+dctcp-50,60,aggr_8,20000:1.0|
+dctcp-50,60,aggr_6,20000:1.0|
