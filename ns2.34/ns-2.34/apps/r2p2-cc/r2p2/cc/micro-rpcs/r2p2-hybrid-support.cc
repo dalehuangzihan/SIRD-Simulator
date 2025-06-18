@@ -106,7 +106,8 @@ hysup::OutboundMsgState *hysup::Receivers::find_outbound_msg(int32_t receiver, u
     hysup::OutboundMsgState *msg = nullptr;
     try
     {
-        remotes_.at(receiver)->find_outbound_msg(req_id);
+        /* Dale: fix missing assignment of find result to msg ptr */
+        msg = remotes_.at(receiver)->find_outbound_msg(req_id);
     }
     catch (const std::out_of_range &e)
     {

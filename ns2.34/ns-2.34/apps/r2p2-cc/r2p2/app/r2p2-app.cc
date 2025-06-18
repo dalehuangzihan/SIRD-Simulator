@@ -15,7 +15,9 @@ public:
     }
 } class_r2p2_app;
 
-R2p2Application::R2p2Application() : GenericApp(this), num_reqs_rcved_(0), num_resp_rcved_(0)
+R2p2Application::R2p2Application() : GenericApp(this),
+                                    num_reqs_rcved_(0),
+                                    num_resp_rcved_(0)
 {
     // These values agree with the values set at the tcl level when the
     // object is created ONLY if they are set universaly like so:
@@ -113,18 +115,30 @@ void R2p2Application::send_request(RequestIdTuple *, size_t)
     if (next_req_size < 4)
         next_req_size = 4;
     int32_t srvr_addr = dst_thread_gen_->get_next();
+    /** Dale: TODO:
+     * (?) set app_level_id to const value for now
+     * TODO: not quite sure what app_level_id value is used for... */
+    long app_level_id = 0;
     if (do_trace_)
     {
-        trace_state("srq", srvr_addr, -1, reqs_sent_, -1, next_req_size, -1, 0);
+        trace_state("srq", srvr_addr, -1, app_level_id, -1, next_req_size, -1, 0);
     }
-    MsgTracer::app_init_msg(reqs_sent_, local_addr_, local_addr_, srvr_addr, next_req_size, "Request");
+    /**
+     * Dale: TODO:
+     * Create flag in req_id_tuple to indicate whether this is a msg extension
+     * TODO: may eventually need to calculate is_msg_extension based on srvr_addr etc (?) to allow 1 app to send to multiple servers.  
+     */
+    bool is_msg_extension = reqs_sent_ > 0;
+    MsgTracer::app_init_msg(app_level_id , local_addr_, local_addr_, srvr_addr, next_req_size, "Request");
     assert(srvr_addr != local_addr_); // don't send to self
     int srvr_thread = SERVER_THREAD_BASE;
     int clnt_thread = thread_id_;
-    slog::log4(debug_, local_addr_, "R2p2Application::send_request(). srvr_addr:", srvr_addr, "srvr_thread:", srvr_thread, "app_level_id_:", reqs_sent_);
-    r2p2_layer_->r2p2_send_req(next_req_size, RequestIdTuple(reqs_sent_,
+    slog::log4(debug_, local_addr_, "R2p2Application::send_request(). srvr_addr:", srvr_addr, "srvr_thread:", srvr_thread, "clnt_thread:", clnt_thread, "app_level_id_:", app_level_id, "reqs_sent_:", reqs_sent_, "is_msg_extension:", is_msg_extension,
+    "payload:", next_req_size);
+    r2p2_layer_->r2p2_send_req(next_req_size, RequestIdTuple(app_level_id,
                                                              local_addr_, srvr_addr,
                                                              clnt_thread, srvr_thread,
+                                                             is_msg_extension,
                                                              Scheduler::instance().clock()));
     // RequestInfo *requestInfo = new RequestInfo();
     // requestInfo->request_size_ = next_req_size;

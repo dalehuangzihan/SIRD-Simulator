@@ -79,6 +79,11 @@ private:
     bool priority_flow_;
     double bw_ratio_;
 
+    /* Dale: track if this is part of a message extension */
+    bool is_msg_extension_;
+    /* Dale: track if we should ignore msg state persistence */
+    bool is_ignore_msg_state_persist_;
+
 public:
     hdr_r2p2() : first_urpc_(false), credit_(0), credit_pad_(0), credit_req_(0),
                  umsg_id_(-1), grant_delay_s_(0.0), msg_creation_time_(-1.0), is_pfabric_app_msg_(false),
@@ -101,6 +106,24 @@ public:
     };
 
     static const char *get_pkt_type(int type);
+
+    /** Dale:
+     * 12/06/2025 msg state is associated with REQUEST and GRANT_REQ msg types, so these states should be persisted
+     * 14/06/2025 we persist GRANT msg types too, so that GRANTs can find their corresponding msg state in outbound
+     * inactive (though this is not crucial for algo operation...?). We can still override persist if needed, using
+     * the override field in req_id.
+     * 14/06/2025 we also persist REPLY msg types, so a grant-reply pair can both have same rid: `* * * 1 1` and thus
+     * be able to have their msg states associted with each other.
+     * 14/06/2025 Currently, msg states associated with replies are kept separate from any others, via the
+     * is_ignore_state_persist flag in rid.
+     */ 
+    static bool is_persist_msg_state(int type)
+    {
+        return (type == hdr_r2p2::REQUEST
+            || type == hdr_r2p2::GRANT_REQ
+            || type == hdr_r2p2::GRANT
+            || type == hdr_r2p2::REPLY);
+    }
 
     enum Policies
     {
@@ -154,6 +177,11 @@ public:
     {
         return (hdr_r2p2 *)p->access(offset_);
     }
+
+    /* Dale: accessor for is_msg_extension_ */
+    bool &is_msg_extension() { return is_msg_extension_; }
+    /* Dale: accessor for is_ignore_msg_state_persist_ */
+    bool &is_ignore_msg_state_persist() { return is_ignore_msg_state_persist_; }
 };
 
 struct RequestIdTuple
@@ -182,6 +210,20 @@ struct RequestIdTuple
                                 cl_thread_id_(cl_thread_id),
                                 sr_thread_id_(sr_thread_id),
                                 ts_(ts) {}
+    /* Dale: track whether msg is a msg extension */
+    RequestIdTuple(long app_level_id,
+                   int32_t cl_addr,
+                   int32_t sr_addr,
+                   int cl_thread_id,
+                   int sr_thread_id,
+                   bool is_msg_extension,
+                   double ts) : app_level_id_(app_level_id),
+                                cl_addr_(cl_addr),
+                                sr_addr_(sr_addr),
+                                cl_thread_id_(cl_thread_id),
+                                sr_thread_id_(sr_thread_id),
+                                is_msg_extension_(is_msg_extension),
+                                ts_(ts) {}
     RequestIdTuple(long app_level_id, int cl_thread_id) : app_level_id_(app_level_id),
                                                           cl_thread_id_(cl_thread_id) {}
     RequestIdTuple(request_id req_id, int app_level_id) : req_id_(req_id),
@@ -198,6 +240,8 @@ struct RequestIdTuple
     bool is_request_;     // else it is a reply
     int32_t client_port_; // used to figure out which connection to use to send reply
     double ts_;
+    /* Dale: create flag in req_id_tuple to indicate whether this is a msg extension */
+    bool is_msg_extension_;
 };
 
 #endif

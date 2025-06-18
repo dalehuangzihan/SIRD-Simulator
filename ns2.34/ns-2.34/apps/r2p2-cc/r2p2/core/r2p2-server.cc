@@ -126,14 +126,30 @@ void R2p2Server::handle_request_pkt(hdr_r2p2 &r2p2_hdr, int payload)
             // assert(req_state->req_pkts_expected_ != -1); can happen if two+ ooo pkts are reveived before first()
             req_state->req_pkts_received_++;
             req_state->req_bytes_received_ += payload;
+            /** Dale: update req_pkts_expected_ with new metadata from (possibly) mgs extensions.
+              * Currently, r2p2_hdr.pkt_id_ observes step increase every time a msg extension is made,
+              * thanks to R2p2CCHybrid::sending_request() that modifies pkt id.
+              */
+            req_state->req_pkts_expected_ = r2p2_hdr.pkt_id() + 1;
         }
     }
 
     if (req_state->req_pkts_expected_ != -1) // i.e., total message size is known
     {
+        slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
+                   "SERVER req_pkts_expected_:", req_state->req_pkts_expected_,
+                   "req_pkts_received_:", req_state->req_pkts_received_,
+                   "req_bytes_received_:", req_state->req_bytes_received_);
+
         // have all the packets been received?
         if (req_state->req_pkts_expected_ == req_state->req_pkts_received_)
         {
+            /** Dale: TODO: IMPORTANT
+             * 09/06/2025: Figure out how to allow streamed chunks (msg extensions) to be passed one by one to the app,
+             * instead of only after all pkts from all msg extensions have been received...
+             * 14/06/2025: Protocol delivers data to app whenever the currently-outstanding/expected amount of data has been received.
+             */
+
             // the request can be forwarded to the application
             slog::log3(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
                        "Passing complete request to application. Req ID:", r2p2_hdr.req_id(),

@@ -7,12 +7,14 @@ struct ClientRequestState
 {
     ClientRequestState() : req_bytes_left_(0), reply_pkts_to_rec_(0),
                            reply_pkts_recvd_(0), reply_bytes_recvd_(0),
-                           msg_creation_time_(-1.0) {}
+                           msg_creation_time_(-1.0), is_update_msg_timestamp(false) {}
     int req_bytes_left_;
     int reply_pkts_to_rec_;
     int reply_pkts_recvd_;
     int reply_bytes_recvd_;
     double msg_creation_time_;
+    /* Dale: track whether reply for this request has been received */
+    bool is_update_msg_timestamp;
 };
 
 R2p2Client::R2p2Client(R2p2 *r2p2_layer) : r2p2_layer_(r2p2_layer) {}
@@ -64,7 +66,15 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
     auto srch = thrd_id_to_req_id_.find(thread_id);
     if (srch != thrd_id_to_req_id_.end())
     {
-        current_rid = ++srch->second;
+        if (request_id_tuple.is_msg_extension_)
+        {
+            /* Dale: don't pre-increment, to keep rid constant across multiple msgs from same source.*/
+            current_rid = srch->second;
+        }
+        else
+        {
+            current_rid = ++srch->second;
+        }
     }
     else
     {
@@ -73,7 +83,18 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
         thrd_id_to_pending_reqs_map_[thread_id] = new req_id_to_req_state_t();
     }
 
-    ClientRequestState *client_request_state = new ClientRequestState();
+    /** Dale: TODO:
+     * Maintain the same client request state until connection teardown.
+     * TODO: clear client request state during connection teardown.
+     */
+    ClientRequestState *client_request_state = (*thrd_id_to_pending_reqs_map_.at(thread_id))[current_rid];
+    bool is_new_client_request_state = false;
+    if (client_request_state == nullptr)
+    {
+        slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "creating new client request state");
+        client_request_state = new ClientRequestState();
+        is_new_client_request_state = true;
+    }
     hdr_r2p2 r2p2_hdr;
     r2p2_hdr.first() = true;
     r2p2_hdr.last() = single_pkt_rpc;
@@ -88,18 +109,40 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
     r2p2_hdr.sr_addr() = request_id_tuple.sr_addr_;
     r2p2_hdr.sr_thread_id() = request_id_tuple.sr_thread_id_;
     // r2p2_hdr.msg_size_bytes() = reqn_payload;
-    r2p2_hdr.msg_creation_time() = request_id_tuple.ts_;
+    /** Dale: override msg creation time only if is new client request state, or if reply
+     * for existing client req state has been received immediately prior */
+    if (is_new_client_request_state || client_request_state->is_update_msg_timestamp)
+    {
+        r2p2_hdr.msg_creation_time() = request_id_tuple.ts_;
+    }
+    else
+    {
+        r2p2_hdr.msg_creation_time() = client_request_state->msg_creation_time_;
+    }
+    /* Dale: carry is_msg_extension_ within hdr */
+    r2p2_hdr.is_msg_extension() = request_id_tuple.is_msg_extension_;
+    /* Dale: init is_ignore_persistence to default value (only cuz R2p2Client::send_req() is called only by the app layer) */
+    r2p2_hdr.is_ignore_msg_state_persist() = false;
 
     slog::log4(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
                "R2p2Client::send_req(). app lvl id:", r2p2_hdr.app_level_id(), "req id:", r2p2_hdr.req_id(), "single pkt?", single_pkt_rpc, "from:", r2p2_hdr.cl_addr(),
                "thread:", r2p2_hdr.cl_thread_id(), ">to:",
-               r2p2_hdr.sr_addr(), "thread:", r2p2_hdr.sr_thread_id());
+               r2p2_hdr.sr_addr(), "thread:", r2p2_hdr.sr_thread_id(),
+               "is_msg_extension:", r2p2_hdr.is_msg_extension(), "pkt_id:", r2p2_hdr.pkt_id());
     // if the RPC does not fit in a single packet, the protocol sends a 64 byte packet -
     // given 50 bytes of headers, that leaves 14 bytes of data.
-    client_request_state->req_bytes_left_ =
-        single_pkt_rpc ? 0 : reqn_payload;
-    client_request_state->msg_creation_time_ = request_id_tuple.ts_;
-    (*thrd_id_to_pending_reqs_map_.at(thread_id))[current_rid] = client_request_state;
+    /** Dale: TODO:
+     * 17/06/2025 (?) Don't cumulate req_bytes_left_ here as it will interfere with lower-level pkt processing.
+     *                SSIRD transport will do payload cumulation. (impl unchanged from vanilla SIRD)
+     */
+    client_request_state->req_bytes_left_ = single_pkt_rpc ? 0 : reqn_payload;
+    /* Dale: update msg timestamp only during brand new client request, or after reply received for existing request */
+    if (is_new_client_request_state || client_request_state->is_update_msg_timestamp)
+    {
+        client_request_state->msg_creation_time_ = request_id_tuple.ts_;
+        client_request_state->is_update_msg_timestamp = false;
+        if (is_new_client_request_state) (*thrd_id_to_pending_reqs_map_.at(thread_id))[current_rid] = client_request_state;
+    } 
 
     int32_t daddr = -2; // -1 used to be destination: r2p2 router
     daddr = r2p2_hdr.sr_addr();
@@ -149,7 +192,8 @@ void R2p2Client::handle_reply_pkt(hdr_r2p2 &r2p2_hdr, int payload)
     client_request_state->reply_pkts_recvd_++;
     if (r2p2_hdr.first())
     {
-        client_request_state->reply_pkts_to_rec_ = r2p2_hdr.pkt_id();
+        /* Dale: cumultae reply_pkts_to_rec_ */
+        client_request_state->reply_pkts_to_rec_ += r2p2_hdr.pkt_id();
     }
     if (!r2p2_hdr.first() && client_request_state->reply_pkts_to_rec_ == 0)
     {
@@ -189,6 +233,11 @@ void R2p2Client::handle_reply_pkt(hdr_r2p2 &r2p2_hdr, int payload)
         is_ooo = true;
     }
     client_request_state->reply_bytes_recvd_ += payload;
+
+    slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
+            "CLIENT reply_pkts_recvd_:", client_request_state->reply_pkts_recvd_,
+            "reply_pkts_to_rec_:", client_request_state->reply_pkts_to_rec_);
+
     if (!is_ooo && client_request_state->reply_pkts_recvd_ == client_request_state->reply_pkts_to_rec_)
     {
         slog::log5(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
@@ -196,7 +245,18 @@ void R2p2Client::handle_reply_pkt(hdr_r2p2 &r2p2_hdr, int payload)
                    "from server", r2p2_hdr.sr_addr());
         r2p2_layer_->send_to_application(r2p2_hdr, client_request_state->reply_bytes_recvd_);
         // TODO: erase entry too (Although it will eventually wrap at 65k)
-        delete client_request_state;
+        /** Dale: TODO: IMPORTANT
+         * 10/05/2025
+         * Cannot delete client_requeset_state here, cuz message
+         * extension might still happen after this in intermittent flows.
+         * TODO: use explicit teardown sequence btw client and server to clean up
+         * flow state.
+         */
+        // delete client_request_state;
+
+        /** Dale: set is_reply_received to true so that next client request can update msg
+         * creation time (used for FCT measurement; is for msg extensions in intermittent flows)*/
+        client_request_state->is_update_msg_timestamp = true;
     }
     // TODO: Add check -> have more bytes than expected been received?
 }
