@@ -653,7 +653,12 @@ void R2p2CCHybrid::prep_msg_send(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
 
     msg_state->unsent_bytes_ += payload;
     msg_state->total_bytes_ += payload;
+    slog::log6(debug_, this_addr_, "R2p2CCHybrid::prep_msg_send() unsent_bytes_=", msg_state->unsent_bytes_, "total_bytes_=", msg_state->total_bytes_);
     msg_state->is_request_ = true;
+    /** Dale: TODO:
+     * TODO: should we fix msg_creaiton_time_ to first ever msg, or update every msg extension?
+     * 18/06/2025 This function is only called by the client when new request is made. Client will have used the correct r2p2_hdr.msg_creation_time value.
+     */
     msg_state->msg_creation_time_ = r2p2_hdr.msg_creation_time();
     /* Dale: update msg state to track if is msg extension */
     msg_state->is_msg_extension_ = r2p2_hdr.is_msg_extension();
@@ -725,6 +730,7 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
         // ... only applies to multi-packet requests. Back compat..
         msg_state->unsent_bytes_ += payload;
         msg_state->total_bytes_ += payload;
+        slog::log6(debug_, this_addr_, "Set missing msg_state info: unsent_bytes_=", msg_state->unsent_bytes_, "total_bytes_=", msg_state->total_bytes_);
     }
 
     // recalculate pkt_id (message size in pkts, carried by first() pkt)
@@ -766,7 +772,7 @@ void R2p2CCHybrid::sending_reply(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
                                            hdr_r2p2::is_persist_msg_state(r2p2_hdr.msg_type()),
                                            /* Dale: whether to ignore persistence */
                                            r2p2_hdr.is_ignore_msg_state_persist());
-    /* Dale: ignore persistence for all msgs associated with replying (including GRANT_REQ for reply) */
+    /* Dale: ignore persistence for all msgs associated with replying (including GRANT_REQ, GRANT for reply) */
     ReqIdTuple::set_ignore_persistence(req_id);
     slog::log6(debug_, this_addr_, "ignoring persistence; change req_id to:", std::get<0>(req_id), std::get<1>(req_id), std::get<2>(req_id), std::get<3>(req_id), std::get<4>(req_id));
 

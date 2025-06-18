@@ -81,7 +81,17 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
         thrd_id_to_pending_reqs_map_[thread_id] = new req_id_to_req_state_t();
     }
 
-    ClientRequestState *client_request_state = new ClientRequestState();
+    /** Dale: TODO: IMPORTANT
+     * TODO: Figure out whether to overwrite/modify the same client request state every client send req, or create a new one each time.
+     */
+    ClientRequestState *client_request_state = (*thrd_id_to_pending_reqs_map_.at(thread_id))[current_rid];
+    bool is_new_client_request_state = false;
+    if (client_request_state == nullptr)
+    {
+        slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "creating new client request state");
+        client_request_state = new ClientRequestState();
+        is_new_client_request_state = true;
+    }
     hdr_r2p2 r2p2_hdr;
     r2p2_hdr.first() = true;
     r2p2_hdr.last() = single_pkt_rpc;
@@ -96,7 +106,9 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
     r2p2_hdr.sr_addr() = request_id_tuple.sr_addr_;
     r2p2_hdr.sr_thread_id() = request_id_tuple.sr_thread_id_;
     // r2p2_hdr.msg_size_bytes() = reqn_payload;
-    r2p2_hdr.msg_creation_time() = request_id_tuple.ts_;
+    /* Dale: override msg creation time only if is new client request state */
+    r2p2_hdr.msg_creation_time() = is_new_client_request_state ? request_id_tuple.ts_ : client_request_state->msg_creation_time_;
+    slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "### msg_creation_time=", r2p2_hdr.msg_creation_time(), "req_id_tuple.ts_=", request_id_tuple.ts_, "client_request_state->msg_creation_time_=", client_request_state->msg_creation_time_);
     /* Dale: carry is_msg_extension_ within hdr */
     r2p2_hdr.is_msg_extension() = request_id_tuple.is_msg_extension_;
     /* Dale: init is_ignore_persistence to default value (only cuz R2p2Client::send_req() is called only by the app layer) */
@@ -109,10 +121,16 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
                "is_msg_extension:", r2p2_hdr.is_msg_extension(), "pkt_id:", r2p2_hdr.pkt_id());
     // if the RPC does not fit in a single packet, the protocol sends a 64 byte packet -
     // given 50 bytes of headers, that leaves 14 bytes of data.
-    client_request_state->req_bytes_left_ =
-        single_pkt_rpc ? 0 : reqn_payload;
-    client_request_state->msg_creation_time_ = request_id_tuple.ts_;
-    (*thrd_id_to_pending_reqs_map_.at(thread_id))[current_rid] = client_request_state;
+    /** Dale: TODO:
+     * 17/06/2025 (?) Don't cumulate req_bytes_left_ here as it will interfere with lower-level pkt processing. SSIRD transport will do payload cumulation. (impl unchanged from vanilla SIRD)
+     */
+    client_request_state->req_bytes_left_ = single_pkt_rpc ? 0 : reqn_payload;
+    /* Dale: fix msg creation time it to timestamp of first (original) request */
+    if (is_new_client_request_state)
+    {
+        client_request_state->msg_creation_time_ = request_id_tuple.ts_;
+        (*thrd_id_to_pending_reqs_map_.at(thread_id))[current_rid] = client_request_state;
+    } 
 
     int32_t daddr = -2; // -1 used to be destination: r2p2 router
     daddr = r2p2_hdr.sr_addr();
