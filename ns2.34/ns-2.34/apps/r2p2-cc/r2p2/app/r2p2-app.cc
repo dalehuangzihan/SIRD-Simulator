@@ -81,7 +81,7 @@ void R2p2Application::stop_app()
 void R2p2Application::finish_sim()
 {
     slog::log2(debug_, local_addr_, "R2p2Application::finish_sim()");
-    if (MsgTracer::do_trace_)
+        if (MsgTracer::do_trace_)
     {
         MsgTracer::finish();
     }
@@ -118,27 +118,19 @@ void R2p2Application::send_request(RequestIdTuple *, size_t)
     /** Dale: TODO:
      * (?) set app_level_id to const value for now
      * TODO: not quite sure what app_level_id value is used for... */
-    long app_level_id = 0;
+    long app_level_id = reqs_sent_ >= 3; /** Dale: TODO: for testing only */
     if (do_trace_)
     {
         trace_state("srq", srvr_addr, -1, app_level_id, -1, next_req_size, -1, 0);
     }
-    /**
-     * Dale: TODO:
-     * Create flag in req_id_tuple to indicate whether this is a msg extension
-     * TODO: may eventually need to calculate is_msg_extension based on srvr_addr etc (?) to allow 1 app to send to multiple servers.  
-     */
-    bool is_msg_extension = reqs_sent_ > 0;
     MsgTracer::app_init_msg(app_level_id , local_addr_, local_addr_, srvr_addr, next_req_size, "Request");
     assert(srvr_addr != local_addr_); // don't send to self
     int srvr_thread = SERVER_THREAD_BASE;
     int clnt_thread = thread_id_;
-    slog::log4(debug_, local_addr_, "R2p2Application::send_request(). srvr_addr:", srvr_addr, "srvr_thread:", srvr_thread, "clnt_thread:", clnt_thread, "app_level_id_:", app_level_id, "reqs_sent_:", reqs_sent_, "is_msg_extension:", is_msg_extension,
-    "payload:", next_req_size);
+    slog::log4(debug_, local_addr_, "R2p2Application::send_request(). srvr_addr:", srvr_addr, "srvr_thread:", srvr_thread, "clnt_thread:", clnt_thread, "app_level_id_:", app_level_id, "reqs_sent_:", reqs_sent_, "payload:", next_req_size);
     r2p2_layer_->r2p2_send_req(next_req_size, RequestIdTuple(app_level_id,
                                                              local_addr_, srvr_addr,
                                                              clnt_thread, srvr_thread,
-                                                             is_msg_extension,
                                                              Scheduler::instance().clock()));
     // RequestInfo *requestInfo = new RequestInfo();
     // requestInfo->request_size_ = next_req_size;

@@ -14,11 +14,11 @@
 class R2p2CCFifo;
 
 /** Dale:
- * This is <client_addr, thread_id, req_id, is_persist_msg_state, is_ignore_persist>
+ * This is <client_addr, thread_id, req_id, is_persist_msg_state, is_ignore_persist, msg_id>
  * 12/06/2025 is_ignore_persist is for overriding the persist decision; currently for allowing GRANT_REQ for REPLY msgs to be treated separately from GRANT_REQ for data.
+ * 20/06/2025 Each app (sender/receiver pair) can simul use diff extensible-msgs for diff app-lvl req (diff app lvl id). Currently use req_id field to carry app lvl id.
  */
 typedef std::tuple<int32_t, int, request_id, bool, bool> uniq_req_id_t; 
-// typedef std::tuple<int32_t, int, request_id> uniq_req_id_t; // I assume this is <client_addr, thread_id, req_id>
 /* Dale: helper functions */
 namespace ReqIdTuple
 {

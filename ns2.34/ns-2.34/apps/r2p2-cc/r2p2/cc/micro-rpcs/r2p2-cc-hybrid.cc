@@ -144,6 +144,11 @@ R2p2CCHybrid::~R2p2CCHybrid()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/** Dale:
+ * Maintain collection of extendable msgs 
+ * map< msg_id, tuple() >*/
+// typedef std::unordered_map<uint32_t, uniq_req_id_t> connections_map_;
+
 void R2p2CCHybrid::poll()
 {
     slog::log7(debug_, this_addr_, "R2p2CCHybrid::poll()");
@@ -323,7 +328,7 @@ void R2p2CCHybrid::send_to_transport(hdr_r2p2 &r2p2_hdr, int payload, int32_t da
 
     slog::log4(debug_, this_addr_, "R2p2CCHybrid::send_to_transport(). Msg type:", r2p2_hdr.msg_type(),
                "payload:", payload, "Destination", daddr, "App lvl id:",
-               r2p2_hdr.app_level_id(), "pkt_id():", r2p2_hdr.pkt_id(),
+               r2p2_hdr.app_level_id(), "req id", r2p2_hdr.req_id(), "pkt_id():", r2p2_hdr.pkt_id(),
                is_single_pkt_request,
                "|", is_reqzero, is_reqzero_of_multipkt, is_multi_pkt_req_not_req0, is_reply, "|");
     if (is_reqzero_of_multipkt)

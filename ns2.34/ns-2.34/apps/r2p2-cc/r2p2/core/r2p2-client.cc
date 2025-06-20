@@ -59,39 +59,55 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
     {
         num_pkts = 0;
     }
+    /** Dale:
+     * Use app_level_id as client request id (rewrote whole control block below).
+     * Allows 1 thread to service multiple app-level requests. 
+     */
+    request_id current_rid = request_id_tuple.app_level_id_;
     // check if this thread has sent before
-    request_id current_rid;
     int thread_id = request_id_tuple.cl_thread_id_;
-    // const on avg
-    auto srch = thrd_id_to_req_id_.find(thread_id);
-    if (srch != thrd_id_to_req_id_.end())
+    auto srch_thread = thrd_id_to_req_id_.find(thread_id);
+    if (srch_thread != thrd_id_to_req_id_.end())
     {
-        if (request_id_tuple.is_msg_extension_)
+        // thread has sent before
+        // check if thread has sent on this rid before
+        rid_set_t *rid_set = srch_thread->second;
+        auto srch_rid = rid_set->find(current_rid);
+        if (srch_rid != rid_set->end())
         {
-            /* Dale: don't pre-increment, to keep rid constant across multiple msgs from same source.*/
-            current_rid = srch->second;
+            // thread has sent on this rid before 
+            (*thrd_id_app_lvl_id_to_req_count_.at(thread_id))[current_rid] += 1;
         }
         else
         {
-            current_rid = ++srch->second;
+            rid_set->insert(current_rid);
+            (*thrd_id_app_lvl_id_to_req_count_.at(thread_id))[current_rid] = 0;
         }
     }
     else
     {
-        thrd_id_to_req_id_[thread_id] = 0;
-        current_rid = 0;
+        thrd_id_to_req_id_[thread_id] = new rid_set_t(); 
+        (*thrd_id_to_req_id_.at(thread_id)).insert(current_rid);
+        thrd_id_app_lvl_id_to_req_count_[thread_id] = new req_id_to_req_count_t();
+        (*thrd_id_app_lvl_id_to_req_count_.at(thread_id))[current_rid] = 0;
         thrd_id_to_pending_reqs_map_[thread_id] = new req_id_to_req_state_t();
     }
+    /* Dale: calc if msg extension based on whether current thread has sent mutiple req from this app lvl id */
+    bool is_msg_extension = (*thrd_id_app_lvl_id_to_req_count_.at(thread_id))[current_rid] > 0;
 
     /** Dale: TODO:
      * Maintain the same client request state until connection teardown.
      * TODO: clear client request state during connection teardown.
      */
+
+    /** Dale:
+     * 20/06/2025 Each new app_level_id gets and uses its own client request state.
+     */
     ClientRequestState *client_request_state = (*thrd_id_to_pending_reqs_map_.at(thread_id))[current_rid];
     bool is_new_client_request_state = false;
     if (client_request_state == nullptr)
     {
-        slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "creating new client request state");
+        slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "creating new client request state for thread=", thread_id, "rid=", current_rid);
         client_request_state = new ClientRequestState();
         is_new_client_request_state = true;
     }
@@ -120,14 +136,14 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
         r2p2_hdr.msg_creation_time() = client_request_state->msg_creation_time_;
     }
     /* Dale: carry is_msg_extension_ within hdr */
-    r2p2_hdr.is_msg_extension() = request_id_tuple.is_msg_extension_;
+    r2p2_hdr.is_msg_extension() = is_msg_extension;
     /* Dale: init is_ignore_persistence to default value (only cuz R2p2Client::send_req() is called only by the app layer) */
     r2p2_hdr.is_ignore_msg_state_persist() = false;
 
     slog::log4(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
                "R2p2Client::send_req(). app lvl id:", r2p2_hdr.app_level_id(), "req id:", r2p2_hdr.req_id(), "single pkt?", single_pkt_rpc, "from:", r2p2_hdr.cl_addr(),
                "thread:", r2p2_hdr.cl_thread_id(), ">to:",
-               r2p2_hdr.sr_addr(), "thread:", r2p2_hdr.sr_thread_id(),
+               r2p2_hdr.sr_addr(), "thread:", r2p2_hdr.sr_thread_id(), "req count:", (*thrd_id_app_lvl_id_to_req_count_.at(thread_id))[current_rid],
                "is_msg_extension:", r2p2_hdr.is_msg_extension(), "pkt_id:", r2p2_hdr.pkt_id());
     // if the RPC does not fit in a single packet, the protocol sends a 64 byte packet -
     // given 50 bytes of headers, that leaves 14 bytes of data.

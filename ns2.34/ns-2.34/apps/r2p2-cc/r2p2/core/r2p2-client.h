@@ -2,6 +2,7 @@
 #define ns_r2p2_client_h
 
 #include <unordered_map>
+#include <unordered_set>
 #include "r2p2-hdr.h"
 #include "packet.h"
 #include "r2p2.h"
@@ -26,7 +27,12 @@ protected:
     typedef std::unordered_map<request_id, ClientRequestState *> req_id_to_req_state_t;
     std::unordered_map<int, req_id_to_req_state_t *> thrd_id_to_pending_reqs_map_;
     // To keep track of the current reqid per thread
-    std::unordered_map<int, request_id> thrd_id_to_req_id_;
+    /* Dale: assume each thread can multiplex several different requests */
+    typedef std::unordered_set<request_id> rid_set_t;
+    std::unordered_map<int, rid_set_t *> thrd_id_to_req_id_;
+    /* Dale: keep track of how many requests each app_level_id in each thread has made */
+    typedef std::unordered_map<request_id, int> req_id_to_req_count_t;
+    std::unordered_map<int, req_id_to_req_count_t *> thrd_id_app_lvl_id_to_req_count_;
     // int max_payload_;
     R2p2 *r2p2_layer_;
 };
