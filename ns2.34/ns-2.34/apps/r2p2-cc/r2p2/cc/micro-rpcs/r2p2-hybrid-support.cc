@@ -450,7 +450,8 @@ void hysup::ReceiverState::want_to_send(PolicyState &ps)
                  * as then, an ananounced large message may block an anounced small message
                  */
 
-                if (!msg_state->sent_anouncement_)
+                /* Dale: don't allow msg states with 0 unsent bytes to be sent */
+                if (!msg_state->sent_anouncement_ && msg_state->unsent_bytes_ > 0)
                 {
                     // slog::log5(debug_, this_addr_, "Data: Next msg !msg_state->sent_anouncement_ (", std::get<2>(msg_state->req_id_),
                     //            ") attributes: unsent_bytes_:", msg_state->unsent_bytes_,
@@ -466,9 +467,14 @@ void hysup::ReceiverState::want_to_send(PolicyState &ps)
                 // slog::log5(debug_, this_addr_, "Data: Next msg (", std::get<2>(msg_state->req_id_),
                 //            ") attributes: unsent_bytes_:", msg_state->unsent_bytes_,
                 //            "rcvr:", msg_state->remote_addr_, "credit avail:", credit_avail, "to_send", to_send);
-                ps.can_send_ = true;
-                ps.msg_state_ = msg_state;
-                ps.want_to_send_bytes_ = to_send;
+
+                /* Dale: don't allow msg states with 0 unsent bytes to be sent */
+                if (msg_state->unsent_bytes_ > 0)
+                {
+                    ps.can_send_ = true;
+                    ps.msg_state_ = msg_state;
+                    ps.want_to_send_bytes_ = to_send;
+                }
             }
         }
     }

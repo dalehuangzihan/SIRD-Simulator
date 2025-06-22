@@ -144,11 +144,6 @@ R2p2CCHybrid::~R2p2CCHybrid()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/** Dale:
- * Maintain collection of extendable msgs 
- * map< msg_id, tuple() >*/
-// typedef std::unordered_map<uint32_t, uniq_req_id_t> connections_map_;
-
 void R2p2CCHybrid::poll()
 {
     slog::log7(debug_, this_addr_, "R2p2CCHybrid::poll()");
@@ -661,7 +656,7 @@ void R2p2CCHybrid::prep_msg_send(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
     slog::log6(debug_, this_addr_, "R2p2CCHybrid::prep_msg_send() unsent_bytes_=", msg_state->unsent_bytes_, "total_bytes_=", msg_state->total_bytes_);
     msg_state->is_request_ = true;
     /** Dale: TODO:
-     * TODO: should we fix msg_creaiton_time_ to first ever msg, or update every msg extension?
+     * 16/06/2025 Should we fix msg_creaiton_time_ to first ever msg, or update every msg extension?
      * 18/06/2025 This function is only called by the client when new request is made. Client will have used the correct r2p2_hdr.msg_creation_time value.
      */
     msg_state->msg_creation_time_ = r2p2_hdr.msg_creation_time();
@@ -1260,7 +1255,7 @@ void R2p2CCHybrid::send_data()
         /* Dale: do not delete msg state even if unsent_bytes_==0, as msg extenion could happen later */
         slog::log4(debug_, this_addr_, "Msg req_id:", std::get<0>(msg_state->req_id_), std::get<1>(msg_state->req_id_),
                 std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_), std::get<4>(msg_state->req_id_),
-                "has finished sending all oustanding bytes. Awaiting potential msg extension?",
+                "has finished sending all oustanding bytes. Awaiting potential msg extension?:",
                 !ReqIdTuple::is_ignore_persistence(msg_state->req_id_), "Unsent bytes:", msg_state->unsent_bytes_,
                 "all bytes:", msg_state->total_bytes_, "avail_credit_bytes_", msg_state->rcvr_state_->avail_credit_bytes_,
                 "new data_pacer_backlog_:", data_pacer_backlog_);
