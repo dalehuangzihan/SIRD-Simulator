@@ -149,6 +149,7 @@ void R2p2CCHybrid::poll()
     slog::log7(debug_, this_addr_, "R2p2CCHybrid::poll()");
 
     num_polls_++;
+    retry_conn_pool_request();
     send_grants();
     send_data();
     poll_trace();
@@ -326,6 +327,22 @@ void R2p2CCHybrid::send_to_transport(hdr_r2p2 &r2p2_hdr, int payload, int32_t da
                r2p2_hdr.app_level_id(), "req id", r2p2_hdr.req_id(), "pkt_id():", r2p2_hdr.pkt_id(),
                is_single_pkt_request,
                "|", is_reqzero, is_reqzero_of_multipkt, is_multi_pkt_req_not_req0, is_reply, "|");
+
+    /* Dale: get connection from connection pool */
+    int32_t conn_id = conn_pool_->find_assigned_conn_of_request(hysup::ConnReqId(r2p2_hdr.cl_addr(), r2p2_hdr.cl_thread_id() ,r2p2_hdr.req_id()));
+    if (conn_id == hysup::ConnectionPool::NO_CONN_AVAIL_)
+    {
+        // Dale: req_id has not been assigned a conn yet.
+        conn_id = conn_pool_->request_conn(r2p2_hdr, payload, daddr);
+        if (conn_id == hysup::ConnectionPool::NO_CONN_AVAIL_)
+        {
+            slog::log4(debug_, this_addr_, "R2p2CCHybrid::send_to_transport() No available connections in connection pool...");
+            return; 
+        }
+    }
+    // Dale: req_id has already been assigned a conn.
+    r2p2_hdr.conn_id() = conn_id;
+               
     if (is_reqzero_of_multipkt)
     {
         prep_msg_send(r2p2_hdr, payload, daddr);
@@ -444,7 +461,8 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
     bool is_new_msg_state = false;
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
                                            r2p2_hdr->cl_thread_id(),
-                                           r2p2_hdr->req_id(),
+                                           /* Dale: use conn_id to identify msg state*/
+                                           r2p2_hdr->conn_id(),
                                            /* Dale: track if msg state should be persisted */
                                            hdr_r2p2::is_persist_msg_state(r2p2_hdr->msg_type()),
                                            /* Dale: whether to ignore persistence */
@@ -636,7 +654,8 @@ void R2p2CCHybrid::prep_msg_send(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
 
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
-                                           r2p2_hdr.req_id(),
+                                           /* Dale: use conn_id to identify msg state*/
+                                           r2p2_hdr.conn_id(),
                                            /* Dale: track if msg state should be persisted */
                                            hdr_r2p2::is_persist_msg_state(r2p2_hdr.msg_type()),
                                            /* Dale: whether to ignore persistence */
@@ -714,7 +733,8 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
 
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
-                                           r2p2_hdr.req_id(),
+                                           /* Dale: use conn_id to identify msg state*/
+                                           r2p2_hdr.conn_id(),
                                            /* Dale: track if msg state should be persisted */
                                            hdr_r2p2::is_persist_msg_state(r2p2_hdr.msg_type()),
                                            /* Dale: whether to ignore persistence */
@@ -765,9 +785,13 @@ void R2p2CCHybrid::sending_reply(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
     slog::log5(debug_, this_addr_, "R2p2CCHybrid::sending_reply() to", daddr,
                "Total pkts:", r2p2_hdr.pkt_id(), "Payload:", payload, "will request credit:", credit_request_bytes,
                "msg_type:", r2p2_hdr.msg_type());
+
+    /** Dale: TODO: alloc new connection in conn pool? Or just use a conn outside of conn pool? (Replies are sent on separate streams) */
+
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
-                                           r2p2_hdr.req_id(),
+                                           /* Dale: use conn_id to identify msg state*/
+                                           r2p2_hdr.conn_id(),
                                            /* Dale: track if msg state should be persisted */
                                            hdr_r2p2::is_persist_msg_state(r2p2_hdr.msg_type()),
                                            /* Dale: whether to ignore persistence */
@@ -817,7 +841,8 @@ void R2p2CCHybrid::received_credit(Packet *pkt)
     // Find message state
     uniq_req_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
                                            r2p2_hdr->cl_thread_id(),
-                                           r2p2_hdr->req_id(),
+                                           /* Dale: use conn_id to identify msg state*/
+                                           r2p2_hdr->conn_id(),
                                            /* Dale: track if msg state should be persisted */
                                            hdr_r2p2::is_persist_msg_state(r2p2_hdr->msg_type()),
                                            /* Dale: whether to ignore persistence */
@@ -897,6 +922,24 @@ hysup::ReceiverState *R2p2CCHybrid::update_receiver_state(Packet *pkt)
                ip_hdr->src().addr_, "Receivers registered:", receivers_->size());
     hysup::ReceiverState *rcvr_state = receivers_->find_or_create(ip_hdr->src().addr_, this_addr_);
     return rcvr_state;
+}
+
+/**
+ * @brief
+ * Retry assigning waiting requests to connections in the connection pool.
+ */
+void R2p2CCHybrid::retry_conn_pool_request()
+{
+    if (conn_pool_->waiting_requests_.size() == 0) return;
+    for (hysup::ConnReq conn_req : conn_pool_->waiting_requests_)
+    {
+        int32_t conn_id = conn_pool_->request_conn(conn_req.r2p2_hdr_, conn_req.payload_, conn_req.daddr_);
+        if (conn_id != hysup::ConnectionPool::NO_CONN_AVAIL_)
+        {
+            send_to_transport(conn_req.r2p2_hdr_, conn_req.payload_, conn_req.daddr_);
+            conn_pool_->remove_req_from_waiting_list(conn_req);
+        }
+    }
 }
 
 /**

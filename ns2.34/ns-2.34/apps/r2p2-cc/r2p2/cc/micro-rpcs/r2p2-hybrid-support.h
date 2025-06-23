@@ -1,4 +1,4 @@
-#ifndef ns_r2p2_hynrid_support_h
+#ifndef ns_r2p2_hybrid_support_h
 #define ns_r2p2_hybrid_support_h
 
 #include <map>
@@ -445,6 +445,72 @@ namespace hysup
         {
             return (s1->unsent_bytes_ < s2->unsent_bytes_);
         }
+    };
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////Connection Pool//////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    struct ConnReqId
+    {
+        /* Dale: default constructor inits fields to IDLE_CONN_ values */
+        ConnReqId() : cl_addr_(-66), cl_thread_id_(-66), req_id_(UINT32_MAX) {}
+        ConnReqId(int32_t cl_addr, int cl_thread_id, request_id req_id) : cl_addr_(cl_addr), cl_thread_id_(cl_thread_id), req_id_(req_id) {}
+        int32_t cl_addr_;
+        int cl_thread_id_;
+        request_id req_id_;
+
+        bool operator==(const ConnReqId& o) const
+        {
+            return (cl_addr_ == o.cl_addr_
+                && cl_thread_id_ == o.cl_thread_id_
+                && req_id_ == o.req_id_);
+        }
+    };
+
+    struct ConnReq
+    {
+        ConnReq(hdr_r2p2 r2p2_hdr, int payload, int32_t daddr) : r2p2_hdr_(r2p2_hdr), payload_(payload), daddr_(daddr) {}
+        hdr_r2p2 r2p2_hdr_;
+        int payload_;
+        int32_t daddr_;
+
+        bool operator==(const ConnReq& o) const
+        {
+            return (r2p2_hdr_.get_cl_addr() == o.r2p2_hdr_.get_cl_addr()
+                && r2p2_hdr_.get_cl_thread_id() == o.r2p2_hdr_.get_cl_thread_id() 
+                && r2p2_hdr_.get_reqid() == o.r2p2_hdr_.get_reqid()
+                && r2p2_hdr_.get_msg_creation_time() == o.r2p2_hdr_.get_msg_creation_time()
+                && payload_ == o.payload_
+                && daddr_ == o.daddr_);
+        }
+    };
+
+    /** Dale:
+     * Track conn_id to app_level_id mapping for connection pool.
+     */
+    class ConnectionPool
+    {
+    public:
+        ConnectionPool();
+        ~ConnectionPool();
+        int32_t request_conn(hdr_r2p2, int, int32_t);
+        int32_t assign_conn();
+        std::vector<int32_t> get_idle_conns();
+        int32_t find_assigned_conn_of_request(hysup::ConnReqId);
+        bool is_req_in_waiting_list(hysup::ConnReq);
+        void remove_req_from_waiting_list(hysup::ConnReq);
+
+        std::unordered_map<int32_t, hysup::ConnReqId> conn_pool_mapping_;
+        /* Dale: is requests awaiting transmission via conn pool, for when conn pool is currently fully-occupied */
+        std::vector<hysup::ConnReq> waiting_requests_;
+    
+        static const hysup::ConnReqId IDLE_CONN_;
+        /* Dale: conn_id can only be +ve; -99 indicates no conns avail */
+        static const int32_t NO_CONN_AVAIL_ = -99;
     };
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -83,13 +83,20 @@ private:
     bool is_msg_extension_;
     /* Dale: track if we should ignore msg state persistence */
     bool is_ignore_msg_state_persist_;
+    /* Dale: track which conn_id from the conn pool this pkt is associated with */
+    uint32_t conn_id_;
 
 public:
     hdr_r2p2() : first_urpc_(false), credit_(0), credit_pad_(0), credit_req_(0),
                  umsg_id_(-1), grant_delay_s_(0.0), msg_creation_time_(-1.0), is_pfabric_app_msg_(false),
                  sender_marked_(false), is_unsol_pkt_(false), unsol_credit_(0), unsol_credit_data_(0),
                  used_unsol_credit_(false), has_scheduled_part_(true), qlen_(0), tx_bytes_(0), ts_(0.0), B_(0.0),
-                 tx_rate_Bps_(0.0), dt_(0.0), priority_flow_(false), bw_ratio_(-1.0) {}
+                 tx_rate_Bps_(0.0), dt_(0.0), priority_flow_(false), bw_ratio_(-1.0),
+                 /** Dale:
+                  * Init default values for ssird use.
+                  * Init conn_id_ to hysup::ConnectionPool::NO_CONN_AVAIL_
+                  */
+                 is_msg_extension_(false), is_ignore_msg_state_persist_(false), conn_id_(-99) {}
     enum MsgTypes
     {
         REQUEST,
@@ -182,6 +189,14 @@ public:
     bool &is_msg_extension() { return is_msg_extension_; }
     /* Dale: accessor for is_ignore_msg_state_persist_ */
     bool &is_ignore_msg_state_persist() { return is_ignore_msg_state_persist_; }
+    /* Dale: track which conn_id from the conn pool this pkt is associated with */
+    uint32_t &conn_id() { return conn_id_; }
+
+    /* Dale: implement public getters for select identifying members */
+    int32_t get_cl_addr() const { return cl_addr_; }
+    int get_cl_thread_id() const { return cl_thread_id_; }
+    request_id get_reqid() const { return req_id_; }
+    double get_msg_creation_time() const { return msg_creation_time_; }
 };
 
 struct RequestIdTuple

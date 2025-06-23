@@ -736,6 +736,73 @@ std::string hysup::OutboundMsgs::print_all(int32_t local_addr)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////Connection Pool/////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const hysup::ConnReqId hysup::ConnectionPool::IDLE_CONN_ = hysup::ConnReqId(-66, -66, UINT32_MAX);
+
+hysup::ConnectionPool::ConnectionPool() {}
+hysup::ConnectionPool::~ConnectionPool() {}
+
+int32_t hysup::ConnectionPool::request_conn(hdr_r2p2 r2p2_hdr, int payload, int32_t daddr)
+{
+    hysup::ConnReq conn_req = hysup::ConnReq(r2p2_hdr, payload, daddr);
+    int32_t conn_id = assign_conn();
+    if (conn_id == NO_CONN_AVAIL_)
+    {
+        /* Dale: maintian FIFO order of waiting requests */
+        if (!is_req_in_waiting_list(conn_req)) waiting_requests_.push_back(conn_req);
+    }
+    else
+    {
+        ConnReqId conn_req_id = hysup::ConnReqId(r2p2_hdr.cl_addr(), r2p2_hdr.cl_thread_id(), r2p2_hdr.req_id());
+        conn_pool_mapping_[conn_id] = conn_req_id;
+    }
+    return conn_id;
+}
+
+int32_t hysup::ConnectionPool::assign_conn()
+{
+    std::vector<int32_t> available_conns = get_idle_conns();
+    if (available_conns.size() == 0)
+    {
+        return NO_CONN_AVAIL_;
+    }
+    else
+    {
+        return available_conns.at(0);
+    }
+}
+
+std::vector<int32_t> hysup::ConnectionPool::get_idle_conns()
+{
+    std::vector<int32_t> idle_conns;
+    for (const auto& kv_pair : conn_pool_mapping_)
+    {
+        if (kv_pair.second == IDLE_CONN_) idle_conns.push_back(kv_pair.first);
+    }
+    return idle_conns;
+}
+
+int32_t hysup::ConnectionPool::find_assigned_conn_of_request(ConnReqId conn_req_id)
+{
+    for (const auto& kv_pair : conn_pool_mapping_)
+    {
+        if (kv_pair.second == conn_req_id) return kv_pair.first;
+    }
+    return NO_CONN_AVAIL_;
+}
+
+bool hysup::ConnectionPool::is_req_in_waiting_list(hysup::ConnReq conn_req)
+{
+    return std::find(waiting_requests_.begin(), waiting_requests_.end(), conn_req) != waiting_requests_.end();
+}
+
+void hysup::ConnectionPool::remove_req_from_waiting_list(hysup::ConnReq conn_req)
+{
+    waiting_requests_.erase(std::remove(waiting_requests_.begin(), waiting_requests_.end(), conn_req), waiting_requests_.end());
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////Receiver////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
