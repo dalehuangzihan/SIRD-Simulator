@@ -76,7 +76,7 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
         if (srch_rid != rid_set->end())
         {
             // thread has sent on this rid before 
-            (*thrd_id_app_lvl_id_to_req_count_.at(thread_id))[current_rid] += 1;
+            (*thrd_id_app_lvl_id_to_req_count_.at(thread_id))[current_rid] = increment_thread_req_count((*thrd_id_app_lvl_id_to_req_count_.at(thread_id))[current_rid]);
         }
         else
         {
@@ -93,7 +93,8 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
         thrd_id_to_pending_reqs_map_[thread_id] = new req_id_to_req_state_t();
     }
     /* Dale: calc if msg extension based on whether current thread has sent mutiple req from this app lvl id */
-    bool is_msg_extension = (*thrd_id_app_lvl_id_to_req_count_.at(thread_id))[current_rid] > 0;
+    uint64_t thread_req_count = (*thrd_id_app_lvl_id_to_req_count_.at(thread_id))[current_rid];
+    bool is_msg_extension = thread_req_count > 0;
 
     /** Dale: TODO:
      * Maintain the same client request state until connection teardown.
@@ -139,6 +140,8 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
     r2p2_hdr.is_msg_extension() = is_msg_extension;
     /* Dale: init is_ignore_persistence to default value (only cuz R2p2Client::send_req() is called only by the app layer) */
     r2p2_hdr.is_ignore_msg_state_persist() = false;
+    /* Dale: carry thread req count within hdr to allow conn pool to differentiate btw successive req from same sender/receiver pair */
+    r2p2_hdr.thread_req_count() = thread_req_count;
 
     slog::log4(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
                "R2p2Client::send_req(). app lvl id:", r2p2_hdr.app_level_id(), "req id:", r2p2_hdr.req_id(), "single pkt?", single_pkt_rpc, "from:", r2p2_hdr.cl_addr(),
@@ -277,4 +280,10 @@ void R2p2Client::handle_reply_pkt(hdr_r2p2 &r2p2_hdr, int payload)
         client_request_state->is_update_msg_timestamp = true;
     }
     // TODO: Add check -> have more bytes than expected been received?
+}
+
+/* Dale: hack to prevent thread_req_count from wrapping back to 0 and wrongly setting is_msg_extension = false */
+uint64_t R2p2Client::increment_thread_req_count(uint64_t req_count)
+{
+    return (req_count + 1 < UINT64_MAX) ? req_count + 1 : 1;
 }

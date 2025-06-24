@@ -30,12 +30,12 @@ namespace hysup
     struct GenericMsgState
     {
     protected:
-        GenericMsgState(uniq_req_id_t req_id,
+        GenericMsgState(uniq_msg_id_t req_id,
                         int32_t remote_addr) : req_id_(req_id),
                                                remote_addr_(remote_addr) {}
 
     public:
-        uniq_req_id_t req_id_;
+        uniq_msg_id_t req_id_;
         int32_t remote_addr_;
     };
 
@@ -139,7 +139,7 @@ namespace hysup
         // void want_to_send(int32_t rcver);
 
         /* Shorthand for finding an outbound message across all receivers */
-        OutboundMsgState *find_outbound_msg(int32_t receiver, uniq_req_id_t req_id);
+        OutboundMsgState *find_outbound_msg(int32_t receiver, uniq_msg_id_t req_id);
         /* Shorthand for adding a new outbound message TODO: Needed? */
         void add_outbound_msg(int32_t receiver, OutboundMsgState *msg_state);
 
@@ -175,7 +175,7 @@ namespace hysup
         /* Returns the number of outbound messages */
         size_t num_outbound();
         /* Return outbound msg or nullptr */
-        OutboundMsgState *find_outbound_msg(uniq_req_id_t req_id);
+        OutboundMsgState *find_outbound_msg(uniq_msg_id_t req_id);
         /* Add outbound message */
         void add_outbound_msg(OutboundMsgState *msg_state);
         /* Remove outbound message */
@@ -220,7 +220,7 @@ namespace hysup
 
     struct OutboundMsgState : public GenericMsgState
     {
-        OutboundMsgState(uniq_req_id_t req_id,
+        OutboundMsgState(uniq_msg_id_t req_id,
                          int32_t daddr,
                          hdr_r2p2 *r2p2_hdr,
                          ReceiverState *rstate)
@@ -279,7 +279,7 @@ namespace hysup
         OutboundMsgState *find_largest_remaining();
         OutboundMsgState *find_smallest_remaining();
         /* Returns nullptr if message is not found */
-        OutboundMsgState *find(const uniq_req_id_t &req_id);
+        OutboundMsgState *find(const uniq_msg_id_t &req_id);
         OutboundMsgState *peek_next();
         OutboundMsgState *next_highest_credit();
         std::vector<OutboundMsgState *> *get_msgs_states()
@@ -372,7 +372,7 @@ namespace hysup
 
     struct InboundMsgState : public GenericMsgState
     {
-        InboundMsgState(uniq_req_id_t req_id,
+        InboundMsgState(uniq_msg_id_t req_id,
                         int32_t sender_addr,
                         hdr_r2p2 *r2p2_hdr,
                         uint64_t data_bytes_expected,
@@ -405,7 +405,7 @@ namespace hysup
         void add(InboundMsgState *const msg);
         void remove(InboundMsgState *const msg);
         size_t find_pos(InboundMsgState *const msg);
-        InboundMsgState *find(const uniq_req_id_t &req_id);
+        InboundMsgState *find(const uniq_msg_id_t &req_id);
         InboundMsgState *peek_next();
         InboundMsgState *next();
         size_t msg_order_size(InboundMsgState const *const msg_state);
@@ -483,7 +483,7 @@ namespace hysup
             return (r2p2_hdr_.get_cl_addr() == o.r2p2_hdr_.get_cl_addr()
                 && r2p2_hdr_.get_cl_thread_id() == o.r2p2_hdr_.get_cl_thread_id() 
                 && r2p2_hdr_.get_reqid() == o.r2p2_hdr_.get_reqid()
-                && r2p2_hdr_.get_msg_creation_time() == o.r2p2_hdr_.get_msg_creation_time()
+                && r2p2_hdr_.get_thread_req_count() == o.r2p2_hdr_.get_thread_req_count()
                 && payload_ == o.payload_
                 && daddr_ == o.daddr_);
         }
@@ -495,12 +495,16 @@ namespace hysup
     class ConnectionPool
     {
     public:
-        ConnectionPool();
+        static const int32_t CONN_POOL_SIZE_ = 2;
+
+        ConnectionPool(int debug, int32_t this_addr); 
         ~ConnectionPool();
-        int32_t request_conn(hdr_r2p2, int, int32_t);
-        int32_t assign_conn();
+        void init();
+        int32_t request_conn_id(hdr_r2p2, int, int32_t);
+        int32_t assign_conn_id();
         std::vector<int32_t> get_idle_conns();
-        int32_t find_assigned_conn_of_request(hysup::ConnReqId);
+        int32_t find_assigned_conn_id_of_request(hysup::ConnReqId);
+        void release_conn_id(uint32_t);
         bool is_req_in_waiting_list(hysup::ConnReq);
         void remove_req_from_waiting_list(hysup::ConnReq);
 
@@ -511,6 +515,10 @@ namespace hysup
         static const hysup::ConnReqId IDLE_CONN_;
         /* Dale: conn_id can only be +ve; -99 indicates no conns avail */
         static const int32_t NO_CONN_AVAIL_ = -99;
+
+    protected:
+        int debug_;
+        int32_t this_addr_;
     };
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////

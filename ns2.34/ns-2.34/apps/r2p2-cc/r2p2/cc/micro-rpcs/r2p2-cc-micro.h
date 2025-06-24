@@ -61,7 +61,7 @@ public:
 protected:
     struct OutboundMsgState
     {
-        uniq_req_id_t req_id_;
+        uniq_msg_id_t req_id_;
         int bytes_left_;   // bytes that are not granted
         int pkts_left_;    // Using packets because: the first pkt of a msg carries the number of pkts
                            // the message will occupy for transmission. This is what the r2p2 layer above uses
@@ -84,7 +84,7 @@ protected:
                             pkts_marked_(0),
                             marked_ratio_estim_(0.0),
                             grants_sent_(0) {}
-        uniq_req_id_t req_id_;
+        uniq_msg_id_t req_id_;
         int pkts_expected_;
         int data_pkts_received_;
         int pkts_uncredited_;
@@ -116,8 +116,8 @@ protected:
     virtual int calc_credit(hdr_r2p2 &r2p2_hdr, InboundMsgState *ims);
 
     // oms -> OutboundMsgState
-    virtual OutboundMsgState *find_oms(const uniq_req_id_t &req_id);
-    virtual InboundMsgState *find_ims(const uniq_req_id_t &req_id);
+    virtual OutboundMsgState *find_oms(const uniq_msg_id_t &req_id);
+    virtual InboundMsgState *find_ims(const uniq_msg_id_t &req_id);
 
     inline double bytes_to_seconds(int bytes, double link_speed_bps)
     {

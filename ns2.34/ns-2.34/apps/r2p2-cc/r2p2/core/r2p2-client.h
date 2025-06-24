@@ -19,8 +19,10 @@ public:
     void send_req(int payload, const RequestIdTuple &request_id_tuple);
     void handle_req_rdy(hdr_r2p2 &r2p2_hdr, int nbytes);
     void handle_reply_pkt(hdr_r2p2 &r2p2_hdr, int nbytes);
-
     // void set_max_payload(int);
+
+    /* Dale: calc if msg extension based on whether current thread has sent mutiple req from this app lvl id */
+    uint64_t increment_thread_req_count(uint64_t req_count);
 
 protected:
     // req_id will be local to the client thread id (as it is for port in the impl)
@@ -31,7 +33,7 @@ protected:
     typedef std::unordered_set<request_id> rid_set_t;
     std::unordered_map<int, rid_set_t *> thrd_id_to_req_id_;
     /* Dale: keep track of how many requests each app_level_id in each thread has made */
-    typedef std::unordered_map<request_id, int> req_id_to_req_count_t;
+    typedef std::unordered_map<request_id, uint64_t> req_id_to_req_count_t;
     std::unordered_map<int, req_id_to_req_count_t *> thrd_id_app_lvl_id_to_req_count_;
     // int max_payload_;
     R2p2 *r2p2_layer_;

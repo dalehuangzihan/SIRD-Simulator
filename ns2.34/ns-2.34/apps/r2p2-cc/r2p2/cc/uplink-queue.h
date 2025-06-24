@@ -36,8 +36,8 @@ public:
     virtual ~R2p2UplinkQueue();
     void enque(packet_info_t message, int extra_prio);
     void enque(packet_info_t message);
-    void freeze(uniq_req_id_t req_id, double freeze_dur);
-    void unfreeze(uniq_req_id_t req_id);
+    void freeze(uniq_msg_id_t req_id, double freeze_dur);
+    void unfreeze(uniq_msg_id_t req_id);
     void check_stopped();
     void set_deque_policy(DeqPolicy policy);
     void set_link_speed(double link_speed_bps);
@@ -50,7 +50,7 @@ protected:
     {
         QueueItem() : prio_(0), is_stopped_(false), stopped_indef_(false),
                       reply_(false), extra_prio_(-1) {}
-        uniq_req_id_t req_id_;
+        uniq_msg_id_t req_id_;
         packet_info_t pkt_info_;
         int bytes_left_;
         int prio_;
@@ -86,7 +86,7 @@ protected:
     int last_index_;
     std::map<int32_t, int> msgs_per_dest_;
     int last_dest_indx_;
-    std::map<uniq_req_id_t, int> msgs_per_uniqreqid_;
+    std::map<uniq_msg_id_t, int> msgs_per_uniqreqid_;
     int last_uniqreqid_indx_;
 };
 

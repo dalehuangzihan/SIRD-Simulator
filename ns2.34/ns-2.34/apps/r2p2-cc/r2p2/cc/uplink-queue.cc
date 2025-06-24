@@ -28,7 +28,7 @@ void R2p2UplinkQueue::enque(packet_info_t message, int extra_prio)
     hdr_r2p2 r2p2_hdr = std::get<0>(message);
     int payload_sz = std::get<1>(message);
     /* Dale: here assume augmented fields don't matter so set to false */
-    uniq_req_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
+    uniq_msg_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
                                            r2p2_hdr.req_id(),
                                            false, false);
@@ -75,7 +75,7 @@ void R2p2UplinkQueue::enque(packet_info_t message)
     enque(message, -1);
 }
 
-void R2p2UplinkQueue::freeze(uniq_req_id_t req_id, double freeze_dur)
+void R2p2UplinkQueue::freeze(uniq_msg_id_t req_id, double freeze_dur)
 {
     double now = Scheduler::instance().clock();
     for (auto it = q_.begin(); it != q_.end(); ++it)
@@ -96,7 +96,7 @@ void R2p2UplinkQueue::freeze(uniq_req_id_t req_id, double freeze_dur)
     }
 }
 
-void R2p2UplinkQueue::unfreeze(uniq_req_id_t req_id)
+void R2p2UplinkQueue::unfreeze(uniq_msg_id_t req_id)
 {
     for (auto it = q_.begin(); it != q_.end(); ++it)
     {
@@ -264,7 +264,7 @@ int R2p2UplinkQueue::message_rr()
     int index = -1;
     int new_index = (last_uniqreqid_indx_ + 1) % num_uniq_msgid();
     int iter = 0;
-    uniq_req_id_t msg_uniqreqid;
+    uniq_msg_id_t msg_uniqreqid;
     for (auto it = msgs_per_uniqreqid_.begin(); it != msgs_per_uniqreqid_.end(); ++it)
     {
         if (new_index == iter)

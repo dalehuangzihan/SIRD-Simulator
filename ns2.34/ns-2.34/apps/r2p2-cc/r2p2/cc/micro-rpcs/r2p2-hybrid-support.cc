@@ -101,7 +101,7 @@ size_t hysup::Receivers::get_msg_srpt_order(OutboundMsgState *msg_state)
     return outbound_snap.msg_order_size(msg_state);
 }
 
-hysup::OutboundMsgState *hysup::Receivers::find_outbound_msg(int32_t receiver, uniq_req_id_t req_id)
+hysup::OutboundMsgState *hysup::Receivers::find_outbound_msg(int32_t receiver, uniq_msg_id_t req_id)
 {
     hysup::OutboundMsgState *msg = nullptr;
     try
@@ -390,7 +390,7 @@ size_t hysup::ReceiverState::num_outbound()
     return out_msgs_->size();
 }
 
-hysup::OutboundMsgState *hysup::ReceiverState::find_outbound_msg(uniq_req_id_t req_id)
+hysup::OutboundMsgState *hysup::ReceiverState::find_outbound_msg(uniq_msg_id_t req_id)
 {
     slog::log6(debug_, this_addr_, "@@ receiver find_outbound_msg() from ", out_msgs_->get_msgs_states());
     return out_msgs_->find(req_id);
@@ -533,7 +533,7 @@ size_t hysup::OutboundMsgs::find_pos(OutboundMsgState *const msg)
     throw std::invalid_argument("Can't find_pos() of msg");
 }
 
-hysup::OutboundMsgState *hysup::OutboundMsgs::find(const uniq_req_id_t &req_id)
+hysup::OutboundMsgState *hysup::OutboundMsgs::find(const uniq_msg_id_t &req_id)
 {
     slog::log6(debug_, this_addr_, "@@@ finding outbound", std::get<0>(req_id), std::get<1>(req_id), std::get<2>(req_id), std::get<3>(req_id), std::get<4>(req_id), "OutboundMsgs.size()", msgs_.size(), "ptr addr:", &msgs_);
     for (auto it = msgs_.begin(); it != msgs_.end(); ++it)
@@ -740,27 +740,52 @@ std::string hysup::OutboundMsgs::print_all(int32_t local_addr)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const hysup::ConnReqId hysup::ConnectionPool::IDLE_CONN_ = hysup::ConnReqId(-66, -66, UINT32_MAX);
 
-hysup::ConnectionPool::ConnectionPool() {}
+hysup::ConnectionPool::ConnectionPool(int debug, int32_t this_addr) : debug_(debug), this_addr_(this_addr)
+{
+    init();
+}
 hysup::ConnectionPool::~ConnectionPool() {}
 
-int32_t hysup::ConnectionPool::request_conn(hdr_r2p2 r2p2_hdr, int payload, int32_t daddr)
+void hysup::ConnectionPool::init()
 {
+    slog::log4(debug_, this_addr_, "hysup::ConnectionPool::init()");
+    for (uint32_t i = 0; i < CONN_POOL_SIZE_; i++)
+    {
+        conn_pool_mapping_[i] = hysup::ConnectionPool::IDLE_CONN_;
+    } 
+}
+
+int32_t hysup::ConnectionPool::request_conn_id(hdr_r2p2 r2p2_hdr, int payload, int32_t daddr)
+{
+    slog::log4(debug_, this_addr_, "hysup::ConnectionPool::request_conn_id() from cl_addr=", r2p2_hdr.cl_addr(), "cl_thread_id=", r2p2_hdr.cl_thread_id(), "req_id=", r2p2_hdr.req_id());
+
     hysup::ConnReq conn_req = hysup::ConnReq(r2p2_hdr, payload, daddr);
-    int32_t conn_id = assign_conn();
+    int32_t conn_id = assign_conn_id();
+    slog::log6(debug_, this_addr_, "assigned conn_id=", conn_id);
     if (conn_id == NO_CONN_AVAIL_)
     {
+        slog::log5(debug_, this_addr_, "No Connection Available");
         /* Dale: maintian FIFO order of waiting requests */
-        if (!is_req_in_waiting_list(conn_req)) waiting_requests_.push_back(conn_req);
+        if (!is_req_in_waiting_list(conn_req))
+        {
+            slog::log6(debug_, this_addr_, "Adding req to waiting list");
+            waiting_requests_.push_back(conn_req);
+        }
+        else
+        {
+            slog::log6(debug_, this_addr_, "Req already in waiting list");
+        }
     }
     else
     {
+        slog::log5(debug_, this_addr_, "Conn available: conn_id=", conn_id);
         ConnReqId conn_req_id = hysup::ConnReqId(r2p2_hdr.cl_addr(), r2p2_hdr.cl_thread_id(), r2p2_hdr.req_id());
         conn_pool_mapping_[conn_id] = conn_req_id;
     }
     return conn_id;
 }
 
-int32_t hysup::ConnectionPool::assign_conn()
+int32_t hysup::ConnectionPool::assign_conn_id()
 {
     std::vector<int32_t> available_conns = get_idle_conns();
     if (available_conns.size() == 0)
@@ -775,30 +800,46 @@ int32_t hysup::ConnectionPool::assign_conn()
 
 std::vector<int32_t> hysup::ConnectionPool::get_idle_conns()
 {
+    slog::log6(debug_, this_addr_, "hysup::ConnectionPool::get_idle_conns()");
     std::vector<int32_t> idle_conns;
     for (const auto& kv_pair : conn_pool_mapping_)
     {
+        slog::log6(debug_, this_addr_, "+++ conn_id=", kv_pair.first, "conn_req_id=", kv_pair.second.req_id_);
         if (kv_pair.second == IDLE_CONN_) idle_conns.push_back(kv_pair.first);
     }
     return idle_conns;
 }
 
-int32_t hysup::ConnectionPool::find_assigned_conn_of_request(ConnReqId conn_req_id)
+int32_t hysup::ConnectionPool::find_assigned_conn_id_of_request(ConnReqId conn_req_id)
 {
+    slog::log6(debug_, this_addr_, "finding assigned conn of conn req: cl_addr=", conn_req_id.cl_addr_, "cl_thread_id=", conn_req_id.cl_thread_id_, "req_id=", conn_req_id.req_id_);
     for (const auto& kv_pair : conn_pool_mapping_)
     {
-        if (kv_pair.second == conn_req_id) return kv_pair.first;
+        if (kv_pair.second == conn_req_id) 
+        {
+            slog::log6(debug_, this_addr_, "found assigned conn; conn_id=", kv_pair.first);
+            return kv_pair.first;
+        }
     }
     return NO_CONN_AVAIL_;
 }
 
+void hysup::ConnectionPool::release_conn_id(uint32_t conn_id)
+{
+    slog::log6(debug_, this_addr_, "hysup::ConnectionPool::release_conn_id() conn_id=", conn_id);
+    assert(conn_pool_mapping_.find(conn_id) != conn_pool_mapping_.end());
+    conn_pool_mapping_[conn_id] = IDLE_CONN_;
+}
+
 bool hysup::ConnectionPool::is_req_in_waiting_list(hysup::ConnReq conn_req)
 {
+    slog::log6(debug_, this_addr_, "check if conn req in waiting list: cl_addr=", conn_req.r2p2_hdr_.get_cl_addr(), "cl_thread_id=", conn_req.r2p2_hdr_.get_cl_thread_id(), "req_id=", conn_req.r2p2_hdr_.get_reqid(), "thread_req_count=", conn_req.r2p2_hdr_.thread_req_count(), "payload=", conn_req.payload_, "daddr=", conn_req.daddr_);
     return std::find(waiting_requests_.begin(), waiting_requests_.end(), conn_req) != waiting_requests_.end();
 }
 
 void hysup::ConnectionPool::remove_req_from_waiting_list(hysup::ConnReq conn_req)
 {
+    slog::log6(debug_, this_addr_, "remove conn req from waiting list: cl_addr=", conn_req.r2p2_hdr_.get_cl_addr(), "cl_thread_id=", conn_req.r2p2_hdr_.get_cl_thread_id(), "req_id=", conn_req.r2p2_hdr_.get_reqid(), "thread_req_count=", conn_req.r2p2_hdr_.thread_req_count(), "payload=", conn_req.payload_, "daddr=", conn_req.daddr_);
     waiting_requests_.erase(std::remove(waiting_requests_.begin(), waiting_requests_.end(), conn_req), waiting_requests_.end());
 }
 
@@ -888,7 +929,7 @@ std::string hysup::InboundMsgs::print_all(int32_t local_addr)
     }
 }
 
-hysup::InboundMsgState *hysup::InboundMsgs::find(const uniq_req_id_t &req_id)
+hysup::InboundMsgState *hysup::InboundMsgs::find(const uniq_msg_id_t &req_id)
 {
     slog::log6(debug_, this_addr_, "$$$ finding inbound", std::get<0>(req_id), std::get<1>(req_id), std::get<2>(req_id), std::get<3>(req_id), std::get<4>(req_id), "InboundMsgs.size()", msgs_.size(), "ptr addr:", &msgs_);
     for (auto it = msgs_.begin(); it != msgs_.end(); ++it)

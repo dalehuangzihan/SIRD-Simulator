@@ -19,23 +19,28 @@ class R2p2CCFifo;
  * 20/06/2025 Each app (sender/receiver pair) can simul use diff extensible-msgs for diff app-lvl req (diff app lvl id). Currently use req_id field to carry app lvl id.
  * 22/06/2025 rename req_id tuple field to conn_id
  */
-typedef std::tuple<int32_t, int, request_id, bool, bool> uniq_req_id_t; 
+typedef std::tuple<int32_t, int, uint32_t, bool, bool> uniq_msg_id_t; 
 /* Dale: helper functions */
-namespace ReqIdTuple
+namespace MsgIdTuple
 {
-    static bool is_persist_msg_state(uniq_req_id_t &req_id)
+    static bool is_persist_msg_state(uniq_msg_id_t &req_id)
     {
         return std::get<3>(req_id);
     }
 
-    static bool is_ignore_persistence(uniq_req_id_t &req_id)
+    static bool is_ignore_persistence(uniq_msg_id_t &req_id)
     {
         return std::get<4>(req_id);
     }
 
-    static void set_ignore_persistence(uniq_req_id_t &req_id)
+    static void set_ignore_persistence(uniq_msg_id_t &req_id)
     {
         std::get<4>(req_id) = true;
+    }
+
+    static uint32_t get_conn_id(uniq_msg_id_t &req_id)
+    {
+        return std::get<2>(req_id);
     }
 }
 typedef std::tuple<hdr_r2p2, int, int32_t> packet_info_t;

@@ -115,7 +115,7 @@ void R2p2CCMicro::recv(Packet *pkt, Handler *h)
     {
         // Some server wants to send a response to this client. Create state for the response.
         /* Dale: here assume augmented fields don't matter so set to false */
-        uniq_req_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
+        uniq_msg_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
                                                r2p2_hdr->cl_thread_id(),
                                                r2p2_hdr->req_id(),
                                                false, false);
@@ -178,7 +178,7 @@ void R2p2CCMicro::recv(Packet *pkt, Handler *h)
             else
                 slog::log5(debug_, this_addr_, "Received pkt of a multipkt REPLY");
             /* Dale: here assume augmented fields don't matter so set to false */
-            uniq_req_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
+            uniq_msg_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
                                                    r2p2_hdr->cl_thread_id(),
                                                    r2p2_hdr->req_id(),
                                                    false, false);
@@ -295,7 +295,7 @@ void R2p2CCMicro::send_grant(hdr_r2p2 *const r2p2_hdr, int32_t daddr)
     // (w/o changing it bcs it is a hassle)
     slog::log4(debug_, this_addr_, "R2p2CCMicro::send_grant()");
     /* Dale: here assume augmented fields don't matter so set to false */
-    uniq_req_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
+    uniq_msg_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
                                            r2p2_hdr->cl_thread_id(),
                                            r2p2_hdr->req_id(),
                                            false, false);
@@ -382,7 +382,7 @@ void R2p2CCMicro::send_to_transport(hdr_r2p2 &r2p2_hdr, int payload, int32_t dad
     {
         // NOT a single packet msg => must not forward immediately
         /* Dale: here assume augmented fields don't matter so set to false */
-        uniq_req_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
+        uniq_msg_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                                r2p2_hdr.cl_thread_id(),
                                                r2p2_hdr.req_id(),
                                                false, false);
@@ -429,7 +429,7 @@ void R2p2CCMicro::send_reqrdy(hdr_r2p2 &r2p2_hdr, int nbytes, int32_t daddr)
     r2p2_hdr.first_urpc() = false;
     // how much credit should this reqready packet provide...
     /* Dale: here assume augmented fields don't matter so set to false */
-    uniq_req_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
+    uniq_msg_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
                                            r2p2_hdr.req_id(),
                                            false, false);
@@ -590,10 +590,10 @@ void R2p2CCMicro::forward_to_transport(packet_info_t pkt_info, MsgTracerLogs &&l
 }
 
 /**
- * Each message (request/reply) is uniquely identided by uniq_req_id_t (<client_addr, thread_id, req_id>)
+ * Each message (request/reply) is uniquely identided by uniq_msg_id_t (<client_addr, thread_id, req_id>)
  * Assuming that a client does not send rpcs to itself (so that there are duplicates in the list)
  */
-R2p2CCMicro::OutboundMsgState *R2p2CCMicro::find_oms(const uniq_req_id_t &req_id)
+R2p2CCMicro::OutboundMsgState *R2p2CCMicro::find_oms(const uniq_msg_id_t &req_id)
 {
     slog::log5(debug_, this_addr_, "R2p2CCMicro::find_oms()");
     for (auto it = outbound_msgs_.begin(); it != outbound_msgs_.end(); ++it)
@@ -609,7 +609,7 @@ R2p2CCMicro::OutboundMsgState *R2p2CCMicro::find_oms(const uniq_req_id_t &req_id
 /**
  * Assuming that a client does not send rpcs to itself (so that there are duplicates in the list)
  */
-R2p2CCMicro::InboundMsgState *R2p2CCMicro::find_ims(const uniq_req_id_t &req_id)
+R2p2CCMicro::InboundMsgState *R2p2CCMicro::find_ims(const uniq_msg_id_t &req_id)
 {
     slog::log5(debug_, this_addr_, "R2p2CCMicro::find_ims()");
     for (auto it = inbound_msgs_.begin(); it != inbound_msgs_.end(); ++it)

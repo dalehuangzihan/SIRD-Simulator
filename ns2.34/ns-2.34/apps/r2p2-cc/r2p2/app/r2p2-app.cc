@@ -118,7 +118,7 @@ void R2p2Application::send_request(RequestIdTuple *, size_t)
     /** Dale: TODO:
      * (?) set app_level_id to const value for now
      * TODO: not quite sure what app_level_id value is used for... */
-    long app_level_id = reqs_sent_ % 2; /** Dale: TODO: for testing only */
+    long app_level_id = reqs_sent_ % 3; /** Dale: TODO: for testing only */
     if (do_trace_)
     {
         trace_state("srq", srvr_addr, -1, app_level_id, -1, next_req_size, -1, 0);
