@@ -93,8 +93,6 @@ void R2p2CCHybrid::init()
     assert(wai_ != MAXINT);
     assert(max_stage_ != MAXINT);
 
-    /* Dale: init connection pool */
-    conn_pool_ = new hysup::ConnectionPool(debug_, this_addr_);
     outbound_inactive_ = new hysup::OutboundMsgs(debug_, this_addr_);
     inbound_ = new hysup::InboundMsgs(debug_, this_addr_);
     receivers_ = new hysup::Receivers(debug_, this_addr_);
@@ -151,7 +149,6 @@ void R2p2CCHybrid::poll()
     slog::log7(debug_, this_addr_, "R2p2CCHybrid::poll()");
 
     num_polls_++;
-    retry_conn_pool_request();
     send_grants();
     send_data();
     poll_trace();
@@ -329,22 +326,6 @@ void R2p2CCHybrid::send_to_transport(hdr_r2p2 &r2p2_hdr, int payload, int32_t da
                r2p2_hdr.app_level_id(), "req id", r2p2_hdr.req_id(), "pkt_id():", r2p2_hdr.pkt_id(),
                is_single_pkt_request,
                "|", is_reqzero, is_reqzero_of_multipkt, is_multi_pkt_req_not_req0, is_reply, "|");
-
-    /* Dale: get connection from connection pool */
-    int32_t conn_id = conn_pool_->find_assigned_conn_id_of_request(hysup::ConnReqId(r2p2_hdr.cl_addr(), r2p2_hdr.cl_thread_id() ,r2p2_hdr.req_id()));
-    if (conn_id == hysup::ConnectionPool::NO_CONN_AVAIL_)
-    {
-        // Dale: req_id has not been assigned a conn yet.
-        conn_id = conn_pool_->request_conn_id(r2p2_hdr, payload, daddr);
-        slog::log4(debug_, this_addr_, "send_to_transport() conn_id=", conn_id);
-        if (conn_id == hysup::ConnectionPool::NO_CONN_AVAIL_)
-        {
-            slog::log4(debug_, this_addr_, "R2p2CCHybrid::send_to_transport() No available connections in connection pool...");
-            return; 
-        }
-    }
-    // Dale: req_id has already been assigned a conn.
-    r2p2_hdr.conn_id() = conn_id;
                
     if (is_reqzero_of_multipkt)
     {
@@ -465,7 +446,7 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
     uniq_msg_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
                                            r2p2_hdr->cl_thread_id(),
                                            /* Dale: use conn_id to identify msg state*/
-                                           r2p2_hdr->conn_id(),
+                                           r2p2_hdr->req_id(),
                                            /* Dale: track if msg state should be persisted */
                                            hdr_r2p2::is_persist_msg_state(r2p2_hdr->msg_type()),
                                            /* Dale: whether to ignore persistence */
@@ -658,7 +639,7 @@ void R2p2CCHybrid::prep_msg_send(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
     uniq_msg_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
                                            /* Dale: use conn_id to identify msg state*/
-                                           r2p2_hdr.conn_id(),
+                                           r2p2_hdr.req_id(),
                                            /* Dale: track if msg state should be persisted */
                                            hdr_r2p2::is_persist_msg_state(r2p2_hdr.msg_type()),
                                            /* Dale: whether to ignore persistence */
@@ -737,7 +718,7 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
     uniq_msg_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
                                            /* Dale: use conn_id to identify msg state*/
-                                           r2p2_hdr.conn_id(),
+                                           r2p2_hdr.req_id(),
                                            /* Dale: track if msg state should be persisted */
                                            hdr_r2p2::is_persist_msg_state(r2p2_hdr.msg_type()),
                                            /* Dale: whether to ignore persistence */
@@ -792,7 +773,7 @@ void R2p2CCHybrid::sending_reply(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
     uniq_msg_id_t req_id = std::make_tuple(r2p2_hdr.cl_addr(),
                                            r2p2_hdr.cl_thread_id(),
                                            /* Dale: use conn_id to identify msg state*/
-                                           r2p2_hdr.conn_id(),
+                                           r2p2_hdr.req_id(),
                                            /* Dale: track if msg state should be persisted */
                                            hdr_r2p2::is_persist_msg_state(r2p2_hdr.msg_type()),
                                            /* Dale: whether to ignore persistence */
@@ -843,7 +824,7 @@ void R2p2CCHybrid::received_credit(Packet *pkt)
     uniq_msg_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(),
                                            r2p2_hdr->cl_thread_id(),
                                            /* Dale: use conn_id to identify msg state*/
-                                           r2p2_hdr->conn_id(),
+                                           r2p2_hdr->req_id(),
                                            /* Dale: track if msg state should be persisted */
                                            hdr_r2p2::is_persist_msg_state(r2p2_hdr->msg_type()),
                                            /* Dale: whether to ignore persistence */
@@ -923,26 +904,6 @@ hysup::ReceiverState *R2p2CCHybrid::update_receiver_state(Packet *pkt)
                ip_hdr->src().addr_, "Receivers registered:", receivers_->size());
     hysup::ReceiverState *rcvr_state = receivers_->find_or_create(ip_hdr->src().addr_, this_addr_);
     return rcvr_state;
-}
-
-/**
- * @brief
- * Retry assigning waiting requests to connections in the connection pool.
- */
-void R2p2CCHybrid::retry_conn_pool_request()
-{
-    slog::log4(debug_, this_addr_, "R2p2CCHybrid::retry_conn_pool_request()");
-    if (conn_pool_->waiting_requests_.size() == 0) return;
-    for (hysup::ConnReq conn_req : conn_pool_->waiting_requests_)
-    {
-        slog::log6(debug_, this_addr_, "retrying for conn_req: cl_addr=", conn_req.r2p2_hdr_.get_cl_addr(), "cl_thread_id=", conn_req.r2p2_hdr_.get_cl_thread_id(), "req_id=", conn_req.r2p2_hdr_.get_reqid(), "thread_req_count=", conn_req.r2p2_hdr_.thread_req_count(), "payload=", conn_req.payload_, "daddr=", conn_req.daddr_);
-        int32_t conn_id = conn_pool_->request_conn_id(conn_req.r2p2_hdr_, conn_req.payload_, conn_req.daddr_);
-        if (conn_id != hysup::ConnectionPool::NO_CONN_AVAIL_)
-        {
-            send_to_transport(conn_req.r2p2_hdr_, conn_req.payload_, conn_req.daddr_);
-            conn_pool_->remove_req_from_waiting_list(conn_req);
-        }
-    }
 }
 
 /**
@@ -1321,8 +1282,6 @@ void R2p2CCHybrid::send_data()
                     "new data_pacer_backlog_:", data_pacer_backlog_);
             // assert(msg_state->avail_credit_data_bytes_ == 0); // NOT PROPRELY UPDATED
             msg_state->rcvr_state_->remove_outbound_msg(msg_state);
-            /* Dale: free up connection from conn pool since all outstanding data has been sent */
-            conn_pool_->release_conn_id(MsgIdTuple::get_conn_id(msg_state->req_id_));
             delete msg_state->r2p2_hdr_;
             delete msg_state;
         }
@@ -1425,8 +1384,6 @@ void R2p2CCHybrid::received_data(Packet *pkt, hysup::InboundMsgState *msg_state)
             /* Dale: msg type is not msg extendable */ 
             slog::log4(debug_, this_addr_, "Removing inbound message state of msg", std::get<2>(msg_state->req_id_));
             inbound_->remove(msg_state);
-            /* Dale: free up connection from conn pool since all outstanding data has been received */
-            conn_pool_->release_conn_id(MsgIdTuple::get_conn_id(msg_state->req_id_));
         }
     }
 }
@@ -1944,8 +1901,6 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
             /* Dale: msg type is not msg extendable */ 
             slog::log4(debug_, this_addr_, "Removing inbound message state of msg", std::get<2>(msg_state->req_id_));
             inbound_->remove(msg_state);
-            /* Dale: free up connection from conn pool since all oustanding data has been received */
-            conn_pool_->release_conn_id(MsgIdTuple::get_conn_id(msg_state->req_id_));
         }
         return 2;
     }

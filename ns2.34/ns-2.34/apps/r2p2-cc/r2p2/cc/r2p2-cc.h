@@ -14,10 +14,10 @@
 class R2p2CCFifo;
 
 /** Dale:
- * This is <client_addr, thread_id, conn_id, is_persist_msg_state, is_ignore_persist>
+ * This is <client_addr, thread_id, req_id, is_persist_msg_state, is_ignore_persist>
  * 12/06/2025 is_ignore_persist is for overriding the persist decision; currently for allowing GRANT_REQ for REPLY msgs to be treated separately from GRANT_REQ for data.
  * 20/06/2025 Each app (sender/receiver pair) can simul use diff extensible-msgs for diff app-lvl req (diff app lvl id). Currently use req_id field to carry app lvl id.
- * 22/06/2025 rename req_id tuple field to conn_id
+ * 25/06/2025 req_id actually takes the value of app_lvl_id, which identifies diff conns made by the thread id to the client addr.
  */
 typedef std::tuple<int32_t, int, uint32_t, bool, bool> uniq_msg_id_t; 
 /* Dale: helper functions */

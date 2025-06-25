@@ -140,8 +140,6 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
     r2p2_hdr.is_msg_extension() = is_msg_extension;
     /* Dale: init is_ignore_persistence to default value (only cuz R2p2Client::send_req() is called only by the app layer) */
     r2p2_hdr.is_ignore_msg_state_persist() = false;
-    /* Dale: carry thread req count within hdr to allow conn pool to differentiate btw successive req from same sender/receiver pair */
-    r2p2_hdr.thread_req_count() = thread_req_count;
 
     slog::log4(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
                "R2p2Client::send_req(). app lvl id:", r2p2_hdr.app_level_id(), "req id:", r2p2_hdr.req_id(), "single pkt?", single_pkt_rpc, "from:", r2p2_hdr.cl_addr(),

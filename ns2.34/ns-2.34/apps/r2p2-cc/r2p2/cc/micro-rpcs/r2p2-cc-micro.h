@@ -251,14 +251,7 @@ protected:
     virtual void update_data_backlog();
     virtual void per_loop_stats();
     void trace_state(std::string event, double a_double) override;
-    /* Dale: retry requesting connection from connection pool */
-    virtual void retry_conn_pool_request();
 
-    /** Dale:
-     * Track conn_id to app_level_id mapping for connection pool.
-     * Is map<conn_id, app_lvl_id>
-     */
-    hysup::ConnectionPool *conn_pool_;
     hysup::OutboundMsgs *outbound_inactive_; // messages for which no credit has ever arrived
     hysup::InboundMsgs *inbound_;
     std::unordered_map<int32_t, hysup::SenderState *> sender_state_; // FIXME: should be encapuslated in own class like receivers_
