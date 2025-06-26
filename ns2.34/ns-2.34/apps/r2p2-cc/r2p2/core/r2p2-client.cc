@@ -140,17 +140,18 @@ void R2p2Client::send_req(int payload, const RequestIdTuple &request_id_tuple)
     r2p2_hdr.is_msg_extension() = is_msg_extension;
     /* Dale: init is_ignore_persistence to default value (only cuz R2p2Client::send_req() is called only by the app layer) */
     r2p2_hdr.is_ignore_msg_state_persist() = false;
+    /* Dale: track if this is the final request of the connection */
+    r2p2_hdr.is_final_req_of_conn() = request_id_tuple.is_final_req_of_conn_;
 
     slog::log4(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
                "R2p2Client::send_req(). app lvl id:", r2p2_hdr.app_level_id(), "req id:", r2p2_hdr.req_id(), "single pkt?", single_pkt_rpc, "from:", r2p2_hdr.cl_addr(),
                "thread:", r2p2_hdr.cl_thread_id(), ">to:",
                r2p2_hdr.sr_addr(), "thread:", r2p2_hdr.sr_thread_id(), "req count:", (*thrd_id_app_lvl_id_to_req_count_.at(thread_id))[current_rid],
-               "is_msg_extension:", r2p2_hdr.is_msg_extension(), "pkt_id:", r2p2_hdr.pkt_id());
+               "is_msg_extension:", r2p2_hdr.is_msg_extension(), "pkt_id:", r2p2_hdr.pkt_id(), "is_final_req_of_conn:", r2p2_hdr.is_final_req_of_conn());
     // if the RPC does not fit in a single packet, the protocol sends a 64 byte packet -
     // given 50 bytes of headers, that leaves 14 bytes of data.
     /** Dale: TODO:
-     * 17/06/2025 (?) Don't cumulate req_bytes_left_ here as it will interfere with lower-level pkt processing.
-     *                SSIRD transport will do payload cumulation. (impl unchanged from vanilla SIRD)
+     * 17/06/2025 (?) Don't cumulate req_bytes_left_ here as it will interfere with lower-level pkt processing. SSIRD transport will do payload cumulation. (impl unchanged from vanilla SIRD)
      */
     client_request_state->req_bytes_left_ = single_pkt_rpc ? 0 : reqn_payload;
     /* Dale: update msg timestamp only during brand new client request, or after reply received for existing request */
@@ -192,13 +193,12 @@ void R2p2Client::handle_reply_pkt(hdr_r2p2 &r2p2_hdr, int payload)
     slog::log5(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
                "Handling reply packet with req id", r2p2_hdr.req_id(),
                "with pkt_id", r2p2_hdr.pkt_id(), "(first",
-               r2p2_hdr.first(), ") from server", r2p2_hdr.sr_addr());
+               r2p2_hdr.first(), ") from server", r2p2_hdr.sr_addr(),
+               "is_final_req_of_conn:", r2p2_hdr.is_final_req_of_conn());
     ClientRequestState *client_request_state = NULL;
     try
     {
-        client_request_state = thrd_id_to_pending_reqs_map_.at(
-                                                               r2p2_hdr.cl_thread_id())
-                                   ->at(r2p2_hdr.req_id());
+        client_request_state = thrd_id_to_pending_reqs_map_.at(r2p2_hdr.cl_thread_id())->at(r2p2_hdr.req_id());
     }
     catch (const std::out_of_range &e)
     {
@@ -272,10 +272,13 @@ void R2p2Client::handle_reply_pkt(hdr_r2p2 &r2p2_hdr, int payload)
          */
         // delete client_request_state;
 
-        /** Dale: set is_reply_received to true so that next client request can update msg
+        /** Dale: set is_reply_received to true so that next app-level request can update msg
          * creation time (used for FCT measurement; is for msg extensions in intermittent flows)*/
-        slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "### reply recv, set is_update_timestamp = true");
-        client_request_state->is_update_msg_timestamp = true;
+        if (r2p2_hdr.is_final_req_of_conn())
+        {
+            slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "### reply recv, set is_update_timestamp = true");
+            client_request_state->is_update_msg_timestamp = true;
+        }
     }
     // TODO: Add check -> have more bytes than expected been received?
 }

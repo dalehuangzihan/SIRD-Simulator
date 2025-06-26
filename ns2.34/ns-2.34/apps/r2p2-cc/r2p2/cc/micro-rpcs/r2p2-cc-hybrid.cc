@@ -325,6 +325,7 @@ void R2p2CCHybrid::send_to_transport(hdr_r2p2 &r2p2_hdr, int payload, int32_t da
                "payload:", payload, "Destination", daddr, "App lvl id:",
                r2p2_hdr.app_level_id(), "req id", r2p2_hdr.req_id(), "pkt_id():", r2p2_hdr.pkt_id(),
                is_single_pkt_request,
+               "is_final_req_of_conn:", r2p2_hdr.is_final_req_of_conn(),
                "|", is_reqzero, is_reqzero_of_multipkt, is_multi_pkt_req_not_req0, is_reply, "|");
                
     if (is_reqzero_of_multipkt)
@@ -372,7 +373,8 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
                "B:", hdr_r2p2::access(pkt)->B(),
                "qlen:", hdr_r2p2::access(pkt)->qlen(),
                "is_msg_extension:", r2p2_hdr->is_msg_extension(),
-               "is_ignore_msg_state_persistence:", r2p2_hdr->is_ignore_msg_state_persist());
+               "is_ignore_msg_state_persistence:", r2p2_hdr->is_ignore_msg_state_persist(),
+               "is_final_req_of_conn:", r2p2_hdr->is_final_req_of_conn());
     assert(pkt_size >= MIN_ETHERNET_FRAME);
     assert(pkt_size <= MAX_ETHERNET_FRAME);
     hysup::SenderState *sender_state = update_sender_state(pkt);
@@ -395,14 +397,17 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
             slog::log6(debug_, this_addr_, "Received the pkt of a single-packet REPLY");
 
             /** Dale: TODO:
-             * currently we don't remove mosg msg state from any outbound/inbound datastructure
+             * currently we don't remove msg msg state from any outbound/inbound datastructure
              * => poller processes these msg states every iter (not sure if this is good)
              */
+            
+            if (r2p2_hdr->is_final_req_of_conn())
+            {
+                slog::log6(debug_, this_addr_, "REPLY is from final req of conn");
+                /** Dale: TODO: remove message state */
+                /** Dale: TODO: do msg state cleanup on sender side too after successfully sending final reply */
+            } 
 
-            /** Dale: TODO: 
-             * 14/06/2025 TODO: figure out explicit connection close message exchange that occurs between sender and receiver,
-             * to instruct clean-up of msg state, etc.
-             */
             /*
             slog::log6(debug_, this_addr_, "Cleaning up outbound msg state...");
             uniq_msg_id_t req_id = std::make_tuple(r2p2_hdr->cl_addr(), r2p2_hdr->cl_thread_id(), r2p2_hdr->req_id());
@@ -487,6 +492,8 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
     {
         MsgIdTuple::set_ignore_persistence(msg_state->req_id_);
     }
+    /* Dale: update is_final_req_of_conn */
+    msg_state->first_header_->is_final_req_of_conn() = r2p2_hdr->is_final_req_of_conn();
 
     /**
      * Packet requests credit
@@ -672,6 +679,8 @@ void R2p2CCHybrid::prep_msg_send(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
     }
     /* Dale: since this is new msg extension, it has not been serviced yet => make poller send new announcement */
     msg_state->is_msg_ext_serviced_by_sendr_ = false;
+    /* Dale: update whether this msg state should be cleaned after this */
+    msg_state->r2p2_hdr_->is_final_req_of_conn() = r2p2_hdr.is_final_req_of_conn();
     /* Dale: don't append to outbound_inactive if msg_state already exists there */
     if (!msg_state_found) outbound_inactive_->append(msg_state);
 }
@@ -745,10 +754,12 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
     assert(pkt_count > 0);
     pkt_count--; // convetion. pkt_id() tells the receiver how many _more_ pkts to expect
     msg_state->r2p2_hdr_->pkt_id() = pkt_count;
+    /* Dale: update if this is the final request of this connection */
+    msg_state->r2p2_hdr_->is_final_req_of_conn() = r2p2_hdr.is_final_req_of_conn();
     slog::log4(debug_, this_addr_, "R2p2CCHybrid::sending_request() to", daddr,
                "app lvl id:", r2p2_hdr.app_level_id(), "payload", payload,
                "total unsent bytes:", msg_state->unsent_bytes_, "changed pkt_id() to",
-               msg_state->r2p2_hdr_->pkt_id());
+               msg_state->r2p2_hdr_->pkt_id(), "is_final_req_of_conn:", msg_state->r2p2_hdr_->is_final_req_of_conn());
     /* Dale: don't do check if request is msg extension (unsent bytes will additionally include any pre-existing bytes) */
     if (!((r2p2_hdr.msg_type() == hdr_r2p2::REQUEST) && (is_single_packet_msg(&r2p2_hdr) || r2p2_hdr.is_msg_extension())))
     {
@@ -782,7 +793,7 @@ void R2p2CCHybrid::sending_reply(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
     MsgIdTuple::set_ignore_persistence(req_id);
     slog::log6(debug_, this_addr_, "ignoring persistence; change req_id to:", std::get<0>(req_id), std::get<1>(req_id), std::get<2>(req_id), std::get<3>(req_id), std::get<4>(req_id));
 
-    slog::log6(debug_, this_addr_, "&&& cl_addr():", r2p2_hdr.cl_addr(), "cl_thread_id():", r2p2_hdr.cl_thread_id(), "r2p2_hdr.req_id():", r2p2_hdr.req_id());
+    slog::log6(debug_, this_addr_, "&&& cl_addr():", r2p2_hdr.cl_addr(), "cl_thread_id():", r2p2_hdr.cl_thread_id(), "r2p2_hdr.req_id():", r2p2_hdr.req_id(), "is_final_req_of_conn:", r2p2_hdr.is_final_req_of_conn());
                                            
     hysup::ReceiverState *rcvr_state = receivers_->find(daddr);
     if (rcvr_state == nullptr)
@@ -1985,7 +1996,7 @@ void R2p2CCHybrid::forward_grant(hysup::InboundMsgState *msg_state, int credit_b
 {
     slog::log4(debug_, this_addr_, "R2p2CCHybrid::forward_grant() to ", msg_state->remote_addr_,
                "that provides credit:", credit_bytes, "for app lvl id:", msg_state->first_header_->app_level_id(),
-               "for message:", msg_state->first_header_->req_id());
+               "for message:", msg_state->first_header_->req_id(), "is_final_req_of_conn:", msg_state->first_header_->is_final_req_of_conn());
     hdr_r2p2 hdr;
     hdr.msg_type() = hdr_r2p2::GRANT;
     hdr.credit() = credit_bytes; // this credit includes headers
@@ -2004,6 +2015,8 @@ void R2p2CCHybrid::forward_grant(hysup::InboundMsgState *msg_state, int credit_b
     hdr.msg_creation_time() = Scheduler::instance().clock();
     /* Dale: update is_ignore_msg_state_persist (We ignore persistence for grants sent for replies) */
     hdr.is_ignore_msg_state_persist() = MsgIdTuple::is_ignore_persistence(msg_state->req_id_);
+    /* Dale: udpate is_final_req_of_conn */
+    hdr.is_final_req_of_conn() = msg_state->first_header_->is_final_req_of_conn();
     data_pacer_backlog_ += GRANT_MSG_SIZE + R2P2_ALL_HEADERS_SIZE + INTER_PKT_GAP_SIZE + ETHERNET_PREAMBLE_SIZE;
     stats->num_grants_sent_++;
 

@@ -83,6 +83,8 @@ private:
     bool is_msg_extension_;
     /* Dale: track if we should ignore msg state persistence */
     bool is_ignore_msg_state_persist_;
+    /* Dale: track if this is the last request of the connection */
+    bool is_final_req_of_conn_;
 
 public:
     hdr_r2p2() : first_urpc_(false), credit_(0), credit_pad_(0), credit_req_(0),
@@ -187,6 +189,8 @@ public:
     bool &is_msg_extension() { return is_msg_extension_; }
     /* Dale: accessor for is_ignore_msg_state_persist_ */
     bool &is_ignore_msg_state_persist() { return is_ignore_msg_state_persist_; }
+    /* Dale: track if this is the last request of the connection */
+    bool &is_final_req_of_conn() { return is_final_req_of_conn_; }
 };
 
 struct RequestIdTuple
@@ -197,12 +201,14 @@ struct RequestIdTuple
                    int32_t sr_addr,
                    int cl_thread_id,
                    int sr_thread_id,
+                   bool is_final_req_of_conn,
                    double ts) : req_id_(req_id),
                                 app_level_id_(app_level_id),
                                 cl_addr_(cl_addr),
                                 sr_addr_(sr_addr),
                                 cl_thread_id_(cl_thread_id),
                                 sr_thread_id_(sr_thread_id),
+                                is_final_req_of_conn_(is_final_req_of_conn),
                                 ts_(ts) {}
     RequestIdTuple(long app_level_id,
                    int32_t cl_addr,
@@ -221,13 +227,13 @@ struct RequestIdTuple
                    int32_t sr_addr,
                    int cl_thread_id,
                    int sr_thread_id,
-                   bool is_msg_extension,
+                   bool is_final_req_of_conn,
                    double ts) : app_level_id_(app_level_id),
                                 cl_addr_(cl_addr),
                                 sr_addr_(sr_addr),
                                 cl_thread_id_(cl_thread_id),
                                 sr_thread_id_(sr_thread_id),
-                                is_msg_extension_(is_msg_extension),
+                                is_final_req_of_conn_(is_final_req_of_conn),
                                 ts_(ts) {}
     RequestIdTuple(long app_level_id, int cl_thread_id) : app_level_id_(app_level_id),
                                                           cl_thread_id_(cl_thread_id) {}
@@ -245,8 +251,8 @@ struct RequestIdTuple
     bool is_request_;     // else it is a reply
     int32_t client_port_; // used to figure out which connection to use to send reply
     double ts_;
-    /* Dale: create flag in req_id_tuple to indicate whether this is a msg extension */
-    bool is_msg_extension_;
+    /* Dale: track if this is the last msg/msg-ext of this app-level request */
+    bool is_final_req_of_conn_;
 };
 
 #endif

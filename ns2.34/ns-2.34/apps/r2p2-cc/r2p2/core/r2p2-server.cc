@@ -204,6 +204,8 @@ void R2p2Server::send_response(int payload, const RequestIdTuple &request_id_tup
     r2p2_hdr.app_level_id() = request_id_tuple.app_level_id_;
     // r2p2_hdr.msg_size_bytes() = payload;
     r2p2_hdr.msg_creation_time() = Scheduler::instance().clock();
+    /* Dale: set is_final_req_of_conn */
+    r2p2_hdr.is_final_req_of_conn() = request_id_tuple.is_final_req_of_conn_;
 
     cl_addr_thread_t cl_tup = std::make_tuple(request_id_tuple.cl_addr_,
                                               request_id_tuple.cl_thread_id_);

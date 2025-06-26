@@ -71,7 +71,7 @@ void R2p2::send_to_application(hdr_r2p2 &r2p2_hdr, int req_resp_size)
         // req_resp_size meaningless for now
         try
         {
-            thread_id_to_app_.at(r2p2_hdr.sr_thread_id())->req_recv(req_resp_size, RequestIdTuple(r2p2_hdr.req_id(), r2p2_hdr.app_level_id(), r2p2_hdr.cl_addr(), r2p2_hdr.sr_addr(), r2p2_hdr.cl_thread_id(), r2p2_hdr.sr_thread_id(), r2p2_hdr.msg_creation_time()));
+            thread_id_to_app_.at(r2p2_hdr.sr_thread_id())->req_recv(req_resp_size, RequestIdTuple(r2p2_hdr.req_id(), r2p2_hdr.app_level_id(), r2p2_hdr.cl_addr(), r2p2_hdr.sr_addr(), r2p2_hdr.cl_thread_id(), r2p2_hdr.sr_thread_id(), r2p2_hdr.is_final_req_of_conn(), r2p2_hdr.msg_creation_time()));
         }
         catch (const std::out_of_range &e)
         {
@@ -83,7 +83,7 @@ void R2p2::send_to_application(hdr_r2p2 &r2p2_hdr, int req_resp_size)
     {
         try
         {
-            thread_id_to_app_.at(r2p2_hdr.cl_thread_id())->req_success(req_resp_size, RequestIdTuple(r2p2_hdr.req_id(), r2p2_hdr.app_level_id(), r2p2_hdr.cl_addr(), r2p2_hdr.sr_addr(), r2p2_hdr.cl_thread_id(), r2p2_hdr.sr_thread_id(), r2p2_hdr.msg_creation_time()));
+            thread_id_to_app_.at(r2p2_hdr.cl_thread_id())->req_success(req_resp_size, RequestIdTuple(r2p2_hdr.req_id(), r2p2_hdr.app_level_id(), r2p2_hdr.cl_addr(), r2p2_hdr.sr_addr(), r2p2_hdr.cl_thread_id(), r2p2_hdr.sr_thread_id(), r2p2_hdr.is_final_req_of_conn(), r2p2_hdr.msg_creation_time()));
         }
         catch (const std::out_of_range &e)
         {
