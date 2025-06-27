@@ -324,7 +324,8 @@ void R2p2CCHybrid::send_to_transport(hdr_r2p2 &r2p2_hdr, int payload, int32_t da
     slog::log4(debug_, this_addr_, "R2p2CCHybrid::send_to_transport(). Msg type:", r2p2_hdr.msg_type(),
                "payload:", payload, "Destination", daddr, "App lvl id:",
                r2p2_hdr.app_level_id(), "req id", r2p2_hdr.req_id(), "pkt_id():", r2p2_hdr.pkt_id(),
-               is_single_pkt_request,
+               "is_single_pkt_request:", is_single_pkt_request,
+               "first():", r2p2_hdr.first(),
                "is_final_req_of_conn:", r2p2_hdr.is_final_req_of_conn(),
                "|", is_reqzero, is_reqzero_of_multipkt, is_multi_pkt_req_not_req0, is_reply, "|");
                
@@ -737,8 +738,7 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
     // set missing info of msg_state
     assert(msg_state != nullptr);
     /* Dale: allow msg state update if is msg extension */
-    if ((r2p2_hdr.msg_type() == hdr_r2p2::REQUEST && r2p2_hdr.is_msg_extension()) ||
-        (msg_state->unsent_bytes_ == 14) && (!is_single_packet_msg(&r2p2_hdr) && r2p2_hdr.msg_type() == hdr_r2p2::REQUEST))
+    if ((msg_state->unsent_bytes_ == 14 || r2p2_hdr.is_msg_extension()) && (!is_single_packet_msg(&r2p2_hdr) && r2p2_hdr.msg_type() == hdr_r2p2::REQUEST))
     {
         // ... only applies to multi-packet requests. Back compat..
         msg_state->unsent_bytes_ += payload;
@@ -746,6 +746,13 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
         slog::log6(debug_, this_addr_, "Set missing msg_state info: unsent_bytes_=", msg_state->unsent_bytes_, "total_bytes_=", msg_state->total_bytes_);
     }
 
+    /** Dale: TODO: BUG
+     * 27/06/2025
+     * Bug: pkt_count re-calc is buggy for small byteloads: e.g. if each byteload is 1000B, pkt_count would potentially not be incremented even after 2*1000B. (e.g. 3000/1458=2.05, 4000/1458=2.74). This is especially tricky for intermittent flows, where after 3000B a reply is issued and received. So the next 1000 bytes should require 1 more pkt, bringing total to 4 pkts, but this calc will wrongly calc total pkts to = 3.
+     * Impact #1: affects when reply is issued (causes reply to be erroneously not issued), affects when msg creation time is allowed to update => can affect FCT measurement.
+     * Impact #2: number of replies issued can be wrong!
+     * Consolation: However, if each connection is only used by 1 app-lvl request and then thrown away, then technically the msg creation time never needs to be reset. So this bug won't affect FCT.
+     */
     // recalculate pkt_id (message size in pkts, carried by first() pkt)
     // because this sender will not send a req0 any more.
     uint32_t pkt_count = msg_state->total_bytes_ / MAX_R2P2_PAYLOAD;
@@ -758,6 +765,7 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
     msg_state->r2p2_hdr_->is_final_req_of_conn() = r2p2_hdr.is_final_req_of_conn();
     slog::log4(debug_, this_addr_, "R2p2CCHybrid::sending_request() to", daddr,
                "app lvl id:", r2p2_hdr.app_level_id(), "payload", payload,
+               "total bytes:", msg_state->total_bytes_,
                "total unsent bytes:", msg_state->unsent_bytes_, "changed pkt_id() to",
                msg_state->r2p2_hdr_->pkt_id(), "is_final_req_of_conn:", msg_state->r2p2_hdr_->is_final_req_of_conn());
     /* Dale: don't do check if request is msg extension (unsent bytes will additionally include any pre-existing bytes) */
