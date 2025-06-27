@@ -7,8 +7,10 @@ CLIENT_INJECTION_RATE_GBPS = "60"
 PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
 PATH_TO_SIM_RESULTS = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/results/"
 PATH_TO_EXPERIMENTS = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/config/"
-PATH_TO_EXPERIMENTS_SCRIPTS = PATH_TO_EXPERIMENTS + "dale_experiments/"
-PATH_TO_EXPERIMENTS_INPUTS = PATH_TO_EXPERIMENTS + "manual-req-intervals/dale_experiments/"
+SCRIPTS_RELATIVE_PATH = "dale_experiments/"
+PATH_TO_EXPERIMENTS_SCRIPTS = PATH_TO_EXPERIMENTS + SCRIPTS_RELATIVE_PATH
+MRI_RELATIVE_PATH = "dale_experiments/"
+PATH_TO_EXPERIMENTS_INPUTS = PATH_TO_EXPERIMENTS + "manual-req-intervals/" + MRI_RELATIVE_PATH
 
 class FlowTraceEvent:
     def __init__(self, timestamp, event, local_addr, remote_addr, thread_id, req_id, app_level_id, req_duration, req_size, resp_size, pending_tasks_size, wildcard):
@@ -44,14 +46,18 @@ class ManualReqInterval:
         mri_byteloads_spec.append(str(src))
         time_start = self.TIME_STEP_S
         for i in range(0, num_byteloads):
-           byteload_str = "{:f}|{}|{:f}".format(time_start + i * inter_byteload_period_us * self.TIME_STEP_S, str(dst), byteload_size_B) 
+           byteload_str = "{:f}|{}|{}".format(time_start + i * inter_byteload_period_us * self.TIME_STEP_S, str(dst), byteload_size_B) 
            mri_byteloads_spec.append(byteload_str)
         self.mri_list_to_csv(mri_byteloads_spec, mri_filepath)
         return mri_filepath
 
     @staticmethod
     def get_mri_filepath(parent_dir, num_byteloads, byteload_size_B, inter_byteload_period_us):
-        return parent_dir + "{}#-{}B-{}us.csv".format(num_byteloads, byteload_size_B, inter_byteload_period_us)
+        return parent_dir + ManualReqInterval.get_mri_filename(num_byteloads, byteload_size_B, inter_byteload_period_us) 
+
+    @staticmethod
+    def get_mri_filename(num_byteloads, byteload_size_B, inter_byteload_period_us):
+        return "{}#-{}B-{}us.csv".format(num_byteloads, byteload_size_B, inter_byteload_period_us)
 
     @staticmethod
     def mri_list_to_csv(mri_list, mri_filepath):
@@ -70,20 +76,24 @@ class SimSpecScript:
     def __init__(self, parent_dir):
         self.parent_dir = parent_dir
     
-    def create_ssird_noburst_params_script(self, mri_parent_dir, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration):
-        script_filepath = self.parent_dir + "{}#-{}B-{}us.sh".format(num_byteloads, byteload_size_B, inter_byteload_period_us)
+    def create_ssird_noburst_params_script(self, mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration):
+        script_filepath = self.parent_dir + self.get_param_script_filename(num_byteloads, byteload_size_B, inter_byteload_period_us)
 
         with open(self.PATH_TO_SSIRD_TEMPLATE_NOBURST) as template, open(script_filepath, 'w') as fout:
             lines_in = template.readlines()
             for i in range(len(lines_in)):
                 line_out = lines_in[i]
                 if self.MANUAL_REQ_INTERVAL_FILE_L in line_out:
-                    line_out = "{}='{}'\n".format(self.MANUAL_REQ_INTERVAL_FILE_L, mri_parent_dir)
+                    line_out = "{}='{}'\n".format(self.MANUAL_REQ_INTERVAL_FILE_L, mri_relative_path)
                 elif self.DURATION_MODIFIER_L in line_out:
                     line_out = "{}='{:f}'\n".format(self.DURATION_MODIFIER_L, sim_duration)
                 fout.write(line_out)
         
-        print(script_filepath)
+        return script_filepath
+
+    @staticmethod
+    def get_param_script_filename(num_byteloads, byteload_size_B, inter_byteload_period_us):
+        return "{}#-{}B-{}us.sh".format(num_byteloads, byteload_size_B, inter_byteload_period_us)
 
 
 class FctExperiment:
@@ -99,13 +109,25 @@ class FctExperiment:
 
     def execute(self):
         print("# Execute experiment " + self.experiment_name)
-        mri_file_path = self.prep_experiment_input()
-        self.prep_experiment_spec_scripts(mri_file_path)
+
+        src = 0
+        dst = 1
+        num_byteloads = 4
+        byteload_size_B = 1000
+        inter_byteload_period_us = 100
+        # is a heuristic
+        sim_duration = 2 * num_byteloads * inter_byteload_period_us * ManualReqInterval.TIME_STEP_S
+
+        print("sim_duration={:f}".format(sim_duration))
+
+        self.prep_experiment_input(src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us)
+        self.prep_experiment_spec_scripts(num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration)
         # self.run_experiment()
         # self.process_results_fct()
+
         return self.fct
         
-    def prep_experiment_input(self):
+    def prep_experiment_input(self, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us):
         print("## Preparing experiment input MRIs")
         try:
             print("### Creating MRI inputs parent dir: " + self.mri_input_dir)
@@ -114,10 +136,10 @@ class FctExperiment:
             print("File " + self.mri_input_dir + " aready exists.")
         
         mri = ManualReqInterval(self.mri_input_dir)
-        mri_filepath = mri.create_p2p_intermittent_mri(src=0, dst=1, num_byteloads=3, byteload_size_B=1000, inter_byteload_period_us=1000)
+        mri_filepath = mri.create_p2p_intermittent_mri(src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us)
         return mri_filepath
 
-    def prep_experiment_spec_scripts(self, mri_filepath):
+    def prep_experiment_spec_scripts(self, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration):
         print("## Preparing experiment spec scripts")
         try:
             print("### Creating spec scripts parent dir: " + self.param_scripts_dir)
@@ -126,9 +148,9 @@ class FctExperiment:
             print("File " + self.param_scripts_dir + " aready exists.")
 
         sim_script = SimSpecScript(self.param_scripts_dir)        
-        sim_script.create_ssird_noburst_params_script(mri_parent_dir=mri_filepath, num_byteloads=3, byteload_size_B=1000, inter_byteload_period_us=1000, sim_duration=0.0004)
-        ''' TODO '''
-        pass
+        mri_relative_path = "{}{}/{}".format(MRI_RELATIVE_PATH, self.experiment_name, ManualReqInterval.get_mri_filename(num_byteloads, byteload_size_B, inter_byteload_period_us))
+        sim_script.create_ssird_noburst_params_script(mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration)
+        return sim_script
 
     def run_experiment(self):
         print("## Running experiment")
