@@ -746,12 +746,10 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
         slog::log6(debug_, this_addr_, "Set missing msg_state info: unsent_bytes_=", msg_state->unsent_bytes_, "total_bytes_=", msg_state->total_bytes_);
     }
 
-    /** Dale: TODO: BUG
+    /** Dale: TODO: BUG_01
      * 27/06/2025
      * Bug: pkt_count re-calc is buggy for small byteloads: e.g. if each byteload is 1000B, pkt_count would potentially not be incremented even after 2*1000B. (e.g. 3000/1458=2.05, 4000/1458=2.74). This is especially tricky for intermittent flows, where after 3000B a reply is issued and received. So the next 1000 bytes should require 1 more pkt, bringing total to 4 pkts, but this calc will wrongly calc total pkts to = 3.
-     * Impact #1: affects when reply is issued (causes reply to be erroneously not issued), affects when msg creation time is allowed to update => can affect FCT measurement.
-     * Impact #2: number of replies issued can be wrong!
-     * Consolation: However, if each connection is only used by 1 app-lvl request and then thrown away, then technically the msg creation time never needs to be reset. So this bug won't affect FCT.
+     * Impact: affects when reply is issued (causes reply to be erroneously not issued) => number of replies issued can be wrong! affects FCT measurement cuz FCT is measured based on reply recv time => MUST FIX!
      */
     // recalculate pkt_id (message size in pkts, carried by first() pkt)
     // because this sender will not send a req0 any more.
@@ -760,6 +758,18 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
         pkt_count++;
     assert(pkt_count > 0);
     pkt_count--; // convetion. pkt_id() tells the receiver how many _more_ pkts to expect
+    /** Dale: FIX: BUG_01 (?)
+     * 27/06/2025
+     * Do pktcount += 1 if payload < 1458B such that total_bytes_increment does not lead to an incr in pkt count even though a new request has been made.
+     * Exception: don't do this increment for the first pkt of this request, i.e. where pkt_id() == 0 here.
+     * Seems to work...
+     */
+    uint32_t pkt_count_prev = msg_state->r2p2_hdr_->pkt_id();
+    if (payload < MAX_R2P2_PAYLOAD && pkt_count == pkt_count_prev && pkt_count_prev != 0)
+    {
+        slog::log6(debug_, this_addr_, "padding pkt_count. old pkt_count=", pkt_count_prev, "new pkt_count=", pkt_count + 1);
+        pkt_count++;
+    }
     msg_state->r2p2_hdr_->pkt_id() = pkt_count;
     /* Dale: update if this is the final request of this connection */
     msg_state->r2p2_hdr_->is_final_req_of_conn() = r2p2_hdr.is_final_req_of_conn();
