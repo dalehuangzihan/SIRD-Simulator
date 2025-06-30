@@ -7,13 +7,15 @@ struct ServerRequestState
                            req_pkts_received_(0),
                            req_bytes_received_(0),
                            reply_sent_(false),
-                           old_state_(false) {}
+                           old_state_(false),
+                           is_safe_to_clear_(false){}
     int32_t cl_addr_;
     int req_pkts_expected_;
     int req_pkts_received_;
     int req_bytes_received_;
     bool reply_sent_;
     bool old_state_;
+    bool is_safe_to_clear_;
 };
 
 R2p2Server::R2p2Server(R2p2 *r2p2_layer) : r2p2_layer_(r2p2_layer),
@@ -25,6 +27,7 @@ R2p2Server::R2p2Server(R2p2 *r2p2_layer) : r2p2_layer_(r2p2_layer),
 
 R2p2Server::~R2p2Server()
 {
+    slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "deleting r2p2server");
     delete r2p2_layer_;
     for (auto it_map = cl_tup_to_pending_requests_.begin();
          it_map != cl_tup_to_pending_requests_.end(); it_map++)
@@ -56,6 +59,7 @@ void R2p2Server::handle_request_pkt(hdr_r2p2 &r2p2_hdr, int payload)
     }
     else
     {
+        slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "create new req_id_to_req_state");
         req_id_to_req_state = new req_id_to_req_state_t();
         cl_tup_to_pending_requests_[cl_tup] = req_id_to_req_state;
     }
@@ -63,12 +67,19 @@ void R2p2Server::handle_request_pkt(hdr_r2p2 &r2p2_hdr, int payload)
     // 4 cases: (state_exists, pkt->first()): (0,0), (0,1), (1,0), (1,1)
     ServerRequestState *req_state = NULL;
     // New message?
+    req_id_to_req_state_t::iterator it;
+    slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "req_id_state_map=", req_id_to_req_state, "size=", req_id_to_req_state->size());
+    for (it = req_id_to_req_state->begin(); it != req_id_to_req_state->end(); it++ )
+    {
+        slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "#### req_id=", it->first, "server_req_state_addr=", it->second);
+    }
     auto search_msg = req_id_to_req_state->find(r2p2_hdr.req_id());
     // happens only once per message
     if (search_msg == req_id_to_req_state->end())
     {
         bool single_pkt = false;
         req_state = new ServerRequestState();
+        req_state->is_safe_to_clear_ = r2p2_hdr.is_final_req_of_conn();
         // new message. Is it received out of order (i.e., is it not first())?
         if (r2p2_hdr.first())
         {
@@ -265,7 +276,7 @@ void R2p2Server::garbage_collect_state()
         for (auto it = state_map->begin(); it != state_map->end();)
         {
             ServerRequestState *state = it->second;
-            if (state->reply_sent_)
+            if (state->reply_sent_ && state->is_safe_to_clear_)
             {
                 if (state->old_state_)
                 {
