@@ -2,6 +2,7 @@ import sys
 import subprocess
 from pathlib import Path
 import csv
+import logging
 
 # Common experiment param; value is meaningful only when req_interval_distr is not 'manual'
 CLIENT_INJECTION_RATE_GBPS = "60"
@@ -12,12 +13,15 @@ DCTCP_PROTO_NAME = f"DCTCP-{DCTCP_ECN_MARKING_THRESHOLD}"
 
 PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
 PATH_TO_SIM_COORD = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/"
+PATH_TO_POST_PROCESS = PATH_TO_SIRD_SIM + "post_process/"
 PATH_TO_SIM_RESULTS = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/results/"
 PATH_TO_EXPERIMENTS = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/config/"
 SCRIPTS_RELATIVE_PATH = "dale_experiments/"
 PATH_TO_EXPERIMENTS_SCRIPTS = PATH_TO_EXPERIMENTS + SCRIPTS_RELATIVE_PATH
 MRI_RELATIVE_PATH = "dale_experiments/"
 PATH_TO_EXPERIMENTS_INPUTS = PATH_TO_EXPERIMENTS + "manual-req-intervals/" + MRI_RELATIVE_PATH
+
+logger = logging.getLogger(__name__)
 
 class FlowTraceEvent:
     def __init__(self, timestamp, event, local_addr, remote_addr, thread_id, req_id, app_level_id, req_duration, req_size, resp_size, pending_tasks_size, wildcard):
@@ -66,7 +70,6 @@ class ManualReqInterval:
     def mri_list_to_csv(mri_list, mri_filepath):
         with open(mri_filepath, 'w') as mri_file:
             wr = csv.writer(mri_file, quoting=csv.QUOTE_NONE)
-            print(mri_list)
             wr.writerow(mri_list)
 
 class SimSpecScript:
@@ -129,12 +132,12 @@ class FctExperiment:
         self.app_trace_file_path = ""
 
     def execute(self):
-        print("\n=====")
-        print("Execute experiment " + self.experiment_name)
+        logger.info("\n=====")
+        logger.info("Execute experiment " + self.experiment_name)
 
         # is a heuristic
         sim_duration = 2 * num_byteloads * inter_byteload_period_us * ManualReqInterval.TIME_STEP_S
-        print("sim_duration={:f}".format(sim_duration))
+        logger.info("sim_duration={:f}".format(sim_duration))
 
         self.prep_experiment_input(src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us)
         ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration)
@@ -148,33 +151,32 @@ class FctExperiment:
                 ssird_fct = self.process_results_fct(app_trace_file_path)
 
             if proto == DCTCP_PROTO_NAME:
-                print(dctcp_sim_script_path)
                 self.run_experiment(proto, dctcp_sim_script_path, f"{PATH_TO_SIM_COORD}outputs/{DCTCP_PROTO_NAME}-{self.experiment_name}.out")
                 dctcp_fct = self.process_results_fct(app_trace_file_path)
 
         return ssird_fct, dctcp_fct
         
     def prep_experiment_input(self, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us):
-        print("-----")
-        print("Preparing experiment input MRIs")
+        logger.info("-----")
+        logger.info("Preparing experiment input MRIs")
         try:
-            print("### Creating MRI inputs parent dir: " + self.mri_input_dir)
+            logger.info("### Creating MRI inputs parent dir: " + self.mri_input_dir)
             Path(self.mri_input_dir).mkdir(parents=True, exist_ok=False)
         except FileExistsError:
-            print("File " + self.mri_input_dir + " aready exists.")
+            logger.info("File " + self.mri_input_dir + " aready exists.")
         
         mri = ManualReqInterval(self.mri_input_dir)
         mri_filepath = mri.create_p2p_intermittent_mri(src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us)
         return mri_filepath
 
     def prep_experiment_spec_scripts(self, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration):
-        print("-----")
-        print("Preparing experiment spec scripts")
+        logger.info("-----")
+        logger.info("Preparing experiment spec scripts")
         try:
-            print("### Creating spec scripts parent dir: " + self.param_scripts_dir)
+            logger.info("### Creating spec scripts parent dir: " + self.param_scripts_dir)
             Path(self.param_scripts_dir).mkdir(parents=True, exist_ok=False)
         except FileExistsError:
-            print("#### WARNING: File " + self.param_scripts_dir + " aready exists.", file=sys.stderr)
+            logger.info("#### WARNING: File " + self.param_scripts_dir + " aready exists.")
 
         sim_script = SimSpecScript(self.param_scripts_dir)        
         mri_relative_path = "{}{}/{}.csv".format(MRI_RELATIVE_PATH, self.experiment_family, self.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us))
@@ -184,10 +186,10 @@ class FctExperiment:
         return ssird_sim_script_path, dctcp_sim_script_path
 
     def run_experiment(self, proto_name, sim_script_path, sim_output_path):
-        print("-----")
-        print("Running experiment for " + proto_name)
-        print(f"### Script:{sim_script_path}")
-        print(f"### Output:{sim_output_path}")
+        logger.info("-----")
+        logger.info("Running experiment for " + proto_name)
+        logger.info(f"### Script:{sim_script_path}")
+        logger.info(f"### Output:{sim_output_path}")
         try:
             result = subprocess.run(
                 [f"{PATH_TO_SIM_COORD}run", sim_script_path, "1", "0", "0", "0", "0"],
@@ -199,17 +201,17 @@ class FctExperiment:
             with open(sim_output_path, "w") as f:
                 f.write(result.stdout)
         except subprocess.CalledProcessError as e:
-            print(f"Script failed with exit code {e.returncode}", file=sys.stderr)
-            print("Error output:", e.stderr, file=sys.stderr)
+            logger.info(f"Script failed with exit code {e.returncode}")
+            logger.info("Error output:", e.stderr)
             sys.exit(1)
         except FileNotFoundError:
-            print("The file was not found")
+            logger.error("The file was not found")
         except IOError:
-            print("An error occurred while reading the file")
+            logger.error("An error occurred while reading the file")
 
     def process_results_fct(self, app_trace_file_path):
-        print("\nProcessing results")
-        print(app_trace_file_path)
+        logger.info("\nProcessing results")
+        logger.info(app_trace_file_path)
         flow_trace_event_queue = self.read_app_trace_file(app_trace_file_path)
         return self.get_full_flow_duration(flow_trace_event_queue) 
 
@@ -223,9 +225,9 @@ class FctExperiment:
                     flow_trace_event_queue.append(flow_trace_event)
             return flow_trace_event_queue
         except FileNotFoundError:
-            print("The file was not found")
+            logger.error("The file was not found")
         except IOError:
-            print("An error occurred while reading the file")
+            logger.error("An error occurred while reading the file")
 
     def get_full_flow_duration(self, flow_trace_event_queue):
         ''' This mtd calculates FCT using timestamps '''
@@ -238,6 +240,15 @@ class FctExperiment:
     @staticmethod
     def get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us):
         return "{}#-{}B-{}us".format(num_byteloads, byteload_size_B, inter_byteload_period_us)
+
+def init_logs(output_path):
+    logging.basicConfig(
+        level=logging.INFO,
+        handlers=[
+            logging.FileHandler(output_path, mode='w'),
+            logging.StreamHandler()
+        ]
+    )
 
 '''
 BUG BUG_01-related: 
@@ -252,7 +263,9 @@ if __name__ == "__main__":
     src = 0
     dst = 1
     num_byteloads = 4
-    byteload_size_B = 1000 #1000000 #100000 #10000 #1000
+    byteload_size_B = 100000 #1000000 #100000 #10000 #1000
+
+    init_logs(output_path=f"experiment_output/{FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, "variable_")}.log")
 
     inter_byteload_period_us_list = [100, 500, 1000, 5000, 10000]
     # inter_byteload_period_us_list = range(100, 300 + 1, 100)
@@ -265,7 +278,7 @@ if __name__ == "__main__":
         ssird_fct_list.append(ssird_fct)
         dctcp_fct_list.append(dctcp_fct)
 
-    print(f"Byteload Size: {byteload_size_B} Bytes")
-    print(f"Time Periods: {inter_byteload_period_us_list}")
-    print(f"SSIRD FCT: {ssird_fct_list}")
-    print(f"DCTCP FCT: {dctcp_fct_list}")
+    logger.info(f"Byteload Size: {byteload_size_B} Bytes")
+    logger.info(f"Time Periods: {inter_byteload_period_us_list}")
+    logger.info(f"SSIRD FCT: {ssird_fct_list}")
+    logger.info(f"DCTCP FCT: {dctcp_fct_list}")
