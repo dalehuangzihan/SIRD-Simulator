@@ -5,6 +5,10 @@ import csv
 
 # Common experiment param; value is meaningful only when req_interval_distr is not 'manual'
 CLIENT_INJECTION_RATE_GBPS = "60"
+DCTCP_ECN_MARKING_THRESHOLD = "50"
+
+SSIRD_PROTO_NAME = "SSIRD"
+DCTCP_PROTO_NAME = f"DCTCP-{DCTCP_ECN_MARKING_THRESHOLD}"
 
 PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
 PATH_TO_SIM_COORD = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/"
@@ -71,12 +75,14 @@ class SimSpecScript:
 
     MANUAL_REQ_INTERVAL_FILE_L = "manual_req_interval_file_l"
     DURATION_MODIFIER_L = "duration_modifier_l"
+    DCTCP_K_L = "dctcp_k_l"
+    SIMULATION_NAME_L = "simulation_name_l"
 
     def __init__(self, parent_dir):
         self.parent_dir = parent_dir
     
     def create_ssird_noburst_params_script(self, mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration):
-        script_filepath = self.parent_dir + FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + ".sh"
+        script_filepath = self.parent_dir + f"{SSIRD_PROTO_NAME}-" + FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + ".sh"
         with open(self.PATH_TO_SSIRD_TEMPLATE_NOBURST) as template, open(script_filepath, 'w') as fout:
             lines_in = template.readlines()
             for i in range(len(lines_in)):
@@ -88,11 +94,28 @@ class SimSpecScript:
                 fout.write(line_out)
         return script_filepath
 
+    def create_dctcp_noburst_params_script(self, mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration):
+        script_filepath = self.parent_dir + f"{DCTCP_PROTO_NAME}-" + FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + ".sh"
+        with open(self.PATH_TO_DCTCP_TEMPLATE_NOBURST) as template, open(script_filepath, 'w') as fout:
+            lines_in = template.readlines()
+            for i in range(len(lines_in)):
+                line_out = lines_in[i]
+                if self.MANUAL_REQ_INTERVAL_FILE_L in line_out:
+                    line_out = "{}='{}'\n".format(self.MANUAL_REQ_INTERVAL_FILE_L, mri_relative_path)
+                elif self.DURATION_MODIFIER_L in line_out:
+                    line_out = "{}='{:f}'\n".format(self.DURATION_MODIFIER_L, sim_duration)
+                elif self.DCTCP_K_L in line_out:
+                    line_out = "{}='{}'\n".format(self.DCTCP_K_L, DCTCP_ECN_MARKING_THRESHOLD)
+                elif self.SIMULATION_NAME_L in line_out:
+                    line_out = "{}='{}'\n".format(self.SIMULATION_NAME_L, DCTCP_PROTO_NAME)
+                fout.write(line_out)
+        return script_filepath
+
 
 class FctExperiment:
-    def __init__(self, experiment_family, sim_name, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us):
+    def __init__(self, experiment_family, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us):
         self.experiment_family = experiment_family
-        self.proto_name = sim_name
+        self.proto_names = proto_names
 
         self.src = src
         self.dst = dst
@@ -100,9 +123,6 @@ class FctExperiment:
         self.byteload_size_B = byteload_size_B
         self.inter_byteload_period_us = inter_byteload_period_us
         self.experiment_name = self.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us)
-
-        self.flow_trace_event_queue = []
-        self.fct = -1
 
         self.mri_input_dir = PATH_TO_EXPERIMENTS_INPUTS + experiment_family + "/"
         self.param_scripts_dir = PATH_TO_EXPERIMENTS_SCRIPTS + experiment_family + "/"
@@ -117,14 +137,22 @@ class FctExperiment:
         print("sim_duration={:f}".format(sim_duration))
 
         self.prep_experiment_input(src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us)
-        sim_script_path = self.prep_experiment_spec_scripts(num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration)
+        ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration)
 
-        self.run_experiment(sim_script_path, f"{PATH_TO_SIM_COORD}outputs/{self.experiment_name}.out")
+        ssird_fct = -1
+        dctcp_fct = -1
+        for proto in self.proto_names:
+            app_trace_file_path = f"{PATH_TO_SIM_RESULTS}{proto}-{self.experiment_name}/data/{proto}/{CLIENT_INJECTION_RATE_GBPS}/applications_trace.str"
+            if proto == SSIRD_PROTO_NAME:
+                self.run_experiment(proto, ssird_sim_script_path, f"{PATH_TO_SIM_COORD}outputs/ssird_{self.experiment_name}.out")
+                ssird_fct = self.process_results_fct(app_trace_file_path)
 
-        self.app_trace_file_path = f"{PATH_TO_SIM_RESULTS}{self.experiment_name}/data/{proto_name}/{CLIENT_INJECTION_RATE_GBPS}/applications_trace.str"
-        self.process_results_fct()
+            if proto == DCTCP_PROTO_NAME:
+                print(dctcp_sim_script_path)
+                self.run_experiment(proto, dctcp_sim_script_path, f"{PATH_TO_SIM_COORD}outputs/{DCTCP_PROTO_NAME}-{self.experiment_name}.out")
+                dctcp_fct = self.process_results_fct(app_trace_file_path)
 
-        return self.fct
+        return ssird_fct, dctcp_fct
         
     def prep_experiment_input(self, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us):
         print("-----")
@@ -150,12 +178,14 @@ class FctExperiment:
 
         sim_script = SimSpecScript(self.param_scripts_dir)        
         mri_relative_path = "{}{}/{}.csv".format(MRI_RELATIVE_PATH, self.experiment_family, self.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us))
-        sim_script_path = sim_script.create_ssird_noburst_params_script(mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration)
-        return sim_script_path
+        ssird_sim_script_path = sim_script.create_ssird_noburst_params_script(mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration)
+        dctcp_sim_script_path = sim_script.create_dctcp_noburst_params_script(mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration)
 
-    def run_experiment(self, sim_script_path, sim_output_path):
+        return ssird_sim_script_path, dctcp_sim_script_path
+
+    def run_experiment(self, proto_name, sim_script_path, sim_output_path):
         print("-----")
-        print("Running experiment")
+        print("Running experiment for " + proto_name)
         print(f"### Script:{sim_script_path}")
         print(f"### Output:{sim_output_path}")
         try:
@@ -177,34 +207,33 @@ class FctExperiment:
         except IOError:
             print("An error occurred while reading the file")
 
-    def process_results_fct(self):
-        print("\n## Processing results")
-        print(self.app_trace_file_path)
-        self.read_app_trace_file()
-        self.fct = self.get_full_flow_duration() 
-        return self.fct
+    def process_results_fct(self, app_trace_file_path):
+        print("\nProcessing results")
+        print(app_trace_file_path)
+        flow_trace_event_queue = self.read_app_trace_file(app_trace_file_path)
+        return self.get_full_flow_duration(flow_trace_event_queue) 
 
-    def read_app_trace_file(self):
+    def read_app_trace_file(self, app_trace_file_path):
+        flow_trace_event_queue = []
         try:
-            with open(self.app_trace_file_path, 'r') as file:
+            with open(app_trace_file_path, 'r') as file:
                 lines = file.readlines()
                 for line in lines:
                     flow_trace_event = FlowTraceEvent.read_flow_trace_from_str(line)
-                    self.flow_trace_event_queue.append(flow_trace_event)
-            return self.flow_trace_event_queue
+                    flow_trace_event_queue.append(flow_trace_event)
+            return flow_trace_event_queue
         except FileNotFoundError:
             print("The file was not found")
         except IOError:
             print("An error occurred while reading the file")
 
-    '''
-    TODO: support filtering by app_level_id
-    '''
-    def get_full_flow_duration(self):
-        final_trace = self.flow_trace_event_queue[len(self.flow_trace_event_queue) - 1]
+    def get_full_flow_duration(self, flow_trace_event_queue):
+        ''' This mtd calculates FCT using timestamps '''
+        first_trace = flow_trace_event_queue[0]
+        assert(first_trace.event == "srq")
+        final_trace = flow_trace_event_queue[len(flow_trace_event_queue) - 1]
         assert(final_trace.event == "rrq")
-        assert(final_trace.app_level_id == "0")
-        return final_trace.req_duration
+        return float(final_trace.timestamp) - float(first_trace.timestamp)
 
     @staticmethod
     def get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us):
@@ -218,22 +247,25 @@ BUG BUG_01-related:
 '''
 if __name__ == "__main__":
     experiment_name = "TEST"
-    proto_name = "SSIRD"
+    proto_names = [SSIRD_PROTO_NAME, DCTCP_PROTO_NAME]
 
     src = 0
     dst = 1
     num_byteloads = 4
     byteload_size_B = 1000 #1000000 #100000 #10000 #1000
 
-    inter_byteload_period_us_list = [50, 100, 200, 300, 400, 500]
+    inter_byteload_period_us_list = [100, 500, 1000, 5000, 10000]
     # inter_byteload_period_us_list = range(100, 300 + 1, 100)
-    fct_list = []
+    ssird_fct_list = []
+    dctcp_fct_list = []
 
     for inter_byteload_period_us in inter_byteload_period_us_list:
-        fct_exp1 = FctExperiment(experiment_name, proto_name, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us) 
-        fct = fct_exp1.execute() 
-        fct_list.append(fct)
-        print(f"fct={fct}")
+        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us) 
+        ssird_fct, dctcp_fct = fct_exp1.execute() 
+        ssird_fct_list.append(ssird_fct)
+        dctcp_fct_list.append(dctcp_fct)
 
-
-    print(fct_list)
+    print(f"Byteload Size: {byteload_size_B} Bytes")
+    print(f"Time Periods: {inter_byteload_period_us_list}")
+    print(f"SSIRD FCT: {ssird_fct_list}")
+    print(f"DCTCP FCT: {dctcp_fct_list}")

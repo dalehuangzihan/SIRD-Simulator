@@ -27,12 +27,13 @@ global_debug='6' # from 1 to 7 (7 = super verbose). set it to 0 to enable the fo
 # ===================== r2p2 parameters =====================
 
 # ===================== dctcp parameters =====================
-dctcp_k_l="50" # dctcp's ecn marking threshold in packets
+# dctcp's ecn marking threshold in packets
+dctcp_k_l=`DUMMY` 
 
 # ===================== homa parametrs =====================
 homa_workload_type=5
 
 # ===================== protocols =====================
 transp_prots='dctcp'
-simulation_name_l='dctcp-50'
+simulation_name_l='DUMMY'
 
