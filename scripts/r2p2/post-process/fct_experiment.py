@@ -7,6 +7,7 @@ import logging
 # Common experiment param; value is meaningful only when req_interval_distr is not 'manual'
 CLIENT_INJECTION_RATE_GBPS = "60"
 DCTCP_ECN_MARKING_THRESHOLD = "50"
+LINK_SPEED_GBPS = pow(10,9)
 
 SSIRD_PROTO_NAME = "SSIRD"
 DCTCP_PROTO_NAME = f"DCTCP-{DCTCP_ECN_MARKING_THRESHOLD}"
@@ -131,16 +132,16 @@ class FctExperiment:
         self.param_scripts_dir = PATH_TO_EXPERIMENTS_SCRIPTS + experiment_family + "/"
         self.app_trace_file_path = ""
 
-    def execute(self):
+    def execute(self, ssird_sim_dur, dctcp_sim_dur):
         logger.info("\n=====")
         logger.info("Execute experiment " + self.experiment_name)
 
         # is a heuristic
-        sim_duration = 2 * self.num_byteloads * self.inter_byteload_period_us * ManualReqInterval.TIME_STEP_S
-        logger.info("sim_duration={:f}".format(sim_duration))
+        # sim_duration = 2 * self.num_byteloads * self.inter_byteload_period_us * ManualReqInterval.TIME_STEP_S
+        logger.info("ssird_sim_duration={:f}; dctcp_sim_duration={:f}".format(ssird_sim_dur, dctcp_sim_dur))
 
         self.prep_experiment_input(self.src, self.dst, self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us)
-        ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us, sim_duration)
+        ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us, ssird_sim_duration=ssird_sim_dur, dctcp_sim_duration=dctcp_sim_dur)
 
         ssird_fct = -1
         dctcp_fct = -1
@@ -169,7 +170,7 @@ class FctExperiment:
         mri_filepath = mri.create_p2p_intermittent_mri(src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us)
         return mri_filepath
 
-    def prep_experiment_spec_scripts(self, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration):
+    def prep_experiment_spec_scripts(self, num_byteloads, byteload_size_B, inter_byteload_period_us, ssird_sim_duration, dctcp_sim_duration):
         logger.info("-----")
         logger.info("Preparing experiment spec scripts")
         try:
@@ -180,8 +181,8 @@ class FctExperiment:
 
         sim_script = SimSpecScript(self.param_scripts_dir)        
         mri_relative_path = "{}{}/{}.csv".format(MRI_RELATIVE_PATH, self.experiment_family, self.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us))
-        ssird_sim_script_path = sim_script.create_ssird_noburst_params_script(mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration)
-        dctcp_sim_script_path = sim_script.create_dctcp_noburst_params_script(mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration)
+        ssird_sim_script_path = sim_script.create_ssird_noburst_params_script(mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, ssird_sim_duration)
+        dctcp_sim_script_path = sim_script.create_dctcp_noburst_params_script(mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, dctcp_sim_duration)
 
         return ssird_sim_script_path, dctcp_sim_script_path
 
@@ -241,6 +242,13 @@ class FctExperiment:
     def get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us):
         return "{}#-{}B-{}us".format(num_byteloads, byteload_size_B, inter_byteload_period_us)
 
+'''
+Is the ideal fct of 1 byteload without any proto-related delays.
+Returned value is in seconds.
+'''
+def get_ideal_fct_s(link_speed_Bps, num_byteload_injections, inter_byteload_interval):
+    return num_byteload_injections * inter_byteload_interval / float(link_speed_Bps)
+
 def init_logs(output_path):
     logging.basicConfig(
         level=logging.INFO,
@@ -269,19 +277,36 @@ def fct_time_period_experiment():
 
     inter_byteload_period_us_list = [100, 500, 1000, 5000, 10000]
     # inter_byteload_period_us_list = range(100, 300 + 1, 100)
+    num_of_experiments = len(inter_byteload_period_us_list)
+
+    ssird_sim_dur_list = [2 * num_byteloads * p * ManualReqInterval.TIME_STEP_S for p in inter_byteload_period_us_list] 
+    dctcp_sim_dur_list = [2 * num_byteloads * p * ManualReqInterval.TIME_STEP_S for p in inter_byteload_period_us_list] 
+
+    ideal_fct_list = [get_ideal_fct_s(LINK_SPEED_GBPS, num_byteloads, inter_byteload_interval) for inter_byteload_interval in inter_byteload_period_us_list]
     ssird_fct_list = []
     dctcp_fct_list = []
 
-    for inter_byteload_period_us in inter_byteload_period_us_list:
-        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us) 
-        ssird_fct, dctcp_fct = fct_exp1.execute() 
+    assert num_of_experiments == len(inter_byteload_period_us_list)
+    assert num_of_experiments == len(ideal_fct_list)
+    assert num_of_experiments == len(ssird_sim_dur_list)
+    assert num_of_experiments == len(dctcp_sim_dur_list)
+
+    for i in range (0, num_of_experiments):
+        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us_list[i]) 
+        ssird_fct, dctcp_fct = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(ssird_fct)
         dctcp_fct_list.append(dctcp_fct)
 
     logger.info(f"Byteload Size: {byteload_size_B} Bytes")
     logger.info(f"Time Periods: {inter_byteload_period_us_list}")
-    logger.info(f"SSIRD FCT: {ssird_fct_list}")
-    logger.info(f"DCTCP FCT: {dctcp_fct_list}")
+    logger.info(f"Sim duration (SSIRD): {ssird_sim_dur_list}")
+    logger.info(f"Sim duration (DCTCP): {dctcp_sim_dur_list}")
+    logger.info(f"* IDEAL FCT: {ideal_fct_list}")
+    logger.info(f"* SSIRD FCT: {ssird_fct_list}")
+    logger.info(f"* DCTCP FCT: {dctcp_fct_list}")
+
+    assert num_of_experiments == ssird_fct_list
+    assert num_of_experiments == dctcp_fct_list
 
 '''
 Sweep application pacing rate of byteloads from 1% BW to 100% BW capacity. (i.e. 1GBps to 100GBps)
@@ -293,27 +318,40 @@ def fct_rate_sweep_experiment():
     src = 0
     dst = 1
     num_byteloads = 10
-    inter_byteload_period_us = 1000 # is 1ms
+    inter_byteload_period_us = 100 # is 0.1ms
 
     KILOBYTE = 1000
-    # byteload_size_KB = [100, 500] # 100KB to 10MB
+    # byteload_size_KB = [50000] # 100KB to 10MB
     byteload_size_KB = [100, 500, 1000, 5000, 10000] # 100KB to 10MB
     byteload_size_B_list = [n * KILOBYTE for n in byteload_size_KB] 
+    num_of_experiments = len(byteload_size_B_list)
+
+    # ssird_sim_dur_list = [inter_byteload_period_us * 5] 
+    ssird_sim_dur_list = [inter_byteload_period_us * 2, inter_byteload_period_us * 2, inter_byteload_period_us * 2, inter_byteload_period_us * 2, inter_byteload_period_us * 2] 
+    dctcp_sim_dur_list = [inter_byteload_period_us * 2, inter_byteload_period_us * 2, inter_byteload_period_us * 2, inter_byteload_period_us * 2, inter_byteload_period_us * 2] 
 
     init_logs(output_path=f"experiment_output/{FctExperiment.get_experiment_name(num_byteloads, "variable_", inter_byteload_period_us)}.log")
 
-    load_gbps = [(num_byteloads * n)/(inter_byteload_period_us * pow(10, -6) * pow(10, 9)) for n in byteload_size_B_list]
+    load_gbps = [n/(inter_byteload_period_us * pow(10, -6) * pow(10, 9)) for n in byteload_size_B_list]
     logger.info(f"Time Period: {inter_byteload_period_us}")
     logger.info(f"Num Byteloads: {num_byteloads}")
     logger.info(f"Byteload Size (Bytes): {byteload_size_B_list}")
     logger.info(f"Load GBps: {load_gbps}")
+    logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
+    logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
 
+    ideal_fct_list = [get_ideal_fct_s(LINK_SPEED_GBPS, num_byteloads, inter_byteload_period_us)] * num_of_experiments
     ssird_fct_list = []
     dctcp_fct_list = []
 
-    for byteload_size_B in byteload_size_B_list:
-        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us) 
-        ssird_fct, dctcp_fct = fct_exp1.execute() 
+    assert num_of_experiments == len(byteload_size_B_list)
+    assert num_of_experiments == len(ideal_fct_list)
+    assert num_of_experiments == len(ssird_sim_dur_list)
+    assert num_of_experiments == len(dctcp_sim_dur_list)
+
+    for i in range(0, num_of_experiments):
+        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us) 
+        ssird_fct, dctcp_fct = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(ssird_fct)
         dctcp_fct_list.append(dctcp_fct)
 
@@ -321,9 +359,14 @@ def fct_rate_sweep_experiment():
     logger.info(f"Num Byteloads: {num_byteloads}")
     logger.info(f"Byteload Size (Bytes): {byteload_size_B_list}")
     logger.info(f"Load GBps: {load_gbps}")
-    logger.info(f"SSIRD FCT: {ssird_fct_list}")
-    logger.info(f"DCTCP FCT: {dctcp_fct_list}")
+    logger.info(f"Sim duration (SSIRD): {ssird_sim_dur_list}")
+    logger.info(f"Sim duration (DCTCP): {dctcp_sim_dur_list}")
+    logger.info(f"* IDEAL FCT: {ideal_fct_list}")
+    logger.info(f"* SSIRD FCT: {ssird_fct_list}")
+    logger.info(f"* DCTCP FCT: {dctcp_fct_list}")
 
+    assert num_of_experiments == ssird_fct_list
+    assert num_of_experiments == dctcp_fct_list
 
 if __name__ == "__main__":
     # fct_time_period_experiment()

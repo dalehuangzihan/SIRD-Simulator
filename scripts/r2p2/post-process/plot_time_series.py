@@ -67,6 +67,24 @@ def plot_ssird_dctcp_fct_sweep_diff(load_gbps, ssird_fct, dctcp_fct, num_byteloa
     plt.savefig(f"tmp_plot/{filename}")
     plt.close()
 
+def plot_ssird_fct_sweep_slowdown_vs_ideal(load_gbps, ssird_fct, ideal_fct, num_byteloads, inter_byteload_period_us):
+    slowdown_percent = [((ssird-ideal)/ideal) * 100 for ssird, ideal in zip(ssird_fct, ideal_fct)] 
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(load_gbps, slowdown_percent, linestyle='-', marker='o')
+
+    plt.xlabel('Load (GBps)')
+    plt.ylabel('Slowdown vs Ideal (%)')
+    plt.title(f"SSIRD: FCT Slowdown vs Load Sweep ({num_byteloads} x {inter_byteload_period_us/1000}ms)")
+    plt.legend()
+    plt.grid(True)
+
+    # plt.yscale('log')
+
+    filename = f"ssird_dctcp_fct_slowdown_sweep_1gbps_100gbps.png"
+    plt.savefig(f"tmp_plot/{filename}")
+    plt.close()
+
 def plot_ssird_dctcp_fct_1000B():
     num_byteloads = 4
     byteload_size_B = 1000
