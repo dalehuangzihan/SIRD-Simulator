@@ -136,11 +136,11 @@ class FctExperiment:
         logger.info("Execute experiment " + self.experiment_name)
 
         # is a heuristic
-        sim_duration = 2 * num_byteloads * inter_byteload_period_us * ManualReqInterval.TIME_STEP_S
+        sim_duration = 2 * self.num_byteloads * self.inter_byteload_period_us * ManualReqInterval.TIME_STEP_S
         logger.info("sim_duration={:f}".format(sim_duration))
 
-        self.prep_experiment_input(src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us)
-        ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration)
+        self.prep_experiment_input(self.src, self.dst, self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us)
+        ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us, sim_duration)
 
         ssird_fct = -1
         dctcp_fct = -1
@@ -250,14 +250,14 @@ def init_logs(output_path):
         ]
     )
 
-'''
-BUG BUG_01-related: 
-30/06/2025:
-    SSIRD seems to not work for 100B, 1500B byteloads (replies not issued correctly), is cuz of a bug in how Server tracks req_pkts_expected & req_pkts_received. The former is not updated properly.
-    But SSIRD works for 1000B and 10,000B, so we can overlook this for now.
-'''
-if __name__ == "__main__":
-    experiment_name = "TEST"
+def fct_time_period_experiment():
+    '''
+    BUG BUG_01-related: 
+    30/06/2025:
+        SSIRD seems to not work for 100B, 1500B byteloads (replies not issued correctly), is cuz of a bug in how Server tracks req_pkts_expected & req_pkts_received. The former is not updated properly.
+        But SSIRD works for 1000B and 10,000B, so we can overlook this for now.
+    '''
+    experiment_name = "FCT_Varying_Time_Interval_Size"
     proto_names = [SSIRD_PROTO_NAME, DCTCP_PROTO_NAME]
 
     src = 0
@@ -282,3 +282,49 @@ if __name__ == "__main__":
     logger.info(f"Time Periods: {inter_byteload_period_us_list}")
     logger.info(f"SSIRD FCT: {ssird_fct_list}")
     logger.info(f"DCTCP FCT: {dctcp_fct_list}")
+
+'''
+Sweep application pacing rate of byteloads from 1% BW to 100% BW capacity. (i.e. 1GBps to 100GBps)
+'''
+def fct_rate_sweep_experiment():
+    experiment_name = "FCT_Rate_Sweep"
+    proto_names = [SSIRD_PROTO_NAME, DCTCP_PROTO_NAME]
+
+    src = 0
+    dst = 1
+    num_byteloads = 10
+    inter_byteload_period_us = 1000 # is 1ms
+
+    KILOBYTE = 1000
+    # byteload_size_KB = [100, 500] # 100KB to 10MB
+    byteload_size_KB = [100, 500, 1000, 5000, 10000] # 100KB to 10MB
+    byteload_size_B_list = [n * KILOBYTE for n in byteload_size_KB] 
+
+    init_logs(output_path=f"experiment_output/{FctExperiment.get_experiment_name(num_byteloads, "variable_", inter_byteload_period_us)}.log")
+
+    load_gbps = [(num_byteloads * n)/(inter_byteload_period_us * pow(10, -6) * pow(10, 9)) for n in byteload_size_B_list]
+    logger.info(f"Time Period: {inter_byteload_period_us}")
+    logger.info(f"Num Byteloads: {num_byteloads}")
+    logger.info(f"Byteload Size (Bytes): {byteload_size_B_list}")
+    logger.info(f"Load GBps: {load_gbps}")
+
+    ssird_fct_list = []
+    dctcp_fct_list = []
+
+    for byteload_size_B in byteload_size_B_list:
+        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us) 
+        ssird_fct, dctcp_fct = fct_exp1.execute() 
+        ssird_fct_list.append(ssird_fct)
+        dctcp_fct_list.append(dctcp_fct)
+
+    logger.info(f"Time Period: {inter_byteload_period_us}")
+    logger.info(f"Num Byteloads: {num_byteloads}")
+    logger.info(f"Byteload Size (Bytes): {byteload_size_B_list}")
+    logger.info(f"Load GBps: {load_gbps}")
+    logger.info(f"SSIRD FCT: {ssird_fct_list}")
+    logger.info(f"DCTCP FCT: {dctcp_fct_list}")
+
+
+if __name__ == "__main__":
+    # fct_time_period_experiment()
+    fct_rate_sweep_experiment()

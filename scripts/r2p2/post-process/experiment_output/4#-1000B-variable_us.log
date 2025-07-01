@@ -1,0 +1,134 @@
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 4#-1000B-100us
+INFO:__main__:sim_duration=0.000800
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/TEST/
+INFO:__main__:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/TEST/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Preparing experiment spec scripts
+INFO:__main__:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/
+INFO:__main__:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Running experiment for SSIRD
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/SSIRD-4#-1000B-100us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_4#-1000B-100us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-4#-1000B-100us/data/SSIRD/60/applications_trace.str
+INFO:__main__:-----
+INFO:__main__:Running experiment for DCTCP-50
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/DCTCP-50-4#-1000B-100us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-4#-1000B-100us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-4#-1000B-100us/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 4#-1000B-500us
+INFO:__main__:sim_duration=0.004000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/TEST/
+INFO:__main__:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/TEST/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Preparing experiment spec scripts
+INFO:__main__:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/
+INFO:__main__:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Running experiment for SSIRD
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/SSIRD-4#-1000B-500us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_4#-1000B-500us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-4#-1000B-500us/data/SSIRD/60/applications_trace.str
+INFO:__main__:-----
+INFO:__main__:Running experiment for DCTCP-50
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/DCTCP-50-4#-1000B-500us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-4#-1000B-500us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-4#-1000B-500us/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 4#-1000B-1000us
+INFO:__main__:sim_duration=0.008000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/TEST/
+INFO:__main__:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/TEST/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Preparing experiment spec scripts
+INFO:__main__:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/
+INFO:__main__:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Running experiment for SSIRD
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/SSIRD-4#-1000B-1000us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_4#-1000B-1000us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-4#-1000B-1000us/data/SSIRD/60/applications_trace.str
+INFO:__main__:-----
+INFO:__main__:Running experiment for DCTCP-50
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/DCTCP-50-4#-1000B-1000us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-4#-1000B-1000us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-4#-1000B-1000us/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 4#-1000B-5000us
+INFO:__main__:sim_duration=0.040000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/TEST/
+INFO:__main__:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/TEST/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Preparing experiment spec scripts
+INFO:__main__:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/
+INFO:__main__:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Running experiment for SSIRD
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/SSIRD-4#-1000B-5000us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_4#-1000B-5000us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-4#-1000B-5000us/data/SSIRD/60/applications_trace.str
+INFO:__main__:-----
+INFO:__main__:Running experiment for DCTCP-50
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/DCTCP-50-4#-1000B-5000us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-4#-1000B-5000us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-4#-1000B-5000us/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 4#-1000B-10000us
+INFO:__main__:sim_duration=0.080000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/TEST/
+INFO:__main__:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/TEST/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Preparing experiment spec scripts
+INFO:__main__:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/
+INFO:__main__:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Running experiment for SSIRD
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/SSIRD-4#-1000B-10000us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_4#-1000B-10000us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-4#-1000B-10000us/data/SSIRD/60/applications_trace.str
+INFO:__main__:-----
+INFO:__main__:Running experiment for DCTCP-50
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/TEST/DCTCP-50-4#-1000B-10000us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-4#-1000B-10000us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-4#-1000B-10000us/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:Byteload Size: 1000 Bytes
+INFO:__main__:Time Periods: [100, 500, 1000, 5000, 10000]
+INFO:__main__:SSIRD FCT: [0.0006107130000003735, 0.0030107130000001092, 0.006010713000000223, 0.030010714000001215, 0.060010714000000576]
+INFO:__main__:DCTCP FCT: [0.0006056720000007232, 0.003005672000000459, 0.0060056720000005726, 0.030005672000001482, 0.06000567200000084]
