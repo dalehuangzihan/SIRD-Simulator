@@ -1,13 +1,13 @@
-INFO:__main__:Time Period: 1000
+INFO:__main__:Time Period: 100
 INFO:__main__:Num Byteloads: 10
-INFO:__main__:Byteload Size (Bytes): [50000000]
-INFO:__main__:Load GBps: [50.0]
-INFO:__main__:* Sim duration (SSIRD): [5000]
-INFO:__main__:* Sim duration (DCTCP): [5000]
+INFO:__main__:Byteload Size (Bytes): [100000, 500000, 1000000, 5000000, 10000000]
+INFO:__main__:Load GBps: [1.0000000000000002, 5.000000000000001, 10.000000000000002, 50.00000000000001, 100.00000000000001]
+INFO:__main__:* Sim duration (SSIRD): [500, 500, 500, 500, 500]
+INFO:__main__:* Sim duration (DCTCP): [500, 500, 500, 500, 500]
 INFO:__main__:
 =====
-INFO:__main__:Execute experiment 10#-50000000B-1000us
-INFO:__main__:ssird_sim_duration=5000.000000; dctcp_sim_duration=5000.000000
+INFO:__main__:Execute experiment 10#-100000B-100us
+INFO:__main__:ssird_sim_duration=500.000000; dctcp_sim_duration=500.000000
 INFO:__main__:-----
 INFO:__main__:Preparing experiment input MRIs
 INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Rate_Sweep/
@@ -18,5 +18,5 @@ INFO:__main__:### Creating spec scripts parent dir: /home/dalehuang/Documents/IC
 INFO:__main__:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Rate_Sweep/ aready exists.
 INFO:__main__:-----
 INFO:__main__:Running experiment for SSIRD
-INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Rate_Sweep/SSIRD-10#-50000000B-1000us.sh
-INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10#-50000000B-1000us.out
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Rate_Sweep/SSIRD-10#-100000B-100us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10#-100000B-100us.out
