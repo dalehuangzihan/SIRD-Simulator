@@ -286,11 +286,11 @@ def fct_time_period_experiment():
     src = 0
     dst = 1
     num_byteloads = 5
-    byteload_size_B = 1000000 #1000000 #100000 #10000 #1000
+    byteload_size_B = 1000000 # 1MB
 
     init_logs(output_path=f"experiment_output/{FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, "variable_")}.log")
 
-    inter_byteload_period_us_list = [10, 100, 500, 1000, 5000, 10000]
+    inter_byteload_period_us_list = [10, 50, 100, 500, 1000, 5000] # 10000us causes sim to be killed
     num_of_experiments = len(inter_byteload_period_us_list)
 
     ssird_sim_dur_list = [FctExperiment.get_sim_duration(num_byteloads, p, 10) for p in inter_byteload_period_us_list]
