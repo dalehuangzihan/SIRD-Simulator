@@ -117,7 +117,7 @@ class SimSpecScript:
 
 
 class FctExperiment:
-    def __init__(self, experiment_family, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us):
+    def __init__(self, experiment_family, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us, is_full_postproc=False):
         self.experiment_family = experiment_family
         self.proto_names = proto_names
 
@@ -132,10 +132,17 @@ class FctExperiment:
         self.param_scripts_dir = PATH_TO_EXPERIMENTS_SCRIPTS + experiment_family + "/"
         self.app_trace_file_path = ""
 
+        self.run_simulations = "1"
+        self.run_post_proc = f"{int(is_full_postproc)}" 
+        self.create_timeseires = f"{int(is_full_postproc)}" 
+        self.create_plots = f"{int(is_full_postproc)}"
+        self.delete_current = "0"
+
+
     def execute(self, ssird_sim_dur, dctcp_sim_dur):
         logger.info("\n=====")
         logger.info("Execute experiment " + self.experiment_name)
-
+        logger.info(f'Flags: {self.run_simulations}, {self.run_post_proc}, {self.create_timeseires}, {self.create_plots}, {self.delete_current}')
         # is a heuristic
         # sim_duration = 2 * self.num_byteloads * self.inter_byteload_period_us * ManualReqInterval.TIME_STEP_S
         logger.info("ssird_sim_duration={:f}; dctcp_sim_duration={:f}".format(ssird_sim_dur, dctcp_sim_dur))
@@ -193,7 +200,7 @@ class FctExperiment:
         logger.info(f"### Output:{sim_output_path}")
         try:
             result = subprocess.run(
-                [f"{PATH_TO_SIM_COORD}run", sim_script_path, "1", "0", "0", "0", "0"],
+                [f"{PATH_TO_SIM_COORD}run", sim_script_path, self.run_simulations, self.run_post_proc, self.create_timeseires, self.create_plots, self.delete_current],
                 cwd=f"{PATH_TO_SIM_COORD}",
                 check=True,
                 text=True,
@@ -306,7 +313,7 @@ def fct_time_period_experiment():
     assert num_of_experiments == len(dctcp_sim_dur_list)
 
     for i in range (0, num_of_experiments):
-        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us_list[i]) 
+        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us_list[i], is_full_postproc=True) 
         ssird_fct, dctcp_fct = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(ssird_fct)
         dctcp_fct_list.append(dctcp_fct)
@@ -366,7 +373,7 @@ def fct_rate_sweep_experiment():
     assert num_of_experiments == len(dctcp_sim_dur_list)
 
     for i in range(0, num_of_experiments):
-        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us) 
+        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us)#, is_full_postproc=True) 
         ssird_fct, dctcp_fct = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(ssird_fct)
         dctcp_fct_list.append(dctcp_fct)
@@ -385,5 +392,5 @@ def fct_rate_sweep_experiment():
     assert num_of_experiments == len(dctcp_fct_list)
 
 if __name__ == "__main__":
-    fct_time_period_experiment()
-    # fct_rate_sweep_experiment()
+    # fct_time_period_experiment()
+    fct_rate_sweep_experiment()
