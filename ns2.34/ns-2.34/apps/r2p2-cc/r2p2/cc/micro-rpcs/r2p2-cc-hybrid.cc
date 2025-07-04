@@ -761,14 +761,16 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
     /** Dale: FIX: BUG_01 (?)
      * 27/06/2025
      * Do pktcount += 1 if payload < 1458B such that total_bytes_increment does not lead to an incr in pkt count even though a new request has been made.
-     * Exception: don't do this increment for the first pkt of this request, i.e. where pkt_id() == 0 here.
+     * Exception: don't do this increment for the first pkt of this request, i.e. where is_msg_extension == False here.
      * Seems to work...
      */
     uint32_t pkt_count_prev = msg_state->r2p2_hdr_->pkt_id();
-    if (payload < MAX_R2P2_PAYLOAD && pkt_count == pkt_count_prev && pkt_count_prev != 0)
+    slog::log6(debug_, this_addr_, "@ unsent_bytes_=", msg_state->unsent_bytes_, "total_bytes_=", msg_state->total_bytes_);
+    slog::log6(debug_, this_addr_, "@ pkt_count. old pkt_count=", pkt_count_prev, "theoretical pkt_count=", pkt_count);
+    if (payload < MAX_R2P2_PAYLOAD && pkt_count <= pkt_count_prev && msg_state->is_msg_extension_)
     {
-        slog::log6(debug_, this_addr_, "padding pkt_count. old pkt_count=", pkt_count_prev, "new pkt_count=", pkt_count + 1);
-        pkt_count++;
+        slog::log6(debug_, this_addr_, "padding pkt_count. old pkt_count=", pkt_count_prev, "new pkt_count=", pkt_count_prev + 1);
+        pkt_count = pkt_count_prev + 1;
     }
     msg_state->r2p2_hdr_->pkt_id() = pkt_count;
     /* Dale: update if this is the final request of this connection */
