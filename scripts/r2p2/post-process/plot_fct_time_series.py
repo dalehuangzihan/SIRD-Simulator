@@ -1,11 +1,14 @@
 import matplotlib.pyplot as plt
 
+SSIRD_PLOT_COLOUR = 'tab:blue'
+DCTCP_PLOT_COLOUR = 'tab:orange'
+
 def plot_ssird_dctcp_fct_compare(inter_byteload_period_us_list, ssird_fct, dctcp_fct, num_byteloads, byteload_size_B, is_log_x=False, is_log_y=False):
     ssird_fct_ms = [t * 1000 for t in ssird_fct]
     dctcp_fct_ms = [t * 1000 for t in dctcp_fct]
     plt.figure(figsize=(10, 6))
-    plt.plot(inter_byteload_period_us_list, ssird_fct_ms, label="SSIRD", linestyle='-', marker='o')
-    plt.plot(inter_byteload_period_us_list, dctcp_fct_ms, label="DCTCP", linestyle='-', marker='o')
+    plt.plot(inter_byteload_period_us_list, ssird_fct_ms, label="SSIRD", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
+    plt.plot(inter_byteload_period_us_list, dctcp_fct_ms, label="DCTCP", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR)
     plt.xlabel('Inter-byteload Period (us)')
     plt.ylabel('Flow Completion Time (ms)')
     plt.title(f"SSIRD vs DCTCP: FCT vs Inter-byteload period ({num_byteloads} x {byteload_size_B} Bytes)")
@@ -21,26 +24,14 @@ def plot_ssird_dctcp_fct_sweep_compare(load_gbps, ssird_fct, dctcp_fct, num_byte
     ssird_fct_ms = [t * 1000 for t in ssird_fct]
     dctcp_fct_ms = [t * 1000 for t in dctcp_fct]
     plt.figure(figsize=(10, 6))
-    plt.plot(load_gbps, ssird_fct_ms, label="SSIRD", linestyle='-', marker='o')
-    plt.plot(load_gbps, dctcp_fct_ms, label="DCTCP", linestyle='-', marker='o')
+    plt.plot(load_gbps, ssird_fct_ms, label="SSIRD", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
+    plt.plot(load_gbps, dctcp_fct_ms, label="DCTCP", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR)
     plt.xlabel('Load (GBps)')
     plt.ylabel('Flow Completion Time (ms)')
     plt.title(f"SSIRD vs DCTCP: FCT vs Load Sweep ({num_byteloads} x {inter_byteload_period_us/1000}ms)")
     plt.legend()
     plt.grid(True)
     filename = f"ssird_dctcp_fct_sweep_1gbps_100gbps.png"
-    plt.savefig(f"tmp_plot/{filename}")
-    plt.close()
-
-def plot_ssird_dctcp_fct_sweep_diff(load_gbps, ssird_fct, dctcp_fct, num_byteloads, inter_byteload_period_us):
-    fct_ssird_minus_dctcp_us = [(ssird - dctcp) * 1000000 for ssird, dctcp in zip(ssird_fct, dctcp_fct)]
-    plt.figure(figsize=(10, 6))
-    plt.plot(load_gbps, fct_ssird_minus_dctcp_us, linestyle='-', marker='o')
-    plt.xlabel('Load (GBps)')
-    plt.ylabel('FCT SSIRD - DCTCP (us)')
-    plt.title(f"FCT Difference (SSIRD - DCTCP) vs Load Sweep ({num_byteloads} x {inter_byteload_period_us/1000}ms)")
-    plt.grid(True)
-    filename = f"ssird_dctcp_fct_sweep_1gbps_100gbps_diff.png"
     plt.savefig(f"tmp_plot/{filename}")
     plt.close()
 
@@ -58,12 +49,24 @@ def plot_ssird_dctcp_fct_diff(inter_byteload_period_us_list, ssird_fct, dctcp_fc
     plt.savefig(f"tmp_plot/{filename}")
     plt.close()
 
+def plot_ssird_dctcp_fct_sweep_diff(load_gbps, ssird_fct, dctcp_fct, num_byteloads, inter_byteload_period_us):
+    fct_ssird_minus_dctcp_us = [(ssird - dctcp) * 1000000 for ssird, dctcp in zip(ssird_fct, dctcp_fct)]
+    plt.figure(figsize=(10, 6))
+    plt.plot(load_gbps, fct_ssird_minus_dctcp_us, linestyle='-', marker='o')
+    plt.xlabel('Load (GBps)')
+    plt.ylabel('FCT SSIRD - DCTCP (us)')
+    plt.title(f"FCT Difference (SSIRD - DCTCP) vs Load Sweep ({num_byteloads} x {inter_byteload_period_us/1000}ms)")
+    plt.grid(True)
+    filename = f"ssird_dctcp_fct_sweep_1gbps_100gbps_DIFF.png"
+    plt.savefig(f"tmp_plot/{filename}")
+    plt.close()
+
 def plot_ssird_dctcp_fct_slowdown_vs_ideal(inter_byteload_period_us_list, ssird_fct, dctcp_fct, ideal_fct, num_byteloads, byteload_size_B, is_log_x=False, is_log_y=False):
     ssird_slowdown_percent = [((ssird-ideal)/ideal) * 100 for ssird, ideal in zip(ssird_fct, ideal_fct)] 
     dctcp_slowdown_percent = [((dctcp-ideal)/ideal) * 100 for dctcp, ideal in zip(dctcp_fct, ideal_fct)] 
     plt.figure(figsize=(10, 6))
-    plt.plot(inter_byteload_period_us_list, ssird_slowdown_percent, label='SSIRD', linestyle='-', marker='o')
-    plt.plot(inter_byteload_period_us_list, dctcp_slowdown_percent, label='DCTCP', linestyle='-', marker='o')
+    plt.plot(inter_byteload_period_us_list, ssird_slowdown_percent, label='SSIRD', linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
+    plt.plot(inter_byteload_period_us_list, dctcp_slowdown_percent, label='DCTCP', linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR)
     plt.xlabel('Inter-byteload Period (us)')
     plt.ylabel('Slowdown vs Ideal (%)')
     plt.title(f"SSIRD: FCT Slowdown vs Inter-byteload period ({num_byteloads} x {byteload_size_B} Bytes)")
@@ -79,8 +82,8 @@ def plot_ssird_dctcp_fct_sweep_slowdown_vs_ideal(load_gbps, ssird_fct, dctcp_fct
     ssird_slowdown_percent = [((ssird-ideal)/ideal) * 100 for ssird, ideal in zip(ssird_fct, ideal_fct)] 
     dctcp_slowdown_percent = [((dctcp-ideal)/ideal) * 100 for dctcp, ideal in zip(dctcp_fct, ideal_fct)] 
     plt.figure(figsize=(10, 6))
-    plt.plot(load_gbps, ssird_slowdown_percent, label='SSIRD', linestyle='-', marker='o')
-    plt.plot(load_gbps, dctcp_slowdown_percent, label='DCTCP', linestyle='-', marker='o')
+    plt.plot(load_gbps, ssird_slowdown_percent, label='SSIRD', linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
+    plt.plot(load_gbps, dctcp_slowdown_percent, label='DCTCP', linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR)
     plt.xlabel('Load (GBps)')
     plt.ylabel('Slowdown vs Ideal (%)')
     plt.title(f"SSIRD: FCT Slowdown vs Load Sweep ({num_byteloads} x {inter_byteload_period_us/1000}ms)")
@@ -133,13 +136,13 @@ def plot_ssird_dctcp_fct_sweep_1gbps_100gbps():
     # INFO:__main__:* SSIRD FCT: [0.0009156610000005116, 0.0009498580000002477, 0.0009919450000008823, 0.004227265000000813, 0.008446747000000698]
     # INFO:__main__:* DCTCP FCT: [0.0009110540000012435, 0.0009447630000014584, 0.0009868970000006527, 0.0042626250000008525, 0.008476345000000052]
 
-    inter_byteload_period_us = 1000
+    inter_byteload_period_us = 100
     num_byteloads = 10
     load_gbps = [1.0, 5.0, 10.0, 50.0, 100.0]
     ideal_fct = [0.000901, 0.000905, 0.00091, 0.00095, 0.001]
     ssird_fct = [0.0009156610000005116, 0.0009498580000002477, 0.0009919450000008823, 0.004227265000000813, 0.008446747000000698]
     dctcp_fct = [0.0009110540000012435, 0.0009447630000014584, 0.0009868970000006527, 0.0042626250000008525, 0.008476345000000052]
-    # plot_ssird_dctcp_fct_sweep_compare(load_gbps, ssird_fct, dctcp_fct, num_byteloads, inter_byteload_period_us)
+    plot_ssird_dctcp_fct_sweep_compare(load_gbps, ssird_fct, dctcp_fct, num_byteloads, inter_byteload_period_us)
     plot_ssird_dctcp_fct_sweep_slowdown_vs_ideal(load_gbps, ssird_fct, dctcp_fct, ideal_fct, num_byteloads, inter_byteload_period_us)
     plot_ssird_dctcp_fct_sweep_diff(load_gbps, ssird_fct, dctcp_fct, num_byteloads, inter_byteload_period_us)
 

@@ -272,7 +272,6 @@ class FctExperiment:
     def get_measured_load_gbps(self, flow_trace_event_queue, num_byteloads):
         # here we only use n-1 out of n events to calc throughput:
         srq_events = [e for e in flow_trace_event_queue if e.get_event() == FlowTraceEvent.SRQ_EVENT]
-        print(num_byteloads, len(srq_events))
         assert(num_byteloads == len(srq_events))
         total_duration = srq_events[len(srq_events)-2].get_timestamp() - srq_events[0].get_timestamp()
         total_data = 0 
@@ -289,11 +288,18 @@ class FctExperiment:
         return "{}#-{}B-{}us".format(num_byteloads, byteload_size_B, inter_byteload_period_us)
 
 '''
-Is the ideal fct of 1 byteload without any proto-related delays.
+Is the ideal fct of 1 byteload without any proto-related delays (no credit req, no conn est, no reply)
 Returned value is in seconds.
 '''
 def get_ideal_fct_s(link_speed_Bps, byteload_size_B, num_byteload_injections, inter_byteload_interval_s):
-    return (num_byteload_injections - 1) * inter_byteload_interval_s + byteload_size_B / float(link_speed_Bps)
+    data_rtt_s = byteload_size_B / float(link_speed_Bps)
+    if (inter_byteload_interval_s < data_rtt_s):
+        # All SRQs will combine together into a uninterrupted flow.
+        logger.debug(f"Ideal Fct Calc: Overlap! Interval={inter_byteload_interval_s}; Data RTT={data_rtt_s}")
+        return num_byteload_injections * byteload_size_B / float(link_speed_Bps)
+    else:
+        # SRQs will be separated by gaps; each SRQ will have its own RTT.
+        return (num_byteload_injections - 1) * inter_byteload_interval_s + byteload_size_B / float(link_speed_Bps) 
 
 def init_logs(output_path):
     logging.basicConfig(

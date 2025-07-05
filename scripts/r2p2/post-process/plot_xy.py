@@ -33,22 +33,30 @@ class Options:
 
 DEFAULT_OPTIONS = Options("DEFAULT", "Unspecified", "Unspecified", False, False)
 SLDWN_ID = "output/app"
-QTS_ID = "output/qts"
-THRPT_ID = "output/qts"
+QTS_THRPT_ID = "output/qts"
+# THRPT_ID = "output/qts"
 CC_ID = "output/cc"
 
 id_to_options = {
     SLDWN_ID: Options(SLDWN_ID, "Slowdown", "Msg size (KB)", True, False),
     # QTS_ID: Options(QTS_ID, "Queue Size (KB)", "Time (ms)", True, True, lw=1),
-    QTS_ID: Options(QTS_ID, "Queue Size (KB)", "Time (ms)", False, False, lw=1),
-    # THRPT_ID: Options(QTS_ID, "Throughput (Gbps)", "Time (ms)", False, False, lw=1),
+    QTS_THRPT_ID: Options(QTS_THRPT_ID, "Queue Size (KB)", "Time (ms)", False, False, lw=1),
+    # THRPT_ID: Options(THRPT_ID, "Throughput (Gbps)", "Time (ms)", False, False, lw=1),
     CC_ID: Options(CC_ID, "-", "Time (ms)", False, False, lw=1),
 }
 
 
-def find_options(path):
+def find_options(path, y_col):
     for id in id_to_options:
         if id in path:
+            if id == QTS_THRPT_ID:
+                options = id_to_options[id]
+                if y_col == 1:
+                    options.y_title = "Throughput (Gbps)"
+                    return options
+                elif y_col == 2:
+                    options.y_title = "Queue Size (KB)"
+                    return options
             return id_to_options[id]
     return DEFAULT_OPTIONS
 
@@ -71,7 +79,9 @@ def main():
     experiment_name = sys.argv[4]
     file_list = sys.argv[5:]
 
-    options = find_options(file_list[0])
+    print(y_column)
+    options = find_options(file_list[0], y_column)
+    print(options.y_title)
 
     this_file_path = os.path.dirname(os.path.abspath(__file__))
     results_path = f"{this_file_path.split('/post-process')[0]}/coord/results"
