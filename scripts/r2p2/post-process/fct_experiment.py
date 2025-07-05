@@ -25,6 +25,9 @@ PATH_TO_EXPERIMENTS_INPUTS = PATH_TO_EXPERIMENTS + "manual-req-intervals/" + MRI
 logger = logging.getLogger(__name__)
 
 class FlowTraceEvent:
+    SRQ_EVENT = "srq"
+    RRQ_EVENT = "rrq"
+
     def __init__(self, timestamp, event, local_addr, remote_addr, thread_id, req_id, app_level_id, req_duration, req_size, resp_size, pending_tasks_size, wildcard):
         self.timestamp = timestamp
         self.event = event
@@ -38,6 +41,13 @@ class FlowTraceEvent:
         self.resp_size = resp_size
         self.pending_tasks_size = pending_tasks_size
         self.wildcard = wildcard
+
+    def get_timestamp(self):
+        return float(self.timestamp)
+    def get_event(self):
+        return self.event
+    def get_req_size(self):
+        return int(self.req_size)
 
     @staticmethod
     def read_flow_trace_from_str(str_line):
@@ -56,10 +66,10 @@ class ManualReqInterval:
         mri_filepath = self.get_mri_filepath(self.parent_dir, num_byteloads, byteload_size_B, inter_byteload_period_us)
         mri_byteloads_spec = []    
         mri_byteloads_spec.append(str(src))
-        time_start = self.TIME_STEP_S
         for i in range(0, num_byteloads):
-           byteload_str = "{:f}|{}|{}".format(time_start + i * inter_byteload_period_us * self.TIME_STEP_S, str(dst), byteload_size_B) 
-           mri_byteloads_spec.append(byteload_str)
+            time_spec = self.TIME_STEP_S if i == 0 else inter_byteload_period_us * self.TIME_STEP_S
+            byteload_str = "{:f}|{}|{}".format(time_spec, str(dst), byteload_size_B) 
+            mri_byteloads_spec.append(byteload_str)
         self.mri_list_to_csv(mri_byteloads_spec, mri_filepath)
         return mri_filepath
 
@@ -152,17 +162,18 @@ class FctExperiment:
 
         ssird_fct = -1
         dctcp_fct = -1
+        load_gbps_measured = -1
         for proto in self.proto_names:
             app_trace_file_path = f"{PATH_TO_SIM_RESULTS}{proto}-{self.experiment_name}/data/{proto}/{CLIENT_INJECTION_RATE_GBPS}/applications_trace.str"
             if proto == SSIRD_PROTO_NAME:
                 self.run_experiment(proto, ssird_sim_script_path, f"{PATH_TO_SIM_COORD}outputs/ssird_{self.experiment_name}.out")
-                ssird_fct = self.process_results_fct(app_trace_file_path)
+                ssird_fct, load_gbps_measured = self.process_results_fct(app_trace_file_path)
 
             if proto == DCTCP_PROTO_NAME:
                 self.run_experiment(proto, dctcp_sim_script_path, f"{PATH_TO_SIM_COORD}outputs/{DCTCP_PROTO_NAME}-{self.experiment_name}.out")
-                dctcp_fct = self.process_results_fct(app_trace_file_path)
+                dctcp_fct, load_gbps_measured = self.process_results_fct(app_trace_file_path)
 
-        return ssird_fct, dctcp_fct
+        return ssird_fct, dctcp_fct, load_gbps_measured
         
     def prep_experiment_input(self, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us):
         logger.info("-----")
@@ -221,7 +232,9 @@ class FctExperiment:
         logger.info("\nProcessing results")
         logger.info(app_trace_file_path)
         flow_trace_event_queue = self.read_app_trace_file(app_trace_file_path)
-        return self.get_full_flow_duration(flow_trace_event_queue, self.num_byteloads) 
+        fct = self.get_full_flow_duration(flow_trace_event_queue, self.num_byteloads) 
+        measured_load_gbps = self.get_measured_load_gbps(flow_trace_event_queue, self.num_byteloads)
+        return fct, measured_load_gbps
 
     def read_app_trace_file(self, app_trace_file_path):
         flow_trace_event_queue = []
@@ -240,8 +253,8 @@ class FctExperiment:
     def get_full_flow_duration(self, flow_trace_event_queue, num_of_byteloads):
         ''' This mtd calculates FCT using timestamps '''
 
-        srq_events = [e for e in flow_trace_event_queue if (e.event == "srq")]
-        rrq_events = [e for e in flow_trace_event_queue if (e.event == "rrq")]
+        srq_events = [e for e in flow_trace_event_queue if (e.get_event() == FlowTraceEvent.SRQ_EVENT)]
+        rrq_events = [e for e in flow_trace_event_queue if (e.get_event() == FlowTraceEvent.RRQ_EVENT)]
 
         logger.info(f"num of byteloads: {num_of_byteloads}, num of srq_events: {len(srq_events)}, num of rrq_events {len(rrq_events)}")
 
@@ -251,10 +264,21 @@ class FctExperiment:
         # assert(num_of_byteloads == len(rrq_events))
 
         first_trace = flow_trace_event_queue[0]
-        assert(first_trace.event == "srq")
+        assert(first_trace.get_event() == FlowTraceEvent.SRQ_EVENT)
         final_trace = flow_trace_event_queue[len(flow_trace_event_queue) - 1]
-        assert(final_trace.event == "rrq")
-        return float(final_trace.timestamp) - float(first_trace.timestamp)
+        assert(final_trace.get_event() == FlowTraceEvent.RRQ_EVENT)
+        return final_trace.get_timestamp() - first_trace.get_timestamp()
+
+    def get_measured_load_gbps(self, flow_trace_event_queue, num_byteloads):
+        # here we only use n-1 out of n events to calc throughput:
+        srq_events = [e for e in flow_trace_event_queue if e.get_event() == FlowTraceEvent.SRQ_EVENT]
+        print(num_byteloads, len(srq_events))
+        assert(num_byteloads == len(srq_events))
+        total_duration = srq_events[len(srq_events)-2].get_timestamp() - srq_events[0].get_timestamp()
+        total_data = 0 
+        for i in range(0, len(srq_events)-2):
+            total_data += srq_events[i].get_req_size()
+        return (total_data / total_duration) * pow(10,-9)
 
     @staticmethod
     def get_sim_duration(num_byteloads, inter_byteload_period_us, multiplication_factor):
@@ -314,7 +338,7 @@ def fct_time_period_experiment():
 
     for i in range (0, num_of_experiments):
         fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us_list[i], is_full_postproc=True) 
-        ssird_fct, dctcp_fct = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
+        ssird_fct, dctcp_fct, _ = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(ssird_fct)
         dctcp_fct_list.append(dctcp_fct)
 
@@ -343,9 +367,9 @@ def fct_rate_sweep_experiment():
     inter_byteload_period_us = 100 # is 0.1ms
 
     KILOBYTE = 1000
-    # byteload_size_KB = [10000] # factor=50 works for this, with time to spare
-    byteload_size_KB = [100, 500, 1000, 5000, 10000] # 100KB to 10MB
-    byteload_size_B_list = [n * KILOBYTE for n in byteload_size_KB] 
+    # byteload_size_KB_list = [10000] # factor=50 works for this, with time to spare
+    byteload_size_KB_list = [100, 500, 1000, 5000, 10000] # 100KB to 10MB
+    byteload_size_B_list = [n * KILOBYTE for n in byteload_size_KB_list] 
     num_of_experiments = len(byteload_size_B_list)
 
     ssird_sim_dur_list = [FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, 15)] * num_of_experiments
@@ -355,11 +379,11 @@ def fct_rate_sweep_experiment():
 
     init_logs(output_path=f"experiment_output/{FctExperiment.get_experiment_name(num_byteloads, "variable_", inter_byteload_period_us)}.log")
 
-    load_gbps = [n/(inter_byteload_period_us * pow(10, -6) * pow(10, 9)) for n in byteload_size_B_list]
+    load_gbps_theoretical = [n/(inter_byteload_period_us * pow(10, -6) * pow(10, 9)) for n in byteload_size_B_list]
     logger.info(f"Time Period: {inter_byteload_period_us}")
     logger.info(f"Num Byteloads: {num_byteloads}")
     logger.info(f"Byteload Size (Bytes): {byteload_size_B_list}")
-    logger.info(f"Load GBps: {load_gbps}")
+    logger.info(f"Load GBps theoretical: {load_gbps_theoretical}")
     logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
 
@@ -372,16 +396,19 @@ def fct_rate_sweep_experiment():
     assert num_of_experiments == len(ssird_sim_dur_list)
     assert num_of_experiments == len(dctcp_sim_dur_list)
 
+    load_gbps_measured_list = []
     for i in range(0, num_of_experiments):
-        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us)#, is_full_postproc=True) 
-        ssird_fct, dctcp_fct = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
+        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us, is_full_postproc=True) 
+        ssird_fct, dctcp_fct, load_gbps_measured = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(ssird_fct)
         dctcp_fct_list.append(dctcp_fct)
+        load_gbps_measured_list.append(load_gbps_measured)
 
     logger.info(f"Time Period: {inter_byteload_period_us}")
     logger.info(f"Num Byteloads: {num_byteloads}")
     logger.info(f"Byteload Size (Bytes): {byteload_size_B_list}")
-    logger.info(f"Load GBps: {load_gbps}")
+    logger.info(f"Load GBps theoretical: {load_gbps_theoretical}")
+    logger.info(f"Load GBps measured: {load_gbps_measured_list}")
     logger.info(f"Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"Sim duration (DCTCP): {dctcp_sim_dur_list}")
     logger.info(f"* IDEAL FCT: {ideal_fct_list}")
@@ -392,5 +419,5 @@ def fct_rate_sweep_experiment():
     assert num_of_experiments == len(dctcp_fct_list)
 
 if __name__ == "__main__":
-    # fct_time_period_experiment()
-    fct_rate_sweep_experiment()
+    fct_time_period_experiment()
+    # fct_rate_sweep_experiment()
