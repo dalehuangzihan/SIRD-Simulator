@@ -767,11 +767,6 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
     uint32_t pkt_count_prev = msg_state->r2p2_hdr_->pkt_id();
     slog::log6(debug_, this_addr_, "@ unsent_bytes_=", msg_state->unsent_bytes_, "total_bytes_=", msg_state->total_bytes_);
     slog::log6(debug_, this_addr_, "@ pkt_count. old pkt_count=", pkt_count_prev, "theoretical pkt_count=", pkt_count);
-    if (payload < MAX_R2P2_PAYLOAD && pkt_count <= pkt_count_prev && msg_state->is_msg_extension_)
-    {
-        slog::log6(debug_, this_addr_, "padding pkt_count. old pkt_count=", pkt_count_prev, "new pkt_count=", pkt_count_prev + 1);
-        pkt_count = pkt_count_prev + 1;
-    }
     msg_state->r2p2_hdr_->pkt_id() = pkt_count;
     /* Dale: update if this is the final request of this connection */
     msg_state->r2p2_hdr_->is_final_req_of_conn() = r2p2_hdr.is_final_req_of_conn();
@@ -1404,6 +1399,8 @@ void R2p2CCHybrid::received_data(Packet *pkt, hysup::InboundMsgState *msg_state)
             msg_state->data_bytes_expected_, " bytes expected using ", msg_state->data_bytes_granted_, "bytes of credit.");
         inbound_->print_all(this_addr_);
         assert(msg_state->received_msg_info_);
+        /** Dale: FIX: BUG_01: tell transport, via pkt header, that reply shd be sent for this pkt */
+        r2p2_hdr->is_do_reply() = true; 
         // delete state
         /** Dale: TODO:
           * Don't remove msg_state here, to allow for subsequent msg extensions to find the same msg_state.

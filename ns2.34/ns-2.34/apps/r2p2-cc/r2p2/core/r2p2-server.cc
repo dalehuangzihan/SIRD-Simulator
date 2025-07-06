@@ -47,6 +47,7 @@ void R2p2Server::handle_request_pkt(hdr_r2p2 &r2p2_hdr, int payload)
                "R2p2Server::handle_request_pkt(), req id", r2p2_hdr.req_id(),
                "with pkt_id", r2p2_hdr.pkt_id(), "(first",
                r2p2_hdr.first(), ") from client", r2p2_hdr.cl_addr());
+    slog::log6(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(), "server is_do_reply=", r2p2_hdr.is_do_reply());
     if (do_trace_)
         trace_state("req", -1, -1, -1, r2p2_hdr.sr_thread_id());
     cl_addr_thread_t cl_tup = std::make_tuple(r2p2_hdr.cl_addr(), r2p2_hdr.cl_thread_id());
@@ -153,7 +154,8 @@ void R2p2Server::handle_request_pkt(hdr_r2p2 &r2p2_hdr, int payload)
                    "req_bytes_received_:", req_state->req_bytes_received_);
 
         // have all the packets been received?
-        if (req_state->req_pkts_expected_ == req_state->req_pkts_received_)
+        /** Dale: FIX: BUG_01 (?) have header tell server whether to do reply. But beware of race condi! Currently we think sim is single thread, so will set is_do_reply_ in header properly in R2p2CCHyrbid::received_data() before reaching this point */
+        if (r2p2_hdr.is_do_reply())
         {
             /** Dale: TODO: IMPORTANT
              * 09/06/2025: Figure out how to allow streamed chunks (msg extensions) to be passed one by one to the app,

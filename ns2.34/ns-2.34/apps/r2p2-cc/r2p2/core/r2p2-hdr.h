@@ -85,6 +85,8 @@ private:
     bool is_ignore_msg_state_persist_;
     /* Dale: track if this is the last request of the connection */
     bool is_final_req_of_conn_;
+    /* Dale: track if a reply should be issued by application in response to this pkt */
+    bool is_do_reply_;
 
 public:
     hdr_r2p2() : first_urpc_(false), credit_(0), credit_pad_(0), credit_req_(0),
@@ -96,7 +98,8 @@ public:
                   * Init default values for ssird use.
                   * Init conn_id_ to hysup::ConnectionPool::NO_CONN_AVAIL_
                   */
-                 is_msg_extension_(false), is_ignore_msg_state_persist_(false) {}
+                 is_msg_extension_(false), is_ignore_msg_state_persist_(false),
+                 is_do_reply_(false) {}
     enum MsgTypes
     {
         REQUEST,
@@ -191,6 +194,8 @@ public:
     bool &is_ignore_msg_state_persist() { return is_ignore_msg_state_persist_; }
     /* Dale: track if this is the last request of the connection */
     bool &is_final_req_of_conn() { return is_final_req_of_conn_; }
+    /* Dale: track if a reply should be issued by application in response to this pkt */
+    bool &is_do_reply() { return is_do_reply_; }
 };
 
 struct RequestIdTuple
