@@ -6,9 +6,11 @@ INFO:__main__:ssird_sim_duration=0.000500; dctcp_sim_duration=0.000500
 INFO:__main__:-----
 INFO:__main__:Preparing experiment input MRIs
 INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
 INFO:__main__:-----
 INFO:__main__:Preparing experiment spec scripts
 INFO:__main__:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
 INFO:__main__:-----
 INFO:__main__:Running experiment for SSIRD
 INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/SSIRD-5#-1000000B-10us.sh
@@ -17,6 +19,7 @@ INFO:__main__:
 Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5#-1000000B-10us/data/SSIRD/60/applications_trace.str
 INFO:__main__:num of byteloads: 5, num of srq_events: 5, num of rrq_events 1
+INFO:__main__:SSIRD FCT: 0.00042970199999992076 ms, Load: 99.99999999786458 Gbps
 INFO:__main__:-----
 INFO:__main__:Running experiment for DCTCP-50
 INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/DCTCP-50-5#-1000000B-10us.sh
@@ -25,11 +28,12 @@ INFO:__main__:
 Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5#-1000000B-10us/data/DCTCP-50/60/applications_trace.str
 INFO:__main__:num of byteloads: 5, num of srq_events: 5, num of rrq_events 5
+INFO:__main__:DCTCP FCT: 0.00044456500000045196 ms, Load: 99.99999999786458 Gbps
 INFO:__main__:
 =====
 INFO:__main__:Execute experiment 5#-1000000B-50us
 INFO:__main__:Flags: 1, 1, 1, 1, 0
-INFO:__main__:ssird_sim_duration=0.002500; dctcp_sim_duration=0.002500
+INFO:__main__:ssird_sim_duration=0.000500; dctcp_sim_duration=0.000500
 INFO:__main__:-----
 INFO:__main__:Preparing experiment input MRIs
 INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/
@@ -46,6 +50,7 @@ INFO:__main__:
 Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5#-1000000B-50us/data/SSIRD/60/applications_trace.str
 INFO:__main__:num of byteloads: 5, num of srq_events: 5, num of rrq_events 1
+INFO:__main__:SSIRD FCT: 0.00042970199999992076 ms, Load: 19.999999999809766 Gbps
 INFO:__main__:-----
 INFO:__main__:Running experiment for DCTCP-50
 INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/DCTCP-50-5#-1000000B-50us.sh
@@ -54,11 +59,12 @@ INFO:__main__:
 Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5#-1000000B-50us/data/DCTCP-50/60/applications_trace.str
 INFO:__main__:num of byteloads: 5, num of srq_events: 5, num of rrq_events 5
+INFO:__main__:DCTCP FCT: 0.00044456500000045196 ms, Load: 19.999999999809766 Gbps
 INFO:__main__:
 =====
 INFO:__main__:Execute experiment 5#-1000000B-100us
 INFO:__main__:Flags: 1, 1, 1, 1, 0
-INFO:__main__:ssird_sim_duration=0.005000; dctcp_sim_duration=0.005000
+INFO:__main__:ssird_sim_duration=0.001000; dctcp_sim_duration=0.001000
 INFO:__main__:-----
 INFO:__main__:Preparing experiment input MRIs
 INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/
@@ -75,6 +81,7 @@ INFO:__main__:
 Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5#-1000000B-100us/data/SSIRD/60/applications_trace.str
 INFO:__main__:num of byteloads: 5, num of srq_events: 5, num of rrq_events 5
+INFO:__main__:SSIRD FCT: 0.0004920730000002038 ms, Load: 9.999999999964094 Gbps
 INFO:__main__:-----
 INFO:__main__:Running experiment for DCTCP-50
 INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/DCTCP-50-5#-1000000B-100us.sh
@@ -83,11 +90,12 @@ INFO:__main__:
 Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5#-1000000B-100us/data/DCTCP-50/60/applications_trace.str
 INFO:__main__:num of byteloads: 5, num of srq_events: 5, num of rrq_events 5
+INFO:__main__:DCTCP FCT: 0.00048689700000004166 ms, Load: 9.999999999964094 Gbps
 INFO:__main__:
 =====
 INFO:__main__:Execute experiment 5#-1000000B-500us
 INFO:__main__:Flags: 1, 1, 1, 1, 0
-INFO:__main__:ssird_sim_duration=0.025000; dctcp_sim_duration=0.025000
+INFO:__main__:ssird_sim_duration=0.002500; dctcp_sim_duration=0.002500
 INFO:__main__:-----
 INFO:__main__:Preparing experiment input MRIs
 INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/
@@ -104,6 +112,7 @@ INFO:__main__:
 Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5#-1000000B-500us/data/SSIRD/60/applications_trace.str
 INFO:__main__:num of byteloads: 5, num of srq_events: 5, num of rrq_events 5
+INFO:__main__:SSIRD FCT: 0.0020920630000009766 ms, Load: 1.9999999999999243 Gbps
 INFO:__main__:-----
 INFO:__main__:Running experiment for DCTCP-50
 INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/DCTCP-50-5#-1000000B-500us.sh
@@ -112,11 +121,12 @@ INFO:__main__:
 Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5#-1000000B-500us/data/DCTCP-50/60/applications_trace.str
 INFO:__main__:num of byteloads: 5, num of srq_events: 5, num of rrq_events 5
+INFO:__main__:DCTCP FCT: 0.0020868969999998654 ms, Load: 1.9999999999999243 Gbps
 INFO:__main__:
 =====
 INFO:__main__:Execute experiment 5#-1000000B-1000us
 INFO:__main__:Flags: 1, 1, 1, 1, 0
-INFO:__main__:ssird_sim_duration=0.050000; dctcp_sim_duration=0.050000
+INFO:__main__:ssird_sim_duration=0.005000; dctcp_sim_duration=0.005000
 INFO:__main__:-----
 INFO:__main__:Preparing experiment input MRIs
 INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/
@@ -133,6 +143,7 @@ INFO:__main__:
 Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5#-1000000B-1000us/data/SSIRD/60/applications_trace.str
 INFO:__main__:num of byteloads: 5, num of srq_events: 5, num of rrq_events 5
+INFO:__main__:SSIRD FCT: 0.004092074000000778 ms, Load: 0.9999999999999621 Gbps
 INFO:__main__:-----
 INFO:__main__:Running experiment for DCTCP-50
 INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/DCTCP-50-5#-1000000B-1000us.sh
@@ -141,11 +152,12 @@ INFO:__main__:
 Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5#-1000000B-1000us/data/DCTCP-50/60/applications_trace.str
 INFO:__main__:num of byteloads: 5, num of srq_events: 5, num of rrq_events 5
+INFO:__main__:DCTCP FCT: 0.004086897000000533 ms, Load: 0.9999999999999621 Gbps
 INFO:__main__:
 =====
 INFO:__main__:Execute experiment 5#-1000000B-5000us
 INFO:__main__:Flags: 1, 1, 1, 1, 0
-INFO:__main__:ssird_sim_duration=0.250000; dctcp_sim_duration=0.250000
+INFO:__main__:ssird_sim_duration=0.025000; dctcp_sim_duration=0.025000
 INFO:__main__:-----
 INFO:__main__:Preparing experiment input MRIs
 INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/
@@ -162,6 +174,7 @@ INFO:__main__:
 Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5#-1000000B-5000us/data/SSIRD/60/applications_trace.str
 INFO:__main__:num of byteloads: 5, num of srq_events: 5, num of rrq_events 5
+INFO:__main__:SSIRD FCT: 0.020092063999999965 ms, Load: 0.19999999999999243 Gbps
 INFO:__main__:-----
 INFO:__main__:Running experiment for DCTCP-50
 INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/DCTCP-50-5#-1000000B-5000us.sh
@@ -170,11 +183,12 @@ INFO:__main__:
 Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5#-1000000B-5000us/data/DCTCP-50/60/applications_trace.str
 INFO:__main__:num of byteloads: 5, num of srq_events: 5, num of rrq_events 5
+INFO:__main__:DCTCP FCT: 0.020086897000000548 ms, Load: 0.19999999999999243 Gbps
 INFO:__main__:Time Periods: [10, 50, 100, 500, 1000, 5000]
 INFO:__main__:Num Byteloads: 5
 INFO:__main__:Byteload Size: 1000000 Bytes
-INFO:__main__:Sim duration (SSIRD): [0.0005, 0.0025, 0.005, 0.024999999999999998, 0.049999999999999996, 0.25]
-INFO:__main__:Sim duration (DCTCP): [0.0005, 0.0025, 0.005, 0.024999999999999998, 0.049999999999999996, 0.25]
-INFO:__main__:* IDEAL FCT: [4.9999999999999996e-05, 0.00020999999999999998, 0.00041, 0.00201, 0.00401, 0.02001]
+INFO:__main__:Sim duration (SSIRD): [0.0005, 0.0005, 0.001, 0.0025, 0.005, 0.024999999999999998]
+INFO:__main__:Sim duration (DCTCP): [0.0005, 0.0005, 0.001, 0.0025, 0.005, 0.024999999999999998]
+INFO:__main__:* IDEAL FCT: [5e-05, 0.00020999999999999998, 0.00041, 0.00201, 0.00401, 0.02001]
 INFO:__main__:* SSIRD FCT: [0.00042970199999992076, 0.00042970199999992076, 0.0004920730000002038, 0.0020920630000009766, 0.004092074000000778, 0.020092063999999965]
 INFO:__main__:* DCTCP FCT: [0.00044456500000045196, 0.00044456500000045196, 0.00048689700000004166, 0.0020868969999998654, 0.004086897000000533, 0.020086897000000548]

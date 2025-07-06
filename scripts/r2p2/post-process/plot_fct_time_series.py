@@ -102,13 +102,12 @@ def plot_ssird_dctcp_fct_sweep_slowdown_vs_ideal(load_gbps, ssird_fct, dctcp_fct
 #     plot_ssird_dctcp_fct_compare(inter_byteload_period_us_list, ssird_fct, dctcp_fct, num_byteloads, byteload_size_B)
 
 def plot_ssird_dctcp_fct_1000000B_varying_period():
-    # INFO:__main__:num of byteloads: 5, num of srq_events: 5, num of rrq_events 5
     # INFO:__main__:Time Periods: [10, 50, 100, 500, 1000, 5000]
     # INFO:__main__:Num Byteloads: 5
     # INFO:__main__:Byteload Size: 1000000 Bytes
-    # INFO:__main__:Sim duration (SSIRD): [0.0005, 0.0025, 0.005, 0.024999999999999998, 0.049999999999999996, 0.25]
-    # INFO:__main__:Sim duration (DCTCP): [0.0005, 0.0025, 0.005, 0.024999999999999998, 0.049999999999999996, 0.25]
-    # INFO:__main__:* IDEAL FCT: [4.9999999999999996e-05, 0.00020999999999999998, 0.00041, 0.00201, 0.00401, 0.02001]
+    # INFO:__main__:Sim duration (SSIRD): [0.0005, 0.0005, 0.001, 0.0025, 0.005, 0.024999999999999998]
+    # INFO:__main__:Sim duration (DCTCP): [0.0005, 0.0005, 0.001, 0.0025, 0.005, 0.024999999999999998]
+    # INFO:__main__:* IDEAL FCT: [5e-05, 0.00020999999999999998, 0.00041, 0.00201, 0.00401, 0.02001]
     # INFO:__main__:* SSIRD FCT: [0.00042970199999992076, 0.00042970199999992076, 0.0004920730000002038, 0.0020920630000009766, 0.004092074000000778, 0.020092063999999965]
     # INFO:__main__:* DCTCP FCT: [0.00044456500000045196, 0.00044456500000045196, 0.00048689700000004166, 0.0020868969999998654, 0.004086897000000533, 0.020086897000000548]
 
@@ -124,23 +123,22 @@ def plot_ssird_dctcp_fct_1000000B_varying_period():
     
 
 def plot_ssird_dctcp_fct_sweep_1gbps_100gbps():
-    # INFO:__main__:num of byteloads: 10, num of srq_events: 10, num of rrq_events 10
     # INFO:__main__:Time Period: 100
     # INFO:__main__:Num Byteloads: 10
     # INFO:__main__:Byteload Size (Bytes): [100000, 500000, 1000000, 5000000, 10000000]
     # INFO:__main__:Load GBps theoretical: [1.0000000000000002, 5.000000000000001, 10.000000000000002, 50.00000000000001, 100.00000000000001]
     # INFO:__main__:Load GBps measured: [1.0000000000001101, 5.000000000000551, 10.000000000001101, 50.000000000005514, 100.00000000001103]
-    # INFO:__main__:Sim duration (SSIRD): [0.015, 0.015, 0.015, 0.015, 0.015]
-    # INFO:__main__:Sim duration (DCTCP): [0.015, 0.015, 0.015, 0.015, 0.015]
+    # INFO:__main__:Sim duration (SSIRD): [0.002, 0.002, 0.002, 0.006, 0.01]
+    # INFO:__main__:Sim duration (DCTCP): [0.002, 0.002, 0.002, 0.006, 0.01]
     # INFO:__main__:* IDEAL FCT: [0.000901, 0.000905, 0.00091, 0.00095, 0.001]
-    # INFO:__main__:* SSIRD FCT: [0.0009156610000005116, 0.0009498580000002477, 0.0009919450000008823, 0.004227265000000813, 0.008446747000000698]
+    # INFO:__main__:* SSIRD FCT: [0.0009161049999999449, 0.0009498580000002477, 0.0009920530000009364, 0.004227265000000813, 0.008446747000000698]
     # INFO:__main__:* DCTCP FCT: [0.0009110540000012435, 0.0009447630000014584, 0.0009868970000006527, 0.0042626250000008525, 0.008476345000000052]
 
     inter_byteload_period_us = 100
     num_byteloads = 10
     load_gbps = [1.0, 5.0, 10.0, 50.0, 100.0]
     ideal_fct = [0.000901, 0.000905, 0.00091, 0.00095, 0.001]
-    ssird_fct = [0.0009156610000005116, 0.0009498580000002477, 0.0009919450000008823, 0.004227265000000813, 0.008446747000000698]
+    ssird_fct = [0.0009161049999999449, 0.0009498580000002477, 0.0009920530000009364, 0.004227265000000813, 0.008446747000000698]
     dctcp_fct = [0.0009110540000012435, 0.0009447630000014584, 0.0009868970000006527, 0.0042626250000008525, 0.008476345000000052]
     plot_ssird_dctcp_fct_sweep_compare(load_gbps, ssird_fct, dctcp_fct, num_byteloads, inter_byteload_period_us)
     plot_ssird_dctcp_fct_sweep_slowdown_vs_ideal(load_gbps, ssird_fct, dctcp_fct, ideal_fct, num_byteloads, inter_byteload_period_us)
