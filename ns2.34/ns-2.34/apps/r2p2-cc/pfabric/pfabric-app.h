@@ -91,6 +91,12 @@ protected:
                      int req_size,
                      int resp_size,
                      int pool_size);
+    
+    /**
+     *  Dale: specify max connection pool size
+     *  TODO: change this whenever you change the number of connections allowed!
+     */
+    uint32_t MAX_CONN_POOL_SIZE = 2;
 };
 
 #endif

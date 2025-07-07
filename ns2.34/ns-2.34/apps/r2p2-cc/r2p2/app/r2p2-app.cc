@@ -112,14 +112,26 @@ void R2p2Application::attach_r2p2_layer(R2p2Generic *r2p2_layer)
 void R2p2Application::send_request(RequestIdTuple *, size_t)
 {
     int next_req_size = (int)(req_size_->get_next());
+    /* Dale: skip requests with size == 0; allows us to specify manual req intervals with size == 0, so we can cycle through different app-leve-ids using modulo operator */
+    if (next_req_size == -1){
+        slog::log6(debug_, local_addr_, "R2p2Application::send_request(). next_req_size is -1, skipping request");
+        reqs_ingested_++;
+        slog::log6(debug_, local_addr_, "reqs_ingested_:", reqs_ingested_);
+        // update load factor
+        // send_interval_->set_mean(request_interval_sec_ * (1 / load_pattern_->get_load_multiplier()));
+        send_req_timer_.resched(send_interval_->get_next());
+        return;
+    };
     if (next_req_size < 4)
         next_req_size = 4;
     int32_t srvr_addr = dst_thread_gen_->get_next();
     /** Dale:
      * Manually manipulate app_level_id to mimmic separate requests made by same app.
+     * TODO: update NUM_OF_CONNS value each time we run with different number of connections
      */
-    long app_level_id = 0; /** Dale: TODO: for testing only */
-    bool is_final_req_of_conn = reqs_sent_ == 3; /** Dale: TODO: actually calculate this */
+    assert(NUM_OF_CONNS == 2);
+    long app_level_id = reqs_ingested_ % NUM_OF_CONNS; /** Dale: TODO: for testing only */
+    bool is_final_req_of_conn = false; /** Dale: TODO: actually calculate this */
     if (do_trace_)
     {
         trace_state("srq", srvr_addr, -1, app_level_id, -1, next_req_size, -1, 0);
@@ -138,6 +150,9 @@ void R2p2Application::send_request(RequestIdTuple *, size_t)
     // requestInfo->request_size_ = next_req_size;
     // requestInfo->time_sent_ = Scheduler::instance().clock();
     // app_req_id_to_req_info_[reqs_sent_] = requestInfo;
+    /* Dale: track ingested requests separately from requests sent; allows us to skip requests */
+    reqs_ingested_++;
+    slog::log6(debug_, local_addr_, "reqs_ingested_:", reqs_ingested_);
     reqs_sent_++;
     // update load factor
     send_interval_->set_mean(request_interval_sec_ * (1 / load_pattern_->get_load_multiplier()));

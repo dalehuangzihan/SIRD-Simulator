@@ -106,7 +106,7 @@ void PfabricApplication<T>::attach_agent(int argc, const char *const *argv)
     try
     {
         /** Dale: Intermittent Connections FCT Experiment: restrict pool size to 1 */
-        if (dstid_to_free_agent_pool_.at(agent->daddr())->size() == 0)
+        if (dstid_to_free_agent_pool_.at(agent->daddr())->size() < MAX_CONN_POOL_SIZE)
         {
             slog::log4(debug_, local_addr_, "Adding new agent to pool for daddr=", agent->daddr());
             dstid_to_free_agent_pool_.at(agent->daddr())->push_back(agent);
@@ -185,7 +185,7 @@ void PfabricApplication<T>::send_request(RequestIdTuple *arg_req, size_t arg_siz
     {
         pool = dstid_to_free_agent_pool_.at(srvr_addr);
         /** Dale: restrict conn pool size to 1 */
-        assert(pool->size() < 2);
+        assert(pool->size() <= MAX_CONN_POOL_SIZE);
     }
     catch (const std::out_of_range &e)
     {
@@ -411,7 +411,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
                 }
                 pool_size = dstid_to_free_agent_pool_.at(srvr_addr)->size();
                 /** Dale: restrict conn pool size to 1 */
-                assert(pool_size < 2);
+                assert(pool_size <= MAX_CONN_POOL_SIZE);
             }
             catch (const std::out_of_range &e)
             {
@@ -449,7 +449,7 @@ void PfabricApplication<T>::send_response()
     }
     free_connections_pool_t *pool = dstid_to_free_agent_pool_.at(req_id.cl_addr_);
     /** Dale: restrict conn pool size to 1 */
-    assert(pool->size() < 2);
+    assert(pool->size() <= MAX_CONN_POOL_SIZE);
 
     // now to find the connection that the client used...
     // the addr and port must match the client's daddr and dport

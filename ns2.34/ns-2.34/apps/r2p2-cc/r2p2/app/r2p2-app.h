@@ -41,6 +41,11 @@ protected:
     int n_;
     int num_reqs_rcved_;
     int num_resp_rcved_;
+
+    /* Dale: track num of requests ingested separately from those that are sent; allows us to skip requests */
+    long reqs_ingested_ = 0;
+    /* Dale: specify number of concurrent connections open at the same time on this app */
+    uint32_t NUM_OF_CONNS = 2;
 };
 
 #endif

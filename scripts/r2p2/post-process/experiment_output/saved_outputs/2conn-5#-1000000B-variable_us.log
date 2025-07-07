@@ -1,0 +1,194 @@
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 2conn-5#-1000000B-10us
+INFO:__main__:Flags: 1, 1, 1, 1, 0
+INFO:__main__:ssird_sim_duration=0.001000; dctcp_sim_duration=0.001000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Preparing experiment spec scripts
+INFO:__main__:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Running experiment for SSIRD
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/SSIRD-2conn-5#-1000000B-10us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_2conn-5#-1000000B-10us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-2conn-5#-1000000B-10us/data/SSIRD/60/applications_trace.str
+INFO:__main__:num of byteloads: 5, num of srq_events: 10, num of rrq_events 2
+INFO:__main__:SSIRD FCT: 0.0008516880000009053 ms, Load: 181.8181818172354 Gbps
+INFO:__main__:-----
+INFO:__main__:Running experiment for DCTCP-50
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/DCTCP-50-2conn-5#-1000000B-10us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-2conn-5#-1000000B-10us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-2conn-5#-1000000B-10us/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:num of byteloads: 5, num of srq_events: 10, num of rrq_events 10
+INFO:__main__:DCTCP FCT: 0.0008453730000006487 ms, Load: 181.8181818147886 Gbps
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 2conn-5#-1000000B-50us
+INFO:__main__:Flags: 1, 1, 1, 1, 0
+INFO:__main__:ssird_sim_duration=0.001000; dctcp_sim_duration=0.001000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Preparing experiment spec scripts
+INFO:__main__:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Running experiment for SSIRD
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/SSIRD-2conn-5#-1000000B-50us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_2conn-5#-1000000B-50us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-2conn-5#-1000000B-50us/data/SSIRD/60/applications_trace.str
+INFO:__main__:num of byteloads: 5, num of srq_events: 10, num of rrq_events 2
+INFO:__main__:SSIRD FCT: 0.0008516880000009053 ms, Load: 39.21568627449193 Gbps
+INFO:__main__:-----
+INFO:__main__:Running experiment for DCTCP-50
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/DCTCP-50-2conn-5#-1000000B-50us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-2conn-5#-1000000B-50us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-2conn-5#-1000000B-50us/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:num of byteloads: 5, num of srq_events: 10, num of rrq_events 10
+INFO:__main__:DCTCP FCT: 0.0008453730000006487 ms, Load: 39.21568627449193 Gbps
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 2conn-5#-1000000B-100us
+INFO:__main__:Flags: 1, 1, 1, 1, 0
+INFO:__main__:ssird_sim_duration=0.002000; dctcp_sim_duration=0.002000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Preparing experiment spec scripts
+INFO:__main__:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Running experiment for SSIRD
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/SSIRD-2conn-5#-1000000B-100us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_2conn-5#-1000000B-100us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-2conn-5#-1000000B-100us/data/SSIRD/60/applications_trace.str
+INFO:__main__:num of byteloads: 5, num of srq_events: 10, num of rrq_events 6
+INFO:__main__:SSIRD FCT: 0.0008517140000012802 ms, Load: 19.801980197980047 Gbps
+INFO:__main__:-----
+INFO:__main__:Running experiment for DCTCP-50
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/DCTCP-50-2conn-5#-1000000B-100us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-2conn-5#-1000000B-100us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-2conn-5#-1000000B-100us/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:num of byteloads: 5, num of srq_events: 10, num of rrq_events 10
+INFO:__main__:DCTCP FCT: 0.0008453730000006487 ms, Load: 19.801980197951025 Gbps
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 2conn-5#-1000000B-500us
+INFO:__main__:Flags: 1, 1, 1, 1, 0
+INFO:__main__:ssird_sim_duration=0.005000; dctcp_sim_duration=0.005000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Preparing experiment spec scripts
+INFO:__main__:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Running experiment for SSIRD
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/SSIRD-2conn-5#-1000000B-500us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_2conn-5#-1000000B-500us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-2conn-5#-1000000B-500us/data/SSIRD/60/applications_trace.str
+INFO:__main__:num of byteloads: 5, num of srq_events: 10, num of rrq_events 10
+INFO:__main__:SSIRD FCT: 0.0021804510000009714 ms, Load: 3.9920159680626077 Gbps
+INFO:__main__:-----
+INFO:__main__:Running experiment for DCTCP-50
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/DCTCP-50-2conn-5#-1000000B-500us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-2conn-5#-1000000B-500us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-2conn-5#-1000000B-500us/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:num of byteloads: 5, num of srq_events: 10, num of rrq_events 10
+INFO:__main__:DCTCP FCT: 0.002175177999999889 ms, Load: 3.992015968061428 Gbps
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 2conn-5#-1000000B-1000us
+INFO:__main__:Flags: 1, 1, 1, 1, 0
+INFO:__main__:ssird_sim_duration=0.010000; dctcp_sim_duration=0.010000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Preparing experiment spec scripts
+INFO:__main__:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Running experiment for SSIRD
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/SSIRD-2conn-5#-1000000B-1000us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_2conn-5#-1000000B-1000us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-2conn-5#-1000000B-1000us/data/SSIRD/60/applications_trace.str
+INFO:__main__:num of byteloads: 5, num of srq_events: 10, num of rrq_events 10
+INFO:__main__:SSIRD FCT: 0.00418046100000069 ms, Load: 1.9980019980016435 Gbps
+INFO:__main__:-----
+INFO:__main__:Running experiment for DCTCP-50
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/DCTCP-50-2conn-5#-1000000B-1000us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-2conn-5#-1000000B-1000us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-2conn-5#-1000000B-1000us/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:num of byteloads: 5, num of srq_events: 10, num of rrq_events 10
+INFO:__main__:DCTCP FCT: 0.004175178000000557 ms, Load: 1.998001998001939 Gbps
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 2conn-5#-1000000B-5000us
+INFO:__main__:Flags: 1, 1, 1, 1, 0
+INFO:__main__:ssird_sim_duration=0.050000; dctcp_sim_duration=0.050000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Preparing experiment spec scripts
+INFO:__main__:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/
+INFO:__main__:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/ aready exists.
+INFO:__main__:-----
+INFO:__main__:Running experiment for SSIRD
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/SSIRD-2conn-5#-1000000B-5000us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_2conn-5#-1000000B-5000us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-2conn-5#-1000000B-5000us/data/SSIRD/60/applications_trace.str
+INFO:__main__:num of byteloads: 5, num of srq_events: 10, num of rrq_events 10
+INFO:__main__:SSIRD FCT: 0.020180450999999877 ms, Load: 0.399920015996798 Gbps
+INFO:__main__:-----
+INFO:__main__:Running experiment for DCTCP-50
+INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Varying_Time_Interval_Size/DCTCP-50-2conn-5#-1000000B-5000us.sh
+INFO:__main__:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-2conn-5#-1000000B-5000us.out
+INFO:__main__:
+Processing results
+INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-2conn-5#-1000000B-5000us/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:num of byteloads: 5, num of srq_events: 10, num of rrq_events 10
+INFO:__main__:DCTCP FCT: 0.02017517800000057 ms, Load: 0.399920015996798 Gbps
+INFO:__main__:Time Periods: [10, 50, 100, 500, 1000, 5000]
+INFO:__main__:Num Byteloads: 5
+INFO:__main__:Byteload Size: 1000000 Bytes
+INFO:__main__:Sim duration (SSIRD): [0.001, 0.001, 0.002, 0.005, 0.01, 0.049999999999999996]
+INFO:__main__:Sim duration (DCTCP): [0.001, 0.001, 0.002, 0.005, 0.01, 0.049999999999999996]
+INFO:__main__:* IDEAL FCT: [0.0001, 0.00021999999999999998, 0.00041999999999999996, 0.00202, 0.00402, 0.02002]
+INFO:__main__:* SSIRD FCT: [0.0008516880000009053, 0.0008516880000009053, 0.0008517140000012802, 0.0021804510000009714, 0.00418046100000069, 0.020180450999999877]
+INFO:__main__:* DCTCP FCT: [0.0008453730000006487, 0.0008453730000006487, 0.0008453730000006487, 0.002175177999999889, 0.004175178000000557, 0.02017517800000057]

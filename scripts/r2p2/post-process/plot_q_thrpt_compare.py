@@ -34,8 +34,8 @@ def plot_comparison_graph(y_col, title, experiment_name, ssird_csv_rel_path, dct
         print("Error output:", e.stderr)
         sys.exit(1)
 
-def do_plotting_for_experiment(num_byteloads, byteload_size_B, inter_byteload_period_us, nw_elem, src, dst, title_addendum=""):
-    experiment_name = fct_experiment.FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + title_addendum
+def do_plotting_for_experiment(num_conns, num_byteloads, byteload_size_B, inter_byteload_period_us, nw_elem, src, dst, title_addendum=""):
+    experiment_name = fct_experiment.FctExperiment.get_experiment_name(num_conns, num_byteloads, byteload_size_B, inter_byteload_period_us) + title_addendum
     print(f"Plotting for experiment: {experiment_name}")
 
     ssird_results_dir = f"SSIRD-{experiment_name}/"
@@ -54,6 +54,11 @@ def do_plotting_for_experiment(num_byteloads, byteload_size_B, inter_byteload_pe
 if __name__ == "__main__":
     # do_plotting_for_experiment(5, 1000000, 50, HOST, "host_0", "tor_4")
     # do_plotting_for_experiment(5, 1000000, 1000, HOST, "host_0", "tor_4")
-    do_plotting_for_experiment(5, 1000000, 10, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
-    do_plotting_for_experiment(5, 1000000, 1000, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
-    do_plotting_for_experiment(10, 10000000, 100, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
+
+    # do_plotting_for_experiment(5, 1000000, 10, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
+    # do_plotting_for_experiment(5, 1000000, 1000, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
+    # do_plotting_for_experiment(10, 10000000, 100, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
+
+    do_plotting_for_experiment(2, 5, 1000000, 10, HOST, "host_0", "tor_4")
+    do_plotting_for_experiment(2, 5, 1000000, 1000, HOST, "host_0", "tor_4")
+    do_plotting_for_experiment(2, 10, 10000000, 100, HOST, "host_0", "tor_4")
