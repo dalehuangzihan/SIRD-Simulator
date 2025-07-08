@@ -29,7 +29,7 @@ def plot_ssird_vs_ideal_fct_sweep_compare(load_gbps, ssird_fct, ideal_fct, num_b
     plt.figure(figsize=(10, 6))
     plt.plot(load_percent, ssird_fct_ms, label="SSIRD", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
     plt.plot(load_percent, ideal_fct_ms, label="Ideal", linestyle='-', marker='o', color=IDEAL_PLOT_COLOUR)
-    plt.xlabel('Load (GBps)')
+    plt.xlabel('Load (Percent of Max Link Speed)')
     plt.ylabel('Flow Completion Time (ms)')
     plt.title(f"SSIRD vs Ideal: FCT vs Load Sweep ({num_byteloads} x {inter_byteload_period_us/1000}ms) {title_addendum}")
     plt.legend()
@@ -57,7 +57,7 @@ def plot_ssird_vs_ideal_fct_sweep_diff(load_gbps, ssird_fct, ideal_fct, num_byte
     load_percent = [(l / LINK_SPEED_GBPS) * 100 for l in load_gbps]
     plt.figure(figsize=(10, 6))
     plt.plot(load_percent, fct_ssird_minus_ideal_us, linestyle='-', marker='o')
-    plt.xlabel('Load (GBps)')
+    plt.xlabel('Load (Percent of Max Link Speed)')
     plt.ylabel('FCT SSIRD - Ideal (us)')
     plt.title(f"FCT Difference (SSIRD - Ideal) vs Load Sweep ({num_byteloads} x {inter_byteload_period_us/1000}ms) {title_addendum}")
     plt.grid(True)
@@ -86,7 +86,7 @@ def plot_ssird_fct_sweep_slowdown_vs_ideal(load_gbps, ssird_fct, ideal_fct, num_
 
     plt.figure(figsize=(10, 6))
     plt.plot(load_gbps, ssird_slowdown, label='SSIRD', linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
-    plt.xlabel('Load (GBps)')
+    plt.xlabel('Load (Percent of Max Link Speed)')
     plt.ylabel('Slowdown vs Ideal FCT')
     plt.title(f"SSIRD: FCT Slowdown vs Load Sweep ({num_byteloads} x {inter_byteload_period_us/1000}ms) {title_addendum}")
     plt.legend()
