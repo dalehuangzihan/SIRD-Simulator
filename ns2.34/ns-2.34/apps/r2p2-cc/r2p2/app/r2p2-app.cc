@@ -122,6 +122,7 @@ void R2p2Application::send_request(RequestIdTuple *, size_t)
     bool is_final_req_of_conn = reqs_sent_ == 3; /** Dale: TODO: actually calculate this */
     if (do_trace_)
     {
+        slog::log6(debug_, local_addr_, "srq");
         trace_state("srq", srvr_addr, -1, app_level_id, -1, next_req_size, -1, 0);
     }
     MsgTracer::app_init_msg(app_level_id , local_addr_, local_addr_, srvr_addr, next_req_size, "Request");
@@ -176,6 +177,7 @@ void R2p2Application::req_recv(int req_size, RequestIdTuple &&request_id_tuple)
     assert(msg_created_at > 9.9); // assumes sim starts at 10.0
     if (do_trace_)
     {
+        slog::log6(debug_, local_addr_, "rrq");
         trace_state("rrq",
                     request_id_tuple.cl_addr_,
                     request_id_tuple.req_id_,

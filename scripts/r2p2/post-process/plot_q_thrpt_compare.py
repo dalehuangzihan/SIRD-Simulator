@@ -34,7 +34,7 @@ def plot_comparison_graph(y_col, title, experiment_name, ssird_csv_rel_path, dct
         print("Error output:", e.stderr)
         sys.exit(1)
 
-def do_plotting_for_experiment(num_byteloads, byteload_size_B, inter_byteload_period_us, nw_elem, src, dst, title_addendum=""):
+def do_throughput_plotting_for_experiment(num_byteloads, byteload_size_B, inter_byteload_period_us, nw_elem, src, dst, title_addendum=""):
     experiment_name = fct_experiment.FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + title_addendum
     print(f"Plotting for experiment: {experiment_name}")
 
@@ -48,12 +48,50 @@ def do_plotting_for_experiment(num_byteloads, byteload_size_B, inter_byteload_pe
     dctcp_csv_rel_path = f"DCTCP-{DCTCP_ECN_THRESH}/{CLIENT_INJECTION_RATE_GBPS}/output/qts/{nw_elem}/qts_{src}_{dst}.csv"
 
     plot_comparison_graph(THROUGHPUT_COL, f"Throughput: SSIRD vs DCTCP ({experiment_name})", experiment_name, ssird_csv_rel_path, dctcp_csv_rel_path)
+
+def do_queuing_plotting_for_experiment(num_byteloads, byteload_size_B, inter_byteload_period_us, nw_elem, src, dst, title_addendum=""):
+    experiment_name = fct_experiment.FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + title_addendum
+    print(f"Plotting for experiment: {experiment_name}")
+
+    ssird_results_dir = f"SSIRD-{experiment_name}/"
+    shutil.copytree(f"{PATH_TO_SIM_RESULTS}{ssird_results_dir}data/", f"{PATH_TO_SIM_RESULTS}{experiment_name}/data/", dirs_exist_ok=True)
+
+    dctcp_results_dir = f"DCTCP-{DCTCP_ECN_THRESH}-{experiment_name}/"
+    shutil.copytree(f"{PATH_TO_SIM_RESULTS}{dctcp_results_dir}data/", f"{PATH_TO_SIM_RESULTS}{experiment_name}/data/", dirs_exist_ok=True)
+
+    ssird_csv_rel_path = f"SSIRD/{CLIENT_INJECTION_RATE_GBPS}/output/qts/{nw_elem}/qts_{src}_{dst}.csv"
+    dctcp_csv_rel_path = f"DCTCP-{DCTCP_ECN_THRESH}/{CLIENT_INJECTION_RATE_GBPS}/output/qts/{nw_elem}/qts_{src}_{dst}.csv"
+
     plot_comparison_graph(QUEUEING_COL, f"Queueing: SSIRD vs DCTCP ({experiment_name})", experiment_name, ssird_csv_rel_path, dctcp_csv_rel_path)
 
 
 if __name__ == "__main__":
-    # do_plotting_for_experiment(5, 1000000, 50, HOST, "host_0", "tor_4")
-    # do_plotting_for_experiment(5, 1000000, 1000, HOST, "host_0", "tor_4")
-    do_plotting_for_experiment(5, 1000000, 10, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
-    do_plotting_for_experiment(5, 1000000, 1000, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
-    do_plotting_for_experiment(10, 10000000, 100, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
+    ## 1conn experiments
+    # time interval experiments
+    do_throughput_plotting_for_experiment(5, 1000000, 50, HOST, "host_0", "tor_4")
+    do_queuing_plotting_for_experiment(5, 1000000, 50, TOR, "tor_4", "host_1")
+
+    do_throughput_plotting_for_experiment(5, 1000000, 1000, HOST, "host_0", "tor_4")
+    do_queuing_plotting_for_experiment(5, 1000000, 1000, TOR, "tor_4", "host_1")
+
+    # rate sweep experiments
+    do_throughput_plotting_for_experiment(10, 100000, 100, HOST, "host_0", "tor_4")
+    do_queuing_plotting_for_experiment(10, 100000, 100, TOR, "tor_4", "host_1")
+
+    do_throughput_plotting_for_experiment(10, 10000000, 100, HOST, "host_0", "tor_4")
+    do_queuing_plotting_for_experiment(10, 10000000, 100, TOR, "tor_4", "host_1")
+
+    ## dctcp manyconns experiments
+    # time interval experiments
+    do_throughput_plotting_for_experiment(5, 1000000, 10, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
+    do_queuing_plotting_for_experiment(5, 1000000, 10, TOR, "tor_4", "host_1", title_addendum="_dctcp_manyconns")
+
+    do_throughput_plotting_for_experiment(5, 1000000, 1000, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
+    do_queuing_plotting_for_experiment(5, 1000000, 1000, TOR, "tor_4", "host_1", title_addendum="_dctcp_manyconns")
+
+    # rate sweep experiments
+    do_throughput_plotting_for_experiment(10, 100000, 100, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
+    do_queuing_plotting_for_experiment(10, 100000, 100, TOR, "tor_4", "host_1", title_addendum="_dctcp_manyconns")
+
+    do_throughput_plotting_for_experiment(10, 10000000, 100, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
+    do_queuing_plotting_for_experiment(10, 10000000, 100, TOR, "tor_4", "host_1", title_addendum="_dctcp_manyconns")

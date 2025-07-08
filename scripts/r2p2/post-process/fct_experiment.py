@@ -292,18 +292,23 @@ class FctExperiment:
         return "{}#-{}B-{}us".format(num_byteloads, byteload_size_B, inter_byteload_period_us)
 
 '''
-Is the ideal fct of 1 byteload without any proto-related delays (no credit req, no conn est, no reply)
+Is the ideal fct of 1 byteload without any proto-related delays (no credit req, no conn est)
 Returned value is in seconds.
 '''
-def get_ideal_fct_s(link_speed_Bps, byteload_size_B, num_byteload_injections, inter_byteload_interval_s):
+def get_ideal_fct_s_old(link_speed_Bps, byteload_size_B, num_byteload_injections, inter_byteload_interval_s):
     data_rtt_s = byteload_size_B / float(link_speed_Bps)
-    if (inter_byteload_interval_s < data_rtt_s):
+    if (inter_byteload_interval_s <= data_rtt_s):
         # All SRQs will combine together into a uninterrupted flow.
         logger.debug(f"Ideal Fct Calc: Overlap! Interval={inter_byteload_interval_s}; Data RTT={data_rtt_s}")
         return num_byteload_injections * byteload_size_B / float(link_speed_Bps)
     else:
         # SRQs will be separated by gaps; each SRQ will have its own RTT.
         return (num_byteload_injections - 1) * inter_byteload_interval_s + byteload_size_B / float(link_speed_Bps) 
+
+def get_ideal_fct_s(link_speed_Bps, byteload_size_B, num_byteload_injections, inter_byteload_interval_s):
+    theoretical_throughput_Bps = min(byteload_size_B / float(inter_byteload_interval_s), link_speed_Bps)
+    ideal_fct = (num_byteload_injections * byteload_size_B) / theoretical_throughput_Bps
+    return ideal_fct 
 
 def init_logs(output_path):
     logging.basicConfig(
@@ -314,7 +319,7 @@ def init_logs(output_path):
         ]
     )
 
-def fct_time_period_experiment(title_addendum=""):
+def fct_time_period_experiment(is_full_postproc=True, title_addendum=""):
     '''
     BUG BUG_01-related: 
     30/06/2025:
@@ -322,7 +327,8 @@ def fct_time_period_experiment(title_addendum=""):
         But SSIRD works for 1000B and 10,000B, so we can overlook this for now.
     '''
     experiment_name = f"FCT_Varying_Time_Interval_Size{title_addendum}"
-    proto_names = [SSIRD_PROTO_NAME, DCTCP_PROTO_NAME]
+    # proto_names = [SSIRD_PROTO_NAME, DCTCP_PROTO_NAME]
+    proto_names = [SSIRD_PROTO_NAME]
 
     src = 0
     dst = 1
@@ -346,7 +352,17 @@ def fct_time_period_experiment(title_addendum=""):
     # ssird_sim_dur_list = [FctExperiment.get_sim_duration(num_byteloads, p, 10) for p in inter_byteload_period_us_list]
     # dctcp_sim_dur_list = [FctExperiment.get_sim_duration(num_byteloads, p, 10) for p in inter_byteload_period_us_list]
 
+    logger.info(f"Time Periods: {inter_byteload_period_us_list}")
+    logger.info(f"Num Byteloads: {num_byteloads}")
+    logger.info(f"Byteload Size: {byteload_size_B} Bytes")
+    logger.info(f"Sim duration (SSIRD): {ssird_sim_dur_list}")
+    logger.info(f"Sim duration (DCTCP): {dctcp_sim_dur_list}")
+
     ideal_fct_list = [get_ideal_fct_s(LINK_SPEED_GBPS, byteload_size_B, num_byteloads, p_us*pow(10,-6)) for p_us in inter_byteload_period_us_list]
+    ideal_fct_list_old = [get_ideal_fct_s_old(LINK_SPEED_GBPS, byteload_size_B, num_byteloads, p_us*pow(10,-6)) for p_us in inter_byteload_period_us_list]
+    print(ideal_fct_list)
+    print(ideal_fct_list_old)
+    return
     ssird_fct_list = []
     dctcp_fct_list = []
 
@@ -356,7 +372,7 @@ def fct_time_period_experiment(title_addendum=""):
     assert num_of_experiments == len(dctcp_sim_dur_list)
 
     for i in range (0, num_of_experiments):
-        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us_list[i], is_full_postproc=True, title_addendum=title_addendum) 
+        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us_list[i], is_full_postproc, title_addendum=title_addendum) 
         ssird_fct, dctcp_fct, _ = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(ssird_fct)
         dctcp_fct_list.append(dctcp_fct)
@@ -376,9 +392,10 @@ def fct_time_period_experiment(title_addendum=""):
 '''
 Sweep application pacing rate of byteloads from 1% BW to 100% BW capacity. (i.e. 1GBps to 100GBps)
 '''
-def fct_rate_sweep_experiment(title_addendum=""):
+def fct_rate_sweep_experiment(is_full_postproc=True, title_addendum=""):
     experiment_name = f"FCT_Rate_Sweep{title_addendum}"
-    proto_names = [SSIRD_PROTO_NAME, DCTCP_PROTO_NAME]
+    # proto_names = [SSIRD_PROTO_NAME, DCTCP_PROTO_NAME]
+    proto_names = [SSIRD_PROTO_NAME]
 
     src = 0
     dst = 1
@@ -413,6 +430,10 @@ def fct_rate_sweep_experiment(title_addendum=""):
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
 
     ideal_fct_list = [get_ideal_fct_s(LINK_SPEED_GBPS, byteload_size_B, num_byteloads, inter_byteload_period_us*pow(10,-6)) for byteload_size_B in byteload_size_B_list]
+    ideal_fct_list_old = [get_ideal_fct_s_old(LINK_SPEED_GBPS, byteload_size_B, num_byteloads, inter_byteload_period_us*pow(10,-6)) for byteload_size_B in byteload_size_B_list]
+    print(ideal_fct_list)
+    print(ideal_fct_list_old)
+    return
     ssird_fct_list = []
     dctcp_fct_list = []
 
@@ -423,7 +444,7 @@ def fct_rate_sweep_experiment(title_addendum=""):
 
     load_gbps_measured_list = []
     for i in range(0, num_of_experiments):
-        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us, is_full_postproc=True, title_addendum=title_addendum) 
+        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us, is_full_postproc, title_addendum=title_addendum) 
         ssird_fct, dctcp_fct, load_gbps_measured = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(ssird_fct)
         dctcp_fct_list.append(dctcp_fct)
@@ -445,7 +466,9 @@ def fct_rate_sweep_experiment(title_addendum=""):
 
 if __name__ == "__main__":
     # TODO: update each experiment code to write to their own files
-    # fct_time_period_experiment()
-    # fct_rate_sweep_experiment()
+
+    fct_time_period_experiment(is_full_postproc=False)
+    fct_rate_sweep_experiment(is_full_postproc=False)
+
     # fct_time_period_experiment(title_addendum="_dctcp_manyconns")
-    fct_rate_sweep_experiment(title_addendum="_dctcp_manyconns")
+    # fct_rate_sweep_experiment(title_addendum="_dctcp_manyconns")
