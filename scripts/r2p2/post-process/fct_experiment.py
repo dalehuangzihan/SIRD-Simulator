@@ -321,7 +321,7 @@ def init_logs(output_path):
         ]
     )
 
-def fct_time_period_experiment(is_full_postproc=True, title_addendum=""):
+def fct_vs_load_experiment_vary_interval(is_full_postproc=True, title_addendum=""):
     '''
     BUG BUG_01-related: 
     30/06/2025:
@@ -335,19 +335,19 @@ def fct_time_period_experiment(is_full_postproc=True, title_addendum=""):
     src = 0
     dst = 1
     num_byteloads = 5
-    byteload_size_B = 1000000/8 # 1/8MB
+    byteload_size_B = int(1000000/8) # 1/8MB
 
     init_logs(output_path=f"experiment_output/{FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, "variable_")}{title_addendum}.log")
 
-    inter_byteload_period_us_list = [10, 50, 100, 500, 1000, 5000] # 10000us causes sim to be killed
+    # inter_byteload_period_us_list = [10, 50, 100, 500, 1000, 5000] # 10000us causes sim to be killed
+    inter_byteload_period_us_list = [1000, 500, 100, 50, 10]
     num_of_experiments = len(inter_byteload_period_us_list)
 
-    sim_dur_list = [FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us_list[0], 10),  # for 10us interval
-                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us_list[1], 2),   # for 50us interval
-                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us_list[2], 2),   # for 100us interval
-                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us_list[3], 1),   # for 500us interval
-                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us_list[4], 1),   # for 1000us interval
-                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us_list[5], 1)]   # for 5000us interval
+    sim_dur_list = [FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us_list[0], 1),   # for 1000us interval
+                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us_list[1], 1),   # for 500us interval
+                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us_list[2], 1),   # for 100us interval
+                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us_list[3], 1),   # for 50us interval
+                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us_list[4], 1.5)]  # for 10us interval
 
     ssird_sim_dur_list = sim_dur_list
     dctcp_sim_dur_list = sim_dur_list
@@ -398,7 +398,7 @@ def fct_time_period_experiment(is_full_postproc=True, title_addendum=""):
 '''
 Sweep application pacing rate of byteloads from 1% BW to 100% BW capacity. (i.e. 1GBps to 100GBps)
 '''
-def fct_rate_sweep_experiment(is_full_postproc=True, title_addendum=""):
+def fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=True, title_addendum=""):
     experiment_name = f"FCT_Rate_Sweep{title_addendum}"
     proto_names = [SSIRD_PROTO_NAME, DCTCP_PROTO_NAME]
     # proto_names = [SSIRD_PROTO_NAME]
@@ -409,17 +409,17 @@ def fct_rate_sweep_experiment(is_full_postproc=True, title_addendum=""):
     inter_byteload_period_us = 100 # is 0.1ms
 
     KILOBYTE = 1000
-    # byteload_size_KB_list = [5000/8] # factor=50 works for this, with time to spare
+    # byteload_size_KB_list = [10000/8] # factor=50 works for this, with time to spare
     byteload_size_KB_list = [100/8, 500/8, 1000/8, 5000/8, 10000/8] # 100/8KB to 10/8MB
     byteload_size_B_list = [int(n * KILOBYTE) for n in byteload_size_KB_list] 
     num_of_experiments = len(byteload_size_B_list)
 
-    sim_dur_list = [FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, 2),   # for 100KB
-                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, 2),   # for 500KB
-                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, 2),   # for 1000KB
-                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, 6),   # for 5000KB
-                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, 10)]  # for 10000KB
-    # sim_dur_list = [FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, 6)]   # for 5000KB
+    # sim_dur_list = [FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, 1.5)]   # for 5000KB
+    sim_dur_list = [FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, 1),   # for 100/8KB
+                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, 1),   # for 500/8KB
+                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, 1),   # for 1000/8KB
+                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, 1),   # for 5000/8KB
+                    FctExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, 1.5)]  # for 10000/8KB
 
     ssird_sim_dur_list = sim_dur_list
     dctcp_sim_dur_list = sim_dur_list
@@ -472,6 +472,5 @@ def fct_rate_sweep_experiment(is_full_postproc=True, title_addendum=""):
 
 if __name__ == "__main__":
     # TODO: update each experiment code to write to their own files
-
-    fct_time_period_experiment(is_full_postproc=True)
-    # fct_rate_sweep_experiment(is_full_postproc=True)
+    fct_vs_load_experiment_vary_interval(is_full_postproc=True)
+    # fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=True)

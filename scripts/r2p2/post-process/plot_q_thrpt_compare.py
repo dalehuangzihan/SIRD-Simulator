@@ -66,32 +66,14 @@ def do_queuing_plotting_for_experiment(num_byteloads, byteload_size_B, inter_byt
 
 
 if __name__ == "__main__":
-    ## 1conn experiments
-    # time interval experiments
-    do_throughput_plotting_for_experiment(5, 1000000, 50, HOST, "host_0", "tor_4")
-    do_queuing_plotting_for_experiment(5, 1000000, 50, TOR, "tor_4", "host_1")
+    # # time interval experiments
+    # do_throughput_plotting_for_experiment(5, 1000000, 50, HOST, "host_0", "tor_4")
+    # do_queuing_plotting_for_experiment(5, 1000000, 50, TOR, "tor_4", "host_1")
 
-    do_throughput_plotting_for_experiment(5, 1000000, 1000, HOST, "host_0", "tor_4")
-    do_queuing_plotting_for_experiment(5, 1000000, 1000, TOR, "tor_4", "host_1")
-
-    # rate sweep experiments
-    do_throughput_plotting_for_experiment(10, 100000, 100, HOST, "host_0", "tor_4")
-    do_queuing_plotting_for_experiment(10, 100000, 100, TOR, "tor_4", "host_1")
-
-    do_throughput_plotting_for_experiment(10, 10000000, 100, HOST, "host_0", "tor_4")
-    do_queuing_plotting_for_experiment(10, 10000000, 100, TOR, "tor_4", "host_1")
-
-    ## dctcp manyconns experiments
-    # time interval experiments
-    do_throughput_plotting_for_experiment(5, 1000000, 10, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
-    do_queuing_plotting_for_experiment(5, 1000000, 10, TOR, "tor_4", "host_1", title_addendum="_dctcp_manyconns")
-
-    do_throughput_plotting_for_experiment(5, 1000000, 1000, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
-    do_queuing_plotting_for_experiment(5, 1000000, 1000, TOR, "tor_4", "host_1", title_addendum="_dctcp_manyconns")
+    # do_throughput_plotting_for_experiment(5, 1000000, 1000, HOST, "host_0", "tor_4")
+    # do_queuing_plotting_for_experiment(5, 1000000, 1000, TOR, "tor_4", "host_1")
 
     # rate sweep experiments
-    do_throughput_plotting_for_experiment(10, 100000, 100, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
-    do_queuing_plotting_for_experiment(10, 100000, 100, TOR, "tor_4", "host_1", title_addendum="_dctcp_manyconns")
-
-    do_throughput_plotting_for_experiment(10, 10000000, 100, HOST, "host_0", "tor_4", title_addendum="_dctcp_manyconns")
-    do_queuing_plotting_for_experiment(10, 10000000, 100, TOR, "tor_4", "host_1", title_addendum="_dctcp_manyconns")
+    # is 1Gbps
+    do_throughput_plotting_for_experiment(10, 1250000, 100, HOST, "host_0", "tor_4")
+    do_queuing_plotting_for_experiment(10, 1250000, 100, TOR, "tor_4", "host_1")
