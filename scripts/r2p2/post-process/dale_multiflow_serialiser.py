@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 import logging
-import fct_experiment
+import dale_fct_experiment
 
 MIN_BYTELOAD_INTERVAL_US = 1
   
@@ -131,11 +131,11 @@ class MultiFlow:
         start_times_pair_us = zip(flow_start_times_us_list, flow_start_times_us_list[1:])
         for a, b in start_times_pair_us: assert(b - a >= MIN_BYTELOAD_INTERVAL_US)
 
-class MultiFlowManualReqInterval(fct_experiment.ManualReqInterval):
+class MultiFlowManualReqInterval(dale_fct_experiment.ManualReqInterval):
     # TODO: move to separate multiflow experiment file
     
     def __init__(self, parent_dir, experiment_name):
-        fct_experiment.ManualReqInterval.__init__(self, parent_dir, experiment_name)
+        dale_fct_experiment.ManualReqInterval.__init__(self, parent_dir, experiment_name)
 
     def create_p2p_mri(self, multiflow_obj):
         '''
@@ -163,11 +163,11 @@ class MultiFlowManualReqInterval(fct_experiment.ManualReqInterval):
     def get_mri_filepath(parent_dir, experiment_name):
         return parent_dir + experiment_name + ".csv"
 
-class MultiFlowExperiment(fct_experiment.FctExperiment):
+class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
     # TODO: move to separate multiflow experiment file
 
     def __init__(self, experiment_family, experiment_name, proto_names, src, dst, flow_start_times_us_list, num_byteloads, byteload_size_B, inter_byteload_period_us, is_full_postproc=False):
-        fct_experiment.FctExperiment.__init__(self, experiment_family, experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us, is_full_postproc)
+        dale_fct_experiment.FctExperiment.__init__(self, experiment_family, experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us, is_full_postproc)
         self.flow_start_times_us_list = flow_start_times_us_list
 
     def execute(self, ssird_sim_dur, dctcp_sim_dur):
@@ -182,14 +182,14 @@ class MultiFlowExperiment(fct_experiment.FctExperiment):
         dctcp_fct = -1
         load_gbps_measured = -1
         for proto in self.proto_names:
-            app_trace_file_path = f"{fct_experiment.PATH_TO_SIM_RESULTS}{proto}-{self.experiment_name}/data/{proto}/{fct_experiment.CLIENT_INJECTION_RATE_GBPS}/applications_trace.str"
-            if proto == fct_experiment.SSIRD_PROTO_NAME:
-                self.run_experiment(proto, ssird_sim_script_path, f"{fct_experiment.PATH_TO_SIM_COORD}outputs/ssird_{self.experiment_name}.out")
+            app_trace_file_path = f"{dale_fct_experiment.PATH_TO_SIM_RESULTS}{proto}-{self.experiment_name}/data/{proto}/{dale_fct_experiment.CLIENT_INJECTION_RATE_GBPS}/applications_trace.str"
+            if proto == dale_fct_experiment.SSIRD_PROTO_NAME:
+                self.run_experiment(proto, ssird_sim_script_path, f"{dale_fct_experiment.PATH_TO_SIM_COORD}outputs/ssird_{self.experiment_name}.out")
                 ssird_fct, load_gbps_measured = self.process_results_fct(app_trace_file_path, proto)
                 logger.info(f"SSIRD FCT: {ssird_fct} ms, Load: {load_gbps_measured} Gbps")
 
-            if proto == fct_experiment.DCTCP_PROTO_NAME:
-                self.run_experiment(proto, dctcp_sim_script_path, f"{fct_experiment.PATH_TO_SIM_COORD}outputs/{fct_experiment.DCTCP_PROTO_NAME}-{self.experiment_name}.out")
+            if proto == dale_fct_experiment.DCTCP_PROTO_NAME:
+                self.run_experiment(proto, dctcp_sim_script_path, f"{dale_fct_experiment.PATH_TO_SIM_COORD}outputs/{dale_fct_experiment.DCTCP_PROTO_NAME}-{self.experiment_name}.out")
                 dctcp_fct, load_gbps_measured = self.process_results_fct(app_trace_file_path, proto)
                 logger.info(f"DCTCP FCT: {dctcp_fct} ms, Load: {load_gbps_measured} Gbps")
 
@@ -229,7 +229,7 @@ def init_logs(output_path):
 def multiflow_fct_load_experiment_vary_byteloadsize(is_full_postproc=True, title_addendum=""):
 
     experiment_family = f"FCT_Vary_Byteload_Size{title_addendum}"
-    proto_names = [fct_experiment.SSIRD_PROTO_NAME, fct_experiment.DCTCP_PROTO_NAME]
+    proto_names = [dale_fct_experiment.SSIRD_PROTO_NAME, dale_fct_experiment.DCTCP_PROTO_NAME]
     # proto_names = [SSIRD_PROTO_NAME]
 
     src = 0

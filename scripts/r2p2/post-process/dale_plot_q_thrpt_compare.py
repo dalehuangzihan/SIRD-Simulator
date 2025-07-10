@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 import shutil
 
-import fct_experiment
+import dale_fct_experiment
 
 PATH_TO_SCRIPTS_R2P2 = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/"
 PATH_TO_POSTPROC = f"{PATH_TO_SCRIPTS_R2P2}post-process/"
@@ -35,7 +35,7 @@ def plot_comparison_graph(y_col, title, experiment_name, ssird_csv_rel_path, dct
         sys.exit(1)
 
 def do_throughput_plotting_for_experiment(num_byteloads, byteload_size_B, inter_byteload_period_us, nw_elem, src, dst, title_addendum=""):
-    experiment_name = fct_experiment.FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + title_addendum
+    experiment_name = dale_fct_experiment.FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + title_addendum
     print(f"Plotting for experiment: {experiment_name}")
 
     ssird_results_dir = f"SSIRD-{experiment_name}/"
@@ -50,7 +50,7 @@ def do_throughput_plotting_for_experiment(num_byteloads, byteload_size_B, inter_
     plot_comparison_graph(THROUGHPUT_COL, f"Throughput: SSIRD vs DCTCP ({experiment_name})", experiment_name, ssird_csv_rel_path, dctcp_csv_rel_path)
 
 def do_queuing_plotting_for_experiment(num_byteloads, byteload_size_B, inter_byteload_period_us, nw_elem, src, dst, title_addendum=""):
-    experiment_name = fct_experiment.FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + title_addendum
+    experiment_name = dale_fct_experiment.FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + title_addendum
     print(f"Plotting for experiment: {experiment_name}")
 
     ssird_results_dir = f"SSIRD-{experiment_name}/"

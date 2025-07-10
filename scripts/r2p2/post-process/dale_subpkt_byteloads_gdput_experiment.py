@@ -1,4 +1,4 @@
-import fct_experiment
+import dale_fct_experiment
 import logging
 
 logger = logging.getLogger(__name__)
@@ -12,8 +12,8 @@ class ExperimentConfig:
 
 def fct_vs_load_experiment_vary_byteloadsize_subpkt_test(is_full_postproc=True, title_addendum="_subpkt"):
     experiment_name = f"FCT_Subpkt_Byteloads{title_addendum}"
-    proto_names = [fct_experiment.SSIRD_PROTO_NAME, fct_experiment.DCTCP_PROTO_NAME]
-    # proto_names = [fct_experiment.SSIRD_PROTO_NAME]
+    proto_names = [dale_fct_experiment.SSIRD_PROTO_NAME, dale_fct_experiment.DCTCP_PROTO_NAME]
+    # proto_names = [dale_fct_experiment.SSIRD_PROTO_NAME]
 
     src = 0
     dst = 1
@@ -25,7 +25,7 @@ def fct_vs_load_experiment_vary_byteloadsize_subpkt_test(is_full_postproc=True, 
     byteload_size_B_list = [4, 40, 400, 4000, 40000] # multiples of 4 so that the inter-byteload periods are later calculated to be whole numbers in the end
     num_of_experiments = len(byteload_size_B_list)
 
-    fct_experiment.init_logs(output_path=f"experiment_output/subpkt_experiment_{total_flow_size_B}B_total_{min(byteload_size_B_list)}B_to_{max(byteload_size_B_list)}B.log")
+    dale_fct_experiment.init_logs(output_path=f"experiment_output/subpkt_experiment_{total_flow_size_B}B_total_{min(byteload_size_B_list)}B_to_{max(byteload_size_B_list)}B.log")
 
     logging.debug(f"Total_flow_size_B: {total_flow_size_B}")
     logging.debug(f"Byteload sizes list: {byteload_size_B_list}")
@@ -58,7 +58,7 @@ def fct_vs_load_experiment_vary_byteloadsize_subpkt_test(is_full_postproc=True, 
     sim_dur_list = []
     for i in range(0, len(num_byteloads_list)):
         # TODO: change multiplier factor if sim duration not long enough
-       sim_dur_list.append(fct_experiment.FctExperiment.get_sim_duration(num_byteloads_list[i], inter_byteload_period_us_list[i], 2))
+       sim_dur_list.append(dale_fct_experiment.FctExperiment.get_sim_duration(num_byteloads_list[i], inter_byteload_period_us_list[i], 2))
     logger.debug(f"Sim Durations list: {sim_dur_list}")
     assert(len(sim_dur_list) == num_of_experiments)
     ssird_sim_dur_list = sim_dur_list
@@ -88,7 +88,7 @@ def fct_vs_load_experiment_vary_byteloadsize_subpkt_test(is_full_postproc=True, 
 
     load_gbps_measured_list = []
     for i in range(0, num_of_experiments):
-        fct_exp1 = fct_experiment.FctExperiment(experiment_name, proto_names, src, dst, num_byteloads_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], is_full_postproc, title_addendum=title_addendum) 
+        fct_exp1 = dale_fct_experiment.FctExperiment(experiment_name, proto_names, src, dst, num_byteloads_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], is_full_postproc, title_addendum=title_addendum) 
         ssird_fct, dctcp_fct, load_gbps_measured = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(ssird_fct)
         dctcp_fct_list.append(dctcp_fct)
