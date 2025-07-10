@@ -58,24 +58,26 @@ class FlowTraceEvent:
 class ManualReqInterval:
     # is in seconds; is 1us
     TIME_STEP_S = 0.000001
+    MRI_START_TIME_S = TIME_STEP_S
 
-    def __init__(self, parent_dir):
+    def __init__(self, parent_dir, experiment_name):
         self.parent_dir = parent_dir
+        self.experiment_name = experiment_name
 
-    def create_p2p_intermittent_mri(self, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us):
-        mri_filepath = self.get_mri_filepath(self.parent_dir, num_byteloads, byteload_size_B, inter_byteload_period_us)
+    def create_p2p_mri(self, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us):
+        mri_filepath = self.get_mri_filepath(self.parent_dir, self.experiment_name)
         mri_byteloads_spec = []    
         mri_byteloads_spec.append(str(src))
         for i in range(0, num_byteloads):
-            time_spec = self.TIME_STEP_S if i == 0 else inter_byteload_period_us * self.TIME_STEP_S
+            time_spec = self.MRI_START_TIME_S if i == 0 else inter_byteload_period_us * self.TIME_STEP_S
             byteload_str = "{:.7f}|{}|{}".format(time_spec, str(dst), byteload_size_B) 
             mri_byteloads_spec.append(byteload_str)
         self.mri_list_to_csv(mri_byteloads_spec, mri_filepath)
         return mri_filepath
 
     @staticmethod
-    def get_mri_filepath(parent_dir, num_byteloads, byteload_size_B, inter_byteload_period_us):
-        return parent_dir + FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + ".csv"
+    def get_mri_filepath(parent_dir, experiment_name):
+        return parent_dir + experiment_name + ".csv"
 
     @staticmethod
     def mri_list_to_csv(mri_list, mri_filepath):
@@ -92,12 +94,12 @@ class SimSpecScript:
     DCTCP_K_L = "dctcp_k_l"
     SIMULATION_NAME_L = "simulation_name_l"
 
-    def __init__(self, parent_dir, title_addendum=""):
+    def __init__(self, parent_dir, experiment_name):
         self.parent_dir = parent_dir
-        self.title_addendum = title_addendum
+        self.experiment_name = experiment_name
     
-    def create_ssird_noburst_params_script(self, mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration):
-        script_filepath = self.parent_dir + f"{SSIRD_PROTO_NAME}-" + FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + self.title_addendum + ".sh"
+    def create_ssird_noburst_params_script(self, mri_relative_path, sim_duration):
+        script_filepath = self.parent_dir + f"{SSIRD_PROTO_NAME}-" + self.experiment_name + ".sh"
         with open(self.PATH_TO_SSIRD_TEMPLATE_NOBURST) as template, open(script_filepath, 'w') as fout:
             lines_in = template.readlines()
             for i in range(len(lines_in)):
@@ -109,8 +111,8 @@ class SimSpecScript:
                 fout.write(line_out)
         return script_filepath
 
-    def create_dctcp_noburst_params_script(self, mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, sim_duration):
-        script_filepath = self.parent_dir + f"{DCTCP_PROTO_NAME}-" + FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + self.title_addendum + ".sh"
+    def create_dctcp_noburst_params_script(self, mri_relative_path, sim_duration):
+        script_filepath = self.parent_dir + f"{DCTCP_PROTO_NAME}-" + self.experiment_name + ".sh"
         with open(self.PATH_TO_DCTCP_TEMPLATE_NOBURST) as template, open(script_filepath, 'w') as fout:
             lines_in = template.readlines()
             for i in range(len(lines_in)):
@@ -128,7 +130,7 @@ class SimSpecScript:
 
 
 class FctExperiment:
-    def __init__(self, experiment_family, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us, is_full_postproc=False, title_addendum=""):
+    def __init__(self, experiment_family, experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us, is_full_postproc=False):
         self.experiment_family = experiment_family
         self.proto_names = proto_names
 
@@ -137,8 +139,7 @@ class FctExperiment:
         self.num_byteloads = num_byteloads
         self.byteload_size_B = byteload_size_B
         self.inter_byteload_period_us = inter_byteload_period_us
-        self.title_addendum = title_addendum
-        self.experiment_name = self.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us) + self.title_addendum
+        self.experiment_name = experiment_name 
 
         self.mri_input_dir = PATH_TO_EXPERIMENTS_INPUTS + experiment_family + "/"
         self.param_scripts_dir = PATH_TO_EXPERIMENTS_SCRIPTS + experiment_family + "/"
@@ -150,17 +151,14 @@ class FctExperiment:
         self.create_plots = f"{int(is_full_postproc)}"
         self.delete_current = "0"
 
-
     def execute(self, ssird_sim_dur, dctcp_sim_dur):
         logger.info("\n=====")
         logger.info("Execute experiment " + self.experiment_name)
         logger.info(f'Flags: {self.run_simulations}, {self.run_post_proc}, {self.create_timeseires}, {self.create_plots}, {self.delete_current}')
-        # is a heuristic
-        # sim_duration = 2 * self.num_byteloads * self.inter_byteload_period_us * ManualReqInterval.TIME_STEP_S
         logger.info("ssird_sim_duration={:f}; dctcp_sim_duration={:f}".format(ssird_sim_dur, dctcp_sim_dur))
 
         self.prep_experiment_input(self.src, self.dst, self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us)
-        ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us, ssird_sim_duration=ssird_sim_dur, dctcp_sim_duration=dctcp_sim_dur)
+        ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(ssird_sim_duration=ssird_sim_dur, dctcp_sim_duration=dctcp_sim_dur, experiment_name=self.experiment_name)
         ssird_fct = -1
         dctcp_fct = -1
         load_gbps_measured = -1
@@ -187,11 +185,11 @@ class FctExperiment:
         except FileExistsError:
             logger.info("File " + self.mri_input_dir + " aready exists.")
         
-        mri = ManualReqInterval(self.mri_input_dir)
-        mri_filepath = mri.create_p2p_intermittent_mri(src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us)
+        mri = ManualReqInterval(self.mri_input_dir, self.experiment_name)
+        mri_filepath = mri.create_p2p_mri(src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us)
         return mri_filepath
 
-    def prep_experiment_spec_scripts(self, num_byteloads, byteload_size_B, inter_byteload_period_us, ssird_sim_duration, dctcp_sim_duration):
+    def prep_experiment_spec_scripts(self, ssird_sim_duration, dctcp_sim_duration, experiment_name):
         logger.info("-----")
         logger.info("Preparing experiment spec scripts")
         try:
@@ -200,10 +198,10 @@ class FctExperiment:
         except FileExistsError:
             logger.info("#### WARNING: File " + self.param_scripts_dir + " aready exists.")
 
-        sim_script = SimSpecScript(self.param_scripts_dir, self.title_addendum)        
-        mri_relative_path = "{}{}/{}.csv".format(MRI_RELATIVE_PATH, self.experiment_family, self.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us))
-        ssird_sim_script_path = sim_script.create_ssird_noburst_params_script(mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, ssird_sim_duration)
-        dctcp_sim_script_path = sim_script.create_dctcp_noburst_params_script(mri_relative_path, num_byteloads, byteload_size_B, inter_byteload_period_us, dctcp_sim_duration)
+        sim_script = SimSpecScript(self.param_scripts_dir, self.experiment_name) 
+        mri_relative_path = "{}{}/{}.csv".format(MRI_RELATIVE_PATH, self.experiment_family, experiment_name)
+        ssird_sim_script_path = sim_script.create_ssird_noburst_params_script(mri_relative_path, ssird_sim_duration)
+        dctcp_sim_script_path = sim_script.create_dctcp_noburst_params_script(mri_relative_path, dctcp_sim_duration)
 
         return ssird_sim_script_path, dctcp_sim_script_path
 
@@ -350,7 +348,7 @@ def fct_vs_load_experiment_vary_interval(is_full_postproc=True, title_addendum="
         SSIRD seems to not work for 100B, 1500B byteloads (replies not issued correctly), is cuz of a bug in how Server tracks req_pkts_expected & req_pkts_received. The former is not updated properly.
         But SSIRD works for 1000B and 10,000B, so we can overlook this for now.
     '''
-    experiment_name = f"FCT_Vary_Time_Interval_Size{title_addendum}"
+    experiment_family = f"FCT_Vary_Time_Interval_Size{title_addendum}"
     proto_names = [SSIRD_PROTO_NAME, DCTCP_PROTO_NAME]
     # proto_names = [SSIRD_PROTO_NAME]
 
@@ -397,7 +395,8 @@ def fct_vs_load_experiment_vary_interval(is_full_postproc=True, title_addendum="
     assert num_of_experiments == len(dctcp_sim_dur_list)
 
     for i in range (0, num_of_experiments):
-        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us_list[i], is_full_postproc, title_addendum=title_addendum) 
+        experiment_name = FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us_list[i]) + title_addendum
+        fct_exp1 = FctExperiment(experiment_family, experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us_list[i], is_full_postproc) 
         ssird_fct, dctcp_fct, load_measured_gbps = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(ssird_fct)
         dctcp_fct_list.append(dctcp_fct)
@@ -421,7 +420,7 @@ def fct_vs_load_experiment_vary_interval(is_full_postproc=True, title_addendum="
 Sweep application pacing rate of byteloads from 1% BW to 100% BW capacity. (i.e. 1GBps to 100GBps)
 '''
 def fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=True, title_addendum=""):
-    experiment_name = f"FCT_Vary_Byteload_Size{title_addendum}"
+    experiment_family = f"FCT_Vary_Byteload_Size{title_addendum}"
     proto_names = [SSIRD_PROTO_NAME, DCTCP_PROTO_NAME]
     # proto_names = [SSIRD_PROTO_NAME]
 
@@ -431,7 +430,7 @@ def fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=True, title_addend
     inter_byteload_period_us = 100 # is 0.1ms
 
     KILOBYTE = 1000
-    # byteload_size_KB_list = [10000/8] # factor=50 works for this, with time to spare
+    # byteload_size_KB_list = [10000/8]
     byteload_size_KB_list = [100/8, 500/8, 1000/8, 5000/8, 10000/8] # 100/8KB to 10/8MB
     byteload_size_B_list = [int(n * KILOBYTE) for n in byteload_size_KB_list] 
     num_of_experiments = len(byteload_size_B_list)
@@ -471,7 +470,8 @@ def fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=True, title_addend
 
     load_gbps_measured_list = []
     for i in range(0, num_of_experiments):
-        fct_exp1 = FctExperiment(experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us, is_full_postproc, title_addendum=title_addendum) 
+        experiment_name = FctExperiment.get_experiment_name(num_byteloads, byteload_size_B_list[i], inter_byteload_period_us) + title_addendum
+        fct_exp1 = FctExperiment(experiment_family, experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us, is_full_postproc) 
         ssird_fct, dctcp_fct, load_gbps_measured = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(ssird_fct)
         dctcp_fct_list.append(dctcp_fct)
