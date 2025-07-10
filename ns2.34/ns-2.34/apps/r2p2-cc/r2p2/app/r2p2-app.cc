@@ -112,13 +112,11 @@ void R2p2Application::attach_r2p2_layer(R2p2Generic *r2p2_layer)
 void R2p2Application::send_request(RequestIdTuple *, size_t)
 {
     int next_req_size = (int)(req_size_->get_next());
+    /* Dale: get flow ID of flow */
+    long app_level_id = (long)(req_flow_id_->get_next());
     if (next_req_size < 4)
         next_req_size = 4;
     int32_t srvr_addr = dst_thread_gen_->get_next();
-    /** Dale:
-     * Manually manipulate app_level_id to mimmic separate requests made by same app.
-     */
-    long app_level_id = 0; /** Dale: TODO: for testing only */
     bool is_final_req_of_conn = reqs_sent_ == 3; /** Dale: TODO: actually calculate this */
     if (do_trace_)
     {

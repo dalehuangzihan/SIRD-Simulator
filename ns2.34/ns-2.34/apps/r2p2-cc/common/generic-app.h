@@ -191,6 +191,8 @@ protected:
     RndDistr *send_interval_;
     RndDistr *proc_time_;
     RndDistr *req_size_;
+    /* Dale: add flow id to help identify multiple requests as being part of the same flow */
+    RndDistr *req_flow_id_;
     RndDistr *resp_size_;
     LoadPattern *load_pattern_;
 

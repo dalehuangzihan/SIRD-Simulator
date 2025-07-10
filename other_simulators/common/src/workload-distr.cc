@@ -30,6 +30,11 @@ std::string cdf_path = "./config/homa-size-distributions";
  * Explanation:
  * hosts 0 and 1 each send a 200KB flow to host 2 100 microsecnds after the beinning of the simulation.
  * host 0 sends a 1MB flow to host 2 1ms after the first flow started.
+ * 
+ * Dale: Addendum:
+ * Add flow_id to comma-separated item, s.t. item is now:
+ * "$relative_interval|$target_addr|$flow_sz|$flow_id"
+ *   flow_id helps identify individual separate byteloads as being part of a single flow
  *
  * @param intervals_file
  * @param machine_id
@@ -66,6 +71,14 @@ ManualDistr::ManualDistr(const char *intervals_file, int machine_id, size_t tupl
                 std::istringstream ssw(word);
                 for (size_t idx = 0; idx <= tuple_idx; idx++)
                     std::getline(ssw, value, '|');
+                /* Dale: for debugging */
+                if (tuple_idx == 2)
+                {
+                    std::cout << "========== req_size: " << value << std::endl; 
+                } else if (tuple_idx == 3)
+                {
+                    std::cout << "========== req_flow_id: " << value << std::endl; 
+                }
                 events_.push_back(stod(value));
             }
             word_count++;
