@@ -1,0 +1,185 @@
+DEBUG:root:Total_flow_size_B: 40000
+DEBUG:root:Byteload sizes list: [4, 40, 400, 4000, 40000]
+DEBUG:__main__:Num Byteloads list: [10000, 1000, 100, 10, 1]
+DEBUG:__main__:Total injection period (us): 10000
+DEBUG:__main__:Inter-Byteload Periods list: [1, 10, 100, 1000, 10000]
+DEBUG:__main__:Sim Durations list: [0.02, 0.02, 0.02, 0.02, 0.02]
+INFO:__main__:Total Flow Size (Bytes): 40000
+INFO:__main__:Total Injection Period (us): 10000
+INFO:__main__:Byteload Size (Bytes): [4, 40, 400, 4000, 40000]
+INFO:__main__:Num Byteloads: 1
+INFO:__main__:Intervals (us): [1, 10, 100, 1000, 10000]
+INFO:__main__:Load GBps theoretical: [0.032, 0.03200000000000001, 0.03200000000000001, 0.032, 0.032]
+INFO:__main__:* Sim duration (SSIRD): [0.02, 0.02, 0.02, 0.02, 0.02]
+INFO:__main__:* Sim duration (DCTCP): [0.02, 0.02, 0.02, 0.02, 0.02]
+INFO:fct_experiment:
+=====
+INFO:fct_experiment:Execute experiment 10000#-4B-1us_subpkt
+INFO:fct_experiment:Flags: 1, 1, 1, 1, 0
+INFO:fct_experiment:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:fct_experiment:-----
+INFO:fct_experiment:Preparing experiment input MRIs
+INFO:fct_experiment:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt/
+INFO:fct_experiment:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt/ aready exists.
+INFO:fct_experiment:-----
+INFO:fct_experiment:Preparing experiment spec scripts
+INFO:fct_experiment:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/
+INFO:fct_experiment:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/ aready exists.
+INFO:fct_experiment:-----
+INFO:fct_experiment:Running experiment for SSIRD
+INFO:fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/SSIRD-10000#-4B-1us_subpkt.sh
+INFO:fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10000#-4B-1us_subpkt.out
+INFO:fct_experiment:Processing results
+INFO:fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-10000#-4B-1us_subpkt/data/SSIRD/60/applications_trace.str
+INFO:fct_experiment:num of byteloads: 10000, num of srq_events: 10000, num of rrq_events 9994
+DEBUG:fct_experiment:num of srq events: 10000, num of byteloads: 10000, diff = 0
+DEBUG:fct_experiment:final rrq req_size = 40000, flow size = 40000, diff = 0
+INFO:fct_experiment:SSIRD FCT: 0.010001574000000346 ms, Load: 0.03199999999999589 Gbps
+INFO:fct_experiment:-----
+INFO:fct_experiment:Running experiment for DCTCP-50
+INFO:fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/DCTCP-50-10000#-4B-1us_subpkt.sh
+INFO:fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-10000#-4B-1us_subpkt.out
+INFO:fct_experiment:Processing results
+INFO:fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-10000#-4B-1us_subpkt/data/DCTCP-50/60/applications_trace.str
+INFO:fct_experiment:num of byteloads: 10000, num of srq_events: 10000, num of rrq_events 10000
+DEBUG:fct_experiment:num of srq events: 10000, num of byteloads: 10000, diff = 0
+INFO:fct_experiment:DCTCP FCT: 0.010001513000000628 ms, Load: 0.03199999999999589 Gbps
+INFO:fct_experiment:
+=====
+INFO:fct_experiment:Execute experiment 1000#-40B-10us_subpkt
+INFO:fct_experiment:Flags: 1, 1, 1, 1, 0
+INFO:fct_experiment:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:fct_experiment:-----
+INFO:fct_experiment:Preparing experiment input MRIs
+INFO:fct_experiment:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt/
+INFO:fct_experiment:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt/ aready exists.
+INFO:fct_experiment:-----
+INFO:fct_experiment:Preparing experiment spec scripts
+INFO:fct_experiment:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/
+INFO:fct_experiment:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/ aready exists.
+INFO:fct_experiment:-----
+INFO:fct_experiment:Running experiment for SSIRD
+INFO:fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/SSIRD-1000#-40B-10us_subpkt.sh
+INFO:fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_1000#-40B-10us_subpkt.out
+INFO:fct_experiment:Processing results
+INFO:fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-1000#-40B-10us_subpkt/data/SSIRD/60/applications_trace.str
+INFO:fct_experiment:num of byteloads: 1000, num of srq_events: 1000, num of rrq_events 1000
+DEBUG:fct_experiment:num of srq events: 1000, num of byteloads: 1000, diff = 0
+DEBUG:fct_experiment:final rrq req_size = 40000, flow size = 40000, diff = 0
+INFO:fct_experiment:SSIRD FCT: 0.009997559000000322 ms, Load: 0.03199999999999826 Gbps
+INFO:fct_experiment:-----
+INFO:fct_experiment:Running experiment for DCTCP-50
+INFO:fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/DCTCP-50-1000#-40B-10us_subpkt.sh
+INFO:fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-1000#-40B-10us_subpkt.out
+INFO:fct_experiment:Processing results
+INFO:fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-1000#-40B-10us_subpkt/data/DCTCP-50/60/applications_trace.str
+INFO:fct_experiment:num of byteloads: 1000, num of srq_events: 1000, num of rrq_events 1000
+DEBUG:fct_experiment:num of srq events: 1000, num of byteloads: 1000, diff = 0
+INFO:fct_experiment:DCTCP FCT: 0.009992519000000755 ms, Load: 0.03199999999999826 Gbps
+INFO:fct_experiment:
+=====
+INFO:fct_experiment:Execute experiment 100#-400B-100us_subpkt
+INFO:fct_experiment:Flags: 1, 1, 1, 1, 0
+INFO:fct_experiment:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:fct_experiment:-----
+INFO:fct_experiment:Preparing experiment input MRIs
+INFO:fct_experiment:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt/
+INFO:fct_experiment:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt/ aready exists.
+INFO:fct_experiment:-----
+INFO:fct_experiment:Preparing experiment spec scripts
+INFO:fct_experiment:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/
+INFO:fct_experiment:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/ aready exists.
+INFO:fct_experiment:-----
+INFO:fct_experiment:Running experiment for SSIRD
+INFO:fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/SSIRD-100#-400B-100us_subpkt.sh
+INFO:fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_100#-400B-100us_subpkt.out
+INFO:fct_experiment:Processing results
+INFO:fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-100#-400B-100us_subpkt/data/SSIRD/60/applications_trace.str
+INFO:fct_experiment:num of byteloads: 100, num of srq_events: 100, num of rrq_events 100
+DEBUG:fct_experiment:num of srq events: 100, num of byteloads: 100, diff = 0
+DEBUG:fct_experiment:final rrq req_size = 40000, flow size = 40000, diff = 0
+INFO:fct_experiment:SSIRD FCT: 0.009907617000001423 ms, Load: 0.031999999999999175 Gbps
+INFO:fct_experiment:-----
+INFO:fct_experiment:Running experiment for DCTCP-50
+INFO:fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/DCTCP-50-100#-400B-100us_subpkt.sh
+INFO:fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-100#-400B-100us_subpkt.out
+INFO:fct_experiment:Processing results
+INFO:fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-100#-400B-100us_subpkt/data/DCTCP-50/60/applications_trace.str
+INFO:fct_experiment:num of byteloads: 100, num of srq_events: 100, num of rrq_events 100
+DEBUG:fct_experiment:num of srq events: 100, num of byteloads: 100, diff = 0
+INFO:fct_experiment:DCTCP FCT: 0.009902575999999996 ms, Load: 0.031999999999999175 Gbps
+INFO:fct_experiment:
+=====
+INFO:fct_experiment:Execute experiment 10#-4000B-1000us_subpkt
+INFO:fct_experiment:Flags: 1, 1, 1, 1, 0
+INFO:fct_experiment:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:fct_experiment:-----
+INFO:fct_experiment:Preparing experiment input MRIs
+INFO:fct_experiment:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt/
+INFO:fct_experiment:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt/ aready exists.
+INFO:fct_experiment:-----
+INFO:fct_experiment:Preparing experiment spec scripts
+INFO:fct_experiment:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/
+INFO:fct_experiment:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/ aready exists.
+INFO:fct_experiment:-----
+INFO:fct_experiment:Running experiment for SSIRD
+INFO:fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/SSIRD-10#-4000B-1000us_subpkt.sh
+INFO:fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10#-4000B-1000us_subpkt.out
+INFO:fct_experiment:Processing results
+INFO:fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-10#-4000B-1000us_subpkt/data/SSIRD/60/applications_trace.str
+INFO:fct_experiment:num of byteloads: 10, num of srq_events: 10, num of rrq_events 10
+DEBUG:fct_experiment:num of srq events: 10, num of byteloads: 10, diff = 0
+DEBUG:fct_experiment:final rrq req_size = 40000, flow size = 40000, diff = 0
+INFO:fct_experiment:SSIRD FCT: 0.009008002000001625 ms, Load: 0.03199999999999642 Gbps
+INFO:fct_experiment:-----
+INFO:fct_experiment:Running experiment for DCTCP-50
+INFO:fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/DCTCP-50-10#-4000B-1000us_subpkt.sh
+INFO:fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-10#-4000B-1000us_subpkt.out
+INFO:fct_experiment:Processing results
+INFO:fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-10#-4000B-1000us_subpkt/data/DCTCP-50/60/applications_trace.str
+INFO:fct_experiment:num of byteloads: 10, num of srq_events: 10, num of rrq_events 10
+DEBUG:fct_experiment:num of srq events: 10, num of byteloads: 10, diff = 0
+INFO:fct_experiment:DCTCP FCT: 0.00900296200000028 ms, Load: 0.03199999999999642 Gbps
+INFO:fct_experiment:
+=====
+INFO:fct_experiment:Execute experiment 1#-40000B-10000us_subpkt
+INFO:fct_experiment:Flags: 1, 1, 1, 1, 0
+INFO:fct_experiment:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:fct_experiment:-----
+INFO:fct_experiment:Preparing experiment input MRIs
+INFO:fct_experiment:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt/
+INFO:fct_experiment:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt/ aready exists.
+INFO:fct_experiment:-----
+INFO:fct_experiment:Preparing experiment spec scripts
+INFO:fct_experiment:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/
+INFO:fct_experiment:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/ aready exists.
+INFO:fct_experiment:-----
+INFO:fct_experiment:Running experiment for SSIRD
+INFO:fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/SSIRD-1#-40000B-10000us_subpkt.sh
+INFO:fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_1#-40000B-10000us_subpkt.out
+INFO:fct_experiment:Processing results
+INFO:fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-1#-40000B-10000us_subpkt/data/SSIRD/60/applications_trace.str
+INFO:fct_experiment:num of byteloads: 1, num of srq_events: 1, num of rrq_events 1
+DEBUG:fct_experiment:num of srq events: 1, num of byteloads: 1, diff = 0
+DEBUG:fct_experiment:final rrq req_size = 40000, flow size = 40000, diff = 0
+INFO:fct_experiment:SSIRD FCT: 1.1102000000207113e-05 ms, Load: 0.032 Gbps
+INFO:fct_experiment:-----
+INFO:fct_experiment:Running experiment for DCTCP-50
+INFO:fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt/DCTCP-50-1#-40000B-10000us_subpkt.sh
+INFO:fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-1#-40000B-10000us_subpkt.out
+INFO:fct_experiment:Processing results
+INFO:fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-1#-40000B-10000us_subpkt/data/DCTCP-50/60/applications_trace.str
+INFO:fct_experiment:num of byteloads: 1, num of srq_events: 1, num of rrq_events 1
+DEBUG:fct_experiment:num of srq events: 1, num of byteloads: 1, diff = 0
+INFO:fct_experiment:DCTCP FCT: 5.998000000673187e-06 ms, Load: 0.032 Gbps
+INFO:__main__:Total Flow Size (Bytes): 40000
+INFO:__main__:Total Injection Period (us): 10000
+INFO:__main__:Byteload Size (Bytes): [4, 40, 400, 4000, 40000]
+INFO:__main__:Num Byteloads: 1
+INFO:__main__:Intervals (us): [1, 10, 100, 1000, 10000]
+INFO:__main__:Load GBps theoretical: [0.032, 0.03200000000000001, 0.03200000000000001, 0.032, 0.032]
+INFO:__main__:Load Gbps measured: [0.03199999999999589, 0.03199999999999826, 0.031999999999999175, 0.03199999999999642, 0.032]
+INFO:__main__:* Sim duration (SSIRD): [0.02, 0.02, 0.02, 0.02, 0.02]
+INFO:__main__:* Sim duration (DCTCP): [0.02, 0.02, 0.02, 0.02, 0.02]
+INFO:__main__:* SSIRD FCT: [0.010001574000000346, 0.009997559000000322, 0.009907617000001423, 0.009008002000001625, 1.1102000000207113e-05]
+INFO:__main__:* DCTCP FCT: [0.010001513000000628, 0.009992519000000755, 0.009902575999999996, 0.00900296200000028, 5.998000000673187e-06]

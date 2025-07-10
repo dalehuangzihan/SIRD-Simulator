@@ -14,7 +14,7 @@ def plot_ssird_vs_ideal_vary_interval_fct_compare(thrpt_gbps, ssird_fct, ideal_f
     plt.figure(figsize=(10, 6))
     plt.plot(load_gbps_int, ssird_fct_ms, label="SSIRD", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
     plt.plot(load_gbps_int, ideal_fct_ms, label="Ideal (DCTCP conn-pool)", linestyle='-', marker='o', color=IDEAL_PLOT_COLOUR)
-    plt.xlabel('Throughput (Gbps)')
+    plt.xlabel('Goodput (Gbps)')
     plt.ylabel('Flow Completion Time (ms)')
     plt.ylim(0.0, 4.2)
     plt.title(f"FCT: SSIRD vs Ideal: Varying Intervals ({num_byteloads} byteloads x {byteload_size_B} Bytes x P ms) {title_addendum}\n(Flow Rate Changes!)")
@@ -34,7 +34,7 @@ def plot_ssird_vs_ideal_vary_byteloadsize_fct_compare(thrpt_gbps, ssird_fct, ide
     plt.figure(figsize=(10, 6))
     plt.plot(load_gbps_int, ssird_fct_ms, label="SSIRD", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
     plt.plot(load_gbps_int, ideal_fct_ms, label="Ideal (DCTCP conn-pool)", linestyle='-', marker='o', color=IDEAL_PLOT_COLOUR)
-    plt.xlabel('Throughput (Gbps)')
+    plt.xlabel('Goodput (Gbps)')
     plt.ylabel('Flow Completion Time (ms)')
     plt.ylim(0.0, 4.2)
     plt.title(f"FCT: SSIRD vs Ideal: Varying Byteload Size ({num_byteloads} byteloads x B Bytes x {inter_byteload_period_us/1000}ms) {title_addendum}\n(Flow Size Changes!)")
@@ -50,7 +50,7 @@ def plot_ssird_vs_ideal_vary_interval_fct_diff(thrpt_gbps, ssird_fct, ideal_fct,
     # load_percent = [(l / LINK_SPEED_GIGABITS_PER_SEC) * 100 for l in load_gbps]
     plt.figure(figsize=(10, 6))
     plt.plot(load_gbps_int, fct_ssird_minus_ideal_us, linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR, label='SSIRD')
-    plt.xlabel('Throughput (Gbps)')
+    plt.xlabel('Goodput (Gbps)')
     plt.ylabel('FCT SSIRD - Ideal (us)')
     plt.ylim(3, 8)
     plt.title(f"FCT Difference (SSIRD - Ideal): Varying Intervals ({num_byteloads} byteloads x {byteload_size_B} Bytes x P ms) {title_addendum}\n(Flow Rate Changes!)")
@@ -68,7 +68,7 @@ def plot_ssird_vs_ideal_vary_byteloadsize_fct_diff(thrpt_gbps, ssird_fct, ideal_
     # load_percent = [(l / LINK_SPEED_GIGABITS_PER_SEC) * 100 for l in load_gbps]
     plt.figure(figsize=(10, 6))
     plt.plot(load_gbps_int, fct_ssird_minus_ideal_us, label='SSIRD', linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
-    plt.xlabel('Throughput (Gbps)')
+    plt.xlabel('Goodput (Gbps)')
     plt.ylabel('FCT SSIRD - Ideal (us)')
     plt.ylim(3, 8)
     plt.title(f"FCT Difference (SSIRD - Ideal): Varying Byteload Size ({num_byteloads} byteloads x B Bytes x {inter_byteload_period_us/1000}ms) {title_addendum}\n(Flow Size Changes!)")
@@ -102,7 +102,7 @@ def plot_ssird_vs_ideal_vary_byteloadsize_fct_slowdown(thrpt_gbps, ssird_fct, id
     # load_percent = [(l / LINK_SPEED_GIGABITS_PER_SEC) * 100 for l in load_gbps]
     plt.figure(figsize=(10, 6))
     plt.plot(load_gbps_int, ssird_slowdown, label='SSIRD', linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
-    plt.xlabel('Throughput (Gbps)')
+    plt.xlabel('Goodput (Gbps)')
     plt.ylabel('Slowdown vs Ideal FCT')
     plt.ylim(0.98, 1.1)
     plt.title(f"FCT Slowdown: Varying Byteload Size ({num_byteloads} byteloads x B Bytes x {inter_byteload_period_us/1000}ms) {title_addendum}\n(Flow Size Changes!)")
@@ -144,8 +144,8 @@ def plot_ssird_vs_ideal_fct_varying_byteloadsize_100us():
     # INFO:__main__:Byteload Size (Bytes): [12500, 62500, 125000, 625000, 1250000]
     # INFO:__main__:Load Gbps theoretical: [1.0000000000000002, 5.000000000000001, 10.000000000000002, 50.00000000000001, 100.00000000000001]
     # INFO:__main__:Load Gbps measured: [1.0000000000001101, 5.000000000000551, 10.000000000001101, 50.000000000005514, 100.00000000001103]
-    # INFO:__main__:Sim duration (SSIRD): [0.002, 0.002, 0.002, 0.006, 0.01]
-    # INFO:__main__:Sim duration (DCTCP): [0.002, 0.002, 0.002, 0.006, 0.01]
+    # INFO:__main__:Sim duration (SSIRD): [0.001, 0.001, 0.001, 0.001, 0.0015]
+    # INFO:__main__:Sim duration (DCTCP): [0.001, 0.001, 0.001, 0.001, 0.0015]
     # INFO:__main__:* IDEAL FCT: [0.0009999999999999998, 0.001, 0.001, 0.0009999999999999998, 0.0009999999999999998]
     # INFO:__main__:* IDEAL FCT (old): [0.000900125, 0.000900625, 0.0009012499999999999, 0.0009062499999999999, 0.0009125]
     # INFO:__main__:* SSIRD FCT: [0.0009087210000000567, 0.0009129380000008069, 0.0009182130000002786, 0.0009604090000010501, 0.0010626570000003]
