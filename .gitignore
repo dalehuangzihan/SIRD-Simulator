@@ -107,3 +107,11 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Dale's additions:
+# Simulation Specification .sh scripts auto-generated from Dale's experiments
+scripts/r2p2/coord/config/dale_experiments/
+# Manual Request Intervals auto-generated from Dale's experiments
+scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/
+# Experiment output files auto-generated from Dale's experiments
+scripts/r2p2/post-process/experiment_output/
