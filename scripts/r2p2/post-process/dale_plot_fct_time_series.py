@@ -131,12 +131,12 @@ def plot_ssird_vs_ideal_fct_1000000B_varying_period():
     num_byteloads = 5
     byteload_size_B = 125000  # 1000000/8 Bytes
     inter_byteload_period_us_list = [1000, 500, 100, 50, 10]
-    throughput_measured_gbps_list = list(map(int, [0.9999999999999621, 1.9999999999999243, 9.999999999964094, 19.999999999809766, 99.99999999786458]))
+    thrpt_measured_gbps_list = list(map(int, [0.9999999999999621, 1.9999999999999243, 9.999999999964094, 19.999999999809766, 99.99999999786458]))
     ssird_fct = [0.00401823400000012, 0.0020182230000003187, 0.00041823300000132235, 0.00021822300000096106, 6.049600000146427e-05]
     dctcp_fct = [0.004013160000001292, 0.0020131600000006244, 0.00041316000000080066, 0.00021316000000126678, 5.533100000043589e-05] 
-    plot_ssird_vs_ideal_vary_interval_fct_compare(throughput_measured_gbps_list, ssird_fct, dctcp_fct, num_byteloads, byteload_size_B)
-    plot_ssird_vs_ideal_vary_interval_fct_slowdown(throughput_measured_gbps_list, ssird_fct, dctcp_fct, num_byteloads, byteload_size_B)
-    plot_ssird_vs_ideal_vary_interval_fct_diff(throughput_measured_gbps_list, ssird_fct, dctcp_fct, num_byteloads, byteload_size_B)
+    plot_ssird_vs_ideal_vary_interval_fct_compare(thrpt_measured_gbps_list, ssird_fct, dctcp_fct, num_byteloads, byteload_size_B)
+    plot_ssird_vs_ideal_vary_interval_fct_slowdown(thrpt_measured_gbps_list, ssird_fct, dctcp_fct, num_byteloads, byteload_size_B)
+    plot_ssird_vs_ideal_vary_interval_fct_diff(thrpt_measured_gbps_list, ssird_fct, dctcp_fct, num_byteloads, byteload_size_B)
     
 def plot_ssird_vs_ideal_fct_varying_byteloadsize_100us():
     # INFO:__main__:Time Period: 100

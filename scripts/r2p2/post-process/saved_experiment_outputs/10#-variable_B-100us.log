@@ -1,13 +1,13 @@
 INFO:__main__:Time Period: 100
 INFO:__main__:Num Byteloads: 10
 INFO:__main__:Byteload Size (Bytes): [12500, 62500, 125000, 625000, 1250000]
-INFO:__main__:Load GBps theoretical: [1.0000000000000002, 5.000000000000001, 10.000000000000002, 50.00000000000001, 100.00000000000001]
+INFO:__main__:Thrpt Gbps theoretical: [1.0000000000000002, 5.000000000000001, 10.000000000000002, 50.00000000000001, 100.00000000000001]
 INFO:__main__:* Sim duration (SSIRD): [0.001, 0.001, 0.001, 0.001, 0.0015]
 INFO:__main__:* Sim duration (DCTCP): [0.001, 0.001, 0.001, 0.001, 0.0015]
 INFO:__main__:
 =====
 INFO:__main__:Execute experiment 10#-12500B-100us
-INFO:__main__:Flags: 1, 0, 0, 0, 0
+INFO:__main__:Flags: 1, 1, 1, 1, 0
 INFO:__main__:ssird_sim_duration=0.001000; dctcp_sim_duration=0.001000
 INFO:__main__:-----
 INFO:__main__:Preparing experiment input MRIs
@@ -24,7 +24,7 @@ INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2
 INFO:__main__:num of byteloads: 10, num of srq_events: 10, num of rrq_events 10
 DEBUG:__main__:num of srq events: 10, num of byteloads: 10, diff = 0
 DEBUG:__main__:final rrq req_size = 125000, flow size = 125000, diff = 0
-INFO:__main__:SSIRD FCT: 0.0009087210000000567 ms, Load: 1.0000000000001101 Gbps
+INFO:__main__:SSIRD FCT: 0.0009087210000000567 ms, Thrpt: 0.8888888888874517 Gbps
 INFO:__main__:-----
 INFO:__main__:Running experiment for DCTCP-50
 INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size/DCTCP-50-10#-12500B-100us.sh
@@ -33,11 +33,11 @@ INFO:__main__:Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-10#-12500B-100us/data/DCTCP-50/60/applications_trace.str
 INFO:__main__:num of byteloads: 10, num of srq_events: 10, num of rrq_events 10
 DEBUG:__main__:num of srq events: 10, num of byteloads: 10, diff = 0
-INFO:__main__:DCTCP FCT: 0.0009036790000003236 ms, Load: 1.0000000000001101 Gbps
+INFO:__main__:DCTCP FCT: 0.0009036790000003236 ms, Thrpt: 0.8888888888874517 Gbps
 INFO:__main__:
 =====
 INFO:__main__:Execute experiment 10#-62500B-100us
-INFO:__main__:Flags: 1, 0, 0, 0, 0
+INFO:__main__:Flags: 1, 1, 1, 1, 0
 INFO:__main__:ssird_sim_duration=0.001000; dctcp_sim_duration=0.001000
 INFO:__main__:-----
 INFO:__main__:Preparing experiment input MRIs
@@ -56,7 +56,7 @@ INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2
 INFO:__main__:num of byteloads: 10, num of srq_events: 10, num of rrq_events 10
 DEBUG:__main__:num of srq events: 10, num of byteloads: 10, diff = 0
 DEBUG:__main__:final rrq req_size = 625000, flow size = 625000, diff = 0
-INFO:__main__:SSIRD FCT: 0.0009129380000008069 ms, Load: 5.000000000000551 Gbps
+INFO:__main__:SSIRD FCT: 0.0009129380000008069 ms, Thrpt: 4.444444444437259 Gbps
 INFO:__main__:-----
 INFO:__main__:Running experiment for DCTCP-50
 INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size/DCTCP-50-10#-62500B-100us.sh
@@ -65,11 +65,11 @@ INFO:__main__:Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-10#-62500B-100us/data/DCTCP-50/60/applications_trace.str
 INFO:__main__:num of byteloads: 10, num of srq_events: 10, num of rrq_events 10
 DEBUG:__main__:num of srq events: 10, num of byteloads: 10, diff = 0
-INFO:__main__:DCTCP FCT: 0.0009078910000006601 ms, Load: 5.000000000000551 Gbps
+INFO:__main__:DCTCP FCT: 0.0009078910000006601 ms, Thrpt: 4.444444444437259 Gbps
 INFO:__main__:
 =====
 INFO:__main__:Execute experiment 10#-125000B-100us
-INFO:__main__:Flags: 1, 0, 0, 0, 0
+INFO:__main__:Flags: 1, 1, 1, 1, 0
 INFO:__main__:ssird_sim_duration=0.001000; dctcp_sim_duration=0.001000
 INFO:__main__:-----
 INFO:__main__:Preparing experiment input MRIs
@@ -88,7 +88,7 @@ INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2
 INFO:__main__:num of byteloads: 10, num of srq_events: 10, num of rrq_events 10
 DEBUG:__main__:num of srq events: 10, num of byteloads: 10, diff = 0
 DEBUG:__main__:final rrq req_size = 1250000, flow size = 1250000, diff = 0
-INFO:__main__:SSIRD FCT: 0.0009182130000002786 ms, Load: 10.000000000001101 Gbps
+INFO:__main__:SSIRD FCT: 0.0009182130000002786 ms, Thrpt: 8.888888888874519 Gbps
 INFO:__main__:-----
 INFO:__main__:Running experiment for DCTCP-50
 INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size/DCTCP-50-10#-125000B-100us.sh
@@ -97,11 +97,11 @@ INFO:__main__:Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-10#-125000B-100us/data/DCTCP-50/60/applications_trace.str
 INFO:__main__:num of byteloads: 10, num of srq_events: 10, num of rrq_events 10
 DEBUG:__main__:num of srq events: 10, num of byteloads: 10, diff = 0
-INFO:__main__:DCTCP FCT: 0.0009131600000014117 ms, Load: 10.000000000001101 Gbps
+INFO:__main__:DCTCP FCT: 0.0009131600000014117 ms, Thrpt: 8.888888888874519 Gbps
 INFO:__main__:
 =====
 INFO:__main__:Execute experiment 10#-625000B-100us
-INFO:__main__:Flags: 1, 0, 0, 0, 0
+INFO:__main__:Flags: 1, 1, 1, 1, 0
 INFO:__main__:ssird_sim_duration=0.001000; dctcp_sim_duration=0.001000
 INFO:__main__:-----
 INFO:__main__:Preparing experiment input MRIs
@@ -120,7 +120,7 @@ INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2
 INFO:__main__:num of byteloads: 10, num of srq_events: 10, num of rrq_events 10
 DEBUG:__main__:num of srq events: 10, num of byteloads: 10, diff = 0
 DEBUG:__main__:final rrq req_size = 6250000, flow size = 6250000, diff = 0
-INFO:__main__:SSIRD FCT: 0.0009604090000010501 ms, Load: 50.000000000005514 Gbps
+INFO:__main__:SSIRD FCT: 0.0009604090000010501 ms, Thrpt: 44.444444444372586 Gbps
 INFO:__main__:-----
 INFO:__main__:Running experiment for DCTCP-50
 INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size/DCTCP-50-10#-625000B-100us.sh
@@ -129,11 +129,11 @@ INFO:__main__:Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-10#-625000B-100us/data/DCTCP-50/60/applications_trace.str
 INFO:__main__:num of byteloads: 10, num of srq_events: 10, num of rrq_events 10
 DEBUG:__main__:num of srq events: 10, num of byteloads: 10, diff = 0
-INFO:__main__:DCTCP FCT: 0.0009553000000011025 ms, Load: 50.000000000005514 Gbps
+INFO:__main__:DCTCP FCT: 0.0009553000000011025 ms, Thrpt: 44.444444444372586 Gbps
 INFO:__main__:
 =====
 INFO:__main__:Execute experiment 10#-1250000B-100us
-INFO:__main__:Flags: 1, 0, 0, 0, 0
+INFO:__main__:Flags: 1, 1, 1, 1, 0
 INFO:__main__:ssird_sim_duration=0.001500; dctcp_sim_duration=0.001500
 INFO:__main__:-----
 INFO:__main__:Preparing experiment input MRIs
@@ -152,7 +152,7 @@ INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2
 INFO:__main__:num of byteloads: 10, num of srq_events: 10, num of rrq_events 1
 DEBUG:__main__:num of srq events: 10, num of byteloads: 10, diff = 0
 DEBUG:__main__:final rrq req_size = 12500000, flow size = 12500000, diff = 0
-INFO:__main__:SSIRD FCT: 0.0010626570000003 ms, Load: 100.00000000001103 Gbps
+INFO:__main__:SSIRD FCT: 0.0010626570000003 ms, Thrpt: 88.88888888874517 Gbps
 INFO:__main__:-----
 INFO:__main__:Running experiment for DCTCP-50
 INFO:__main__:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size/DCTCP-50-10#-1250000B-100us.sh
@@ -161,15 +161,14 @@ INFO:__main__:Processing results
 INFO:__main__:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-10#-1250000B-100us/data/DCTCP-50/60/applications_trace.str
 INFO:__main__:num of byteloads: 10, num of srq_events: 10, num of rrq_events 10
 DEBUG:__main__:num of srq events: 10, num of byteloads: 10, diff = 0
-INFO:__main__:DCTCP FCT: 0.001056156000000641 ms, Load: 100.00000000001103 Gbps
+INFO:__main__:DCTCP FCT: 0.001056156000000641 ms, Thrpt: 88.88888888874517 Gbps
 INFO:__main__:Time Period: 100
 INFO:__main__:Num Byteloads: 10
 INFO:__main__:Byteload Size (Bytes): [12500, 62500, 125000, 625000, 1250000]
-INFO:__main__:Load Gbps theoretical: [1.0000000000000002, 5.000000000000001, 10.000000000000002, 50.00000000000001, 100.00000000000001]
-INFO:__main__:Load Gbps measured: [1.0000000000001101, 5.000000000000551, 10.000000000001101, 50.000000000005514, 100.00000000001103]
+INFO:__main__:Thrpt Gbps theoretical: [1.0000000000000002, 5.000000000000001, 10.000000000000002, 50.00000000000001, 100.00000000000001]
 INFO:__main__:Sim duration (SSIRD): [0.001, 0.001, 0.001, 0.001, 0.0015]
 INFO:__main__:Sim duration (DCTCP): [0.001, 0.001, 0.001, 0.001, 0.0015]
-INFO:__main__:* IDEAL FCT: [0.0009999999999999998, 0.001, 0.001, 0.0009999999999999998, 0.0009999999999999998]
-INFO:__main__:* IDEAL FCT (old): [0.000900125, 0.000900625, 0.0009012499999999999, 0.0009062499999999999, 0.0009125]
+INFO:__main__:Thrpt Gbps measured (SSIRD): [0.8888888888874517, 4.444444444437259, 8.888888888874519, 44.444444444372586, 88.88888888874517]
+INFO:__main__:Thrpt Gbps measured (DCTCP): [0.8888888888874517, 4.444444444437259, 8.888888888874519, 44.444444444372586, 88.88888888874517]
 INFO:__main__:* SSIRD FCT: [0.0009087210000000567, 0.0009129380000008069, 0.0009182130000002786, 0.0009604090000010501, 0.0010626570000003]
 INFO:__main__:* DCTCP FCT: [0.0009036790000003236, 0.0009078910000006601, 0.0009131600000014117, 0.0009553000000011025, 0.001056156000000641]

@@ -19,6 +19,7 @@ PATH_TO_SIM_RESULTS = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/results/"
 PATH_TO_EXPERIMENTS = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/config/"
 SCRIPTS_RELATIVE_PATH = "dale_experiments/"
 PATH_TO_EXPERIMENTS_SCRIPTS = PATH_TO_EXPERIMENTS + SCRIPTS_RELATIVE_PATH
+PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES = PATH_TO_EXPERIMENTS + "dale_experiment_script_templates/"
 MRI_RELATIVE_PATH = "dale_experiments/"
 PATH_TO_EXPERIMENTS_INPUTS = PATH_TO_EXPERIMENTS + "manual-req-intervals/" + MRI_RELATIVE_PATH
 
@@ -88,8 +89,8 @@ class ManualReqInterval:
             wr.writerow(mri_list)
 
 class SimSpecScript:
-    PATH_TO_SSIRD_TEMPLATE_NOBURST = PATH_TO_EXPERIMENTS_SCRIPTS + "template-ssird-2host-p2p-noburst.sh"
-    PATH_TO_DCTCP_TEMPLATE_NOBURST = PATH_TO_EXPERIMENTS_SCRIPTS + "template-dctcp-2host-p2p-noburst.sh"
+    PATH_TO_SSIRD_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-ssird-2host-p2p-noburst.sh"
+    PATH_TO_DCTCP_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-dctcp-2host-p2p-noburst.sh"
 
     MANUAL_REQ_INTERVAL_FILE_L = "manual_req_interval_file_l"
     DURATION_MODIFIER_L = "duration_modifier_l"
@@ -131,15 +132,15 @@ class SimSpecScript:
         return script_filepath
 
 class ExperimentResults:
-    def __init__(self, ssird_fct=None, dctcp_fct=None, load_gbps_measured_ssird=None, load_gbps_measured_dctcp=None, load_gbps_measured_per_flow_list_ssird=None, load_gbps_measured_per_flow_list_dctcp=None):
+    def __init__(self, ssird_fct=None, dctcp_fct=None, thrpt_gbps_measured_ssird=None, thrpt_gbps_measured_dctcp=None, thrpt_gbps_measured_per_flow_list_ssird=None, thrpt_gbps_measured_per_flow_list_dctcp=None):
         self.ssird_fct = ssird_fct
         self.dctcp_fct = dctcp_fct
 
-        self.load_gbps_measured_ssird = load_gbps_measured_ssird
-        self.load_gbps_measured_dctcp = load_gbps_measured_dctcp
+        self.thrpt_gbps_measured_ssird = thrpt_gbps_measured_ssird
+        self.thrpt_gbps_measured_dctcp = thrpt_gbps_measured_dctcp
 
-        self.load_gbps_measured_per_flow_list_ssird = load_gbps_measured_per_flow_list_ssird
-        self.load_gbps_measured_per_flow_list_dctcp = load_gbps_measured_per_flow_list_dctcp
+        self.thrpt_gbps_measured_per_flow_list_ssird = thrpt_gbps_measured_per_flow_list_ssird
+        self.thrpt_gbps_measured_per_flow_list_dctcp = thrpt_gbps_measured_per_flow_list_dctcp
 
 class FctExperiment:
     def __init__(self, experiment_family, experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us, is_full_postproc=False):
@@ -173,21 +174,21 @@ class FctExperiment:
         ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(ssird_sim_duration=ssird_sim_dur, dctcp_sim_duration=dctcp_sim_dur, experiment_name=self.experiment_name)
         ssird_fct = -1
         dctcp_fct = -1
-        load_gbps_measured_ssird = -1
-        load_gbps_measured_dctcp = -1
+        thrpt_gbps_measured_ssird = -1
+        thrpt_gbps_measured_dctcp = -1
         for proto in self.proto_names:
             app_trace_file_path = f"{PATH_TO_SIM_RESULTS}{proto}-{self.experiment_name}/data/{proto}/{CLIENT_INJECTION_RATE_GBPS}/applications_trace.str"
             if proto == SSIRD_PROTO_NAME:
                 self.run_experiment(proto, ssird_sim_script_path, f"{PATH_TO_SIM_COORD}outputs/ssird_{self.experiment_name}.out")
-                ssird_fct, load_gbps_measured_ssird, _ = self.process_results_fct(app_trace_file_path, proto)
-                logger.info(f"SSIRD FCT: {ssird_fct} ms, Load: {load_gbps_measured_ssird} Gbps")
+                ssird_fct, thrpt_gbps_measured_ssird, _ = self.process_results_fct(app_trace_file_path, proto)
+                logger.info(f"SSIRD FCT: {ssird_fct} ms, Thrpt: {thrpt_gbps_measured_ssird} Gbps")
 
             if proto == DCTCP_PROTO_NAME:
                 self.run_experiment(proto, dctcp_sim_script_path, f"{PATH_TO_SIM_COORD}outputs/{DCTCP_PROTO_NAME}-{self.experiment_name}.out")
-                dctcp_fct, load_gbps_measured_dctcp, _ = self.process_results_fct(app_trace_file_path, proto)
-                logger.info(f"DCTCP FCT: {dctcp_fct} ms, Load: {load_gbps_measured_dctcp} Gbps")
+                dctcp_fct, thrpt_gbps_measured_dctcp, _ = self.process_results_fct(app_trace_file_path, proto)
+                logger.info(f"DCTCP FCT: {dctcp_fct} ms, Thrpt: {thrpt_gbps_measured_dctcp} Gbps")
 
-        return ExperimentResults(ssird_fct, dctcp_fct, load_gbps_measured_ssird, load_gbps_measured_dctcp)
+        return ExperimentResults(ssird_fct, dctcp_fct, thrpt_gbps_measured_ssird, thrpt_gbps_measured_dctcp)
         
     def prep_experiment_input(self, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us):
         logger.info("-----")
@@ -247,8 +248,8 @@ class FctExperiment:
         logger.info(app_trace_file_path)
         flow_trace_event_queue = self.read_app_trace_file(app_trace_file_path)
         fct = self.get_full_flow_duration(flow_trace_event_queue, proto) 
-        measured_load_gbps, measured_load_gbps_per_flow_list = self.get_measured_load_gbps(flow_trace_event_queue)
-        return fct, measured_load_gbps, measured_load_gbps_per_flow_list
+        measured_thrpt_gbps, measured_thrpt_gbps_per_flow_list = self.get_measured_thrpt_gbps(flow_trace_event_queue)
+        return fct, measured_thrpt_gbps, measured_thrpt_gbps_per_flow_list
 
     def read_app_trace_file(self, app_trace_file_path):
         flow_trace_event_queue = []
@@ -301,7 +302,7 @@ class FctExperiment:
 
         return final_trace.get_timestamp() - first_trace.get_timestamp()
 
-    def get_measured_load_gbps(self, flow_trace_event_queue):
+    def get_measured_thrpt_gbps(self, flow_trace_event_queue):
         # returns in Gbps
         # here we use the n-1 gaps between the n srq events to calc throughput:
         srq_events = [e for e in flow_trace_event_queue if e.get_event() == FlowTraceEvent.SRQ_EVENT]
@@ -356,7 +357,7 @@ def init_logs(output_path):
         ]
     )
 
-def fct_vs_load_experiment_vary_interval(is_full_postproc=True, title_addendum=""):
+def fct_vs_thrpt_experiment_vary_interval(is_full_postproc=True, title_addendum=""):
     '''
     BUG BUG_01-related: 
     30/06/2025:
@@ -409,24 +410,24 @@ def fct_vs_load_experiment_vary_interval(is_full_postproc=True, title_addendum="
     assert num_of_experiments == len(ssird_sim_dur_list)
     assert num_of_experiments == len(dctcp_sim_dur_list)
 
-    load_gbps_measured_list_ssird = []
-    load_gbps_measured_list_dctcp = []
+    thrpt_gbps_measured_list_ssird = []
+    thrpt_gbps_measured_list_dctcp = []
     for i in range (0, num_of_experiments):
         experiment_name = FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us_list[i]) + title_addendum
         fct_exp1 = FctExperiment(experiment_family, experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us_list[i], is_full_postproc) 
         results = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(results.ssird_fct)
         dctcp_fct_list.append(results.dctcp_fct)
-        load_gbps_measured_list_ssird.append(results.load_gbps_measured_ssird)
-        load_gbps_measured_list_dctcp.append(results.load_gbps_measured_dctcp)
+        thrpt_gbps_measured_list_ssird.append(results.thrpt_gbps_measured_ssird)
+        thrpt_gbps_measured_list_dctcp.append(results.thrpt_gbps_measured_dctcp)
 
     logger.info(f"Time Periods: {inter_byteload_period_us_list}")
     logger.info(f"Num Byteloads: {num_byteloads}")
     logger.info(f"Byteload Size: {byteload_size_B} Bytes")
     logger.info(f"Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"Sim duration (DCTCP): {dctcp_sim_dur_list}")
-    logger.info(f"Load Gbps measured (SSIRD): {load_gbps_measured_list_ssird}")
-    logger.info(f"Load Gbps measured (DCTCP): {load_gbps_measured_list_dctcp}")
+    logger.info(f"Thrpt Gbps measured (SSIRD): {thrpt_gbps_measured_list_ssird}")
+    logger.info(f"Thrpt Gbps measured (DCTCP): {thrpt_gbps_measured_list_dctcp}")
     # logger.info(f"* IDEAL FCT: {ideal_fct_list}")
     # logger.info(f"* IDEAL FCT (old): {ideal_fct_list_old}")
     logger.info(f"* SSIRD FCT: {ssird_fct_list}")
@@ -438,7 +439,7 @@ def fct_vs_load_experiment_vary_interval(is_full_postproc=True, title_addendum="
 '''
 Sweep application pacing rate of byteloads from 1% BW to 100% BW capacity. (i.e. 1GBps to 100GBps)
 '''
-def fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=True, title_addendum=""):
+def fct_vs_thrpt_experiment_vary_byteloadsize(is_full_postproc=True, title_addendum=""):
     experiment_family = f"FCT_Vary_Byteload_Size{title_addendum}"
     proto_names = [SSIRD_PROTO_NAME, DCTCP_PROTO_NAME]
     # proto_names = [SSIRD_PROTO_NAME]
@@ -466,11 +467,11 @@ def fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=True, title_addend
 
     init_logs(output_path=f"experiment_output/{FctExperiment.get_experiment_name(num_byteloads, "variable_", inter_byteload_period_us)}{title_addendum}.log")
 
-    load_gbps_theoretical = [(bytes*8)/(inter_byteload_period_us * pow(10, -6) * pow(10, 9)) for bytes in byteload_size_B_list]
+    thrpt_gbps_theoretical = [(bytes*8)/(inter_byteload_period_us * pow(10, -6) * pow(10, 9)) for bytes in byteload_size_B_list]
     logger.info(f"Time Period: {inter_byteload_period_us}")
     logger.info(f"Num Byteloads: {num_byteloads}")
     logger.info(f"Byteload Size (Bytes): {byteload_size_B_list}")
-    logger.info(f"Load Gbps theoretical: {load_gbps_theoretical}")
+    logger.info(f"Thrpt Gbps theoretical: {thrpt_gbps_theoretical}")
     logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
 
@@ -487,25 +488,25 @@ def fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=True, title_addend
     assert num_of_experiments == len(ssird_sim_dur_list)
     assert num_of_experiments == len(dctcp_sim_dur_list)
 
-    load_gbps_measured_list_ssird = []
-    load_gbps_measured_list_dctcp = []
+    thrpt_gbps_measured_list_ssird = []
+    thrpt_gbps_measured_list_dctcp = []
     for i in range(0, num_of_experiments):
         experiment_name = FctExperiment.get_experiment_name(num_byteloads, byteload_size_B_list[i], inter_byteload_period_us) + title_addendum
         fct_exp1 = FctExperiment(experiment_family, experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us, is_full_postproc) 
         results = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(results.ssird_fct)
         dctcp_fct_list.append(results.dctcp_fct)
-        load_gbps_measured_list_ssird.append(results.load_gbps_measured_ssird)
-        load_gbps_measured_list_dctcp.append(results.load_gbps_measured_dctcp)
+        thrpt_gbps_measured_list_ssird.append(results.thrpt_gbps_measured_ssird)
+        thrpt_gbps_measured_list_dctcp.append(results.thrpt_gbps_measured_dctcp)
 
     logger.info(f"Time Period: {inter_byteload_period_us}")
     logger.info(f"Num Byteloads: {num_byteloads}")
     logger.info(f"Byteload Size (Bytes): {byteload_size_B_list}")
-    logger.info(f"Load Gbps theoretical: {load_gbps_theoretical}")
+    logger.info(f"Thrpt Gbps theoretical: {thrpt_gbps_theoretical}")
     logger.info(f"Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"Sim duration (DCTCP): {dctcp_sim_dur_list}")
-    logger.info(f"Load Gbps measured (SSIRD): {load_gbps_measured_list_ssird}")
-    logger.info(f"Load Gbps measured (DCTCP): {load_gbps_measured_list_dctcp}")
+    logger.info(f"Thrpt Gbps measured (SSIRD): {thrpt_gbps_measured_list_ssird}")
+    logger.info(f"Thrpt Gbps measured (DCTCP): {thrpt_gbps_measured_list_dctcp}")
     # logger.info(f"* IDEAL FCT: {ideal_fct_list}")
     # logger.info(f"* IDEAL FCT (old): {ideal_fct_list_old}")
     logger.info(f"* SSIRD FCT: {ssird_fct_list}")
@@ -516,5 +517,5 @@ def fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=True, title_addend
 
 if __name__ == "__main__":
     # TODO: update each experiment code to write to their own files
-    # fct_vs_load_experiment_vary_interval(is_full_postproc=False)
-    fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=False)
+    # fct_vs_thrpt_experiment_vary_interval(is_full_postproc=True)
+    fct_vs_thrpt_experiment_vary_byteloadsize(is_full_postproc=True)

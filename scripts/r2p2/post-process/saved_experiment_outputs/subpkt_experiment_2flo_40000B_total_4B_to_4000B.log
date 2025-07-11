@@ -1,0 +1,144 @@
+INFO:__main__:Total Flow Size (Bytes): 40000
+INFO:__main__:Total Injection Period (us): 10000
+INFO:__main__:Byteload Size (Bytes): [4, 40, 400, 4000]
+INFO:__main__:Num Byteloads: [10000, 1000, 100, 10]
+INFO:__main__:Intervals (us): [1, 10, 100, 1000]
+INFO:__main__:Num flows: 2
+INFO:__main__:Thrpt GBps theoretical: [0.064, 0.06400000000000002, 0.06400000000000002, 0.064]
+INFO:__main__:* Sim duration (SSIRD): [0.04, 0.04, 0.04, 0.04]
+INFO:__main__:* Sim duration (DCTCP): [0.04, 0.04, 0.04, 0.04]
+INFO:dale_multiflow_serialiser:
+=====
+INFO:dale_multiflow_serialiser:Execute experiment 2flo-10#-4B-1us_subpkt_multiflow
+INFO:dale_multiflow_serialiser:Flags: 1, 0, 0, 0, 0
+INFO:dale_multiflow_serialiser:ssird_sim_duration=0.040000; dctcp_sim_duration=0.040000
+INFO:dale_multiflow_serialiser:-----
+INFO:dale_multiflow_serialiser:Preparing experiment input MRIs
+INFO:dale_multiflow_serialiser:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Preparing experiment spec scripts
+INFO:dale_fct_experiment:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for SSIRD
+INFO:dale_fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/SSIRD-2flo-10#-4B-1us_subpkt_multiflow.sh
+INFO:dale_fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_2flo-10#-4B-1us_subpkt_multiflow.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-2flo-10#-4B-1us_subpkt_multiflow/data/SSIRD/60/applications_trace.str
+INFO:dale_multiflow_serialiser:flow_id: 0, num of byteloads: 10000, num of srq_events_flow_0: 10000, num of rrq_events_flow_0: 9996
+INFO:dale_multiflow_serialiser:flow_id: 1, num of byteloads: 10000, num of srq_events_flow_1: 10000, num of rrq_events_flow_1: 9998
+INFO:dale_multiflow_serialiser:SSIRD FCT: [0.019999553999999975, 0.019999564000000802] ms, Throughput: 0.031998399919995486 Gbps
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for DCTCP-50
+INFO:dale_fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/DCTCP-50-2flo-10#-4B-1us_subpkt_multiflow.sh
+INFO:dale_fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-2flo-10#-4B-1us_subpkt_multiflow.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-2flo-10#-4B-1us_subpkt_multiflow/data/DCTCP-50/60/applications_trace.str
+INFO:dale_multiflow_serialiser:flow_id: 0, num of byteloads: 10000, num of srq_events_flow_0: 10000, num of rrq_events_flow_0: 10000
+INFO:dale_multiflow_serialiser:flow_id: 1, num of byteloads: 10000, num of srq_events_flow_1: 10000, num of rrq_events_flow_1: 10000
+INFO:dale_multiflow_serialiser:DCTCP FCT: [0.019999513000000135, 0.019999513000000135] ms, Throughput: 0.031998399919995486 Gbps
+INFO:dale_multiflow_serialiser:
+=====
+INFO:dale_multiflow_serialiser:Execute experiment 2flo-10#-40B-10us_subpkt_multiflow
+INFO:dale_multiflow_serialiser:Flags: 1, 0, 0, 0, 0
+INFO:dale_multiflow_serialiser:ssird_sim_duration=0.040000; dctcp_sim_duration=0.040000
+INFO:dale_multiflow_serialiser:-----
+INFO:dale_multiflow_serialiser:Preparing experiment input MRIs
+INFO:dale_multiflow_serialiser:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/
+INFO:dale_multiflow_serialiser:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Preparing experiment spec scripts
+INFO:dale_fct_experiment:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/
+INFO:dale_fct_experiment:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for SSIRD
+INFO:dale_fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/SSIRD-2flo-10#-40B-10us_subpkt_multiflow.sh
+INFO:dale_fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_2flo-10#-40B-10us_subpkt_multiflow.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-2flo-10#-40B-10us_subpkt_multiflow/data/SSIRD/60/applications_trace.str
+INFO:dale_multiflow_serialiser:flow_id: 0, num of byteloads: 1000, num of srq_events_flow_0: 1000, num of rrq_events_flow_0: 1000
+INFO:dale_multiflow_serialiser:flow_id: 1, num of byteloads: 1000, num of srq_events_flow_1: 1000, num of rrq_events_flow_1: 1000
+INFO:dale_multiflow_serialiser:SSIRD FCT: [0.009998579000001229, 0.009996558999999294] ms, Throughput: 0.06399359423480369 Gbps
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for DCTCP-50
+INFO:dale_fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/DCTCP-50-2flo-10#-40B-10us_subpkt_multiflow.sh
+INFO:dale_fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-2flo-10#-40B-10us_subpkt_multiflow.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-2flo-10#-40B-10us_subpkt_multiflow/data/DCTCP-50/60/applications_trace.str
+INFO:dale_multiflow_serialiser:flow_id: 0, num of byteloads: 1000, num of srq_events_flow_0: 1000, num of rrq_events_flow_0: 1000
+INFO:dale_multiflow_serialiser:flow_id: 1, num of byteloads: 1000, num of srq_events_flow_1: 1000, num of rrq_events_flow_1: 1000
+INFO:dale_multiflow_serialiser:DCTCP FCT: [0.009992519000000755, 0.009992518999998978] ms, Throughput: 0.06399359423480369 Gbps
+INFO:dale_multiflow_serialiser:
+=====
+INFO:dale_multiflow_serialiser:Execute experiment 2flo-10#-400B-100us_subpkt_multiflow
+INFO:dale_multiflow_serialiser:Flags: 1, 0, 0, 0, 0
+INFO:dale_multiflow_serialiser:ssird_sim_duration=0.040000; dctcp_sim_duration=0.040000
+INFO:dale_multiflow_serialiser:-----
+INFO:dale_multiflow_serialiser:Preparing experiment input MRIs
+INFO:dale_multiflow_serialiser:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/
+INFO:dale_multiflow_serialiser:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Preparing experiment spec scripts
+INFO:dale_fct_experiment:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/
+INFO:dale_fct_experiment:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for SSIRD
+INFO:dale_fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/SSIRD-2flo-10#-400B-100us_subpkt_multiflow.sh
+INFO:dale_fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_2flo-10#-400B-100us_subpkt_multiflow.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-2flo-10#-400B-100us_subpkt_multiflow/data/SSIRD/60/applications_trace.str
+INFO:dale_multiflow_serialiser:flow_id: 0, num of byteloads: 100, num of srq_events_flow_0: 100, num of rrq_events_flow_0: 100
+INFO:dale_multiflow_serialiser:flow_id: 1, num of byteloads: 100, num of srq_events_flow_1: 100, num of rrq_events_flow_1: 100
+INFO:dale_multiflow_serialiser:SSIRD FCT: [0.009908637000000553, 0.009906617000000395] ms, Throughput: 0.06399353600645723 Gbps
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for DCTCP-50
+INFO:dale_fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/DCTCP-50-2flo-10#-400B-100us_subpkt_multiflow.sh
+INFO:dale_fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-2flo-10#-400B-100us_subpkt_multiflow.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-2flo-10#-400B-100us_subpkt_multiflow/data/DCTCP-50/60/applications_trace.str
+INFO:dale_multiflow_serialiser:flow_id: 0, num of byteloads: 100, num of srq_events_flow_0: 100, num of rrq_events_flow_0: 100
+INFO:dale_multiflow_serialiser:flow_id: 1, num of byteloads: 100, num of srq_events_flow_1: 100, num of rrq_events_flow_1: 100
+INFO:dale_multiflow_serialiser:DCTCP FCT: [0.009902575999999996, 0.009902575999999996] ms, Throughput: 0.06399353600645723 Gbps
+INFO:dale_multiflow_serialiser:
+=====
+INFO:dale_multiflow_serialiser:Execute experiment 2flo-10#-4000B-1000us_subpkt_multiflow
+INFO:dale_multiflow_serialiser:Flags: 1, 0, 0, 0, 0
+INFO:dale_multiflow_serialiser:ssird_sim_duration=0.040000; dctcp_sim_duration=0.040000
+INFO:dale_multiflow_serialiser:-----
+INFO:dale_multiflow_serialiser:Preparing experiment input MRIs
+INFO:dale_multiflow_serialiser:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/
+INFO:dale_multiflow_serialiser:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Preparing experiment spec scripts
+INFO:dale_fct_experiment:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/
+INFO:dale_fct_experiment:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for SSIRD
+INFO:dale_fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/SSIRD-2flo-10#-4000B-1000us_subpkt_multiflow.sh
+INFO:dale_fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_2flo-10#-4000B-1000us_subpkt_multiflow.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-2flo-10#-4000B-1000us_subpkt_multiflow/data/SSIRD/60/applications_trace.str
+INFO:dale_multiflow_serialiser:flow_id: 0, num of byteloads: 10, num of srq_events_flow_0: 10, num of rrq_events_flow_0: 10
+INFO:dale_multiflow_serialiser:flow_id: 1, num of byteloads: 10, num of srq_events_flow_1: 10, num of rrq_events_flow_1: 10
+INFO:dale_multiflow_serialiser:SSIRD FCT: [0.009009022000000755, 0.009007002000000597] ms, Throughput: 0.06399288967891484 Gbps
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for DCTCP-50
+INFO:dale_fct_experiment:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/DCTCP-50-2flo-10#-4000B-1000us_subpkt_multiflow.sh
+INFO:dale_fct_experiment:### Output:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-2flo-10#-4000B-1000us_subpkt_multiflow.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-2flo-10#-4000B-1000us_subpkt_multiflow/data/DCTCP-50/60/applications_trace.str
+INFO:dale_multiflow_serialiser:flow_id: 0, num of byteloads: 10, num of srq_events_flow_0: 10, num of rrq_events_flow_0: 10
+INFO:dale_multiflow_serialiser:flow_id: 1, num of byteloads: 10, num of srq_events_flow_1: 10, num of rrq_events_flow_1: 10
+INFO:dale_multiflow_serialiser:DCTCP FCT: [0.00900296200000028, 0.00900296200000028] ms, Throughput: 0.06399288967891484 Gbps
+INFO:__main__:Total Flow Size (Bytes): 40000
+INFO:__main__:Total Injection Period (us): 10000
+INFO:__main__:Byteload Size (Bytes): [4, 40, 400, 4000]
+INFO:__main__:Num Byteloads: 10
+INFO:__main__:Intervals (us): [1, 10, 100, 1000]
+INFO:__main__:Num flows: 2
+INFO:__main__:Thrpt Gbps theoretical: [0.064, 0.06400000000000002, 0.06400000000000002, 0.064]
+INFO:__main__:Thrpt Gbps measured (SSIRD): [0.031998399919995486, 0.06399359423480369, 0.06399353600645723, 0.06399288967891484]
+INFO:__main__:Thrpt Gbps measured (DCTCP): [0.031998399919995486, 0.06399359423480369, 0.06399353600645723, 0.06399288967891484]
+INFO:__main__:* Sim duration (SSIRD): [0.04, 0.04, 0.04, 0.04]
+INFO:__main__:* Sim duration (DCTCP): [0.04, 0.04, 0.04, 0.04]
+INFO:__main__:* SSIRD FCT: [[0.019999553999999975, 0.019999564000000802], [0.009998579000001229, 0.009996558999999294], [0.009908637000000553, 0.009906617000000395], [0.009009022000000755, 0.009007002000000597]]
+INFO:__main__:* DCTCP FCT: [[0.019999513000000135, 0.019999513000000135], [0.009992519000000755, 0.009992518999998978], [0.009902575999999996, 0.009902575999999996], [0.00900296200000028, 0.00900296200000028]]
