@@ -48,6 +48,8 @@ class FlowTraceEvent:
         return self.event
     def get_req_size(self):
         return int(self.req_size)
+    def get_app_level_id(self):
+        return int(self.app_level_id)
 
     @staticmethod
     def read_flow_trace_from_str(str_line):
@@ -233,8 +235,8 @@ class FctExperiment:
         logger.info("Processing results")
         logger.info(app_trace_file_path)
         flow_trace_event_queue = self.read_app_trace_file(app_trace_file_path)
-        fct = self.get_full_flow_duration(flow_trace_event_queue, self.num_byteloads, self.byteload_size_B, proto) 
-        measured_load_gbps = self.get_measured_load_gbps(flow_trace_event_queue, self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us)
+        fct = self.get_full_flow_duration(flow_trace_event_queue, proto) 
+        measured_load_gbps = self.get_measured_load_gbps(flow_trace_event_queue)
         return fct, measured_load_gbps
 
     def read_app_trace_file(self, app_trace_file_path):
@@ -251,32 +253,32 @@ class FctExperiment:
         except IOError:
             logger.error("An error occurred while reading the file")
 
-    def get_full_flow_duration(self, flow_trace_event_queue, num_of_byteloads, byteload_size_B, proto):
+    def get_full_flow_duration(self, flow_trace_event_queue, proto):
         ''' This mtd calculates FCT using timestamps '''
 
         srq_events = [e for e in flow_trace_event_queue if (e.get_event() == FlowTraceEvent.SRQ_EVENT)]
         rrq_events = [e for e in flow_trace_event_queue if (e.get_event() == FlowTraceEvent.RRQ_EVENT)]
 
-        logger.info(f"num of byteloads: {num_of_byteloads}, num of srq_events: {len(srq_events)}, num of rrq_events {len(rrq_events)}")
+        logger.info(f"num of byteloads: {self.num_byteloads}, num of srq_events: {len(srq_events)}, num of rrq_events {len(rrq_events)}")
 
         # # TODO: these assertions only work for fully-intermittent flows
         # assert(len(srq_events) == len(rrq_events))
         # assert(num_of_byteloads == len(srq_events))
         # assert(num_of_byteloads == len(rrq_events))
 
-        # TODO: is testing for now, remove if batching is implemented.
-        logger.debug(f"num of srq events: {len(srq_events)}, num of byteloads: {num_of_byteloads}, diff = {num_of_byteloads - len(srq_events)}")
-        assert(len(srq_events) == num_of_byteloads)
+        # TODO: is testing for now, remove if adaptive batching feature is implemented in the sim.
+        logger.debug(f"num of srq events: {len(srq_events)}, num of byteloads: {self.num_byteloads}, diff = {self.num_byteloads - len(srq_events)}")
+        assert(len(srq_events) == self.num_byteloads)
 
         first_trace = flow_trace_event_queue[0]
         assert(first_trace.get_event() == FlowTraceEvent.SRQ_EVENT)
         final_trace = flow_trace_event_queue[len(flow_trace_event_queue) - 1]
 
         assert(final_trace.get_event() == FlowTraceEvent.RRQ_EVENT)
-        expected_total_flow_size_B = num_of_byteloads * byteload_size_B
+        expected_total_flow_size_B = self.num_byteloads * self.byteload_size_B
         if proto == SSIRD_PROTO_NAME:
             # mirror treatment of hypersmall byteloads by r2p2-app.cc
-            if byteload_size_B < 4 : expected_total_flow_size_B *= 4 
+            if self.byteload_size_B < 4 : expected_total_flow_size_B = self.num_byteloads * 4
             logger.debug(f"final rrq req_size = {final_trace.get_req_size()}, flow size = {expected_total_flow_size_B}, diff = {expected_total_flow_size_B - final_trace.get_req_size()}")
             assert(final_trace.get_req_size() == expected_total_flow_size_B)
         if proto == DCTCP_PROTO_NAME:
@@ -288,16 +290,16 @@ class FctExperiment:
 
         return final_trace.get_timestamp() - first_trace.get_timestamp()
 
-    def get_measured_load_gbps(self, flow_trace_event_queue, num_byteloads, byteload_size_B, inter_byteload_interval_us):
+    def get_measured_load_gbps(self, flow_trace_event_queue):
         # returns in Gbps
         # here we only use n-1 out of n events to calc throughput:
         srq_events = [e for e in flow_trace_event_queue if e.get_event() == FlowTraceEvent.SRQ_EVENT]
-        assert(num_byteloads == len(srq_events))
-        if num_byteloads == 1:
+        assert(self.num_byteloads == len(srq_events))
+        if self.num_byteloads == 1:
             # logging.debug(f"NB: srq event count = {len(srq_events)}, not enough events to measure app throughput")  
             # return -1
-            print(num_byteloads, byteload_size_B, inter_byteload_interval_us)
-            return (byteload_size_B * 8 / (inter_byteload_interval_us * pow(10,-6))) * pow(10,-9)
+            print(self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us)
+            return (self.byteload_size_B * 8 / (self.inter_byteload_period_us * pow(10,-6))) * pow(10,-9)
         total_duration = srq_events[len(srq_events)-2].get_timestamp() - srq_events[0].get_timestamp()
         total_data_B = 0 
         for i in range(0, len(srq_events)-2):
@@ -451,7 +453,7 @@ def fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=True, title_addend
     logger.info(f"Time Period: {inter_byteload_period_us}")
     logger.info(f"Num Byteloads: {num_byteloads}")
     logger.info(f"Byteload Size (Bytes): {byteload_size_B_list}")
-    logger.info(f"Load GBps theoretical: {load_gbps_theoretical}")
+    logger.info(f"Load Gbps theoretical: {load_gbps_theoretical}")
     logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
 
@@ -494,5 +496,5 @@ def fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=True, title_addend
 
 if __name__ == "__main__":
     # TODO: update each experiment code to write to their own files
-    fct_vs_load_experiment_vary_interval(is_full_postproc=True)
-    # fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=True)
+    # fct_vs_load_experiment_vary_interval(is_full_postproc=True)
+    fct_vs_load_experiment_vary_byteloadsize(is_full_postproc=False)
