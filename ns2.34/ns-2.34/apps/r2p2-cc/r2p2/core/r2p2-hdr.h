@@ -87,6 +87,12 @@ private:
     bool is_final_req_of_conn_;
     /* Dale: track if a reply should be issued by application in response to this pkt */
     bool is_do_reply_;
+    /** 
+     * Dale: track flow-id of this pkt; 
+     * TODO: currently does not have field in constructor cuz it's just a workaround for pFabric. SSIRD uses flow-id as app-level-id, but pfabric can't
+     * TODO: Eventually, we could have SSIRD also use flow-id directly, instead of piggybacking on the app-level-id field.
+     */
+    long flow_id_=-1;
 
 public:
     hdr_r2p2() : first_urpc_(false), credit_(0), credit_pad_(0), credit_req_(0),
@@ -196,6 +202,8 @@ public:
     bool &is_final_req_of_conn() { return is_final_req_of_conn_; }
     /* Dale: track if a reply should be issued by application in response to this pkt */
     bool &is_do_reply() { return is_do_reply_; }
+    /* Dale: track flow-id in header */
+    long &flow_id() { return flow_id_; }
 };
 
 struct RequestIdTuple
@@ -258,6 +266,12 @@ struct RequestIdTuple
     double ts_;
     /* Dale: track if this is the last msg/msg-ext of this app-level request */
     bool is_final_req_of_conn_;
+    /** 
+     * Dale: track flow-id of this pkt; 
+     * TODO: currently does not have field in constructor cuz it's just a workaround for pFabric. SSIRD uses flow-id as app-level-id, but pfabric can't
+     * TODO: Eventually, we could have SSIRD also use flow-id directly, instead of piggybacking on the app-level-id field.
+     */
+    long flow_id_=-1;
 };
 
 #endif

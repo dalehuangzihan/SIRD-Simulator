@@ -1017,6 +1017,8 @@ void FullTcpAgent::sendpacket(int seqno, int ackno, int pflags, int datalen, int
 		r2p2_hdr->sr_addr() = cur_req_id_tup_->sr_addr_;
 		r2p2_hdr->msg_creation_time() = cur_req_id_tup_->ts_;
 		r2p2_hdr->is_pfabric_app_msg() = true;
+		/* Dale: set flow_id in header */
+		r2p2_hdr->flow_id() = cur_req_id_tup_->flow_id_;
 		assert(cur_req_id_tup_->ts_ > 0);
 	}
 	/* build basic header w/options */
@@ -2112,6 +2114,8 @@ void FullTcpAgent::recv(Packet *pkt, Handler *)
 				req_id.sr_addr_ = r2p2_hdr->sr_addr();
 				req_id.client_port_ = dport();
 				req_id.ts_ = r2p2_hdr->msg_creation_time();
+				/* Dale: add flow_id_ to header */
+				req_id.flow_id_ = r2p2_hdr->flow_id();
 				app_->recv_msg(datalen, std::move(req_id));
 			}
 			else
@@ -3071,6 +3075,8 @@ step6:
 					req_id.sr_addr_ = r2p2_hdr->sr_addr();
 					req_id.client_port_ = dport();
 					req_id.ts_ = r2p2_hdr->msg_creation_time();
+					/* Dale: set flow-id in header */
+					req_id.flow_id_ = r2p2_hdr->flow_id();
 					app_->recv_msg(datalen, std::move(req_id));
 				}
 				else
@@ -3123,6 +3129,8 @@ step6:
 					req_id.sr_addr_ = r2p2_hdr->sr_addr();
 					req_id.client_port_ = dport();
 					req_id.ts_ = r2p2_hdr->msg_creation_time();
+					/* Dale: set flow-id in header */
+					req_id.flow_id_ = r2p2_hdr->flow_id();
 					app_->recv_msg(rcv_nxt_ - rcv_nxt_old_, std::move(req_id));
 				}
 				else

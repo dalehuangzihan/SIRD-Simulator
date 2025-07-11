@@ -170,6 +170,9 @@ void PfabricApplication<T>::send_request(RequestIdTuple *arg_req, size_t arg_siz
         req_id.sr_thread_id_ = SERVER_THREAD_BASE;
         req_id.ts_ = Scheduler::instance().clock();
     }
+    /* Dale: store flow-id information in req_id */
+    long flow_id = (long) req_flow_id_->get_next();
+    req_id.flow_id_ = flow_id;
 
     // take the first available connection for the randomly selected target and send the request
 
@@ -193,8 +196,12 @@ void PfabricApplication<T>::send_request(RequestIdTuple *arg_req, size_t arg_siz
         throw;
     }
 
+    /* 
+    * Dale: make DCTCP use flow-id as app-level-id in trace, instead of reqs_sent_.
+    * Use only for tracing! Does not work if we use flow-id as app-level-id in actual sim, cuz pFabric sim does not expect the same connection to receive multiple requests before it's released!
+    */
     if (do_trace_)
-        trace_state("srq", -1, -1, reqs_sent_, -1, next_req_size, -1, pool->size());
+        trace_state("srq", -1, -1, req_id.flow_id_, -1, next_req_size, -1, pool->size());
     reqs_sent_++;
 
     queued_requests_t *req_queue = nullptr;
@@ -266,7 +273,7 @@ void PfabricApplication<T>::forward_request(RequestIdTuple &req_id, free_connect
     // add agent to busy agents
     req_id_to_busy_agent_[req_id.app_level_id_] = std::make_tuple(srvr_addr, 0, agent);
 
-    slog::log5(debug_, local_addr_, "PfabricApplication::forward_request() of size", req_id.msg_bytes_, req_id.is_request_);
+    slog::log5(debug_, local_addr_, "PfabricApplication::forward_request() of size", req_id.msg_bytes_, req_id.is_request_, "flow_id_:", req_id.flow_id_);
     // send msg
     assert(agent != nullptr);
     assert(req_id.is_request_);
@@ -288,6 +295,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
         assert(req_id_tup.ts_ > 0);
     long app_lvl_req_id = req_id_tup.app_level_id_;
     int total_msg_sz = req_id_tup.msg_bytes_;
+    slog::log6(debug_, local_addr_, "&& flow_id_:", req_id_tup.flow_id_);
     // is this msg (part of) a request?
     if (req_id_tup.is_request_)
     {
@@ -329,7 +337,10 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
                        "From:", req_id_tup.cl_addr_, "that was created on:", msg_created_at);
             assert(msg_created_at > 9.9); // assumes sim starts at 10.0
             if (do_trace_)
-                trace_state("rrq", req_id_tup.cl_addr_, -1, app_lvl_req_id, Scheduler::instance().clock() - msg_created_at, req_state->total_size_B_, -1, -1);
+            {
+                /* Dale: change rrq to trace flow-id instead of app-level-id */
+                trace_state("rrq", req_id_tup.cl_addr_, -1, req_id_tup.flow_id_, Scheduler::instance().clock() - msg_created_at, req_state->total_size_B_, -1, -1);
+            }
             // no replies
             if (pending_tasks_.empty())
             {
