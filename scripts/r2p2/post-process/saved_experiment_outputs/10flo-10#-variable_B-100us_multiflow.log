@@ -1,0 +1,313 @@
+INFO:__main__:Num flows: 10
+INFO:__main__:Time Period: 100
+INFO:__main__:Num Byteloads: 10
+INFO:__main__:Byteload Size (Bytes): [125, 625, 1250, 6250, 12500]
+INFO:__main__:Load Gbps theoretical (parallel flows): [0.10000000000000002, 0.5000000000000001, 1.0000000000000002, 5.000000000000001, 10.000000000000002]
+INFO:__main__:* Sim duration (SSIRD): [0.01, 0.01, 0.01, 0.01, 0.015]
+INFO:__main__:* Sim duration (DCTCP): [0.01, 0.01, 0.01, 0.01, 0.015]
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 10flo-10#-125B-100us_multiflow
+INFO:__main__:Flags: 1, 0, 0, 0, 0
+INFO:__main__:ssird_sim_duration=0.010000; dctcp_sim_duration=0.010000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Vary_Byteload_Size_multiflow/
+INFO:__main__:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Vary_Byteload_Size_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Preparing experiment spec scripts
+INFO:dale_fct_experiment:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/
+INFO:dale_fct_experiment:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for SSIRD
+INFO:dale_fct_experiment:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/SSIRD-10flo-10#-125B-100us_multiflow.sh
+INFO:dale_fct_experiment:### Output (stdout):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10flo-10#-125B-100us_multiflow_stdout.out
+INFO:dale_fct_experiment:### Output (stderr):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10flo-10#-125B-100us_multiflow_stderr.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-10flo-10#-125B-100us_multiflow/data/SSIRD/60/applications_trace.str
+INFO:__main__:flow_id: 0, num of byteloads: 10, num of srq_events_flow_0: 10, num of rrq_events_flow_0: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 1, num of byteloads: 10, num of srq_events_flow_1: 10, num of rrq_events_flow_1: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 2, num of byteloads: 10, num of srq_events_flow_2: 10, num of rrq_events_flow_2: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 3, num of byteloads: 10, num of srq_events_flow_3: 10, num of rrq_events_flow_3: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 4, num of byteloads: 10, num of srq_events_flow_4: 10, num of rrq_events_flow_4: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 5, num of byteloads: 10, num of srq_events_flow_5: 10, num of rrq_events_flow_5: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 6, num of byteloads: 10, num of srq_events_flow_6: 10, num of rrq_events_flow_6: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 7, num of byteloads: 10, num of srq_events_flow_7: 10, num of rrq_events_flow_7: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 8, num of byteloads: 10, num of srq_events_flow_8: 10, num of rrq_events_flow_8: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 9, num of byteloads: 10, num of srq_events_flow_9: 10, num of rrq_events_flow_9: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:SSIRD FCT: [0.0009165730000013639, 0.0009145830000001354, 0.0009125930000006832, 0.0009105729999987489, 0.0009085830000010731, 0.000902572999999407, 0.0009025929999992854, 0.0009025830000002344, 0.000902572999999407, 0.0009025930000010618] ms, Throughput: 0.10781078107810205 Gbps
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for DCTCP-50
+INFO:dale_fct_experiment:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/DCTCP-50-10flo-10#-125B-100us_multiflow.sh
+INFO:dale_fct_experiment:### Output (stdout):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-10flo-10#-125B-100us_multiflow_stdout.out
+INFO:dale_fct_experiment:### Output (stderr):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-10flo-10#-125B-100us_multiflow_stderr.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-10flo-10#-125B-100us_multiflow/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:flow_id: 0, num of byteloads: 10, num of srq_events_flow_0: 10, num of rrq_events_flow_0: 10
+INFO:__main__:flow_id: 1, num of byteloads: 10, num of srq_events_flow_1: 10, num of rrq_events_flow_1: 10
+INFO:__main__:flow_id: 2, num of byteloads: 10, num of srq_events_flow_2: 10, num of rrq_events_flow_2: 10
+INFO:__main__:flow_id: 3, num of byteloads: 10, num of srq_events_flow_3: 10, num of rrq_events_flow_3: 10
+INFO:__main__:flow_id: 4, num of byteloads: 10, num of srq_events_flow_4: 10, num of rrq_events_flow_4: 10
+INFO:__main__:flow_id: 5, num of byteloads: 10, num of srq_events_flow_5: 10, num of rrq_events_flow_5: 10
+INFO:__main__:flow_id: 6, num of byteloads: 10, num of srq_events_flow_6: 10, num of rrq_events_flow_6: 10
+INFO:__main__:flow_id: 7, num of byteloads: 10, num of srq_events_flow_7: 10, num of rrq_events_flow_7: 10
+INFO:__main__:flow_id: 8, num of byteloads: 10, num of srq_events_flow_8: 10, num of rrq_events_flow_8: 10
+INFO:__main__:flow_id: 9, num of byteloads: 10, num of srq_events_flow_9: 10, num of rrq_events_flow_9: 10
+INFO:__main__:DCTCP FCT: [0.0009025320000013437, 0.0009025319999995673, 0.0009025320000013437, 0.0009025319999995673, 0.0009025319999995673, 0.0009025319999995673, 0.0009025319999995673, 0.0009025320000013437, 0.0009025319999995673, 0.0009025319999995673] ms, Throughput: 0.10781078107810205 Gbps
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 10flo-10#-625B-100us_multiflow
+INFO:__main__:Flags: 1, 0, 0, 0, 0
+INFO:__main__:ssird_sim_duration=0.010000; dctcp_sim_duration=0.010000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Vary_Byteload_Size_multiflow/
+INFO:__main__:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Vary_Byteload_Size_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Preparing experiment spec scripts
+INFO:dale_fct_experiment:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/
+INFO:dale_fct_experiment:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for SSIRD
+INFO:dale_fct_experiment:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/SSIRD-10flo-10#-625B-100us_multiflow.sh
+INFO:dale_fct_experiment:### Output (stdout):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10flo-10#-625B-100us_multiflow_stdout.out
+INFO:dale_fct_experiment:### Output (stderr):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10flo-10#-625B-100us_multiflow_stderr.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-10flo-10#-625B-100us_multiflow/data/SSIRD/60/applications_trace.str
+INFO:__main__:flow_id: 0, num of byteloads: 10, num of srq_events_flow_0: 10, num of rrq_events_flow_0: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 1, num of byteloads: 10, num of srq_events_flow_1: 10, num of rrq_events_flow_1: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 2, num of byteloads: 10, num of srq_events_flow_2: 10, num of rrq_events_flow_2: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 3, num of byteloads: 10, num of srq_events_flow_3: 10, num of rrq_events_flow_3: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 4, num of byteloads: 10, num of srq_events_flow_4: 10, num of rrq_events_flow_4: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 5, num of byteloads: 10, num of srq_events_flow_5: 10, num of rrq_events_flow_5: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 6, num of byteloads: 10, num of srq_events_flow_6: 10, num of rrq_events_flow_6: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 7, num of byteloads: 10, num of srq_events_flow_7: 10, num of rrq_events_flow_7: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 8, num of byteloads: 10, num of srq_events_flow_8: 10, num of rrq_events_flow_8: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 9, num of byteloads: 10, num of srq_events_flow_9: 10, num of rrq_events_flow_9: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:SSIRD FCT: [0.0009166530000008777, 0.0009146629999996492, 0.000912673000000197, 0.000910653000000039, 0.0009086630000005869, 0.0009026529999989208, 0.0009026730000005756, 0.0009026630000015246, 0.0009026529999989208, 0.0009026730000005756] ms, Throughput: 0.5390539053905102 Gbps
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for DCTCP-50
+INFO:dale_fct_experiment:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/DCTCP-50-10flo-10#-625B-100us_multiflow.sh
+INFO:dale_fct_experiment:### Output (stdout):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-10flo-10#-625B-100us_multiflow_stdout.out
+INFO:dale_fct_experiment:### Output (stderr):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-10flo-10#-625B-100us_multiflow_stderr.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-10flo-10#-625B-100us_multiflow/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:flow_id: 0, num of byteloads: 10, num of srq_events_flow_0: 10, num of rrq_events_flow_0: 10
+INFO:__main__:flow_id: 1, num of byteloads: 10, num of srq_events_flow_1: 10, num of rrq_events_flow_1: 10
+INFO:__main__:flow_id: 2, num of byteloads: 10, num of srq_events_flow_2: 10, num of rrq_events_flow_2: 10
+INFO:__main__:flow_id: 3, num of byteloads: 10, num of srq_events_flow_3: 10, num of rrq_events_flow_3: 10
+INFO:__main__:flow_id: 4, num of byteloads: 10, num of srq_events_flow_4: 10, num of rrq_events_flow_4: 10
+INFO:__main__:flow_id: 5, num of byteloads: 10, num of srq_events_flow_5: 10, num of rrq_events_flow_5: 10
+INFO:__main__:flow_id: 6, num of byteloads: 10, num of srq_events_flow_6: 10, num of rrq_events_flow_6: 10
+INFO:__main__:flow_id: 7, num of byteloads: 10, num of srq_events_flow_7: 10, num of rrq_events_flow_7: 10
+INFO:__main__:flow_id: 8, num of byteloads: 10, num of srq_events_flow_8: 10, num of rrq_events_flow_8: 10
+INFO:__main__:flow_id: 9, num of byteloads: 10, num of srq_events_flow_9: 10, num of rrq_events_flow_9: 10
+INFO:__main__:DCTCP FCT: [0.0009026120000008575, 0.0009026119999990811, 0.0009026120000008575, 0.0009026119999990811, 0.0009026120000008575, 0.0009026119999990811, 0.0009026119999990811, 0.0009026120000008575, 0.0009026119999990811, 0.0009026120000008575] ms, Throughput: 0.5390539053905102 Gbps
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 10flo-10#-1250B-100us_multiflow
+INFO:__main__:Flags: 1, 0, 0, 0, 0
+INFO:__main__:ssird_sim_duration=0.010000; dctcp_sim_duration=0.010000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Vary_Byteload_Size_multiflow/
+INFO:__main__:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Vary_Byteload_Size_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Preparing experiment spec scripts
+INFO:dale_fct_experiment:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/
+INFO:dale_fct_experiment:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for SSIRD
+INFO:dale_fct_experiment:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/SSIRD-10flo-10#-1250B-100us_multiflow.sh
+INFO:dale_fct_experiment:### Output (stdout):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10flo-10#-1250B-100us_multiflow_stdout.out
+INFO:dale_fct_experiment:### Output (stderr):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10flo-10#-1250B-100us_multiflow_stderr.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-10flo-10#-1250B-100us_multiflow/data/SSIRD/60/applications_trace.str
+INFO:__main__:flow_id: 0, num of byteloads: 10, num of srq_events_flow_0: 10, num of rrq_events_flow_0: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 1, num of byteloads: 10, num of srq_events_flow_1: 10, num of rrq_events_flow_1: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 2, num of byteloads: 10, num of srq_events_flow_2: 10, num of rrq_events_flow_2: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 3, num of byteloads: 10, num of srq_events_flow_3: 10, num of rrq_events_flow_3: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 4, num of byteloads: 10, num of srq_events_flow_4: 10, num of rrq_events_flow_4: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 5, num of byteloads: 10, num of srq_events_flow_5: 10, num of rrq_events_flow_5: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 6, num of byteloads: 10, num of srq_events_flow_6: 10, num of rrq_events_flow_6: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 7, num of byteloads: 10, num of srq_events_flow_7: 10, num of rrq_events_flow_7: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 8, num of byteloads: 10, num of srq_events_flow_8: 10, num of rrq_events_flow_8: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 9, num of byteloads: 10, num of srq_events_flow_9: 10, num of rrq_events_flow_9: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:SSIRD FCT: [0.0009167530000002699, 0.0009147629999990414, 0.0009127729999995893, 0.0009107529999994313, 0.0009087629999999791, 0.000902752999998313, 0.0009027729999999679, 0.0009027630000009168, 0.0009027530000000894, 0.0009027729999999679] ms, Throughput: 1.0781078107810205 Gbps
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for DCTCP-50
+INFO:dale_fct_experiment:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/DCTCP-50-10flo-10#-1250B-100us_multiflow.sh
+INFO:dale_fct_experiment:### Output (stdout):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-10flo-10#-1250B-100us_multiflow_stdout.out
+INFO:dale_fct_experiment:### Output (stderr):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-10flo-10#-1250B-100us_multiflow_stderr.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-10flo-10#-1250B-100us_multiflow/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:flow_id: 0, num of byteloads: 10, num of srq_events_flow_0: 10, num of rrq_events_flow_0: 10
+INFO:__main__:flow_id: 1, num of byteloads: 10, num of srq_events_flow_1: 10, num of rrq_events_flow_1: 10
+INFO:__main__:flow_id: 2, num of byteloads: 10, num of srq_events_flow_2: 10, num of rrq_events_flow_2: 10
+INFO:__main__:flow_id: 3, num of byteloads: 10, num of srq_events_flow_3: 10, num of rrq_events_flow_3: 10
+INFO:__main__:flow_id: 4, num of byteloads: 10, num of srq_events_flow_4: 10, num of rrq_events_flow_4: 10
+INFO:__main__:flow_id: 5, num of byteloads: 10, num of srq_events_flow_5: 10, num of rrq_events_flow_5: 10
+INFO:__main__:flow_id: 6, num of byteloads: 10, num of srq_events_flow_6: 10, num of rrq_events_flow_6: 10
+INFO:__main__:flow_id: 7, num of byteloads: 10, num of srq_events_flow_7: 10, num of rrq_events_flow_7: 10
+INFO:__main__:flow_id: 8, num of byteloads: 10, num of srq_events_flow_8: 10, num of rrq_events_flow_8: 10
+INFO:__main__:flow_id: 9, num of byteloads: 10, num of srq_events_flow_9: 10, num of rrq_events_flow_9: 10
+INFO:__main__:DCTCP FCT: [0.0009027120000002498, 0.0009027120000002498, 0.0009027120000002498, 0.0009027120000002498, 0.0009027120000002498, 0.0009027119999984734, 0.0009027120000002498, 0.0009027120000002498, 0.0009027120000002498, 0.0009027120000002498] ms, Throughput: 1.0781078107810205 Gbps
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 10flo-10#-6250B-100us_multiflow
+INFO:__main__:Flags: 1, 0, 0, 0, 0
+INFO:__main__:ssird_sim_duration=0.010000; dctcp_sim_duration=0.010000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Vary_Byteload_Size_multiflow/
+INFO:__main__:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Vary_Byteload_Size_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Preparing experiment spec scripts
+INFO:dale_fct_experiment:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/
+INFO:dale_fct_experiment:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for SSIRD
+INFO:dale_fct_experiment:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/SSIRD-10flo-10#-6250B-100us_multiflow.sh
+INFO:dale_fct_experiment:### Output (stdout):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10flo-10#-6250B-100us_multiflow_stdout.out
+INFO:dale_fct_experiment:### Output (stderr):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10flo-10#-6250B-100us_multiflow_stderr.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-10flo-10#-6250B-100us_multiflow/data/SSIRD/60/applications_trace.str
+INFO:__main__:flow_id: 0, num of byteloads: 10, num of srq_events_flow_0: 10, num of rrq_events_flow_0: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 1, num of byteloads: 10, num of srq_events_flow_1: 10, num of rrq_events_flow_1: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 2, num of byteloads: 10, num of srq_events_flow_2: 10, num of rrq_events_flow_2: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 3, num of byteloads: 10, num of srq_events_flow_3: 10, num of rrq_events_flow_3: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 4, num of byteloads: 10, num of srq_events_flow_4: 10, num of rrq_events_flow_4: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 5, num of byteloads: 10, num of srq_events_flow_5: 10, num of rrq_events_flow_5: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 6, num of byteloads: 10, num of srq_events_flow_6: 10, num of rrq_events_flow_6: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 7, num of byteloads: 10, num of srq_events_flow_7: 10, num of rrq_events_flow_7: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 8, num of byteloads: 10, num of srq_events_flow_8: 10, num of rrq_events_flow_8: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 9, num of byteloads: 10, num of srq_events_flow_9: 10, num of rrq_events_flow_9: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:SSIRD FCT: [0.000917195000001314, 0.0009152050000000855, 0.0009132150000006334, 0.000911194999998699, 0.0009092050000010232, 0.0009031949999993572, 0.0009032149999992356, 0.0009032050000001846, 0.0009031949999993572, 0.000903215000001012] ms, Throughput: 5.390539053905102 Gbps
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for DCTCP-50
+INFO:dale_fct_experiment:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/DCTCP-50-10flo-10#-6250B-100us_multiflow.sh
+INFO:dale_fct_experiment:### Output (stdout):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-10flo-10#-6250B-100us_multiflow_stdout.out
+INFO:dale_fct_experiment:### Output (stderr):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-10flo-10#-6250B-100us_multiflow_stderr.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-10flo-10#-6250B-100us_multiflow/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:flow_id: 0, num of byteloads: 10, num of srq_events_flow_0: 10, num of rrq_events_flow_0: 10
+INFO:__main__:flow_id: 1, num of byteloads: 10, num of srq_events_flow_1: 10, num of rrq_events_flow_1: 10
+INFO:__main__:flow_id: 2, num of byteloads: 10, num of srq_events_flow_2: 10, num of rrq_events_flow_2: 10
+INFO:__main__:flow_id: 3, num of byteloads: 10, num of srq_events_flow_3: 10, num of rrq_events_flow_3: 10
+INFO:__main__:flow_id: 4, num of byteloads: 10, num of srq_events_flow_4: 10, num of rrq_events_flow_4: 10
+INFO:__main__:flow_id: 5, num of byteloads: 10, num of srq_events_flow_5: 10, num of rrq_events_flow_5: 10
+INFO:__main__:flow_id: 6, num of byteloads: 10, num of srq_events_flow_6: 10, num of rrq_events_flow_6: 10
+INFO:__main__:flow_id: 7, num of byteloads: 10, num of srq_events_flow_7: 10, num of rrq_events_flow_7: 10
+INFO:__main__:flow_id: 8, num of byteloads: 10, num of srq_events_flow_8: 10, num of rrq_events_flow_8: 10
+INFO:__main__:flow_id: 9, num of byteloads: 10, num of srq_events_flow_9: 10, num of rrq_events_flow_9: 10
+INFO:__main__:DCTCP FCT: [0.0009031540000012939, 0.0009031539999995175, 0.0009031540000012939, 0.0009031539999995175, 0.0009031539999995175, 0.0009031539999995175, 0.0009031539999995175, 0.0009031540000012939, 0.0009031539999995175, 0.0009031539999995175] ms, Throughput: 5.390539053905102 Gbps
+INFO:__main__:
+=====
+INFO:__main__:Execute experiment 10flo-10#-12500B-100us_multiflow
+INFO:__main__:Flags: 1, 0, 0, 0, 0
+INFO:__main__:ssird_sim_duration=0.015000; dctcp_sim_duration=0.015000
+INFO:__main__:-----
+INFO:__main__:Preparing experiment input MRIs
+INFO:__main__:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Vary_Byteload_Size_multiflow/
+INFO:__main__:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Vary_Byteload_Size_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Preparing experiment spec scripts
+INFO:dale_fct_experiment:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/
+INFO:dale_fct_experiment:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for SSIRD
+INFO:dale_fct_experiment:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/SSIRD-10flo-10#-12500B-100us_multiflow.sh
+INFO:dale_fct_experiment:### Output (stdout):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10flo-10#-12500B-100us_multiflow_stdout.out
+INFO:dale_fct_experiment:### Output (stderr):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10flo-10#-12500B-100us_multiflow_stderr.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-10flo-10#-12500B-100us_multiflow/data/SSIRD/60/applications_trace.str
+INFO:__main__:flow_id: 0, num of byteloads: 10, num of srq_events_flow_0: 10, num of rrq_events_flow_0: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 1, num of byteloads: 10, num of srq_events_flow_1: 10, num of rrq_events_flow_1: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 2, num of byteloads: 10, num of srq_events_flow_2: 10, num of rrq_events_flow_2: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 3, num of byteloads: 10, num of srq_events_flow_3: 10, num of rrq_events_flow_3: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 4, num of byteloads: 10, num of srq_events_flow_4: 10, num of rrq_events_flow_4: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 5, num of byteloads: 10, num of srq_events_flow_5: 10, num of rrq_events_flow_5: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 6, num of byteloads: 10, num of srq_events_flow_6: 10, num of rrq_events_flow_6: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 7, num of byteloads: 10, num of srq_events_flow_7: 10, num of rrq_events_flow_7: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 8, num of byteloads: 10, num of srq_events_flow_8: 10, num of rrq_events_flow_8: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:flow_id: 9, num of byteloads: 10, num of srq_events_flow_9: 10, num of rrq_events_flow_9: 10
+ERROR:__main__:SSIRD: missing data!
+INFO:__main__:SSIRD FCT: [0.0009183610000000897, 0.0009162969999998438, 0.000914232999999598, 0.0009121679999992693, 0.0009101040000007998, 0.0009037269999989661, 0.0009037920000007915, 0.0009038750000005535, 0.0009039819999987486, 0.0009040399999999948] ms, Throughput: 10.781078107810204 Gbps
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for DCTCP-50
+INFO:dale_fct_experiment:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Vary_Byteload_Size_multiflow/DCTCP-50-10flo-10#-12500B-100us_multiflow.sh
+INFO:dale_fct_experiment:### Output (stdout):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-10flo-10#-12500B-100us_multiflow_stdout.out
+INFO:dale_fct_experiment:### Output (stderr):/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/DCTCP-50-10flo-10#-12500B-100us_multiflow_stderr.out
+INFO:dale_fct_experiment:Processing results
+INFO:dale_fct_experiment:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-10flo-10#-12500B-100us_multiflow/data/DCTCP-50/60/applications_trace.str
+INFO:__main__:flow_id: 0, num of byteloads: 10, num of srq_events_flow_0: 10, num of rrq_events_flow_0: 10
+INFO:__main__:flow_id: 1, num of byteloads: 10, num of srq_events_flow_1: 10, num of rrq_events_flow_1: 10
+INFO:__main__:flow_id: 2, num of byteloads: 10, num of srq_events_flow_2: 10, num of rrq_events_flow_2: 10
+INFO:__main__:flow_id: 3, num of byteloads: 10, num of srq_events_flow_3: 10, num of rrq_events_flow_3: 10
+INFO:__main__:flow_id: 4, num of byteloads: 10, num of srq_events_flow_4: 10, num of rrq_events_flow_4: 10
+INFO:__main__:flow_id: 5, num of byteloads: 10, num of srq_events_flow_5: 10, num of rrq_events_flow_5: 10
+INFO:__main__:flow_id: 6, num of byteloads: 10, num of srq_events_flow_6: 10, num of rrq_events_flow_6: 10
+INFO:__main__:flow_id: 7, num of byteloads: 10, num of srq_events_flow_7: 10, num of rrq_events_flow_7: 10
+INFO:__main__:flow_id: 8, num of byteloads: 10, num of srq_events_flow_8: 10, num of rrq_events_flow_8: 10
+INFO:__main__:flow_id: 9, num of byteloads: 10, num of srq_events_flow_9: 10, num of rrq_events_flow_9: 10
+INFO:__main__:DCTCP FCT: [0.0009036790000003236, 0.000903734999999628, 0.0009037920000007915, 0.0009038480000000959, 0.0009039039999994003, 0.0009039599999987047, 0.0009040159999997854, 0.0009040790000014454, 0.0009041409999994698, 0.000904203000001047] ms, Throughput: 10.781078107810204 Gbps
+INFO:__main__:Num flows: 10
+INFO:__main__:Time Period: 100
+INFO:__main__:Num Byteloads: 10
+INFO:__main__:Byteload Size (Bytes): [125, 625, 1250, 6250, 12500]
+INFO:__main__:Sim duration (SSIRD): [0.01, 0.01, 0.01, 0.01, 0.015]
+INFO:__main__:Sim duration (DCTCP): [0.01, 0.01, 0.01, 0.01, 0.015]
+INFO:__main__:Thrpt Gbps theoretical: [0.10000000000000002, 0.5000000000000001, 1.0000000000000002, 5.000000000000001, 10.000000000000002]
+INFO:__main__:Thrpt Gbps measured (SSIRD): [0.10781078107810205, 0.5390539053905102, 1.0781078107810205, 5.390539053905102, 10.781078107810204]
+INFO:__main__:Thrpt Gbps measured (DCTCP): [0.10781078107810205, 0.5390539053905102, 1.0781078107810205, 5.390539053905102, 10.781078107810204]
+INFO:__main__:* SSIRD FCT: [[0.0009165730000013639, 0.0009145830000001354, 0.0009125930000006832, 0.0009105729999987489, 0.0009085830000010731, 0.000902572999999407, 0.0009025929999992854, 0.0009025830000002344, 0.000902572999999407, 0.0009025930000010618], [0.0009166530000008777, 0.0009146629999996492, 0.000912673000000197, 0.000910653000000039, 0.0009086630000005869, 0.0009026529999989208, 0.0009026730000005756, 0.0009026630000015246, 0.0009026529999989208, 0.0009026730000005756], [0.0009167530000002699, 0.0009147629999990414, 0.0009127729999995893, 0.0009107529999994313, 0.0009087629999999791, 0.000902752999998313, 0.0009027729999999679, 0.0009027630000009168, 0.0009027530000000894, 0.0009027729999999679], [0.000917195000001314, 0.0009152050000000855, 0.0009132150000006334, 0.000911194999998699, 0.0009092050000010232, 0.0009031949999993572, 0.0009032149999992356, 0.0009032050000001846, 0.0009031949999993572, 0.000903215000001012], [0.0009183610000000897, 0.0009162969999998438, 0.000914232999999598, 0.0009121679999992693, 0.0009101040000007998, 0.0009037269999989661, 0.0009037920000007915, 0.0009038750000005535, 0.0009039819999987486, 0.0009040399999999948]]
+INFO:__main__:* DCTCP FCT: [[0.0009025320000013437, 0.0009025319999995673, 0.0009025320000013437, 0.0009025319999995673, 0.0009025319999995673, 0.0009025319999995673, 0.0009025319999995673, 0.0009025320000013437, 0.0009025319999995673, 0.0009025319999995673], [0.0009026120000008575, 0.0009026119999990811, 0.0009026120000008575, 0.0009026119999990811, 0.0009026120000008575, 0.0009026119999990811, 0.0009026119999990811, 0.0009026120000008575, 0.0009026119999990811, 0.0009026120000008575], [0.0009027120000002498, 0.0009027120000002498, 0.0009027120000002498, 0.0009027120000002498, 0.0009027120000002498, 0.0009027119999984734, 0.0009027120000002498, 0.0009027120000002498, 0.0009027120000002498, 0.0009027120000002498], [0.0009031540000012939, 0.0009031539999995175, 0.0009031540000012939, 0.0009031539999995175, 0.0009031539999995175, 0.0009031539999995175, 0.0009031539999995175, 0.0009031540000012939, 0.0009031539999995175, 0.0009031539999995175], [0.0009036790000003236, 0.000903734999999628, 0.0009037920000007915, 0.0009038480000000959, 0.0009039039999994003, 0.0009039599999987047, 0.0009040159999997854, 0.0009040790000014454, 0.0009041409999994698, 0.000904203000001047]]

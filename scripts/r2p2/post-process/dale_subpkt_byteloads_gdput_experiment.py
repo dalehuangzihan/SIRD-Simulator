@@ -128,7 +128,7 @@ def fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_capture_output
     byteload_size_B_list = [4, 40, 400, 4000] 
     num_of_experiments = len(byteload_size_B_list)
     # num_flows = 300
-    num_flows = 5 # currently 5 flows causes thinkpad to run out of ram (32GB)
+    num_flows = 10 # currently 5 flows causes thinkpad to run out of ram (32GB)
     inter_flow_spacing_us = 1
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
     # flow_start_times_us_list = [0, 1]
@@ -236,7 +236,7 @@ def fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_capture_output
 
 if __name__ == "__main__":
     # fct_vs_load_experiment_vary_byteloadsize_subpkt_test(is_full_postproc=True)
-    fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_capture_output=True, is_full_postproc=False)
+    fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_capture_output=True, is_full_postproc=True)
 
     # INFO:__main__:Total Flow Size (Bytes): 40000
     # INFO:__main__:Total Injection Period (us): 10000
