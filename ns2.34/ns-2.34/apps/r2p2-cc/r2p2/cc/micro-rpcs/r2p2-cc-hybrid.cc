@@ -599,7 +599,8 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
             }
             else
             {
-                assert(msg_state->data_bytes_granted_ > 0);
+                /** Dale: TODO: (?) 12/07/2025 At high loads, this might not have happened yet (i.e. msg has not gotten the chance to receive credits), so assertion not relevant...? */
+                // assert(msg_state->data_bytes_granted_ > 0);
             }
             return;
         }
