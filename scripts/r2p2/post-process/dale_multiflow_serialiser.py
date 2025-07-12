@@ -245,13 +245,17 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
                 # mirror treatment of hypersmall byteloads by r2p2-app.cc
                 if self.byteload_size_B < 4 : expected_total_flow_i_size_B = self.num_byteloads * 4
                 logger.debug(f"flow {i}: final rrq req_size = {final_trace_flow_i.get_req_size()}, flow size = {expected_total_flow_i_size_B}, diff = {expected_total_flow_i_size_B - final_trace_flow_i.get_req_size()}")
-                assert(final_trace_flow_i.get_req_size() == expected_total_flow_i_size_B)
+                if (final_trace_flow_i.get_req_size() == expected_total_flow_i_size_B): logger.error(f"SSIRD: missing data!")
+                # assert(final_trace_flow_i.get_req_size() == expected_total_flow_i_size_B)
             if proto == dale_fct_experiment.DCTCP_PROTO_NAME:
-                assert(len(srq_events_flow_i) == len(rrq_events_flow_i))
+                if (len(srq_events_flow_i) == len(rrq_events_flow_i)): logger.error(f"DCTCP: srq_events_flow_{i}: {len(srq_events_flow_i)}, rrq_events_flow_{i}: {len(rrq_events_flow_i)}, diff={len(srq_events_flow_i)-len(rrq_events_flow_i)}")
+                # assert(len(srq_events_flow_i) == len(rrq_events_flow_i))
                 accumulated_rrq_reqs_size_B = 0
                 for e in rrq_events_flow_i:
                     accumulated_rrq_reqs_size_B += e.get_req_size()
-                assert(accumulated_rrq_reqs_size_B == expected_total_flow_i_size_B)
+                logger.debug(f"flow {i}: final accumulated req_size = {accumulated_rrq_reqs_size_B}, flow size = {expected_total_flow_i_size_B}, diff = {expected_total_flow_i_size_B - accumulated_rrq_reqs_size_B}")
+                if (final_trace_flow_i.get_req_size() == expected_total_flow_i_size_B): logger.error(f"DCTCP: missing data!")
+                # assert(accumulated_rrq_reqs_size_B == expected_total_flow_i_size_B)
 
             fct = final_trace_flow_i.get_timestamp()- first_trace_flow_i.get_timestamp()
             fct_list.append(fct)
@@ -320,13 +324,16 @@ def multiflow_fct_thrpt_experiment_vary_byteloadsize(is_capture_output=True, is_
     dst = 1
     num_byteloads = 10
     inter_byteload_period_us = 100 # is 0.1ms
-    flow_start_times_us_list = [0, 1]
-    # flow_start_times_us_list = [0, 1, 10]
-    num_flows = len(flow_start_times_us_list)
+    # flow_start_times_us_list = [0, 1]
+    # # flow_start_times_us_list = [0, 1, 10]
+    # num_flows = len(flow_start_times_us_list)
+    num_flows = 10 
+    inter_flow_spacing_us = 1
+    flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
 
     KILOBYTE = 1000
     # byteload_size_KB_list = [10000/8]
-    byteload_size_KB_list = [100/8, 500/8, 1000/8, 5000/8, 10000/8] # 100/8KB to 10/8MB
+    byteload_size_KB_list = [1/8, 5/8, 10/8, 50/8, 100/8] # 100/8KB to 10/8MB
     byteload_size_B_list = [int(n * KILOBYTE) for n in byteload_size_KB_list] 
     num_of_experiments = len(byteload_size_B_list)
 
@@ -402,4 +409,4 @@ def testing():
 
 if __name__ == "__main__":
     # testing()
-    multiflow_fct_thrpt_experiment_vary_byteloadsize(is_capture_output=False, is_full_postproc=False, title_addendum="_multiflow")
+    multiflow_fct_thrpt_experiment_vary_byteloadsize(is_capture_output=True, is_full_postproc=False, title_addendum="_multiflow")

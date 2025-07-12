@@ -236,7 +236,7 @@ def fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_capture_output
 
 if __name__ == "__main__":
     # fct_vs_load_experiment_vary_byteloadsize_subpkt_test(is_full_postproc=True)
-    fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_capture_output=False, is_full_postproc=False)
+    fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_capture_output=True, is_full_postproc=False)
 
     # INFO:__main__:Total Flow Size (Bytes): 40000
     # INFO:__main__:Total Injection Period (us): 10000
