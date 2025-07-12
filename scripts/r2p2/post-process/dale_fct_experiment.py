@@ -3,6 +3,7 @@ import subprocess
 from pathlib import Path
 import csv
 import logging
+import math
 
 # Common experiment param; value is meaningful only when req_interval_distr is not 'manual'
 CLIENT_INJECTION_RATE_GBPS = "60"
@@ -59,6 +60,79 @@ class FlowTraceEvent:
         assert(len(tokens) == 12)
         return FlowTraceEvent(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7], tokens[8], tokens[9], tokens[10], tokens[11])
 
+class FlowStats:
+    def __init__(self, proto, flow_id, num_byteloads, byteload_size_B):
+        self.proto = proto
+        self.flow_id = flow_id
+        self.num_byteloads = num_byteloads
+        self.byteload_size_B = byteload_size_B if byteload_size_B > 4 else 4 # is the actual byteload size as per ssird sim
+        
+        self.num_srq = 0
+        self.num_rrq = 0
+        self.start_time_s = math.inf
+        self.end_time_s = -1
+        self.total_bytes_sent_B = 0
+        self.total_bytes_recv_B = 0
+
+		# store the stats accumulated up until the (n-1)th srq.
+        self.final_srq_timestamp = None
+        self.total_bytes_sent_until_penultimate_srq_B = None
+        
+        self.first_event_name = None 
+        self.final_event_name = None
+
+    def update_flow_stats(self, flow_trace_event):
+        assert(self.flow_id == flow_trace_event.get_app_level_id())
+
+        self.start_time_s = min(self.start_time_s, flow_trace_event.get_timestamp())
+        self.end_time_s = max(self.end_time_s, flow_trace_event.get_timestamp())
+
+        trace_event_name = flow_trace_event.get_event()
+        if (self.num_srq == 0 and self.num_rrq == 0): self.first_event_name = trace_event_name
+        self.final_event_name = trace_event_name
+
+        if (trace_event_name == FlowTraceEvent.SRQ_EVENT):
+            self.num_srq += 1
+            self.total_bytes_sent_until_penultimate_srq_B = self.total_bytes_sent_B
+            self.total_bytes_sent_B += flow_trace_event.get_req_size()
+            self.final_srq_timestamp = flow_trace_event.get_timestamp()
+
+        elif (trace_event_name == FlowTraceEvent.RRQ_EVENT):
+            self.num_rrq += 1
+            if (self.proto == SSIRD_PROTO_NAME):
+                # ssird rrq shows cumulative recved-data size
+                self.total_bytes_recv_B = flow_trace_event.get_req_size()
+            elif (self.proto == DCTCP_PROTO_NAME):
+                self.total_bytes_recv_B += flow_trace_event.get_req_size()
+            else:
+                logger.error(f"Unrecognised proto name {self.proto}")
+
+        else:
+            logger.error(f"Unrecognised flow trace event {trace_event_name}")
+
+    def check_flow_stats(self):
+        logger.info(f"flow_id: {self.flow_id}, num of byteloads: {self.num_byteloads}, num srq events: {self.num_srq}, num rrq events: {self.num_rrq}")
+
+        assert(self.num_srq == self.num_byteloads) # TODO: remove assertion if adaptive batching feature is implemented
+        assert(self.first_event_name == FlowTraceEvent.SRQ_EVENT)
+        assert(self.final_event_name == FlowTraceEvent.RRQ_EVENT)
+        if (self.proto == DCTCP_PROTO_NAME and self.num_srq != self.num_rrq):
+            logger.error(f"DCTCP: Missing rrq event(s)! diff: {self.num_srq - self.num_rrq}")
+
+        expected_flow_size_B = self.num_byteloads * self.byteload_size_B 
+        if (self.total_bytes_recv_B != expected_flow_size_B):
+            logger.error(f"Missing data! flow_id: {self.flow_id}: total bytes recv: {self.total_bytes_recv_B}, expected flow size = {expected_flow_size_B}, diff = {expected_flow_size_B - self.total_bytes_recv_B}")
+        
+    def get_fct_s(self):
+        return self.end_time_s - self.start_time_s
+    
+    def get_measured_thrpt_for_flow_gbps(self):
+        # returns in Gbps
+        # here we use the n-1 gaps between the n srq events to calc throughput:
+        if self.num_byteloads == 1: return None 
+        send_duration_s = self.final_srq_timestamp - self.start_time_s 
+        return (self.total_bytes_sent_until_penultimate_srq_B * 8) / send_duration_s * pow(10,-9)
+
 class ManualReqInterval:
     # is in seconds; is 1us
     TIME_STEP_S = 0.000001
@@ -69,12 +143,13 @@ class ManualReqInterval:
         self.experiment_name = experiment_name
 
     def create_p2p_mri(self, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us):
+        # is for creating mri for a single flow!
         mri_filepath = self.get_mri_filepath(self.parent_dir, self.experiment_name)
         mri_byteloads_spec = []    
         mri_byteloads_spec.append(str(src))
         for i in range(0, num_byteloads):
             time_spec = self.MRI_START_TIME_S if i == 0 else inter_byteload_period_us * self.TIME_STEP_S
-            byteload_str = "{:.7f}|{}|{}".format(time_spec, str(dst), byteload_size_B) 
+            byteload_str = "{:.7f}|{}|{}|0".format(time_spec, str(dst), byteload_size_B) 
             mri_byteloads_spec.append(byteload_str)
         self.mri_list_to_csv(mri_byteloads_spec, mri_filepath)
         return mri_filepath
@@ -264,79 +339,25 @@ class FctExperiment:
     def process_results_fct(self, app_trace_file_path, proto):
         logger.info("Processing results")
         logger.info(app_trace_file_path)
-        flow_trace_event_queue = self.read_app_trace_file(app_trace_file_path)
-        fct = self.get_full_flow_duration(flow_trace_event_queue, proto) 
-        measured_thrpt_gbps, measured_thrpt_gbps_per_flow_list = self.get_measured_thrpt_gbps(flow_trace_event_queue)
-        return fct, measured_thrpt_gbps, measured_thrpt_gbps_per_flow_list
+        # here is for single flow experiments only
+        flow_stats_obj = FlowStats(proto, 0, self.num_byteloads, self.byteload_size_B)
 
-    def read_app_trace_file(self, app_trace_file_path):
-        flow_trace_event_queue = []
         try:
             with open(app_trace_file_path, 'r') as file:
                 lines = file.readlines()
                 for line in lines:
                     flow_trace_event = FlowTraceEvent.read_flow_trace_from_str(line)
-                    flow_trace_event_queue.append(flow_trace_event)
-            return flow_trace_event_queue
+                    flow_stats_obj.update_flow_stats(flow_trace_event)
+                    del flow_trace_event
         except FileNotFoundError:
             logger.error("The file was not found")
         except IOError:
             logger.error("An error occurred while reading the file")
 
-    def get_full_flow_duration(self, flow_trace_event_queue, proto):
-        ''' This mtd calculates FCT using timestamps '''
-
-        srq_events = [e for e in flow_trace_event_queue if (e.get_event() == FlowTraceEvent.SRQ_EVENT)]
-        rrq_events = [e for e in flow_trace_event_queue if (e.get_event() == FlowTraceEvent.RRQ_EVENT)]
-
-        logger.info(f"num of byteloads: {self.num_byteloads}, num of srq_events: {len(srq_events)}, num of rrq_events {len(rrq_events)}")
-
-        # # TODO: these assertions only work for fully-intermittent flows
-        # assert(len(srq_events) == len(rrq_events))
-        # assert(num_of_byteloads == len(srq_events))
-        # assert(num_of_byteloads == len(rrq_events))
-
-        # TODO: is testing for now, remove if adaptive batching feature is implemented in the sim.
-        logger.debug(f"num of srq events: {len(srq_events)}, num of byteloads: {self.num_byteloads}, diff = {self.num_byteloads - len(srq_events)}")
-        assert(len(srq_events) == self.num_byteloads)
-
-        first_trace = flow_trace_event_queue[0]
-        assert(first_trace.get_event() == FlowTraceEvent.SRQ_EVENT)
-        final_trace = flow_trace_event_queue[len(flow_trace_event_queue) - 1]
-
-        assert(final_trace.get_event() == FlowTraceEvent.RRQ_EVENT)
-        expected_total_flow_size_B = self.num_byteloads * self.byteload_size_B
-        if proto == SSIRD_PROTO_NAME:
-            # mirror treatment of hypersmall byteloads by r2p2-app.cc
-            if self.byteload_size_B < 4 : expected_total_flow_size_B = self.num_byteloads * 4
-            logger.debug(f"final rrq req_size = {final_trace.get_req_size()}, flow size = {expected_total_flow_size_B}, diff = {expected_total_flow_size_B - final_trace.get_req_size()}")
-            assert(final_trace.get_req_size() == expected_total_flow_size_B)
-        if proto == DCTCP_PROTO_NAME:
-            assert(len(srq_events) == len(rrq_events))
-            accumulated_rrq_reqs_size_B = 0
-            for e in rrq_events:
-                accumulated_rrq_reqs_size_B += e.get_req_size()
-            assert(accumulated_rrq_reqs_size_B == expected_total_flow_size_B)
-
-        return final_trace.get_timestamp() - first_trace.get_timestamp()
-
-    def get_measured_thrpt_gbps(self, flow_trace_event_queue):
-        # returns in Gbps
-        # here we use the n-1 gaps between the n srq events to calc throughput:
-        srq_events = [e for e in flow_trace_event_queue if e.get_event() == FlowTraceEvent.SRQ_EVENT]
-        assert(self.num_byteloads == len(srq_events))
-        if self.num_byteloads == 1:
-            # logging.debug(f"NB: srq event count = {len(srq_events)}, not enough events to measure app throughput")  
-            # return -1
-            print(self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us)
-            return (self.byteload_size_B * 8 / (self.inter_byteload_period_us * pow(10,-6))) * pow(10,-9)
-        total_duration = srq_events[len(srq_events)-1].get_timestamp() - srq_events[0].get_timestamp()
-        total_data_B = 0 
-        for i in range(0, len(srq_events)-2):
-            total_data_B += srq_events[i].get_req_size()
-        total_throughput_gbps = (total_data_B * 8 / total_duration) * pow(10,-9)
-        total_throughput_gbps_per_flow_list = [total_throughput_gbps]
-        return total_throughput_gbps, total_throughput_gbps_per_flow_list 
+        flow_stats_obj.check_flow_stats()
+        fct = flow_stats_obj.get_fct_s()
+        measured_thrpt_gbps = flow_stats_obj.get_measured_thrpt_for_flow_gbps()
+        return fct, measured_thrpt_gbps, [measured_thrpt_gbps]
 
     @staticmethod
     def get_sim_duration(num_byteloads, inter_byteload_period_us, multiplication_factor):
@@ -535,5 +556,5 @@ def fct_vs_thrpt_experiment_vary_byteloadsize(is_capture_output=True, is_full_po
 
 if __name__ == "__main__":
     # TODO: update each experiment code to write to their own files
-    fct_vs_thrpt_experiment_vary_interval(is_capture_output=False, is_full_postproc=True)
-    # fct_vs_thrpt_experiment_vary_byteloadsize(is_capture_output=False, is_full_postproc=False)
+    # fct_vs_thrpt_experiment_vary_interval(is_capture_output=True, is_full_postproc=False)
+    fct_vs_thrpt_experiment_vary_byteloadsize(is_capture_output=True, is_full_postproc=False)

@@ -245,7 +245,7 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
                 # mirror treatment of hypersmall byteloads by r2p2-app.cc
                 if self.byteload_size_B < 4 : expected_total_flow_i_size_B = self.num_byteloads * 4
                 logger.debug(f"flow {i}: final rrq req_size = {final_trace_flow_i.get_req_size()}, flow size = {expected_total_flow_i_size_B}, diff = {expected_total_flow_i_size_B - final_trace_flow_i.get_req_size()}")
-                if (final_trace_flow_i.get_req_size() == expected_total_flow_i_size_B): logger.error(f"SSIRD: missing data! Final rrq req_size = {final_trace_flow_i.get_req_size()}, flow size = {expected_total_flow_i_size_B}, diff = {expected_total_flow_i_size_B - final_trace_flow_i.get_req_size()}")
+                if (final_trace_flow_i.get_req_size() < expected_total_flow_i_size_B): logger.error(f"SSIRD: missing data! Final rrq req_size = {final_trace_flow_i.get_req_size()}, flow size = {expected_total_flow_i_size_B}, diff = {expected_total_flow_i_size_B - final_trace_flow_i.get_req_size()}")
                 # assert(final_trace_flow_i.get_req_size() == expected_total_flow_i_size_B)
             if proto == dale_fct_experiment.DCTCP_PROTO_NAME:
                 if (len(srq_events_flow_i) == len(rrq_events_flow_i)): logger.error(f"DCTCP: srq_events_flow_{i}: {len(srq_events_flow_i)}, rrq_events_flow_{i}: {len(rrq_events_flow_i)}, diff={len(srq_events_flow_i)-len(rrq_events_flow_i)}")
@@ -254,7 +254,7 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
                 for e in rrq_events_flow_i:
                     accumulated_rrq_reqs_size_B += e.get_req_size()
                 logger.debug(f"flow {i}: final accumulated req_size = {accumulated_rrq_reqs_size_B}, flow size = {expected_total_flow_i_size_B}, diff = {expected_total_flow_i_size_B - accumulated_rrq_reqs_size_B}")
-                if (final_trace_flow_i.get_req_size() == expected_total_flow_i_size_B): logger.error(f"DCTCP: missing data! Final accumulated req_size = {accumulated_rrq_reqs_size_B}, flow size = {expected_total_flow_i_size_B}, diff = {expected_total_flow_i_size_B - accumulated_rrq_reqs_size_B}")
+                if (final_trace_flow_i.get_req_size() < expected_total_flow_i_size_B): logger.error(f"DCTCP: missing data! Final accumulated req_size = {accumulated_rrq_reqs_size_B}, flow size = {expected_total_flow_i_size_B}, diff = {expected_total_flow_i_size_B - accumulated_rrq_reqs_size_B}")
                 # assert(accumulated_rrq_reqs_size_B == expected_total_flow_i_size_B)
 
             fct = final_trace_flow_i.get_timestamp()- first_trace_flow_i.get_timestamp()
