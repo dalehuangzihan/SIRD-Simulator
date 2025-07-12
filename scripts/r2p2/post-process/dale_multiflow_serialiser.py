@@ -176,7 +176,7 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
         self.flow_start_times_us_list = flow_start_times_us_list
         self.num_flows = len(flow_start_times_us_list)
 
-    def execute(self, ssird_sim_dur, dctcp_sim_dur):
+    def execute(self, ssird_sim_dur, dctcp_sim_dur, is_capture_output):
         logger.info("\n=====")
         logger.info("Execute experiment " + self.experiment_name)
         logger.info(f'Flags: {self.run_simulations}, {self.run_post_proc}, {self.create_timeseires}, {self.create_plots}, {self.delete_current}')
@@ -193,12 +193,12 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
         for proto in self.proto_names:
             app_trace_file_path = f"{dale_fct_experiment.PATH_TO_SIM_RESULTS}{proto}-{self.experiment_name}/data/{proto}/{dale_fct_experiment.CLIENT_INJECTION_RATE_GBPS}/applications_trace.str"
             if proto == dale_fct_experiment.SSIRD_PROTO_NAME:
-                self.run_experiment(proto, ssird_sim_script_path, f"{dale_fct_experiment.PATH_TO_SIM_COORD}outputs/ssird_{self.experiment_name}.out")
+                self.run_experiment(proto, ssird_sim_script_path, f"{dale_fct_experiment.PATH_TO_SIM_COORD}outputs/ssird_{self.experiment_name}", is_capture_output)
                 ssird_fct, thrpt_gbps_measured_ssird, thrpt_gbps_measured_per_flow_list_ssird = self.process_results_fct(app_trace_file_path, proto)
                 logger.info(f"SSIRD FCT: {ssird_fct} ms, Throughput: {thrpt_gbps_measured_ssird} Gbps")
 
             if proto == dale_fct_experiment.DCTCP_PROTO_NAME:
-                self.run_experiment(proto, dctcp_sim_script_path, f"{dale_fct_experiment.PATH_TO_SIM_COORD}outputs/{dale_fct_experiment.DCTCP_PROTO_NAME}-{self.experiment_name}.out")
+                self.run_experiment(proto, dctcp_sim_script_path, f"{dale_fct_experiment.PATH_TO_SIM_COORD}outputs/{dale_fct_experiment.DCTCP_PROTO_NAME}-{self.experiment_name}", is_capture_output)
                 dctcp_fct, thrpt_gbps_measured_dctcp, thrpt_gbps_measured_per_flow_list_dctcp = self.process_results_fct(app_trace_file_path, proto)
                 logger.info(f"DCTCP FCT: {dctcp_fct} ms, Throughput: {thrpt_gbps_measured_ssird} Gbps")
 
@@ -310,7 +310,7 @@ def init_logs(output_path):
         ]
     )
 
-def multiflow_fct_thrpt_experiment_vary_byteloadsize(is_full_postproc=True, title_addendum=""):
+def multiflow_fct_thrpt_experiment_vary_byteloadsize(is_capture_output=True, is_full_postproc=True, title_addendum=""):
 
     experiment_family = f"FCT_Vary_Byteload_Size{title_addendum}"
     proto_names = [dale_fct_experiment.SSIRD_PROTO_NAME, dale_fct_experiment.DCTCP_PROTO_NAME]
@@ -367,7 +367,7 @@ def multiflow_fct_thrpt_experiment_vary_byteloadsize(is_full_postproc=True, titl
     for i in range(0, num_of_experiments):
         experiment_name = MultiFlowExperiment.get_experiment_name(num_flows, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us) + title_addendum
         fct_exp1 = MultiFlowExperiment(experiment_family, experiment_name, proto_names, src, dst, flow_start_times_us_list, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us, is_full_postproc) 
-        results = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
+        results = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i], is_capture_output=is_capture_output) 
         ssird_fct_list.append(results.ssird_fct)
         dctcp_fct_list.append(results.dctcp_fct)
         thrpt_gbps_measured_list_ssird.append(results.thrpt_gbps_measured_ssird)
@@ -402,4 +402,4 @@ def testing():
 
 if __name__ == "__main__":
     # testing()
-    multiflow_fct_thrpt_experiment_vary_byteloadsize(is_full_postproc=False, title_addendum="_multiflow")
+    multiflow_fct_thrpt_experiment_vary_byteloadsize(is_capture_output=False, is_full_postproc=False, title_addendum="_multiflow")

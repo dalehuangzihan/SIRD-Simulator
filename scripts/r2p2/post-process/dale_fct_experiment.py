@@ -12,7 +12,8 @@ LINK_SPEED_BITS_PER_SEC = 100 * pow(10,9) * 8 # 100Gbps
 SSIRD_PROTO_NAME = "SSIRD"
 DCTCP_PROTO_NAME = f"DCTCP-{DCTCP_ECN_MARKING_THRESHOLD}"
 
-PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
+# PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
+PATH_TO_SIRD_SIM = "/data/dh1723/SIRD-Simulator/"
 PATH_TO_SIM_COORD = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/"
 PATH_TO_POST_PROCESS = PATH_TO_SIRD_SIM + "post_process/"
 PATH_TO_SIM_RESULTS = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/results/"
@@ -164,7 +165,7 @@ class FctExperiment:
         self.create_plots = f"{int(is_full_postproc)}"
         self.delete_current = "0"
 
-    def execute(self, ssird_sim_dur, dctcp_sim_dur):
+    def execute(self, ssird_sim_dur, dctcp_sim_dur, is_capture_output):
         logger.info("\n=====")
         logger.info("Execute experiment " + self.experiment_name)
         logger.info(f'Flags: {self.run_simulations}, {self.run_post_proc}, {self.create_timeseires}, {self.create_plots}, {self.delete_current}')
@@ -179,12 +180,12 @@ class FctExperiment:
         for proto in self.proto_names:
             app_trace_file_path = f"{PATH_TO_SIM_RESULTS}{proto}-{self.experiment_name}/data/{proto}/{CLIENT_INJECTION_RATE_GBPS}/applications_trace.str"
             if proto == SSIRD_PROTO_NAME:
-                self.run_experiment(proto, ssird_sim_script_path, f"{PATH_TO_SIM_COORD}outputs/ssird_{self.experiment_name}.out")
+                self.run_experiment(proto, ssird_sim_script_path, f"{PATH_TO_SIM_COORD}outputs/ssird_{self.experiment_name}", is_capture_output)
                 ssird_fct, thrpt_gbps_measured_ssird, _ = self.process_results_fct(app_trace_file_path, proto)
                 logger.info(f"SSIRD FCT: {ssird_fct} ms, Thrpt: {thrpt_gbps_measured_ssird} Gbps")
 
             if proto == DCTCP_PROTO_NAME:
-                self.run_experiment(proto, dctcp_sim_script_path, f"{PATH_TO_SIM_COORD}outputs/{DCTCP_PROTO_NAME}-{self.experiment_name}.out")
+                self.run_experiment(proto, dctcp_sim_script_path, f"{PATH_TO_SIM_COORD}outputs/{DCTCP_PROTO_NAME}-{self.experiment_name}", is_capture_output)
                 dctcp_fct, thrpt_gbps_measured_dctcp, _ = self.process_results_fct(app_trace_file_path, proto)
                 logger.info(f"DCTCP FCT: {dctcp_fct} ms, Thrpt: {thrpt_gbps_measured_dctcp} Gbps")
 
@@ -219,21 +220,38 @@ class FctExperiment:
 
         return ssird_sim_script_path, dctcp_sim_script_path
 
-    def run_experiment(self, proto_name, sim_script_path, sim_output_path):
+    def run_experiment(self, proto_name, sim_script_path, sim_output_path, is_capture_output):
+        sim_output_path_stdout = sim_output_path + "_stdout.out" 
+        sim_output_path_stderr = sim_output_path + "_stderr.out" 
         logger.info("-----")
         logger.info("Running experiment for " + proto_name)
         logger.info(f"### Script:{sim_script_path}")
-        logger.info(f"### Output:{sim_output_path}")
+        params_list = [f"{PATH_TO_SIM_COORD}run", sim_script_path, self.run_simulations, self.run_post_proc, self.create_timeseires, self.create_plots, self.delete_current] 
         try:
-            result = subprocess.run(
-                [f"{PATH_TO_SIM_COORD}run", sim_script_path, self.run_simulations, self.run_post_proc, self.create_timeseires, self.create_plots, self.delete_current],
-                cwd=f"{PATH_TO_SIM_COORD}",
-                check=True,
-                text=True,
-                capture_output=True       
-            )
-            with open(sim_output_path, "w") as f:
-                f.write(result.stdout)
+            if is_capture_output:
+                logger.info(f"### Output (stdout):{sim_output_path_stdout}")
+                logger.info(f"### Output (stderr):{sim_output_path_stderr}")
+                result = subprocess.run(
+                    params_list,
+                    cwd=f"{PATH_TO_SIM_COORD}",
+                    check=True,
+                    text=is_capture_output,
+                    capture_output=is_capture_output
+                )
+                with open(sim_output_path_stdout, "w") as f:
+                    f.write(result.stdout)
+                with open(sim_output_path_stderr, "w") as f:
+                    f.write(result.stderr)
+            else:
+                subprocess.run(
+                    params_list,
+                    cwd=f"{PATH_TO_SIM_COORD}",
+                    check=True,
+                    text=is_capture_output,
+                    capture_output=is_capture_output,
+                    stderr=subprocess.DEVNULL,
+                    stdout=subprocess.DEVNULL
+                )
         except subprocess.CalledProcessError as e:
             logger.info(f"Script failed with exit code {e.returncode}")
             logger.info("Error output:", e.stderr)
@@ -357,7 +375,7 @@ def init_logs(output_path):
         ]
     )
 
-def fct_vs_thrpt_experiment_vary_interval(is_full_postproc=True, title_addendum=""):
+def fct_vs_thrpt_experiment_vary_interval(is_capture_output=True, is_full_postproc=True, title_addendum=""):
     '''
     BUG BUG_01-related: 
     30/06/2025:
@@ -415,7 +433,7 @@ def fct_vs_thrpt_experiment_vary_interval(is_full_postproc=True, title_addendum=
     for i in range (0, num_of_experiments):
         experiment_name = FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us_list[i]) + title_addendum
         fct_exp1 = FctExperiment(experiment_family, experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B, inter_byteload_period_us_list[i], is_full_postproc) 
-        results = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
+        results = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i], is_capture_output=is_capture_output) 
         ssird_fct_list.append(results.ssird_fct)
         dctcp_fct_list.append(results.dctcp_fct)
         thrpt_gbps_measured_list_ssird.append(results.thrpt_gbps_measured_ssird)
@@ -439,7 +457,7 @@ def fct_vs_thrpt_experiment_vary_interval(is_full_postproc=True, title_addendum=
 '''
 Sweep application pacing rate of byteloads from 1% BW to 100% BW capacity. (i.e. 1GBps to 100GBps)
 '''
-def fct_vs_thrpt_experiment_vary_byteloadsize(is_full_postproc=True, title_addendum=""):
+def fct_vs_thrpt_experiment_vary_byteloadsize(is_capture_output=True, is_full_postproc=True, title_addendum=""):
     experiment_family = f"FCT_Vary_Byteload_Size{title_addendum}"
     proto_names = [SSIRD_PROTO_NAME, DCTCP_PROTO_NAME]
     # proto_names = [SSIRD_PROTO_NAME]
@@ -493,7 +511,7 @@ def fct_vs_thrpt_experiment_vary_byteloadsize(is_full_postproc=True, title_adden
     for i in range(0, num_of_experiments):
         experiment_name = FctExperiment.get_experiment_name(num_byteloads, byteload_size_B_list[i], inter_byteload_period_us) + title_addendum
         fct_exp1 = FctExperiment(experiment_family, experiment_name, proto_names, src, dst, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us, is_full_postproc) 
-        results = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
+        results = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i], is_capture_output=is_capture_output) 
         ssird_fct_list.append(results.ssird_fct)
         dctcp_fct_list.append(results.dctcp_fct)
         thrpt_gbps_measured_list_ssird.append(results.thrpt_gbps_measured_ssird)
@@ -517,5 +535,5 @@ def fct_vs_thrpt_experiment_vary_byteloadsize(is_full_postproc=True, title_adden
 
 if __name__ == "__main__":
     # TODO: update each experiment code to write to their own files
-    # fct_vs_thrpt_experiment_vary_interval(is_full_postproc=True)
-    fct_vs_thrpt_experiment_vary_byteloadsize(is_full_postproc=True)
+    fct_vs_thrpt_experiment_vary_interval(is_capture_output=False, is_full_postproc=True)
+    # fct_vs_thrpt_experiment_vary_byteloadsize(is_capture_output=False, is_full_postproc=False)

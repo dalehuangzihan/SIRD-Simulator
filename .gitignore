@@ -115,3 +115,5 @@ scripts/r2p2/coord/config/dale_experiments/
 scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/
 # Experiment output files auto-generated from Dale's experiments
 scripts/r2p2/post-process/experiment_output/
+# Python venv
+scripts/r2p2/post-process/ssird_venv/

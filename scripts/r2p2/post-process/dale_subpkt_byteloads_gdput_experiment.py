@@ -112,7 +112,7 @@ def init_logs(output_path):
 #     assert num_of_experiments == len(ssird_fct_list)
 #     assert num_of_experiments == len(dctcp_fct_list)
 
-def fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_addendum="_subpkt_multiflow"):
+def fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_capture_output=True, is_full_postproc=True, title_addendum="_subpkt_multiflow"):
     experiment_family = f"FCT_Subpkt_Byteloads{title_addendum}"
     proto_names = [dale_fct_experiment.SSIRD_PROTO_NAME, dale_fct_experiment.DCTCP_PROTO_NAME]
     # proto_names = [dale_fct_experiment.SSIRD_PROTO_NAME]
@@ -124,10 +124,11 @@ def fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=
     total_flow_size_B = 40000
     # NOTE: smallest byteload size that SSIRD sim is set up to use is 4B => with headers this makes a total of 64B per byteload.
     # NOTE: byteload sizes are multiples of 4 so that the inter-byteload periods are later calculated to be whole numbers in the end
-    # byteload_size_B_list = [400]
+    # byteload_size_B_list = [4]
     byteload_size_B_list = [4, 40, 400, 4000] 
     num_of_experiments = len(byteload_size_B_list)
-    num_flows = 2 # currently 5 flows causes thinkpad to run out of ram (32GB)
+    # num_flows = 300
+    num_flows = 5 # currently 5 flows causes thinkpad to run out of ram (32GB)
     inter_flow_spacing_us = 1
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
     # flow_start_times_us_list = [0, 1]
@@ -205,7 +206,7 @@ def fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=
     for i in range(0, num_of_experiments):
         experiment_name = dale_multiflow_serialiser.MultiFlowExperiment.get_experiment_name(num_flows, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us_list[i]) + title_addendum
         fct_exp1 = dale_multiflow_serialiser.MultiFlowExperiment(experiment_family, experiment_name, proto_names, src, dst, flow_start_times_us_list, num_byteloads_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], is_full_postproc) 
-        results = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
+        results = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i], is_capture_output=is_capture_output) 
         ssird_fct_list.append(results.ssird_fct)
         dctcp_fct_list.append(results.dctcp_fct)
         thrpt_gbps_measured_list_ssird.append(results.thrpt_gbps_measured_ssird)
@@ -235,7 +236,7 @@ def fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=
 
 if __name__ == "__main__":
     # fct_vs_load_experiment_vary_byteloadsize_subpkt_test(is_full_postproc=True)
-    fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=False)
+    fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_capture_output=False, is_full_postproc=False)
 
     # INFO:__main__:Total Flow Size (Bytes): 40000
     # INFO:__main__:Total Injection Period (us): 10000
