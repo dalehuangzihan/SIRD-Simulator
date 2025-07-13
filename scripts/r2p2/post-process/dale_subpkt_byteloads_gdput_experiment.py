@@ -4,15 +4,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def init_logs(output_path):
-    logging.basicConfig(
-        level=logging.DEBUG,
-        handlers=[
-            logging.FileHandler(output_path, mode='w'),
-            logging.StreamHandler()
-        ]
-    )
-
 def fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_addendum="_subpkt_multiflow"):
     experiment_family = f"FCT_Subpkt_Byteloads{title_addendum}"
     proto_names = [dale_fct_experiment.SSIRD_PROTO_NAME, dale_fct_experiment.DCTCP_PROTO_NAME]
@@ -34,7 +25,7 @@ def fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
     # flow_start_times_us_list = [0, 1]
 
-    dale_multiflow_serialiser.init_logs(output_path=f"experiment_output/subpkt_experiment_{num_flows}flo_{total_flow_size_B}B_total_{min(byteload_size_B_list)}B_to_{max(byteload_size_B_list)}B.log")
+    dale_fct_experiment.init_logs(experiment_family, f"subpkt_experiment_{num_flows}flo_{total_flow_size_B}B_total_{min(byteload_size_B_list)}B_to_{max(byteload_size_B_list)}B.log")
 
     logging.debug(f"Total_flow_size_B: {total_flow_size_B}")
     logging.debug(f"Byteload sizes list: {byteload_size_B_list}")

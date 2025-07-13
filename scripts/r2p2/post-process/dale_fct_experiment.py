@@ -25,6 +25,8 @@ MRI_RELATIVE_PATH = "dale_experiments/"
 PATH_TO_EXPERIMENTS_INPUTS = PATH_TO_EXPERIMENTS + "manual-req-intervals/" + MRI_RELATIVE_PATH
 APP_TRACE_PATHS_BACKUP_PATH = PATH_TO_POST_PROCESS + "experiment_app_trace_paths/"
 
+LOGS_REL_PATH = "experiment_output/" # is relative to post-process/ dir
+
 logger = logging.getLogger(__name__)
 
 class FlowTraceEvent:
@@ -115,7 +117,11 @@ class FlowStats:
 
         assert(self.num_srq == self.num_byteloads) # TODO: remove assertion if adaptive batching feature is implemented
         assert(self.first_event_name == FlowTraceEvent.SRQ_EVENT)
-        assert(self.final_event_name == FlowTraceEvent.RRQ_EVENT)
+        
+        if (self.final_event_name != FlowTraceEvent.RRQ_EVENT):
+            logger.error(f"Flow {self.flow_id}: Final event was {self.final_event_name} instead of {FlowTraceEvent.RRQ_EVENT}!")        
+
+        logger.info(f"TESTING: flow: {self.flow_id}, first_event_name: {self.first_event_name}, final_event_name: {self.final_event_name}")
         if (self.proto == DCTCP_PROTO_NAME and self.num_srq != self.num_rrq):
             logger.error(f"DCTCP: Missing rrq event(s)! diff: {self.num_srq - self.num_rrq}")
 
@@ -135,8 +141,8 @@ class FlowStats:
 
 class ManualReqInterval:
     # is in seconds; is 1us
-    TIME_STEP_S = 0.000001
-    MRI_START_TIME_S = TIME_STEP_S
+    MICROSECOND_S = 0.000001
+    MRI_START_TIME_S = MICROSECOND_S
 
     def __init__(self, parent_dir, experiment_name):
         self.parent_dir = parent_dir
@@ -148,7 +154,7 @@ class ManualReqInterval:
         mri_byteloads_spec = []    
         mri_byteloads_spec.append(str(src))
         for i in range(0, num_byteloads):
-            time_spec = self.MRI_START_TIME_S if i == 0 else inter_byteload_period_us * self.TIME_STEP_S
+            time_spec = self.MRI_START_TIME_S if i == 0 else inter_byteload_period_us * self.MICROSECOND_S
             byteload_str = "{:.7f}|{}|{}|0".format(time_spec, str(dst), byteload_size_B) 
             mri_byteloads_spec.append(byteload_str)
         self.mri_list_to_csv(mri_byteloads_spec, mri_filepath)
@@ -254,13 +260,16 @@ class FctExperiment:
         thrpt_gbps_measured_dctcp = -1
         for proto in self.proto_names:
             app_trace_file_path = f"{PATH_TO_SIM_RESULTS}{proto}-{self.experiment_name}/data/{proto}/{CLIENT_INJECTION_RATE_GBPS}/applications_trace.str"
+            outputs_dir = f"{PATH_TO_SIM_COORD}outputs/{self.experiment_family}/"
+            Path(outputs_dir).mkdir(parents=True, exist_ok=True)
+
             if proto == SSIRD_PROTO_NAME:
-                self.run_experiment(proto, ssird_sim_script_path, f"{PATH_TO_SIM_COORD}outputs/ssird_{self.experiment_name}")
+                self.run_experiment(proto, ssird_sim_script_path, f"{outputs_dir}ssird_{self.experiment_name}")
                 ssird_fct, thrpt_gbps_measured_ssird, _ = self.process_results_fct(app_trace_file_path, proto)
                 logger.info(f"SSIRD FCT: {ssird_fct} ms, Thrpt: {thrpt_gbps_measured_ssird} Gbps")
 
             if proto == DCTCP_PROTO_NAME:
-                self.run_experiment(proto, dctcp_sim_script_path, f"{PATH_TO_SIM_COORD}outputs/{DCTCP_PROTO_NAME}-{self.experiment_name}")
+                self.run_experiment(proto, dctcp_sim_script_path, f"{outputs_dir}{DCTCP_PROTO_NAME}-{self.experiment_name}")
                 dctcp_fct, thrpt_gbps_measured_dctcp, _ = self.process_results_fct(app_trace_file_path, proto)
                 logger.info(f"DCTCP FCT: {dctcp_fct} ms, Thrpt: {thrpt_gbps_measured_dctcp} Gbps")
 
@@ -300,17 +309,20 @@ class FctExperiment:
         logger.info("Running experiment for " + proto_name)
         logger.info(f"### Script:{sim_script_path}")
         params_list = [f"{PATH_TO_SIM_COORD}run", sim_script_path, self.run_simulations, self.run_post_proc, self.create_timeseires, self.create_plots, self.delete_current] 
-        output_file_path = f"{sim_output_path}.out" 
-        logger.info(f"### Output path: {output_file_path}")
-        output_file = open(output_file_path, "w")
+        output_file_path_stdout = f"{sim_output_path}_stdout.out" 
+        output_file_path_stderr = f"{sim_output_path}_stderr.out" 
+        logger.info(f"### Output path (stdout): {output_file_path_stdout}")
+        logger.info(f"### Output path (stderr): {output_file_path_stderr}")
+        output_file_stdout = open(output_file_path_stdout, "w")
+        output_file_stderr = open(output_file_path_stderr, "w")
         try:
             subprocess.run(
                 params_list,
                 cwd=f"{PATH_TO_SIM_COORD}",
                 check=True,
                 text=True,
-                stderr=output_file,
-                stdout=output_file
+                stderr=output_file_stderr,
+                stdout=output_file_stdout
             )
         except subprocess.CalledProcessError as e:
             logger.info(f"Script failed with exit code {e.returncode}")
@@ -346,7 +358,7 @@ class FctExperiment:
 
     @staticmethod
     def get_sim_duration(num_byteloads, inter_byteload_period_us, multiplication_factor):
-        return multiplication_factor * num_byteloads * inter_byteload_period_us * ManualReqInterval.TIME_STEP_S
+        return multiplication_factor * num_byteloads * inter_byteload_period_us * ManualReqInterval.MICROSECOND_S
 
     @staticmethod
     def get_experiment_name(num_byteloads, byteload_size_B, inter_byteload_period_us):
@@ -372,11 +384,14 @@ def get_ideal_fct_s(link_speed_bps, byteload_size_B, num_byteload_injections, in
     ideal_fct = flow_size_b / theoretical_throughput_bps
     return ideal_fct    
 
-def init_logs(output_path):
+def init_logs(experiment_family, logs_file_name, log_level=logging.DEBUG):
+    full_rel_path = f"{LOGS_REL_PATH}{experiment_family}/"
+    Path(full_rel_path).mkdir(parents=True, exist_ok=True) 
+    logs_file_path = full_rel_path + logs_file_name
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=log_level,
         handlers=[
-            logging.FileHandler(output_path, mode='w'),
+            logging.FileHandler(logs_file_path, mode='w'),
             logging.StreamHandler()
         ]
     )
@@ -397,7 +412,7 @@ def fct_vs_thrpt_experiment_vary_interval(is_full_postproc=True, title_addendum=
     num_byteloads = 5
     byteload_size_B = int(1000000/8) # 1/8MB
 
-    init_logs(output_path=f"experiment_output/{FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, "variable_")}{title_addendum}.log")
+    init_logs(experiment_family, f"{FctExperiment.get_experiment_name(num_byteloads, byteload_size_B, "variable_")}{title_addendum}.log")
 
     # inter_byteload_period_us_list = [10, 50, 100, 500, 1000, 5000] # 10000us causes sim to be killed
     inter_byteload_period_us_list = [1000, 500, 100, 50, 10]
@@ -489,7 +504,7 @@ def fct_vs_thrpt_experiment_vary_byteloadsize(is_full_postproc=True, title_adden
     ssird_sim_dur_list = sim_dur_list
     dctcp_sim_dur_list = sim_dur_list
 
-    init_logs(output_path=f"experiment_output/{FctExperiment.get_experiment_name(num_byteloads, "variable_", inter_byteload_period_us)}{title_addendum}.log")
+    init_logs(experiment_family, f"{FctExperiment.get_experiment_name(num_byteloads, "variable_", inter_byteload_period_us)}{title_addendum}.log")
 
     thrpt_gbps_theoretical = [(bytes*8)/(inter_byteload_period_us * pow(10, -6) * pow(10, 9)) for bytes in byteload_size_B_list]
     logger.info(f"Time Period: {inter_byteload_period_us}")
