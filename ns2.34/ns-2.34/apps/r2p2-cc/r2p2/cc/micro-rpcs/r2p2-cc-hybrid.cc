@@ -1393,8 +1393,14 @@ void R2p2CCHybrid::received_data(Packet *pkt, hysup::InboundMsgState *msg_state)
     }
     MsgTracer::timestamp_pkt(pkt, MSG_TRACER_RECEIVE, MSG_TRACER_HOST, std::move(logs));
 
-    if (msg_state->data_bytes_received_ == msg_state->data_bytes_expected_ &&
-        (msg_state->data_bytes_granted_ == msg_state->data_bytes_expected_)) // w/o this, msg_state may get deleted before all the bytes it requested are granted (bcs of commong grant pool)
+    /** Dale: 
+     * 13/07/2025 TODO: (?) remove data_bytes_granted_ == data_bytes_expected_ condition here to allow transport to pass data up application.
+     * Is to allow msgs that are completed using other msgs' credits (from common credit pool) to be passed by transport up to application.
+     * Get around pre-emptive msg_state deletion problem by doing this check immediately before we delete msg_state.
+     */
+    // if (msg_state->data_bytes_received_ == msg_state->data_bytes_expected_ &&
+        // (msg_state->data_bytes_granted_ == msg_state->data_bytes_expected_)) // w/o this, msg_state may get deleted before all the bytes it requested are granted (bcs of commong grant pool)
+    if (msg_state->data_bytes_received_ == msg_state->data_bytes_expected_)
     {
         slog::log4(debug_, this_addr_, "Received ", msg_state->data_bytes_received_, "bytes of msg out of ",
             msg_state->data_bytes_expected_, " bytes expected using ", msg_state->data_bytes_granted_, "bytes of credit.");
@@ -1408,7 +1414,9 @@ void R2p2CCHybrid::received_data(Packet *pkt, hysup::InboundMsgState *msg_state)
           * 11/06/2025 Unless msg_state is for a msg type that is non-extensibe, then remove. 
           * TODO: IMPORTANT design explicit signal to tear down connection 
           */
-        if (!MsgIdTuple::is_persist_msg_state(msg_state->req_id_) || MsgIdTuple::is_ignore_persistence(msg_state->req_id_))
+        /* Dale: 13/07/25 Move data_bytes_granted check to immediately before we delete state */
+        if ((!MsgIdTuple::is_persist_msg_state(msg_state->req_id_) || MsgIdTuple::is_ignore_persistence(msg_state->req_id_))
+            && msg_state->data_bytes_granted_ == msg_state->data_bytes_expected_)
         {
             /* Dale: msg type is not msg extendable */ 
             slog::log4(debug_, this_addr_, "Removing inbound message state of msg", std::get<2>(msg_state->req_id_));
