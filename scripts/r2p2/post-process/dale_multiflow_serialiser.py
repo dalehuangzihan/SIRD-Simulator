@@ -188,10 +188,10 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
         ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(ssird_sim_duration=ssird_sim_dur, dctcp_sim_duration=dctcp_sim_dur, experiment_name=self.experiment_name)
         ssird_fct = -1
         dctcp_fct = -1
-        thrpt_gbps_measured_ssird = -1
-        thrpt_gbps_measured_per_flow_list_ssird = []
-        thrpt_gbps_measured_dctcp = -1
-        thrpt_gbps_measured_per_flow_list_dctcp = []
+        gdpt_gbps_measured_ssird = -1
+        gdpt_gbps_measured_per_flow_list_ssird = []
+        gdpt_gbps_measured_dctcp = -1
+        gdpt_gbps_measured_per_flow_list_dctcp = []
         app_trace_file_paths_ssird = []
         app_trace_file_paths_dctcp = []
         for proto in self.proto_names:
@@ -202,18 +202,18 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
                 Path(outputs_dir).mkdir(parents=True, exist_ok=True)
 
                 self.run_experiment(proto, ssird_sim_script_path, f"{outputs_dir}ssird_{self.experiment_name}")
-                ssird_fct, thrpt_gbps_measured_ssird, thrpt_gbps_measured_per_flow_list_ssird = self.process_results_fct(app_trace_file_path, proto)
-                logger.info(f"SSIRD FCT: {ssird_fct} ms, Gdpt (overall): {thrpt_gbps_measured_ssird} Gbps, Gdpt (per flow): {thrpt_gbps_measured_per_flow_list_ssird}")
+                ssird_fct, gdpt_gbps_measured_ssird, gdpt_gbps_measured_per_flow_list_ssird = self.process_results_fct(app_trace_file_path, proto)
+                logger.info(f"SSIRD FCT: {ssird_fct} ms, Gdpt (overall): {gdpt_gbps_measured_ssird} Gbps, Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_ssird}")
 
             if proto == dale_fct_experiment.DCTCP_PROTO_NAME:
                 app_trace_file_paths_dctcp.append(app_trace_file_path)
                 self.run_experiment(proto, dctcp_sim_script_path, f"{outputs_dir}{dale_fct_experiment.DCTCP_PROTO_NAME}-{self.experiment_name}")
-                dctcp_fct, thrpt_gbps_measured_dctcp, thrpt_gbps_measured_per_flow_list_dctcp = self.process_results_fct(app_trace_file_path, proto)
-                logger.info(f"DCTCP FCT: {dctcp_fct} ms, Gtpt (overall): {thrpt_gbps_measured_dctcp} Gbps, Gdpt (per flow): {thrpt_gbps_measured_per_flow_list_dctcp}")
+                dctcp_fct, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_dctcp = self.process_results_fct(app_trace_file_path, proto)
+                logger.info(f"DCTCP FCT: {dctcp_fct} ms, Gtpt (overall): {gdpt_gbps_measured_dctcp} Gbps, Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_dctcp}")
         
         self.write_app_trace_paths_to_file(app_trace_file_paths_ssird, app_trace_file_paths_dctcp)
 
-        return dale_fct_experiment.ExperimentResults(ssird_fct, dctcp_fct, thrpt_gbps_measured_ssird, thrpt_gbps_measured_dctcp, thrpt_gbps_measured_per_flow_list_ssird, thrpt_gbps_measured_per_flow_list_dctcp)
+        return dale_fct_experiment.ExperimentResults(ssird_fct, dctcp_fct, gdpt_gbps_measured_ssird, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_ssird, gdpt_gbps_measured_per_flow_list_dctcp)
 
     def prep_experiment_input(self, src, dst, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, flow_start_times_list):
         logger.info("-----")
@@ -254,15 +254,15 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
             logger.error("An error occurred while reading the file")
     
         fct_list = []
-        measured_thrpt_gbps_per_flow_list = []
+        measured_gdpt_gbps_per_flow_list = []
         for _, flow_stats_obj in flow_stats_dict.items():
             flow_stats_obj.check_flow_stats()
             fct_list.append(flow_stats_obj.get_fct_s())
-            measured_thrpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_thrpt_for_flow_gbps())
+            measured_gdpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_gdpt_for_flow_gbps())
 
-        measured_total_thrpt_gbps = sum(measured_thrpt_gbps_per_flow_list)
+        measured_total_gdpt_gbps = sum(measured_gdpt_gbps_per_flow_list)
 
-        return fct_list, measured_total_thrpt_gbps, measured_thrpt_gbps_per_flow_list
+        return fct_list, measured_total_gdpt_gbps, measured_gdpt_gbps_per_flow_list
 
     def write_app_trace_paths_to_file(self, app_trace_file_paths_ssird, app_trace_file_paths_dctcp):
         logger.info("-----")
@@ -289,8 +289,8 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
         send_duration_per_flow_s = num_byteloads * inter_byteload_period_us * MultiFlowManualReqInterval.MICROSECOND_S
         overall_send_duration_s = (num_flows-1) * inter_flow_spacing_us * MultiFlowManualReqInterval.MICROSECOND_S + send_duration_per_flow_s
         overall_data_send_B = num_flows * num_byteloads * byteload_size_B 
-        theoretical_thrpt_bps = overall_data_send_B * 8 / overall_send_duration_s
-        multiples_of_link_speed = theoretical_thrpt_bps / dale_fct_experiment.LINK_SPEED_BITS_PER_SEC
+        theoretical_gdpt_bps = overall_data_send_B * 8 / overall_send_duration_s
+        multiples_of_link_speed = theoretical_gdpt_bps / dale_fct_experiment.LINK_SPEED_BITS_PER_SEC
         k = multiples_of_link_speed if multiples_of_link_speed > 1 else 1
         sim_dur_s = k * overall_data_send_B * 8 / dale_fct_experiment.LINK_SPEED_BITS_PER_SEC
         return sim_dur_s * multiplication_factor
@@ -299,7 +299,7 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
     def get_experiment_name(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us):
         return "{}flo-{}#-{}B-{}us".format(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us)
 
-def multiflow_fct_thrpt_experiment_vary_byteloadsize(is_full_postproc=True, title_addendum=""):
+def multiflow_fct_gdpt_experiment_vary_byteloadsize(is_full_postproc=True, title_addendum=""):
 
     experiment_family = f"FCT_Vary_Byteload_Size{title_addendum}"
     proto_names = [dale_fct_experiment.SSIRD_PROTO_NAME, dale_fct_experiment.DCTCP_PROTO_NAME]
@@ -332,13 +332,13 @@ def multiflow_fct_thrpt_experiment_vary_byteloadsize(is_full_postproc=True, titl
 
     dale_fct_experiment.init_logs(experiment_family, f"{MultiFlowExperiment.get_experiment_name(num_flows, num_byteloads, "variable_", inter_byteload_period_us)}{title_addendum}.log")
 
-    thrpt_gbps_theoretical_parallel_flows = [num_flows * (bytes*8)/(inter_byteload_period_us * pow(10, -6) * pow(10, 9)) for bytes in byteload_size_B_list]
+    gdpt_gbps_theoretical_parallel_flows = [num_flows * (bytes*8)/(inter_byteload_period_us * pow(10, -6) * pow(10, 9)) for bytes in byteload_size_B_list]
 
     logger.info(f"Num flows: {num_flows}")
     logger.info(f"Time Period: {inter_byteload_period_us}")
     logger.info(f"Num Byteloads: {num_byteloads}")
     logger.info(f"Byteload Size (Bytes): {byteload_size_B_list}")
-    logger.info(f"Load Gbps theoretical (parallel flows): {thrpt_gbps_theoretical_parallel_flows}")
+    logger.info(f"Load Gbps theoretical (parallel flows): {gdpt_gbps_theoretical_parallel_flows}")
     logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
 
@@ -350,20 +350,20 @@ def multiflow_fct_thrpt_experiment_vary_byteloadsize(is_full_postproc=True, titl
     assert num_of_experiments == len(ssird_sim_dur_list)
     assert num_of_experiments == len(dctcp_sim_dur_list)
 
-    thrpt_gbps_measured_list_ssird = []
-    thrpt_gbps_measured_list_dctcp = []
-    thrpt_gbps_measured_per_flow_list_list_ssird = []
-    thrpt_gbps_measured_per_flow_list_list_dctcp = []
+    gdpt_gbps_measured_list_ssird = []
+    gdpt_gbps_measured_list_dctcp = []
+    gdpt_gbps_measured_per_flow_list_list_ssird = []
+    gdpt_gbps_measured_per_flow_list_list_dctcp = []
     for i in range(0, num_of_experiments):
         experiment_name = MultiFlowExperiment.get_experiment_name(num_flows, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us) + title_addendum
         fct_exp1 = MultiFlowExperiment(experiment_family, experiment_name, proto_names, src, dst, flow_start_times_us_list, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us, is_full_postproc) 
         results = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(results.ssird_fct)
         dctcp_fct_list.append(results.dctcp_fct)
-        thrpt_gbps_measured_list_ssird.append(results.thrpt_gbps_measured_ssird)
-        thrpt_gbps_measured_list_dctcp.append(results.thrpt_gbps_measured_dctcp)
-        thrpt_gbps_measured_per_flow_list_list_ssird.append(results.thrpt_gbps_measured_per_flow_list_ssird)
-        thrpt_gbps_measured_per_flow_list_list_dctcp.append(results.thrpt_gbps_measured_per_flow_list_dctcp)
+        gdpt_gbps_measured_list_ssird.append(results.gdpt_gbps_measured_ssird)
+        gdpt_gbps_measured_list_dctcp.append(results.gdpt_gbps_measured_dctcp)
+        gdpt_gbps_measured_per_flow_list_list_ssird.append(results.gdpt_gbps_measured_per_flow_list_ssird)
+        gdpt_gbps_measured_per_flow_list_list_dctcp.append(results.gdpt_gbps_measured_per_flow_list_dctcp)
 
     logger.info(f"Num flows: {num_flows}")
     logger.debug(f"Flow start times (us): {flow_start_times_us_list}")
@@ -372,11 +372,11 @@ def multiflow_fct_thrpt_experiment_vary_byteloadsize(is_full_postproc=True, titl
     logger.info(f"Byteload Size (Bytes): {byteload_size_B_list}")
     logger.info(f"Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"Sim duration (DCTCP): {dctcp_sim_dur_list}")
-    logger.info(f"Thrpt Gbps theoretical: {thrpt_gbps_theoretical_parallel_flows}")
-    logger.info(f"Thrpt Gbps measured (SSIRD): {thrpt_gbps_measured_list_ssird}")
-    logger.info(f"Thrpt Gbps measured (DCTCP): {thrpt_gbps_measured_list_dctcp}")
-    logger.debug(f"Thrpt Gbps measured per flow (SSIRD): {thrpt_gbps_measured_per_flow_list_list_ssird}")
-    logger.debug(f"Thrpt Gbps measured per flow (DCTCP): {thrpt_gbps_measured_per_flow_list_list_dctcp}")
+    logger.info(f"Gdpt Gbps theoretical: {gdpt_gbps_theoretical_parallel_flows}")
+    logger.info(f"Gdpt Gbps measured (SSIRD): {gdpt_gbps_measured_list_ssird}")
+    logger.info(f"Gdpt Gbps measured (DCTCP): {gdpt_gbps_measured_list_dctcp}")
+    logger.debug(f"Gdpt Gbps measured per flow (SSIRD): {gdpt_gbps_measured_per_flow_list_list_ssird}")
+    logger.debug(f"Gdpt Gbps measured per flow (DCTCP): {gdpt_gbps_measured_per_flow_list_list_dctcp}")
     logger.info(f"* SSIRD FCT: {ssird_fct_list}")
     logger.info(f"* DCTCP FCT: {dctcp_fct_list}")
 
@@ -392,4 +392,4 @@ def testing():
 
 if __name__ == "__main__":
     # testing()
-    multiflow_fct_thrpt_experiment_vary_byteloadsize(is_full_postproc=False, title_addendum="_multiflow_testing_14jul")
+    multiflow_fct_gdpt_experiment_vary_byteloadsize(is_full_postproc=False, title_addendum="_multiflow_testing_14jul")
