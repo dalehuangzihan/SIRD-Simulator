@@ -16,11 +16,11 @@ def fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=
     total_flow_size_B = 40000
     # NOTE: smallest byteload size that SSIRD sim is set up to use is 4B => with headers this makes a total of 64B per byteload.
     # NOTE: byteload sizes are multiples of 4 so that the inter-byteload periods are later calculated to be whole numbers in the end
-    # byteload_size_B_list = [4]
-    byteload_size_B_list = [4, 40, 400, 4000] 
+    byteload_size_B_list = [4]
+    # byteload_size_B_list = [4, 40, 400, 4000] 
     num_of_experiments = len(byteload_size_B_list)
     # num_flows = 300
-    num_flows = 10 # currently 5 flows causes thinkpad to run out of ram (32GB)
+    num_flows = 10
     inter_flow_spacing_us = 1
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
     # flow_start_times_us_list = [0, 1]
@@ -58,10 +58,11 @@ def fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=
     assert(len(inter_byteload_period_us_list) == num_of_experiments)
 
     # calculate simulation durations for experiment
-    sim_dur_list = []
-    for i in range(0, len(num_byteloads_list)):
-        # TODO: change multiplier factor if sim duration not long enough
-       sim_dur_list.append(dale_multiflow_serialiser.MultiFlowExperiment.get_sim_duration(num_byteloads_list[i], inter_byteload_period_us_list[i], num_flows * 2))
+    sim_dur_list = [0.011] # for 4B byteloads
+    # sim_dur_list = []
+    # for i in range(0, len(num_byteloads_list)):
+    #     # TODO: change multiplier factor if sim duration not long enough
+    #    sim_dur_list.append(dale_multiflow_serialiser.MultiFlowExperiment.get_sim_duration(num_byteloads_list[i], inter_byteload_period_us_list[i], 0.011))
     logger.debug(f"Sim Durations list: {sim_dur_list}")
     assert(len(sim_dur_list) == num_of_experiments)
     ssird_sim_dur_list = sim_dur_list

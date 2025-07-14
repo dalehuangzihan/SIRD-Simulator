@@ -100,7 +100,7 @@ class MultiFlow:
             # print(f"len byteloads list: {len(byteloads_list)}, flow_id: {flow.id}")
             serialised_byteloads_list.extend(byteloads_list) 
         serialised_byteloads_list.sort(key = lambda b : b.absolute_timestamp_us)
-        serialised_byteloads_list = self.enforce_min_byteload_interval(serialised_byteloads_list)
+        # serialised_byteloads_list = self.enforce_min_byteload_interval(serialised_byteloads_list)
         return self.convert_abs_timestamp_to_rel_intervals(serialised_byteloads_list)
 
     def convert_abs_timestamp_to_rel_intervals(self, serialised_byteloads_list):
@@ -115,14 +115,14 @@ class MultiFlow:
                 second.relative_interval_us = second.absolute_timestamp_us - first.absolute_timestamp_us
         return serialised_byteloads_list
 
-    def enforce_min_byteload_interval(self, serialised_byteloads_list):
-        ''' Two byteloads cannot have the same timestamp, so we add a spacing between them of size MIN_BYTELOAD_INTERVAL_US '''
-        for i in range(0, len(serialised_byteloads_list) - 1):
-            first = serialised_byteloads_list[i]
-            second = serialised_byteloads_list[i+1] 
-            if second.absolute_timestamp_us <= first.absolute_timestamp_us:
-                second.absolute_timestamp_us = first.absolute_timestamp_us + MIN_BYTELOAD_INTERVAL_US
-        return serialised_byteloads_list
+    # def enforce_min_byteload_interval(self, serialised_byteloads_list):
+    #     ''' Two byteloads cannot have the same timestamp, so we add a spacing between them of size MIN_BYTELOAD_INTERVAL_US '''
+    #     for i in range(0, len(serialised_byteloads_list) - 1):
+    #         first = serialised_byteloads_list[i]
+    #         second = serialised_byteloads_list[i+1] 
+    #         if second.absolute_timestamp_us <= first.absolute_timestamp_us:
+    #             second.absolute_timestamp_us = first.absolute_timestamp_us + MIN_BYTELOAD_INTERVAL_US
+    #     return serialised_byteloads_list
 
     @staticmethod
     def pretty_print_byteloads_abs_timestamp(serialised_byteloads_list):
@@ -203,13 +203,13 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
 
                 self.run_experiment(proto, ssird_sim_script_path, f"{outputs_dir}ssird_{self.experiment_name}")
                 ssird_fct, thrpt_gbps_measured_ssird, thrpt_gbps_measured_per_flow_list_ssird = self.process_results_fct(app_trace_file_path, proto)
-                logger.info(f"SSIRD FCT: {ssird_fct} ms, Throughput: {thrpt_gbps_measured_ssird} Gbps")
+                logger.info(f"SSIRD FCT: {ssird_fct} ms, Gdpt (overall): {thrpt_gbps_measured_ssird} Gbps, Gdpt (per flow): {thrpt_gbps_measured_per_flow_list_ssird}")
 
             if proto == dale_fct_experiment.DCTCP_PROTO_NAME:
                 app_trace_file_paths_dctcp.append(app_trace_file_path)
                 self.run_experiment(proto, dctcp_sim_script_path, f"{outputs_dir}{dale_fct_experiment.DCTCP_PROTO_NAME}-{self.experiment_name}")
                 dctcp_fct, thrpt_gbps_measured_dctcp, thrpt_gbps_measured_per_flow_list_dctcp = self.process_results_fct(app_trace_file_path, proto)
-                logger.info(f"DCTCP FCT: {dctcp_fct} ms, Throughput: {thrpt_gbps_measured_ssird} Gbps")
+                logger.info(f"DCTCP FCT: {dctcp_fct} ms, Gtpt (overall): {thrpt_gbps_measured_dctcp} Gbps, Gdpt (per flow): {thrpt_gbps_measured_per_flow_list_dctcp}")
         
         self.write_app_trace_paths_to_file(app_trace_file_paths_ssird, app_trace_file_paths_dctcp)
 
@@ -239,10 +239,6 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
         flow_stats_dict = collections.OrderedDict(sorted(d.items()))
         del d
 
-        total_bytes_sent_B = 0
-        total_bytes_sent_until_penultimate_srq_B = 0
-        overall_srq_start_time_s = math.inf
-        overall_final_srq_timestamp_s = None
         try:
             with open(app_trace_file_path, 'r') as file:
                 lines = file.readlines()
@@ -250,22 +246,12 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
                     flow_trace_event = dale_fct_experiment.FlowTraceEvent.read_flow_trace_from_str(line)
                     flow_id = flow_trace_event.get_app_level_id()
                     flow_stats_dict.get(flow_id).update_flow_stats(flow_trace_event)
-
-                    if (flow_trace_event.get_event() == dale_fct_experiment.FlowTraceEvent.SRQ_EVENT):
-                        overall_srq_start_time_s = min(flow_trace_event.get_timestamp(), overall_srq_start_time_s)
-                        overall_final_srq_timestamp_s = flow_trace_event.get_timestamp()
-                        total_bytes_sent_until_penultimate_srq_B = total_bytes_sent_B
-                        total_bytes_sent_B += flow_trace_event.get_req_size()
-
                     del flow_id
                     del flow_trace_event
         except FileNotFoundError:
             logger.error("The file was not found")
         except IOError:
             logger.error("An error occurred while reading the file")
-
-        # TODO: FIX ME! This total-thrpt calc seems a lil iffy... it overestimates gbps by a little bit?
-        measured_total_thrpt_gbps = (total_bytes_sent_until_penultimate_srq_B * 8) / (overall_final_srq_timestamp_s - overall_srq_start_time_s) * pow(10,-9)
     
         fct_list = []
         measured_thrpt_gbps_per_flow_list = []
@@ -273,6 +259,8 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
             flow_stats_obj.check_flow_stats()
             fct_list.append(flow_stats_obj.get_fct_s())
             measured_thrpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_thrpt_for_flow_gbps())
+
+        measured_total_thrpt_gbps = sum(measured_thrpt_gbps_per_flow_list)
 
         return fct_list, measured_total_thrpt_gbps, measured_thrpt_gbps_per_flow_list
 
@@ -321,23 +309,23 @@ def multiflow_fct_thrpt_experiment_vary_byteloadsize(is_full_postproc=True, titl
     dst = 1
     num_byteloads = 10
     inter_byteload_period_us = 100 # is 0.1ms
-    num_flows = 10
+    num_flows = 2
     inter_flow_spacing_us = 1
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
 
     KILOBYTE = 1000
-    byteload_size_KB_list = [1000/8]
+    # byteload_size_KB_list = [10/8]
     # byteload_size_KB_list = [10/8, 50/8, 100/8, 500/8, 1000/8] # 10/8KB to 1/8MB
-    # byteload_size_KB_list = [100/8, 500/8, 1000/8, 5000/8, 10000/8] # 100/8KB to 10/8MB
+    byteload_size_KB_list = [100/8, 500/8, 1000/8, 5000/8, 10000/8] # 100/8KB to 10/8MB
     byteload_size_B_list = [int(n * KILOBYTE) for n in byteload_size_KB_list] 
     num_of_experiments = len(byteload_size_B_list)
 
-    sim_dur_list = [MultiFlowExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, num_flows * 3)] # for 10000/8KB
-    # sim_dur_list = [MultiFlowExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, num_flows * 1),   # for 100/8KB
-    #                 MultiFlowExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, num_flows * 1),   # for 500/8KB
-    #                 MultiFlowExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, num_flows * 1),   # for 1000/8KB
-    #                 MultiFlowExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, num_flows * 1),   # for 5000/8KB
-    #                 MultiFlowExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, num_flows * 1.5)]  # for 10000/8KB
+    # sim_dur_list = [MultiFlowExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, num_flows * 1.1)]
+    sim_dur_list = [MultiFlowExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, num_flows * 1),   # for 100/8KB
+                    MultiFlowExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, num_flows * 1),   # for 500/8KB
+                    MultiFlowExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, num_flows * 1),   # for 1000/8KB
+                    MultiFlowExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, num_flows * 1),   # for 5000/8KB
+                    MultiFlowExperiment.get_sim_duration(num_byteloads, inter_byteload_period_us, num_flows * 1.5)]  # for 10000/8KB
 
     ssird_sim_dur_list = sim_dur_list
     dctcp_sim_dur_list = sim_dur_list
@@ -404,4 +392,4 @@ def testing():
 
 if __name__ == "__main__":
     # testing()
-    multiflow_fct_thrpt_experiment_vary_byteloadsize(is_full_postproc=False, title_addendum="_multiflow_test_125000B")
+    multiflow_fct_thrpt_experiment_vary_byteloadsize(is_full_postproc=False, title_addendum="_multiflow_testing_14jul")
