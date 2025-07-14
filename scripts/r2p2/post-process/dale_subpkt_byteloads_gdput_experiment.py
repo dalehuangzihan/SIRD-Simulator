@@ -96,7 +96,7 @@ def fct_vs_thrpt_experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=
     thrpt_gbps_measured_per_flow_list_list_ssird = []
     thrpt_gbps_measured_per_flow_list_list_dctcp = []
     for i in range(0, num_of_experiments):
-        experiment_name = dale_multiflow_serialiser.MultiFlowExperiment.get_experiment_name(num_flows, num_byteloads, byteload_size_B_list[i], inter_byteload_period_us_list[i]) + title_addendum
+        experiment_name = dale_multiflow_serialiser.MultiFlowExperiment.get_experiment_name(num_flows, num_byteloads_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i]) + title_addendum
         fct_exp1 = dale_multiflow_serialiser.MultiFlowExperiment(experiment_family, experiment_name, proto_names, src, dst, flow_start_times_us_list, num_byteloads_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], is_full_postproc) 
         results = fct_exp1.execute(ssird_sim_dur=ssird_sim_dur_list[i], dctcp_sim_dur=dctcp_sim_dur_list[i]) 
         ssird_fct_list.append(results.ssird_fct)
