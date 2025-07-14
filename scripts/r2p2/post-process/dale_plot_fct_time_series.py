@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 
 SSIRD_PLOT_COLOUR = 'tab:orange'
-DCTCP_PLOT_COLOR  = 'tab:green'
 IDEAL_PLOT_COLOUR = 'tab:blue'
 
 LINK_SPEED_GIGABITS_PER_SEC = 100 # 100 GBps link speed

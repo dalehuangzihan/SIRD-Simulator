@@ -4,6 +4,7 @@ from pathlib import Path
 import shutil
 
 import dale_fct_experiment
+import dale_multiflow_serialiser
 
 PATH_TO_SCRIPTS_R2P2 = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/"
 PATH_TO_POSTPROC = f"{PATH_TO_SCRIPTS_R2P2}post-process/"
@@ -64,6 +65,35 @@ def do_queuing_plotting_for_experiment(num_byteloads, byteload_size_B, inter_byt
 
     plot_comparison_graph(QUEUEING_COL, f"Queueing: SSIRD vs DCTCP ({experiment_name})", experiment_name, ssird_csv_rel_path, dctcp_csv_rel_path)
 
+def do_thrpt_plot_multiflow_exp(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us, nw_elem, src, dst, title_addendum=""):
+    experiment_name = dale_multiflow_serialiser.MultiFlowExperiment.get_experiment_name(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us) + title_addendum
+    print(f"Plotting for experiment: {experiment_name}")
+
+    ssird_results_dir = f"SSIRD-{experiment_name}/"
+    shutil.copytree(f"{PATH_TO_SIM_RESULTS}{ssird_results_dir}data/", f"{PATH_TO_SIM_RESULTS}{experiment_name}/data/", dirs_exist_ok=True)
+
+    dctcp_results_dir = f"DCTCP-{DCTCP_ECN_THRESH}-{experiment_name}/"
+    shutil.copytree(f"{PATH_TO_SIM_RESULTS}{dctcp_results_dir}data/", f"{PATH_TO_SIM_RESULTS}{experiment_name}/data/", dirs_exist_ok=True)
+
+    ssird_csv_rel_path = f"SSIRD/{CLIENT_INJECTION_RATE_GBPS}/output/qts/{nw_elem}/qts_{src}_{dst}.csv"
+    dctcp_csv_rel_path = f"DCTCP-{DCTCP_ECN_THRESH}/{CLIENT_INJECTION_RATE_GBPS}/output/qts/{nw_elem}/qts_{src}_{dst}.csv"
+
+    plot_comparison_graph(THROUGHPUT_COL, f"Throughput: SSIRD vs DCTCP ({experiment_name})", experiment_name, ssird_csv_rel_path, dctcp_csv_rel_path)
+
+def do_q_plot_multiflow_exp(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us, nw_elem, src, dst, title_addendum=""):
+    experiment_name = dale_multiflow_serialiser.MultiFlowExperiment.get_experiment_name(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us) + title_addendum
+    print(f"Plotting for experiment: {experiment_name}")
+
+    ssird_results_dir = f"SSIRD-{experiment_name}/"
+    shutil.copytree(f"{PATH_TO_SIM_RESULTS}{ssird_results_dir}data/", f"{PATH_TO_SIM_RESULTS}{experiment_name}/data/", dirs_exist_ok=True)
+
+    dctcp_results_dir = f"DCTCP-{DCTCP_ECN_THRESH}-{experiment_name}/"
+    shutil.copytree(f"{PATH_TO_SIM_RESULTS}{dctcp_results_dir}data/", f"{PATH_TO_SIM_RESULTS}{experiment_name}/data/", dirs_exist_ok=True)
+
+    ssird_csv_rel_path = f"SSIRD/{CLIENT_INJECTION_RATE_GBPS}/output/qts/{nw_elem}/qts_{src}_{dst}.csv"
+    dctcp_csv_rel_path = f"DCTCP-{DCTCP_ECN_THRESH}/{CLIENT_INJECTION_RATE_GBPS}/output/qts/{nw_elem}/qts_{src}_{dst}.csv"
+
+    plot_comparison_graph(QUEUEING_COL, f"Queueing: SSIRD vs DCTCP ({experiment_name})", experiment_name, ssird_csv_rel_path, dctcp_csv_rel_path)
 
 if __name__ == "__main__":
     # # time interval experiments
@@ -75,5 +105,11 @@ if __name__ == "__main__":
 
     # rate sweep experiments
     # is 1Gbps
-    do_throughput_plotting_for_experiment(10, 1250000, 100, HOST, "host_0", "tor_4")
-    do_queuing_plotting_for_experiment(10, 1250000, 100, TOR, "tor_4", "host_1")
+    # do_throughput_plotting_for_experiment(10, 1250000, 100, HOST, "host_0", "tor_4")
+    # do_queuing_plotting_for_experiment(10, 1250000, 100, TOR, "tor_4", "host_1")
+
+    # subpkt byteload experiments
+    do_thrpt_plot_multiflow_exp(2, 10000, 4, 1, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    do_thrpt_plot_multiflow_exp(2, 1000, 40, 10, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    do_thrpt_plot_multiflow_exp(2, 100, 400, 100, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    do_thrpt_plot_multiflow_exp(2, 10, 4000, 1000, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
