@@ -3,7 +3,7 @@
 source "config/examples/example-common.sh"
 
 # ===================== general settingss =====================
-max_threads='32'
+max_threads='1'
 
 # ===================== common parameters =====================
 topology_file_l='4-hosts.yaml'
