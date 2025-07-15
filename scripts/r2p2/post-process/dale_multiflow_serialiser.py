@@ -239,6 +239,11 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
         flow_stats_dict = collections.OrderedDict(sorted(d.items()))
         del d
 
+        total_bytes_sent_B = 0
+        total_bytes_sent_until_penultimate_srq_B = 0
+        overall_srq_start_time_s = math.inf
+        overall_final_srq_timestamp_s = None
+
         try:
             with open(app_trace_file_path, 'r') as file:
                 lines = file.readlines()
@@ -246,6 +251,13 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
                     flow_trace_event = dale_fct_experiment.FlowTraceEvent.read_flow_trace_from_str(line)
                     flow_id = flow_trace_event.get_app_level_id()
                     flow_stats_dict.get(flow_id).update_flow_stats(flow_trace_event)
+
+                    if (flow_trace_event.get_event() == dale_fct_experiment.FlowTraceEvent.SRQ_EVENT):
+                        overall_srq_start_time_s = min(flow_trace_event.get_timestamp(), overall_srq_start_time_s)
+                        overall_final_srq_timestamp_s = flow_trace_event.get_timestamp()
+                        total_bytes_sent_until_penultimate_srq_B = total_bytes_sent_B
+                        total_bytes_sent_B += flow_trace_event.get_req_size() 
+
                     del flow_id
                     del flow_trace_event
         except FileNotFoundError:
@@ -253,14 +265,16 @@ class MultiFlowExperiment(dale_fct_experiment.FctExperiment):
         except IOError:
             logger.error("An error occurred while reading the file")
     
+        # TODO: FIX ME! This total-thrpt calc seems a lil iffy... it overestimates gbps by 5%. Why??
+        measured_total_gdpt_gbps = (total_bytes_sent_until_penultimate_srq_B * 8) / (overall_final_srq_timestamp_s - overall_srq_start_time_s) * pow(10,-9)
+        # measured_total_gdpt_gbps = sum(measured_gdpt_gbps_per_flow_list)
+
         fct_list = []
         measured_gdpt_gbps_per_flow_list = []
         for _, flow_stats_obj in flow_stats_dict.items():
             flow_stats_obj.check_flow_stats()
             fct_list.append(flow_stats_obj.get_fct_s())
             measured_gdpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_gdpt_for_flow_gbps())
-
-        measured_total_gdpt_gbps = sum(measured_gdpt_gbps_per_flow_list)
 
         return fct_list, measured_total_gdpt_gbps, measured_gdpt_gbps_per_flow_list
 
@@ -392,4 +406,4 @@ def testing():
 
 if __name__ == "__main__":
     # testing()
-    multiflow_fct_gdpt_experiment_vary_byteloadsize(is_full_postproc=False, title_addendum="_multiflow_testing_14jul")
+    multiflow_fct_gdpt_experiment_vary_byteloadsize(is_full_postproc=False, title_addendum="_multiflow")
