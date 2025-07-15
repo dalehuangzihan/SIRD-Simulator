@@ -20,10 +20,9 @@ def fct_vs_gdpt_experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=T
     byteload_size_B_list = [4, 40, 400, 4000] 
     num_of_experiments = len(byteload_size_B_list)
     # num_flows = 300
-    num_flows = 2
+    num_flows = 10 # TODO: for testing
     inter_flow_spacing_us = 1
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
-    # flow_start_times_us_list = [0, 1]
 
     dale_fct_experiment.init_logs(experiment_family, f"subpkt_experiment_{num_flows}flo_{total_flow_size_B}B_total_{min(byteload_size_B_list)}B_to_{max(byteload_size_B_list)}B.log")
 
@@ -58,7 +57,7 @@ def fct_vs_gdpt_experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=T
     assert(len(inter_byteload_period_us_list) == num_of_experiments)
 
     # calculate simulation durations for experiment
-    sim_dur_list = [0.011 for i in range(0, num_of_experiments)]
+    sim_dur_list = [0.02 for i in range(0, num_of_experiments)] # TODO: for testing
     # sim_dur_list = []
     # for i in range(0, len(num_byteloads_list)):
     #     # TODO: change multiplier factor if sim duration not long enough
