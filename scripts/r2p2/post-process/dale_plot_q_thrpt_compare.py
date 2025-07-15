@@ -109,6 +109,11 @@ if __name__ == "__main__":
     # do_queuing_plotting_for_experiment(10, 1250000, 100, TOR, "tor_4", "host_1")
 
     # subpkt byteload experiments
+    do_thrpt_plot_multiflow_exp(1, 10000, 4, 1, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    do_thrpt_plot_multiflow_exp(1, 1000, 40, 10, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    do_thrpt_plot_multiflow_exp(1, 100, 400, 100, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    do_thrpt_plot_multiflow_exp(1, 10, 4000, 1000, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+
     do_thrpt_plot_multiflow_exp(2, 10000, 4, 1, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
     do_thrpt_plot_multiflow_exp(2, 1000, 40, 10, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
     do_thrpt_plot_multiflow_exp(2, 100, 400, 100, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
