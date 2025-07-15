@@ -101,7 +101,7 @@ def main():
 
             data = np.genfromtxt(file, delimiter=",", skip_header=1)
 
-            x = data[sw - 1 :, x_column]/1000.0  # ms
+            x = data[sw - 1 :, x_column]*1000.0  # ms; data is in s
             y = hlp.moving_average(data[:, y_column], sw)
 
             ax1.plot(x, y, label=label, linewidth=options.lw)
