@@ -1,0 +1,35 @@
+DEBUG:root:Total_flow_size_B: 40000
+DEBUG:root:Byteload sizes list: [4, 40, 400, 4000]
+DEBUG:root:Num Flows: 10
+DEBUG:root:Inter-flow spacing (us): 1
+DEBUG:root:Flow start times (us): [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+DEBUG:__main__:Num Byteloads list: [10000, 1000, 100, 10]
+DEBUG:__main__:Total injection period (us): 10000
+DEBUG:__main__:Inter-Byteload Periods list: [1, 10, 100, 1000]
+DEBUG:__main__:Sim Durations list: [0.19999999999999998, 0.19999999999999998, 0.19999999999999998, 0.19999999999999998]
+INFO:__main__:Total Flow Size (Bytes): 40000
+INFO:__main__:Total Injection Period (us): 10000
+INFO:__main__:Byteload Size (Bytes): [4, 40, 400, 4000]
+INFO:__main__:Num Byteloads: [10000, 1000, 100, 10]
+INFO:__main__:Intervals (us): [1, 10, 100, 1000]
+INFO:__main__:Num flows: 10
+INFO:__main__:Thrpt GBps theoretical: [0.32, 0.32, 0.32, 0.32]
+INFO:__main__:* Sim duration (SSIRD): [0.19999999999999998, 0.19999999999999998, 0.19999999999999998, 0.19999999999999998]
+INFO:__main__:* Sim duration (DCTCP): [0.19999999999999998, 0.19999999999999998, 0.19999999999999998, 0.19999999999999998]
+INFO:dale_multiflow_serialiser:
+=====
+INFO:dale_multiflow_serialiser:Execute experiment 10flo-10#-4B-1us_subpkt_multiflow
+INFO:dale_multiflow_serialiser:Flags: 1, 1, 1, 1, 0
+INFO:dale_multiflow_serialiser:ssird_sim_duration=0.200000; dctcp_sim_duration=0.200000
+INFO:dale_multiflow_serialiser:-----
+INFO:dale_multiflow_serialiser:Preparing experiment input MRIs
+INFO:dale_multiflow_serialiser:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/
+INFO:dale_multiflow_serialiser:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Preparing experiment spec scripts
+INFO:dale_fct_experiment:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/
+INFO:dale_fct_experiment:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/ aready exists.
+INFO:dale_fct_experiment:-----
+INFO:dale_fct_experiment:Running experiment for SSIRD
+INFO:dale_fct_experiment:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow/SSIRD-10flo-10#-4B-1us_subpkt_multiflow.sh
+INFO:dale_fct_experiment:### Output path: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/ssird_10flo-10#-4B-1us_subpkt_multiflow.out
