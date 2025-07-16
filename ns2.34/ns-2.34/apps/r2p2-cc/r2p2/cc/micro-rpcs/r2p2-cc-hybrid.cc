@@ -1087,7 +1087,8 @@ void R2p2CCHybrid::send_data()
                 slog::log5(debug_, this_addr_, "stats->credit_data_requested_:", stats->credit_data_requested_, "stats->credit_data_received_:",
                            stats->credit_data_received_, "diff:", stats->credit_data_requested_ - stats->credit_data_received_);
                 assert(stats->credit_data_requested_ >= stats->credit_data_received_);
-                slog::log4(debug_, this_addr_, "Forwarded standalone grant_request asking for",
+                /* Dale: change from log4 to log2 */
+                slog::log2(debug_, this_addr_, "Forwarded standalone grant_request asking for",
                            hdr.credit_req(), "bytes. App msg id:", msg_state->r2p2_hdr_->app_level_id(),
                            "new data_pacer_backlog_:", data_pacer_backlog_, "hdr.unsol_credit()", hdr.unsol_credit());
 
@@ -1146,7 +1147,8 @@ void R2p2CCHybrid::send_data()
     assert(credit_avail >= to_send);
     assert(to_send >= ps->want_to_send_bytes_);
 
-    slog::log5(debug_, this_addr_, "Sending pkt of msg (", std::get<2>(msg_state->req_id_),
+    /* Dale: change from log5 to log2 */
+    slog::log2(debug_, this_addr_, "Sending pkt of msg (", std::get<2>(msg_state->req_id_),
                ") attributes: unsent_bytes_:", msg_state->unsent_bytes_,
                "rcvr:", msg_state->remote_addr_, "credit avail:", credit_avail, "to_send", to_send);
 
@@ -1995,7 +1997,8 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
         assert(stats->credit_data_request_rcvd_ >= stats->credit_data_granted_);
         grant_pacer_backlog_ += credit_needed;
         msg_state->data_bytes_granted_ += credit_needed_data;
-        slog::log4(debug_, this_addr_, ">>>>Sending credit to:", msg_state->remote_addr_, "msg:", std::get<2>(msg_state->req_id_), "credit_needed:", credit_needed,
+        /* Dale: change from log4 to log2 */
+        slog::log2(debug_, this_addr_, ">>>>Sending credit to:", msg_state->remote_addr_, "msg:", std::get<2>(msg_state->req_id_), "credit_needed:", credit_needed,
                    "credit_needed_data", credit_needed_data, "available_budget:", available_budget,
                    "new Global budget:", budget_bytes_, "new srpb_bytes_:", sender_state->srpb_bytes_,
                    "max_srpb_bytes_:", sender_state->max_srpb_bytes_, "bytes_in_flight", bytes_in_flight, "grant_pacer_backlog_:", grant_pacer_backlog_,
