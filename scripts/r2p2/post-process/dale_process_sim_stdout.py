@@ -64,16 +64,18 @@ def proc_1flo_4KB_per_bload_sim_outputs():
     sim_4KB_bload_stats.pretty_print()
 
 def proc_1flo_subpkt_exp_sim_outputs():
-    # output:
     # 4B per byteload:
     # Num Credit Req Pkts: 10000
     # Num Credit Pkts: 10000
     # Num Data Pkts: 9994
-    # ---
+    # Total Overheads (B): 2479520
+    # -----
     # 4KB per byteload
     # Num Credit Req Pkts: 10
     # Num Credit Pkts: 30
     # Num Data Pkts: 30
+    # Total Overheads (B): 5760
+
     proc_1flo_4B_per_bload_sim_outputs()
     print("-----")
     proc_1flo_4KB_per_bload_sim_outputs()
@@ -112,8 +114,8 @@ def proc_10flo_subpkt_exp_sim_outputs():
     proc_10flo_4KB_per_bload_sim_outputs()
 
 if __name__ == "__main__":
-    # proc_1flo_subpkt_exp_sim_outputs()
-    proc_10flo_subpkt_exp_sim_outputs()
+    proc_1flo_subpkt_exp_sim_outputs()
+    # proc_10flo_subpkt_exp_sim_outputs()
 
 
 
