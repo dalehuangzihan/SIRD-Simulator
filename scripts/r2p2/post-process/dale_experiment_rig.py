@@ -1,9 +1,13 @@
 import sys, subprocess
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import csv
 import logging
 import collections
 import math
+
+# for thread pool
+MAX_WORKERS = 4 
 
 MIN_BYTELOAD_INTERVAL_US = 0.001 # is 1ns
 
@@ -256,7 +260,8 @@ class ExperimentOutputRaw:
     '''
     Is the raw un-processed experiment outputs
     '''
-    def __init__(self, experiment_family, experiment_name, app_trace_file_path, proto, num_flows, num_byteloads, byteload_size_B):
+    def __init__(self, exp_id, experiment_family, experiment_name, app_trace_file_path, proto, num_flows, num_byteloads, byteload_size_B):
+        self.exp_id = exp_id
         self.experiment_family = experiment_family
         self.experiment_name = experiment_name
         self.proto = proto
@@ -450,7 +455,7 @@ class Experiment():
         self.flow_start_times_us_list = flow_start_times_us_list
         self.num_flows = len(flow_start_times_us_list)
 
-    def run(self, ssird_sim_dur_l, dctcp_sim_dur_l, log_level):
+    def run(self, exp_id, ssird_sim_dur_l, dctcp_sim_dur_l, log_level):
         logger.info("\n=====\nExecute experiment " + self.experiment_name)
         logger.info(f'Flags: {self.run_simulations}, {self.run_post_proc}, {self.create_timeseires}, {self.create_plots}, {self.delete_current}')
         logger.info("ssird_sim_duration={:f}; dctcp_sim_duration={:f}".format(ssird_sim_dur_l, dctcp_sim_dur_l))
@@ -475,7 +480,7 @@ class Experiment():
             else:
                 logger.error(f"Unrecognised protocol name '{proto}'")
 
-            experiment_results_list.append(ExperimentOutputRaw(self.experiment_family, self.experiment_name, app_trace_file_path, proto, self.num_flows, self.num_byteloads, self.byteload_size_B))
+            experiment_results_list.append(ExperimentOutputRaw(exp_id, self.experiment_family, self.experiment_name, app_trace_file_path, proto, self.num_flows, self.num_byteloads, self.byteload_size_B))
 
         self.write_app_trace_paths_to_file(app_trace_file_paths_ssird_list, app_trace_file_paths_dctcp_list)
         return experiment_results_list
@@ -590,8 +595,8 @@ class ExperimentGroup:
             ])) == 1)
         self.num_experiments = len(num_byteloads_per_flow_list)
 
-        self.ssird_experiment_results_list = []
-        self.dctcp_experiment_results_list = []
+        self.ssird_experiment_results_list = [None] * self.num_experiments
+        self.dctcp_experiment_results_list = [None] * self.num_experiments
         self.processed_results_list = []
 
     def perform_experiment(self):
@@ -601,19 +606,42 @@ class ExperimentGroup:
     
     def run_group(self):
         logger.info("\n##### RUN GROUP #####")
-        for i in range(0, self.num_experiments):
-            experiment_name = Experiment.get_experiment_name(self.num_flows, self.num_byteloads_per_flow_list[i], self.byteload_size_B_list[i], self.inter_byteload_period_us_list[i]) + self.title_addendum
-            experiment = Experiment(self.experiment_family, experiment_name, self.proto_names_l, self.src, self.dst, self.flow_start_times_us_list, self.num_byteloads_per_flow_list[i], self.byteload_size_B_list[i], self.inter_byteload_period_us_list[i], self.is_full_postproc) 
-            results_list = experiment.run(ssird_sim_dur_l=self.ssird_sim_dur_list[i], dctcp_sim_dur_l=self.dctcp_sim_dur_list[i], log_level=self.log_level) 
-            for result in results_list:
-                if result.proto == SSIRD_PROTO_NAME:
-                    self.ssird_experiment_results_list.append(result)
-                elif result.proto == DCTCP_PROTO_NAME:
-                    self.dctcp_experiment_results_list.append(result)
-                else:
-                    logger.error(f"Unrecognised protocol name '{result.proto}' in experiment result! (experiment_name={experiment_name})")
+
+        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+            futures_list = []
+
+            for exp_id in range(0, self.num_experiments):
+                experiment_name = Experiment.get_experiment_name(self.num_flows, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list[exp_id]) + self.title_addendum
+                experiment = Experiment(self.experiment_family, experiment_name, self.proto_names_l, self.src, self.dst, self.flow_start_times_us_list, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list[exp_id], self.is_full_postproc) 
+
+                # submit experiment to thread pool
+                future = executor.submit(
+                    experiment.run,
+                    exp_id,
+                    ssird_sim_dur_l=self.ssird_sim_dur_list[exp_id],
+                    dctcp_sim_dur_l=self.dctcp_sim_dur_list[exp_id],
+                    log_level=self.log_level
+                ) 
+                futures_list.append((exp_id, future, experiment_name))
+
+            # wait for all experiments to complete and collect results
+            for exp_id, future, experiment_name in futures_list:
+                try:
+                    results_list = future.result()
+                    for result in results_list:
+                        if result.proto == SSIRD_PROTO_NAME:
+                            self.ssird_experiment_results_list[exp_id] = result
+                        elif result.proto == DCTCP_PROTO_NAME:
+                            self.dctcp_experiment_results_list[exp_id] = result
+                        else:
+                            logger.error(f"Unrecognised protocol name '{result.proto}' in experiment result! (experiment_name={experiment_name})")
+                except Exception as e:
+                    logger.error(f"Experiment {experiment_name} failed: {str(e)}")
+
         assert(len(self.ssird_experiment_results_list) == self.num_experiments)   
         assert(len(self.dctcp_experiment_results_list) == self.num_experiments)   
+        assert(all(r.exp_id == i for r, i in zip(self.ssird_experiment_results_list, range(0, self.num_experiments))))
+        assert(all(r.exp_id == i for r, i in zip(self.dctcp_experiment_results_list, range(0, self.num_experiments))))
     
     def post_process_results(self):
         logger.info("\n##### POST PROCESS RESULTS #####")
@@ -621,11 +649,17 @@ class ExperimentGroup:
             logger.info(f"=====\n** Num Byteloads Per Flow: {self.num_byteloads_per_flow_list[i]}, Byteload Size (B): {self.byteload_size_B_list[i]}, Inter-Byteload Interval (us): {self.inter_byteload_period_us_list[i]}, ssird_sim_dur (s): {self.ssird_sim_dur_list[i]}, dctcp_sim_dur (s): {self.dctcp_sim_dur_list[i]}")
 
             ssird_result = self.ssird_experiment_results_list[i]
-            ssird_fct, gdpt_gbps_measured_ssird, gdpt_gbps_measured_per_flow_list_ssird = ssird_result.process_results_fct()
+            if ssird_result == None:
+                ssird_fct, gdpt_gbps_measured_ssird, gdpt_gbps_measured_per_flow_list_ssird = None
+            else:
+                ssird_fct, gdpt_gbps_measured_ssird, gdpt_gbps_measured_per_flow_list_ssird = ssird_result.process_results_fct()
             logger.info(f"SSIRD FCT: {ssird_fct} ms, Gdpt (overall): {gdpt_gbps_measured_ssird} Gbps, Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_ssird}")
 
             dctcp_result = self.dctcp_experiment_results_list[i]
-            dctcp_fct, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_dctcp = dctcp_result.process_results_fct()
+            if dctcp_result == None:
+                dctcp_fct, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_dctcp = None
+            else:
+                dctcp_fct, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_dctcp = dctcp_result.process_results_fct()
             logger.info(f"DCTCP FCT: {dctcp_fct} ms, Gtpt (overall): {gdpt_gbps_measured_dctcp} Gbps, Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_dctcp}")
 
             processed_result = ExperimentResults(ssird_fct, dctcp_fct, gdpt_gbps_measured_ssird, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_ssird, gdpt_gbps_measured_per_flow_list_dctcp)
