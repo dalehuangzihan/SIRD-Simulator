@@ -22,7 +22,8 @@ duration_modifier_l='DUMMY'
 mean_req_size_B_l='121848' # only meanigful if req_size_distr is not manual
 
 # ===================== debugging options =====================
-global_debug='6' # from 1 to 7 (7 = super verbose). set it to 0 to enable the following, more fine-grain options
+# From 1 to 7 (7 = super verbose). Set it to 0 to enable the following, more fine-grain options
+global_debug='6' 
 
 # ===================== r2p2 parameters =====================
 

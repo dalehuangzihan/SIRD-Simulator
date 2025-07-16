@@ -1,0 +1,576 @@
+import sys, subprocess
+from pathlib import Path
+import csv
+import logging
+import collections
+import math
+
+MIN_BYTELOAD_INTERVAL_US = 0.001 # is 1ns
+
+# Common experiment param; value is meaningful only when req_interval_distr is not 'manual'
+CLIENT_INJECTION_RATE_GBPS = "60"
+DCTCP_ECN_MARKING_THRESHOLD = "50"
+LINK_SPEED_BITS_PER_SEC = 100 * pow(10,9) * 8 # 100Gbps
+
+SSIRD_PROTO_NAME = "SSIRD"
+DCTCP_PROTO_NAME = f"DCTCP-{DCTCP_ECN_MARKING_THRESHOLD}"
+
+PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
+# PATH_TO_SIRD_SIM = "/data/dh1723/SIRD-Simulator/"
+PATH_TO_SIM_COORD = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/"
+PATH_TO_POST_PROCESS = PATH_TO_SIRD_SIM + "scripts/r2p2/post-process/"
+PATH_TO_SIM_RESULTS = PATH_TO_SIM_COORD + "results/"
+PATH_TO_EXPERIMENTS = PATH_TO_SIM_COORD + "config/"
+PATH_TO_EXPERIMENTS_SCRIPTS = PATH_TO_EXPERIMENTS + "dale_experiments/"
+PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES = PATH_TO_EXPERIMENTS + "dale_experiment_script_templates/"
+MRI_RELATIVE_PATH = "dale_experiments/"
+PATH_TO_EXPERIMENTS_INPUTS = PATH_TO_EXPERIMENTS + "manual-req-intervals/" + MRI_RELATIVE_PATH
+APP_TRACE_PATHS_BACKUP_PATH = PATH_TO_POST_PROCESS + "experiment_app_trace_paths/"
+LOGS_REL_PATH = "experiment_output/" # is relative to post-process/ dir
+
+LOG_LEVEL_2 = 2
+LOG_LEVEL_6 = 6
+
+logger = logging.getLogger(__name__)
+
+class Byteload:
+    '''
+    relative_timestamp_us is the timestamp since the start of the flow, measured in us; flow always starts at a relative timestamp of 0us 
+    relative_interval_us is the time gap between this byteload and the previous one in the serialised multiflow
+    '''
+    def __init__(self, src, dst, flow_id, size_B, relative_timestamp_us, absolute_timestamp_us):
+        self.src = src
+        self.dst = dst
+        self.flow_id = flow_id
+        self.size_B = size_B
+        self.relative_timestamp_us = relative_timestamp_us
+        self.absolute_timestamp_us = absolute_timestamp_us
+        self.relative_interval_us = None
+    
+    # custom comparators
+    def __lt__(self, other):
+        return self.absolute_timestamp_us < other.absolute_timestamp_us 
+    def __le__(self, other):
+        return self.absolute_timestamp_us <= other.absolute_timestamp_us 
+    def __gt__(self, other):
+        return self.absolute_timestamp_us > other.absolute_timestamp_us
+    def __ge__(self, other):
+        return self.absolute_timestamp_us >= other.absolute_timestamp_us
+    def __eq__(self, other):
+        return self.absolute_timestamp_us == other.absolute_timestamp_us
+    def __ne__(self, other):
+        return self.absolute_timestamp_us != other.absolute_timestamp_us
+
+class Flow:
+    '''
+    Each flow is a unique connection, and is uniquely identified by its flow-id
+    '''
+    RELATIVE_START_TIME_US = 0
+
+    def __init__(self, src, dst, flow_id, num_byteloads, byteload_size_B, byteload_interval_us, absolute_start_time_us):
+        self.id = flow_id
+        self.src = src
+        self.dst = dst
+        self.num_byteloads = num_byteloads
+        self.byteload_size_B = byteload_size_B
+        self.byteload_interval_us = byteload_interval_us
+        self.absolute_start_time_us = absolute_start_time_us
+        self.byteloads_list = []
+
+        # assert(byteload_interval_us >= 1)
+        # assert(byteload_interval_us*10%10 == 0)
+        assert(byteload_interval_us >= 0.001) # must be at least 1ns
+
+        self.init_byteloads()
+
+    def init_byteloads(self):
+        for i in range(0, self.num_byteloads):
+            rel_timestamp_us = self.RELATIVE_START_TIME_US + i * self.byteload_interval_us
+            absolute_timestamp_us = self.absolute_start_time_us + rel_timestamp_us
+            self.byteloads_list.append(Byteload(self.src, self.dst, self.id, self.byteload_size_B, rel_timestamp_us, absolute_timestamp_us))
+
+class MultiFlow:
+    '''
+    Is a collection of multiple flows that are passed to the simulation
+    TODO: currently can only replicate the same flow multiple times
+    ''' 
+
+    def __init__(self, src, dst, num_byteloads_per_flow, byteload_size_B, byteload_interval_us, flow_start_times_us_list):
+        self.src = src
+        self.dst = dst
+        self.num_byteloads_per_flow = num_byteloads_per_flow
+        self.byteload_size_B = byteload_size_B
+        self.byteload_interval_us = byteload_interval_us
+        self.flow_start_times_us_list = flow_start_times_us_list # is the start times relative to the overall start timestamp of 0us
+        self.num_flows = len(flow_start_times_us_list)
+        self.flows_list = []
+
+        assert(num_byteloads_per_flow > 1) # we want at least 2 byteloads per flow
+        self.init_flows()
+
+    def init_flows(self):
+        for i in range(0, self.num_flows):
+            flow_start_time_us = self.flow_start_times_us_list[i]
+            self.flows_list.append(Flow(self.src, self.dst, i, self.num_byteloads_per_flow, self.byteload_size_B, self.byteload_interval_us, flow_start_time_us))
+        print(f"num flows: {len(self.flows_list)}")
+    
+    def serialise_flows_to_byteloads(self):
+        if len(self.flows_list) < 1:
+            print(f"Flows list is empty (size={len(self.flows_list)})!", file=sys.stderr)
+            return
+        serialised_byteloads_list = [] 
+        for flow in self.flows_list:
+            byteloads_list = flow.byteloads_list
+            assert(len(byteloads_list) > 0)
+            serialised_byteloads_list.extend(byteloads_list) 
+        serialised_byteloads_list.sort(key = lambda b : b.absolute_timestamp_us)
+        return self.convert_abs_timestamp_to_rel_intervals(serialised_byteloads_list)
+
+    def convert_abs_timestamp_to_rel_intervals(self, serialised_byteloads_list):
+        if len(serialised_byteloads_list) == 1:
+            only = serialised_byteloads_list[0]
+            only.relative_interval_us = only.absolute_timestamp_us
+        else:
+            for i in range(0, len(serialised_byteloads_list) - 1):
+                first = serialised_byteloads_list[i]
+                second = serialised_byteloads_list[i+1] 
+                if i == 0: first.relative_interval_us = first.absolute_timestamp_us
+                second.relative_interval_us = second.absolute_timestamp_us - first.absolute_timestamp_us
+        return serialised_byteloads_list
+
+    @staticmethod
+    def pretty_print_byteloads_abs_timestamp(serialised_byteloads_list):
+        abs_timestamp_list = []
+        for byteload in serialised_byteloads_list:
+            abs_timestamp_list.append((byteload.flow_id, byteload.absolute_timestamp_us, byteload.relative_interval_us))
+        print(abs_timestamp_list)
+
+    @staticmethod
+    def enforce_min_flow_interval(flow_start_times_us_list):
+        # check that flows do not start less than 1us from each other
+        flow_start_times_us_list.sort()
+        start_times_pair_us = zip(flow_start_times_us_list, flow_start_times_us_list[1:])
+        for a, b in start_times_pair_us: assert(b - a >= MIN_BYTELOAD_INTERVAL_US)
+
+class ManualReqInterval():
+    # is in seconds; is 1us
+    MICROSECOND_S = 0.000001
+    MRI_START_TIME_S = MICROSECOND_S
+    
+    def __init__(self, parent_dir, experiment_name):
+        self.parent_dir = parent_dir
+        self.experiment_name = experiment_name
+
+    def create_p2p_mri(self, multiflow_obj):
+        '''
+        Creates MRI csv file of multiple flows of the same kind between a single src, dst pair.
+        '''
+        src = multiflow_obj.src
+        dst = multiflow_obj.dst
+        
+        mri_filepath = self.get_mri_filepath(self.parent_dir, self.experiment_name)
+        mri_byteloads_spec = []    
+        mri_byteloads_spec.append(str(src))
+
+        serialised_byteloads_list = multiflow_obj.serialise_flows_to_byteloads()
+        for i in range(0, len(serialised_byteloads_list)):
+            bl = serialised_byteloads_list[i]
+            time_spec = bl.relative_interval_us * self.MICROSECOND_S
+            if i == 0: time_spec += self.MRI_START_TIME_S 
+            byteload_str = "{:.10f}|{}|{}|{}".format(time_spec, str(dst), bl.size_B, bl.flow_id)
+            mri_byteloads_spec.append(byteload_str)
+
+        self.mri_list_to_csv(mri_byteloads_spec, mri_filepath)
+        return mri_filepath
+
+    @staticmethod
+    def get_mri_filepath(parent_dir, experiment_name):
+        return parent_dir + experiment_name + ".csv"
+
+    @staticmethod
+    def mri_list_to_csv(mri_list, mri_filepath):
+        with open(mri_filepath, 'w') as mri_file:
+            wr = csv.writer(mri_file, quoting=csv.QUOTE_NONE)
+            wr.writerow(mri_list)
+
+class SimSpecScript:
+    PATH_TO_SSIRD_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-ssird-2host-p2p-noburst.sh"
+    PATH_TO_DCTCP_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-dctcp-2host-p2p-noburst.sh"
+
+    MANUAL_REQ_INTERVAL_FILE_L = "manual_req_interval_file_l"
+    DURATION_MODIFIER_L = "duration_modifier_l"
+    GLOBAL_DEBUG = "global_debug"
+    DCTCP_K_L = "dctcp_k_l"
+    SIMULATION_NAME_L = "simulation_name_l"
+
+    def __init__(self, parent_dir, experiment_name):
+        self.parent_dir = parent_dir
+        self.experiment_name = experiment_name
+    
+    def create_ssird_noburst_params_script(self, mri_relative_path, sim_duration, log_level):
+        script_filepath = self.parent_dir + f"{SSIRD_PROTO_NAME}-" + self.experiment_name + ".sh"
+        with open(self.PATH_TO_SSIRD_TEMPLATE_NOBURST) as template, open(script_filepath, 'w') as fout:
+            lines_in = template.readlines()
+            for i in range(len(lines_in)):
+                line_out = lines_in[i]
+                if self.MANUAL_REQ_INTERVAL_FILE_L in line_out:
+                    line_out = "{}='{}'\n".format(self.MANUAL_REQ_INTERVAL_FILE_L, mri_relative_path)
+                elif self.DURATION_MODIFIER_L in line_out:
+                    line_out = "{}='{:f}'\n".format(self.DURATION_MODIFIER_L, sim_duration)
+                elif self.GLOBAL_DEBUG in line_out:
+                    line_out = "{}='{}'\n".format(self.GLOBAL_DEBUG, log_level)
+                fout.write(line_out)
+        return script_filepath
+
+    def create_dctcp_noburst_params_script(self, mri_relative_path, sim_duration, log_level):
+        script_filepath = self.parent_dir + f"{DCTCP_PROTO_NAME}-" + self.experiment_name + ".sh"
+        with open(self.PATH_TO_DCTCP_TEMPLATE_NOBURST) as template, open(script_filepath, 'w') as fout:
+            lines_in = template.readlines()
+            for i in range(len(lines_in)):
+                line_out = lines_in[i]
+                if self.MANUAL_REQ_INTERVAL_FILE_L in line_out:
+                    line_out = "{}='{}'\n".format(self.MANUAL_REQ_INTERVAL_FILE_L, mri_relative_path)
+                elif self.DURATION_MODIFIER_L in line_out:
+                    line_out = "{}='{:f}'\n".format(self.DURATION_MODIFIER_L, sim_duration)
+                elif self.GLOBAL_DEBUG in line_out:
+                    line_out = "{}='{}'\n".format(self.GLOBAL_DEBUG, log_level)
+                elif self.DCTCP_K_L in line_out:
+                    line_out = "{}='{}'\n".format(self.DCTCP_K_L, DCTCP_ECN_MARKING_THRESHOLD)
+                elif self.SIMULATION_NAME_L in line_out:
+                    line_out = "{}='{}'\n".format(self.SIMULATION_NAME_L, DCTCP_PROTO_NAME)
+                fout.write(line_out)
+        return script_filepath
+
+class ExperimentResults:
+    def __init__(self, ssird_fct=None, dctcp_fct=None, gdpt_gbps_measured_ssird=None, gdpt_gbps_measured_dctcp=None, gdnpt_gbps_measured_per_flow_list_ssird=None, gdpt_gbps_measured_per_flow_list_dctcp=None):
+        self.ssird_fct = ssird_fct
+        self.dctcp_fct = dctcp_fct
+
+        self.gdpt_gbps_measured_ssird = gdpt_gbps_measured_ssird
+        self.gdpt_gbps_measured_dctcp = gdpt_gbps_measured_dctcp
+
+        self.gdpt_gbps_measured_per_flow_list_ssird = gdnpt_gbps_measured_per_flow_list_ssird
+        self.gdpt_gbps_measured_per_flow_list_dctcp = gdpt_gbps_measured_per_flow_list_dctcp
+
+class FlowTraceEvent:
+    SRQ_EVENT = "srq"
+    RRQ_EVENT = "rrq"
+
+    def __init__(self, timestamp, event, local_addr, remote_addr, thread_id, req_id, app_level_id, req_duration, req_size, resp_size, pending_tasks_size, wildcard):
+        self.timestamp = timestamp
+        self.event = event
+        self.local_addr = local_addr
+        self.remote_addr = remote_addr
+        self.thread_id = thread_id
+        self.req_id = req_id
+        self.app_level_id = app_level_id
+        self.req_duration = req_duration
+        self.req_size = req_size
+        self.resp_size = resp_size
+        self.pending_tasks_size = pending_tasks_size
+        self.wildcard = wildcard
+
+    def get_timestamp(self):
+        return float(self.timestamp)
+    def get_event(self):
+        return self.event
+    def get_req_size(self):
+        return int(self.req_size)
+    def get_app_level_id(self):
+        return int(self.app_level_id)
+
+    @staticmethod
+    def read_flow_trace_from_str(str_line):
+        tokens = str_line.split(" ")
+        assert(len(tokens) == 12)
+        return FlowTraceEvent(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7], tokens[8], tokens[9], tokens[10], tokens[11])
+
+class FlowStats:
+    def __init__(self, proto, flow_id, num_byteloads, byteload_size_B):
+        self.proto = proto
+        self.flow_id = flow_id
+        self.num_byteloads = num_byteloads
+        self.byteload_size_B = byteload_size_B if byteload_size_B > 4 else 4 # is the actual byteload size as per ssird sim
+        
+        self.num_srq = 0
+        self.num_rrq = 0
+        self.start_time_s = math.inf
+        self.end_time_s = -1
+        self.total_bytes_sent_B = 0
+        self.total_bytes_recv_B = 0
+
+		# store the stats accumulated up until the (n-1)th srq.
+        self.final_srq_timestamp = None
+        self.total_bytes_sent_until_penultimate_srq_B = None
+        
+        self.first_event_name = None 
+        self.final_event_name = None
+
+    def update_flow_stats(self, flow_trace_event):
+        assert(self.flow_id == flow_trace_event.get_app_level_id())
+
+        self.start_time_s = min(self.start_time_s, flow_trace_event.get_timestamp())
+        self.end_time_s = max(self.end_time_s, flow_trace_event.get_timestamp())
+
+        trace_event_name = flow_trace_event.get_event()
+        if (self.num_srq == 0 and self.num_rrq == 0): self.first_event_name = trace_event_name
+        self.final_event_name = trace_event_name
+
+        if (trace_event_name == FlowTraceEvent.SRQ_EVENT):
+            self.num_srq += 1
+            self.total_bytes_sent_until_penultimate_srq_B = self.total_bytes_sent_B
+            self.total_bytes_sent_B += flow_trace_event.get_req_size()
+            self.final_srq_timestamp = flow_trace_event.get_timestamp()
+
+        elif (trace_event_name == FlowTraceEvent.RRQ_EVENT):
+            self.num_rrq += 1
+            if (self.proto == SSIRD_PROTO_NAME):
+                # ssird rrq shows cumulative recved-data size
+                self.total_bytes_recv_B = flow_trace_event.get_req_size()
+            elif (self.proto == DCTCP_PROTO_NAME):
+                self.total_bytes_recv_B += flow_trace_event.get_req_size()
+            else:
+                logger.error(f"Unrecognised proto name {self.proto}")
+
+        else:
+            logger.error(f"Unrecognised flow trace event {trace_event_name}")
+
+    def check_flow_stats(self):
+        logger.info(f"flow_id: {self.flow_id}, num of byteloads: {self.num_byteloads}, num srq events: {self.num_srq}, num rrq events: {self.num_rrq}")
+
+        assert(self.num_srq == self.num_byteloads) # TODO: remove assertion if adaptive batching feature is implemented
+        assert(self.first_event_name == FlowTraceEvent.SRQ_EVENT)
+        
+        if (self.final_event_name != FlowTraceEvent.RRQ_EVENT):
+            logger.error(f"Flow {self.flow_id}: Final event was {self.final_event_name} instead of {FlowTraceEvent.RRQ_EVENT}!")        
+
+        logger.info(f"TESTING: flow: {self.flow_id}, first_event_name: {self.first_event_name}, final_event_name: {self.final_event_name}")
+        if (self.proto == DCTCP_PROTO_NAME and self.num_srq != self.num_rrq):
+            logger.error(f"DCTCP: Missing rrq event(s)! diff: {self.num_srq - self.num_rrq}")
+
+        expected_flow_size_B = self.num_byteloads * self.byteload_size_B 
+        if (self.total_bytes_recv_B != expected_flow_size_B):
+            logger.error(f"Missing data! flow_id: {self.flow_id}: total bytes recv: {self.total_bytes_recv_B}, expected flow size = {expected_flow_size_B}, diff = {expected_flow_size_B - self.total_bytes_recv_B}")
+        
+    def get_fct_s(self):
+        return self.end_time_s - self.start_time_s
+    
+    def get_measured_gdpt_for_flow_gbps(self):
+        # returns in Gbps
+        # here we use the n-1 gaps between the n srq events to calc throughput:
+        if self.num_byteloads == 1: return None 
+        send_duration_s = self.final_srq_timestamp - self.start_time_s 
+        return (self.total_bytes_sent_until_penultimate_srq_B * 8) / send_duration_s * pow(10,-9)
+
+class Experiment():
+
+    def __init__(self, experiment_family, experiment_name, proto_names, src, dst, flow_start_times_us_list, num_byteloads, byteload_size_B, inter_byteload_period_us, is_full_postproc=False):
+        self.experiment_family = experiment_family
+        self.proto_names = proto_names
+
+        self.src = src
+        self.dst = dst
+        self.num_byteloads = num_byteloads
+        self.byteload_size_B = byteload_size_B
+        self.inter_byteload_period_us = inter_byteload_period_us
+        self.experiment_name = experiment_name 
+
+        self.mri_input_dir = PATH_TO_EXPERIMENTS_INPUTS + experiment_family + "/"
+        self.param_scripts_dir = PATH_TO_EXPERIMENTS_SCRIPTS + experiment_family + "/"
+        self.app_trace_file_path = ""
+
+        self.run_simulations = "1"
+        self.run_post_proc = f"{int(is_full_postproc)}" 
+        self.create_timeseires = f"{int(is_full_postproc)}" 
+        self.create_plots = f"{int(is_full_postproc)}"
+        self.delete_current = "0"
+
+        self.flow_start_times_us_list = flow_start_times_us_list
+        self.num_flows = len(flow_start_times_us_list)
+
+    def run(self, ssird_sim_dur, dctcp_sim_dur, log_level):
+        logger.info("\n=====")
+        logger.info("Execute experiment " + self.experiment_name)
+        logger.info(f'Flags: {self.run_simulations}, {self.run_post_proc}, {self.create_timeseires}, {self.create_plots}, {self.delete_current}')
+        logger.info("ssird_sim_duration={:f}; dctcp_sim_duration={:f}".format(ssird_sim_dur, dctcp_sim_dur))
+
+        self.prep_experiment_input(self.src, self.dst, self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us, self.flow_start_times_us_list)
+        ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(ssird_sim_duration=ssird_sim_dur, dctcp_sim_duration=dctcp_sim_dur, experiment_name=self.experiment_name, log_level=log_level)
+        ssird_fct = -1
+        dctcp_fct = -1
+        gdpt_gbps_measured_ssird = -1
+        gdpt_gbps_measured_per_flow_list_ssird = []
+        gdpt_gbps_measured_dctcp = -1
+        gdpt_gbps_measured_per_flow_list_dctcp = []
+        app_trace_file_paths_ssird = []
+        app_trace_file_paths_dctcp = []
+        for proto in self.proto_names:
+            app_trace_file_path = f"{PATH_TO_SIM_RESULTS}{proto}-{self.experiment_name}/data/{proto}/{CLIENT_INJECTION_RATE_GBPS}/applications_trace.str"
+            if proto == SSIRD_PROTO_NAME:
+                app_trace_file_paths_ssird.append(app_trace_file_path)
+                outputs_dir = f"{PATH_TO_SIM_COORD}outputs/{self.experiment_family}/"
+                Path(outputs_dir).mkdir(parents=True, exist_ok=True)
+
+                self.execute(proto, ssird_sim_script_path, f"{outputs_dir}ssird_{self.experiment_name}")
+                ssird_fct, gdpt_gbps_measured_ssird, gdpt_gbps_measured_per_flow_list_ssird = self.process_results_fct(app_trace_file_path, proto)
+                logger.info(f"SSIRD FCT: {ssird_fct} ms, Gdpt (overall): {gdpt_gbps_measured_ssird} Gbps, Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_ssird}")
+
+            if proto == DCTCP_PROTO_NAME:
+                app_trace_file_paths_dctcp.append(app_trace_file_path)
+                self.execute(proto, dctcp_sim_script_path, f"{outputs_dir}{DCTCP_PROTO_NAME}-{self.experiment_name}")
+                dctcp_fct, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_dctcp = self.process_results_fct(app_trace_file_path, proto)
+                logger.info(f"DCTCP FCT: {dctcp_fct} ms, Gtpt (overall): {gdpt_gbps_measured_dctcp} Gbps, Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_dctcp}")
+        
+        self.write_app_trace_paths_to_file(app_trace_file_paths_ssird, app_trace_file_paths_dctcp)
+
+        return ExperimentResults(ssird_fct, dctcp_fct, gdpt_gbps_measured_ssird, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_ssird, gdpt_gbps_measured_per_flow_list_dctcp)
+
+    def prep_experiment_input(self, src, dst, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, flow_start_times_list):
+        logger.info("-----")
+        logger.info("Preparing experiment input MRIs")
+        try:
+            logger.info("### Creating MRI inputs parent dir: " + self.mri_input_dir)
+            Path(self.mri_input_dir).mkdir(parents=True, exist_ok=False)
+        except FileExistsError:
+            logger.info("File " + self.mri_input_dir + " aready exists.")
+        
+        mri = ManualReqInterval(self.mri_input_dir, self.experiment_name)
+        multiflow_obj = MultiFlow(src, dst, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, flow_start_times_list)  
+        mri_filepath = mri.create_p2p_mri(multiflow_obj)
+        return mri_filepath
+
+    def prep_experiment_spec_scripts(self, ssird_sim_duration, dctcp_sim_duration, experiment_name, log_level):
+        logger.info("-----")
+        logger.info("Preparing experiment spec scripts")
+        try:
+            logger.info("### Creating spec scripts parent dir: " + self.param_scripts_dir)
+            Path(self.param_scripts_dir).mkdir(parents=True, exist_ok=False)
+        except FileExistsError:
+            logger.info("#### WARNING: File " + self.param_scripts_dir + " aready exists.")
+
+        sim_script = SimSpecScript(self.param_scripts_dir, self.experiment_name) 
+        mri_relative_path = "{}{}/{}.csv".format(MRI_RELATIVE_PATH, self.experiment_family, experiment_name)
+        ssird_sim_script_path = sim_script.create_ssird_noburst_params_script(mri_relative_path, ssird_sim_duration, log_level)
+        dctcp_sim_script_path = sim_script.create_dctcp_noburst_params_script(mri_relative_path, dctcp_sim_duration, log_level)
+
+        return ssird_sim_script_path, dctcp_sim_script_path
+
+    def execute(self, proto_name, sim_script_path, sim_output_path):
+        logger.info("-----")
+        logger.info("Running experiment for " + proto_name)
+        logger.info(f"### Script:{sim_script_path}")
+        params_list = [f"{PATH_TO_SIM_COORD}run", sim_script_path, self.run_simulations, self.run_post_proc, self.create_timeseires, self.create_plots, self.delete_current] 
+        output_file_path_stdout = f"{sim_output_path}_stdout.out" 
+        output_file_path_stderr = f"{sim_output_path}_stderr.out" 
+        logger.info(f"### Output path (stdout): {output_file_path_stdout}")
+        logger.info(f"### Output path (stderr): {output_file_path_stderr}")
+        output_file_stdout = open(output_file_path_stdout, "w")
+        output_file_stderr = open(output_file_path_stderr, "w")
+        try:
+            subprocess.run(
+                params_list,
+                cwd=f"{PATH_TO_SIM_COORD}",
+                check=True,
+                text=True,
+                stderr=output_file_stderr,
+                stdout=output_file_stdout
+            )
+        except subprocess.CalledProcessError as e:
+            logger.info(f"Script failed with exit code {e.returncode}")
+            logger.info("Error output:", e.stderr)
+            sys.exit(1)
+        except FileNotFoundError:
+            logger.error("The file was not found")
+        except IOError:
+            logger.error("An error occurred while reading the file")
+
+    def process_results_fct(self, app_trace_file_path, proto):
+        logger.info("Processing results")
+        logger.info(app_trace_file_path)
+        
+        d = {}
+        for i in range(0, self.num_flows):
+            d[i] = FlowStats(proto, i, self.num_byteloads, self.byteload_size_B)
+        flow_stats_dict = collections.OrderedDict(sorted(d.items()))
+        del d
+
+        total_bytes_sent_B = 0
+        total_bytes_sent_until_penultimate_srq_B = 0
+        overall_srq_start_time_s = math.inf
+        overall_final_srq_timestamp_s = None
+
+        try:
+            with open(app_trace_file_path, 'r') as file:
+                lines = file.readlines()
+                for line in lines:
+                    flow_trace_event = FlowTraceEvent.read_flow_trace_from_str(line)
+                    flow_id = flow_trace_event.get_app_level_id()
+                    flow_stats_dict.get(flow_id).update_flow_stats(flow_trace_event)
+
+                    if (flow_trace_event.get_event() == FlowTraceEvent.SRQ_EVENT):
+                        overall_srq_start_time_s = min(flow_trace_event.get_timestamp(), overall_srq_start_time_s)
+                        overall_final_srq_timestamp_s = flow_trace_event.get_timestamp()
+                        total_bytes_sent_until_penultimate_srq_B = total_bytes_sent_B
+                        total_bytes_sent_B += flow_trace_event.get_req_size() 
+
+                    del flow_id
+                    del flow_trace_event
+        except FileNotFoundError:
+            logger.error("The file was not found")
+        except IOError:
+            logger.error("An error occurred while reading the file")
+    
+        # TODO: FIX ME! This total-thrpt calc seems a lil iffy... it overestimates gbps by 5%. Why??
+        measured_total_gdpt_gbps = (total_bytes_sent_until_penultimate_srq_B * 8) / (overall_final_srq_timestamp_s - overall_srq_start_time_s) * pow(10,-9)
+        # measured_total_gdpt_gbps = sum(measured_gdpt_gbps_per_flow_list)
+
+        fct_list = []
+        measured_gdpt_gbps_per_flow_list = []
+        for _, flow_stats_obj in flow_stats_dict.items():
+            flow_stats_obj.check_flow_stats()
+            fct_list.append(flow_stats_obj.get_fct_s())
+            measured_gdpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_gdpt_for_flow_gbps())
+
+        return fct_list, measured_total_gdpt_gbps, measured_gdpt_gbps_per_flow_list
+
+    def write_app_trace_paths_to_file(self, app_trace_file_paths_ssird, app_trace_file_paths_dctcp):
+        logger.info("-----")
+        logger.info("Backing up app trace file paths")
+        parent_dir = f"{APP_TRACE_PATHS_BACKUP_PATH}{self.experiment_family}/"
+        Path(parent_dir).mkdir(parents=True, exist_ok=True)
+        backup_filepath = parent_dir + self.experiment_name + "_traces.txt"
+        logger.debug(backup_filepath)
+        with open(backup_filepath, 'w') as fout:
+            for ssird_trace_path in app_trace_file_paths_ssird:
+                fout.write(f"{ssird_trace_path}\n")
+            for dctcp_trace_path in app_trace_file_paths_dctcp:
+                fout.write(f"{dctcp_trace_path}\n")
+
+    '''
+    TODO: double-check this calculation! if it works, use it instead of the prev sim_dur calculator.
+    '''
+    @staticmethod
+    def get_sim_duration(num_flows, inter_flow_spacing_us, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, multiplication_factor=1):
+        total_data_B = num_flows * num_byteloads_per_flow * byteload_size_B
+        data_send_duration_s = total_data_B * 8 / LINK_SPEED_BITS_PER_SEC
+        inter_byteload_spacing_delays_per_flow_s = num_byteloads_per_flow * inter_byteload_period_us * pow(10,-6)
+        inter_flow_spacing_delays_s = num_flows * inter_flow_spacing_us * pow(10, -6)
+        overall_duration_s = data_send_duration_s + inter_byteload_spacing_delays_per_flow_s + inter_flow_spacing_delays_s
+        return overall_duration_s * multiplication_factor
+
+    @staticmethod
+    def get_experiment_name(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us):
+        return "{}flo-{}#-{}B-{}us".format(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us)
+
+
+def init_logs(experiment_family, logs_file_name, log_level=logging.DEBUG):
+    full_rel_path = f"{LOGS_REL_PATH}{experiment_family}/"
+    Path(full_rel_path).mkdir(parents=True, exist_ok=True) 
+    logs_file_path = full_rel_path + logs_file_name
+    logging.basicConfig(
+        level=log_level,
+        handlers=[
+            logging.FileHandler(logs_file_path, mode='w'),
+            logging.StreamHandler()
+        ]
+    )
