@@ -538,9 +538,9 @@ class Experiment():
             logger.error("An error occurred while reading the file")
 
     @staticmethod
-    def write_app_trace_paths_to_file(proto, experiment_family, app_trace_file_paths_list):
+    def write_app_trace_paths_to_file(proto, experiment_family, num_flows, app_trace_file_paths_list):
         logger.info("-----\nBacking up app trace file paths")
-        parent_dir = f"{APP_TRACE_PATHS_BACKUP_PATH}{experiment_family}/"
+        parent_dir = f"{APP_TRACE_PATHS_BACKUP_PATH}{experiment_family}/{num_flows}flo/"
         Path(parent_dir).mkdir(parents=True, exist_ok=True)
         backup_filepath = parent_dir + f"{proto}_app_traces.txt"
         logger.debug(backup_filepath)
@@ -562,7 +562,7 @@ class Experiment():
 
     @staticmethod
     def get_experiment_name(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us):
-        return "{}flo-{}#-{}B-{}us".format(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us)
+        return "{}flo-{}#-{}B-{}ns".format(num_flows, num_byteloads, byteload_size_B, int(inter_byteload_period_us * 1000))
 
 class ExperimentGroup:
 
@@ -641,9 +641,9 @@ class ExperimentGroup:
             assert(all(r.exp_id == i for r, i in zip(self.dctcp_raw_experiment_results_list, range(0, self.num_experiments))))
 
         ssird_path_to_app_trace_files_list = [r.app_trace_file_path for r in self.ssird_raw_experiment_results_list if r is not None]
-        Experiment.write_app_trace_paths_to_file(SSIRD_PROTO_NAME, self.experiment_family, ssird_path_to_app_trace_files_list)
+        Experiment.write_app_trace_paths_to_file(SSIRD_PROTO_NAME, self.experiment_family, self.num_flows, ssird_path_to_app_trace_files_list)
         dctcp_path_to_app_trace_files_list = [r.app_trace_file_path for r in self.dctcp_raw_experiment_results_list if r is not None]
-        Experiment.write_app_trace_paths_to_file(DCTCP_PROTO_NAME, self.experiment_family, dctcp_path_to_app_trace_files_list)
+        Experiment.write_app_trace_paths_to_file(DCTCP_PROTO_NAME, self.experiment_family, self.num_flows, dctcp_path_to_app_trace_files_list)
     
     def post_process_results(self):
         logger.info("\n##### POST PROCESS RESULTS #####")

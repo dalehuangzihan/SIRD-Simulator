@@ -69,7 +69,7 @@ def multiflow_fct_gdpt_experiment_vary_byteloadsize(is_full_postproc=True, title
     assert num_of_experiments == len(ssird_fct_list)
     assert num_of_experiments == len(dctcp_fct_list)
 
-def experiment_vary_byteloadsize_multiflow(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
+def experiment_vary_byteloadsize_largebload_multiflow(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"FCT_Subpkt_Byteloads{title_addendum}"
     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
     # proto_names = [dale_fct_experiment.SSIRD_PROTO_NAME]
@@ -78,14 +78,16 @@ def experiment_vary_byteloadsize_multiflow(is_full_postproc=True, title_addendum
     dst = 1
 
     # minimum_interval_us = 1
-    minimum_interval_us = 0.01
-    total_flow_size_B = 1000000
+    minimum_interval_us = 10 # 10us
+    total_flow_size_B = 4000000 # 4MB
     # NOTE: smallest byteload size that SSIRD sim is set up to use is 4B => with headers this makes a total of 64B per byteload.
     # NOTE: byteload sizes are multiples of 4 so that the inter-byteload periods are later calculated to be whole numbers in the end
 
+    # NOTE: here we maintain a 3.2Gbps goodput per flow.
+
     KILOBYTE = 1000
-    # byteload_size_KB_list = [1000]
-    byteload_size_KB_list = [10, 50, 100, 500, 1000] # 10KB to 1MB byteloads
+    # byteload_size_KB_list = [4]
+    byteload_size_KB_list = [4, 40, 400, 4000] # 4KB to 400KB byteloads
     byteload_size_B_list = [int(n * KILOBYTE) for n in byteload_size_KB_list] 
     num_of_experiments = len(byteload_size_B_list)
     # num_flows = 300
@@ -120,8 +122,6 @@ def experiment_vary_byteloadsize_multiflow(is_full_postproc=True, title_addendum
     inter_byteload_period_us_list = [] 
     for num_byteloads in num_byteloads_per_flow_list:
         inter_byteload_period_us = total_injection_period_us / num_byteloads
-        # # simulation can't handle sub-1us interval granularity
-        # assert((inter_byteload_period_us*10)%10 == 0)
         inter_byteload_period_us_list.append(inter_byteload_period_us)
     logger.debug(f"Inter-Byteload Periods list: {inter_byteload_period_us_list}")
     assert(len(inter_byteload_period_us_list) == num_of_experiments)
@@ -195,7 +195,6 @@ def experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_a
     # byteload_size_B_list = [4]
     byteload_size_B_list = [4, 40, 400, 4000] 
     num_of_experiments = len(byteload_size_B_list)
-    # num_flows = 300
     num_flows = 15 # TODO: for testing
     inter_flow_spacing_us = 0 # TODO: for testing
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
@@ -227,14 +226,12 @@ def experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_a
     inter_byteload_period_us_list = [] 
     for num_byteloads in num_byteloads_per_flow_list:
         inter_byteload_period_us = total_injection_period_us / num_byteloads
-        # # simulation can't handle sub-1us interval granularity
-        # assert((inter_byteload_period_us*10)%10 == 0)
         inter_byteload_period_us_list.append(inter_byteload_period_us)
     logger.debug(f"Inter-Byteload Periods list: {inter_byteload_period_us_list}")
     assert(len(inter_byteload_period_us_list) == num_of_experiments)
 
     # calculate simulation durations for experiment
-    ssird_sim_dur_multiplication_factor = 5
+    ssird_sim_dur_multiplication_factor = 10 # TODO: tweak
     ssird_sim_dur_list = []
     for i in range(0, len(num_byteloads_per_flow_list)):
        ssird_sim_dur_list.append(dale_experiment_rig.Experiment.get_sim_duration(num_flows, inter_flow_spacing_us, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], ssird_sim_dur_multiplication_factor))
@@ -246,7 +243,7 @@ def experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_a
     # dctcp_sim_dur_list = []
     # for i in range(0, len(num_byteloads_per_flow_list)):
     #    dctcp_sim_dur_list.append(dale_experiment_rig.Experiment.get_sim_duration(num_flows, inter_flow_spacing_us, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], dctcp_sim_dur_multiplication_factor))
-    dctcp_sim_dur_list = [0.0150] * num_of_experiments
+    dctcp_sim_dur_list = [0.02, 0.017, 0.017, 0.017] # TODO: tweak
     logger.debug(f"Sim Durations list (DCTCP): {dctcp_sim_dur_list}")
     assert(len(dctcp_sim_dur_list) == num_of_experiments)
 
@@ -296,7 +293,7 @@ if __name__ == "__main__":
     # multiflow_fct_gdpt_experiment_vary_byteloadsize(is_full_postproc=False, title_addendum="_multiflow")
     # multiflow_fct_gdpt_experiment_vary_byteloadsize(is_full_postproc=False, title_addendum="_multiflow_test_16jul")
 
-    experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=False, title_addendum="_subpkt_multiflow_17jul_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=False, title_addendum="_subpkt_multiflow_fastpace", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
     # experiment_vary_byteloadsize_multiflow(is_full_postproc=False, title_addendum="_multiflow_17jul_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
