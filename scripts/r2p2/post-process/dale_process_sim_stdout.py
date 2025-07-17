@@ -1,14 +1,16 @@
 
-CR_0_to_1_SUBSTRING = "0 Forwarded standalone grant_request asking for"
-C_1_to_0_SUBSTRING = "1 >>>>Sending credit to: 0"
-D_0_to_1_SUBSTRING = "0 Sending pkt of msg"
+CR_0_to_1_SUBSTRING = "Forwarded standalone grant_request asking for"
+C_1_to_0_SUBSTRING = ">>>>Sending credit to:"
+D_0_to_1_SUBSTRING = "Sending pkt of msg"
 SUBSTR_LIST = [CR_0_to_1_SUBSTRING, C_1_to_0_SUBSTRING, D_0_to_1_SUBSTRING]
 CREDITREQ_PKT_OVERHEAD_B = 84
 CREDIT_PKT_OVERHEAD_B = 84
 DATA_PKT_OVERHEAD_B = 80
 
-PATH_TO_SIM_OUTPUTS = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/"
+# PATH_TO_SIM_OUTPUTS = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/"
+PATH_TO_SIM_OUTPUTS = "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/" # NOTE: use this for batch1 server
 REL_PATH_TO_EXP_FAMILY = "FCT_Subpkt_Byteloads_subpkt_multiflow/"
+REL_PATH_TO_EXP_FAMILY_FASTPACE = "FCT_Subpkt_Byteloads_subpkt_multiflow_fastpace/"
 
 class SimOutputStats:
     def __init__(self, num_creditreq_pkts_0_to_1, num_credit_pkts_1_to_0, num_data_pkts_0_to_1):
@@ -113,9 +115,33 @@ def proc_10flo_subpkt_exp_sim_outputs():
     print("-----")
     proc_10flo_4KB_per_bload_sim_outputs()
 
+
+'''
+======== 15 FLO SUBPKT FASTPACE EXPERIMENTS ========
+'''
+def proc_15flo_4B_per_bload_sim_outputs(): 
+    sim_output_4B_byteloads_path = PATH_TO_SIM_OUTPUTS + REL_PATH_TO_EXP_FAMILY_FASTPACE + "ssird_15flo-10000#-4B-10ns_subpkt_multiflow_fastpace_stdout.out"
+    sim_4B_bload_stats = look_through_sim_stdout(sim_output_4B_byteloads_path)
+    print("4B per byteload:")
+    sim_4B_bload_stats.pretty_print()
+
+def proc_15flo_4KB_per_bload_sim_outputs():
+    sim_output_4KB_byteloads_path = PATH_TO_SIM_OUTPUTS + REL_PATH_TO_EXP_FAMILY_FASTPACE + "ssird_15flo-10#-4000B-10000ns_subpkt_multiflow_fastpace_stdout.out"
+    sim_4KB_bload_stats = look_through_sim_stdout(sim_output_4KB_byteloads_path)
+    print("4KB per byteload")
+    sim_4KB_bload_stats.pretty_print()
+
+def proc_15flo_subpkt_exp_sim_outputs():
+
+    proc_15flo_4B_per_bload_sim_outputs()
+    print("-----")
+    proc_15flo_4KB_per_bload_sim_outputs()
+
+
 if __name__ == "__main__":
-    proc_1flo_subpkt_exp_sim_outputs()
+    # proc_1flo_subpkt_exp_sim_outputs()
     # proc_10flo_subpkt_exp_sim_outputs()
+    proc_15flo_subpkt_exp_sim_outputs()
 
 
 
