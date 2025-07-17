@@ -32,6 +32,7 @@ PATH_TO_EXPERIMENTS_INPUTS = PATH_TO_EXPERIMENTS + "manual-req-intervals/" + MRI
 APP_TRACE_PATHS_BACKUP_PATH = PATH_TO_POST_PROCESS + "experiment_app_trace_paths/"
 LOGS_REL_PATH = "experiment_output/" # is relative to post-process/ dir
 
+LOG_LEVEL_1 = 1
 LOG_LEVEL_2 = 2
 LOG_LEVEL_6 = 6
 
@@ -403,7 +404,7 @@ class FlowStats:
             logger.error(f"Unrecognised flow trace event {trace_event_name}")
 
     def check_flow_stats(self):
-        logger.info(f"flow_id: {self.flow_id}, num of byteloads: {self.num_byteloads}, num srq events: {self.num_srq}, num rrq events: {self.num_rrq}")
+        logger.info(f"Flow {self.flow_id}:: num of byteloads: {self.num_byteloads}, num srq events: {self.num_srq}, num rrq events: {self.num_rrq}")
 
         assert(self.num_srq == self.num_byteloads) # TODO: remove assertion if adaptive batching feature is implemented
         assert(self.first_event_name == FlowTraceEvent.SRQ_EVENT)
@@ -411,13 +412,14 @@ class FlowStats:
         if (self.final_event_name != FlowTraceEvent.RRQ_EVENT):
             logger.error(f"Flow {self.flow_id}: Final event was {self.final_event_name} instead of {FlowTraceEvent.RRQ_EVENT}!")        
 
-        logger.info(f"TESTING: flow: {self.flow_id}, first_event_name: {self.first_event_name}, final_event_name: {self.final_event_name}")
         if (self.proto == DCTCP_PROTO_NAME and self.num_srq != self.num_rrq):
             logger.error(f"DCTCP: Missing rrq event(s)! diff: {self.num_srq - self.num_rrq}")
 
         expected_flow_size_B = self.num_byteloads * self.byteload_size_B 
         if (self.total_bytes_recv_B != expected_flow_size_B):
             logger.error(f"Missing data! flow_id: {self.flow_id}: total bytes recv: {self.total_bytes_recv_B}, expected flow size = {expected_flow_size_B}, diff = {expected_flow_size_B - self.total_bytes_recv_B}")
+
+        logger.debug(f"Flow {self.flow_id}:: first_event_name: {self.first_event_name}, final_event_name: {self.final_event_name}, expected_data_B: {expected_flow_size_B}, recv_data_B: {self.total_bytes_recv_B}")
         
     def get_fct_s(self):
         return self.end_time_s - self.start_time_s
@@ -640,8 +642,10 @@ class ExperimentGroup:
 
         assert(len(self.ssird_experiment_results_list) == self.num_experiments)   
         assert(len(self.dctcp_experiment_results_list) == self.num_experiments)   
-        assert(all(r.exp_id == i for r, i in zip(self.ssird_experiment_results_list, range(0, self.num_experiments))))
-        assert(all(r.exp_id == i for r, i in zip(self.dctcp_experiment_results_list, range(0, self.num_experiments))))
+        if (SSIRD_PROTO_NAME in self.proto_names_l):
+            assert(all(r.exp_id == i for r, i in zip(self.ssird_experiment_results_list, range(0, self.num_experiments))))
+        if (DCTCP_PROTO_NAME in self.proto_names_l):
+            assert(all(r.exp_id == i for r, i in zip(self.dctcp_experiment_results_list, range(0, self.num_experiments))))
     
     def post_process_results(self):
         logger.info("\n##### POST PROCESS RESULTS #####")
@@ -650,14 +654,18 @@ class ExperimentGroup:
 
             ssird_result = self.ssird_experiment_results_list[i]
             if ssird_result == None:
-                ssird_fct, gdpt_gbps_measured_ssird, gdpt_gbps_measured_per_flow_list_ssird = None
+                ssird_fct = None
+                gdpt_gbps_measured_ssird = None
+                gdpt_gbps_measured_per_flow_list_ssird = None
             else:
                 ssird_fct, gdpt_gbps_measured_ssird, gdpt_gbps_measured_per_flow_list_ssird = ssird_result.process_results_fct()
             logger.info(f"SSIRD FCT: {ssird_fct} ms, Gdpt (overall): {gdpt_gbps_measured_ssird} Gbps, Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_ssird}")
 
             dctcp_result = self.dctcp_experiment_results_list[i]
             if dctcp_result == None:
-                dctcp_fct, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_dctcp = None
+                dctcp_fct = None
+                gdpt_gbps_measured_dctcp = None
+                gdpt_gbps_measured_per_flow_list_dctcp = None
             else:
                 dctcp_fct, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_dctcp = dctcp_result.process_results_fct()
             logger.info(f"DCTCP FCT: {dctcp_fct} ms, Gtpt (overall): {gdpt_gbps_measured_dctcp} Gbps, Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_dctcp}")
