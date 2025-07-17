@@ -7,7 +7,8 @@ import collections
 import math
 
 # for thread pool
-MAX_WORKERS = 4 
+# MAX_WORKERS = 4 
+MAX_WORKERS = 12 # NOTE: use this for batch1 server
 
 MIN_BYTELOAD_INTERVAL_US = 0.001 # is 1ns
 
@@ -19,8 +20,8 @@ LINK_SPEED_BITS_PER_SEC = 100 * pow(10,9) * 8 # 100Gbps
 SSIRD_PROTO_NAME = "SSIRD"
 DCTCP_PROTO_NAME = f"DCTCP-{DCTCP_ECN_MARKING_THRESHOLD}"
 
-PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
-# PATH_TO_SIRD_SIM = "/data/dh1723/SIRD-Simulator/"
+# PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
+PATH_TO_SIRD_SIM = "/data/dh1723/SIRD-Simulator/" # NOTE: use this for batch1 server
 PATH_TO_SIM_COORD = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/"
 PATH_TO_POST_PROCESS = PATH_TO_SIRD_SIM + "scripts/r2p2/post-process/"
 PATH_TO_SIM_RESULTS = PATH_TO_SIM_COORD + "results/"
@@ -433,9 +434,9 @@ class FlowStats:
 
 class Experiment():
 
-    def __init__(self, experiment_family, experiment_name, proto_names, src, dst, flow_start_times_us_list, num_byteloads, byteload_size_B, inter_byteload_period_us, is_full_postproc=False):
+    def __init__(self, experiment_family, experiment_name, proto, src, dst, flow_start_times_us_list, num_byteloads, byteload_size_B, inter_byteload_period_us, is_full_postproc=False):
         self.experiment_family = experiment_family
-        self.proto_names = proto_names
+        self.proto = proto
 
         self.src = src
         self.dst = dst
@@ -464,28 +465,21 @@ class Experiment():
 
         self.prep_experiment_input(self.src, self.dst, self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us, self.flow_start_times_us_list)
         ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(ssird_sim_duration=ssird_sim_dur_l, dctcp_sim_duration=dctcp_sim_dur_l, experiment_name=self.experiment_name, log_level=log_level)
-        app_trace_file_paths_ssird_list = []
-        app_trace_file_paths_dctcp_list = []
 
         outputs_dir = f"{PATH_TO_SIM_COORD}outputs/{self.experiment_family}/"
         Path(outputs_dir).mkdir(parents=True, exist_ok=True)
 
-        experiment_results_list = []
-        for proto in self.proto_names:
-            app_trace_file_path = f"{PATH_TO_SIM_RESULTS}{proto}-{self.experiment_name}/data/{proto}/{CLIENT_INJECTION_RATE_GBPS}/applications_trace.str"
-            if proto == SSIRD_PROTO_NAME:
-                app_trace_file_paths_ssird_list.append(app_trace_file_path)
-                self.execute(proto, ssird_sim_script_path, f"{outputs_dir}ssird_{self.experiment_name}")
-            elif proto == DCTCP_PROTO_NAME:
-                app_trace_file_paths_dctcp_list.append(app_trace_file_path)
-                self.execute(proto, dctcp_sim_script_path, f"{outputs_dir}{DCTCP_PROTO_NAME}-{self.experiment_name}")
-            else:
-                logger.error(f"Unrecognised protocol name '{proto}'")
+        app_trace_file_path = f"{PATH_TO_SIM_RESULTS}{self.proto}-{self.experiment_name}/data/{self.proto}/{CLIENT_INJECTION_RATE_GBPS}/applications_trace.str"
+        if self.proto == SSIRD_PROTO_NAME:
+            self.execute(self.proto, ssird_sim_script_path, f"{outputs_dir}ssird_{self.experiment_name}")
+        elif self.proto == DCTCP_PROTO_NAME:
+            self.execute(self.proto, dctcp_sim_script_path, f"{outputs_dir}{DCTCP_PROTO_NAME}-{self.experiment_name}")
+        else:
+            logger.error(f"Unrecognised protocol name '{self.proto}'")
 
-            experiment_results_list.append(ExperimentOutputRaw(exp_id, self.experiment_family, self.experiment_name, app_trace_file_path, proto, self.num_flows, self.num_byteloads, self.byteload_size_B))
+        experiment_results_raw = ExperimentOutputRaw(exp_id, self.experiment_family, self.experiment_name, app_trace_file_path, self.proto, self.num_flows, self.num_byteloads, self.byteload_size_B)
 
-        self.write_app_trace_paths_to_file(app_trace_file_paths_ssird_list, app_trace_file_paths_dctcp_list)
-        return experiment_results_list
+        return experiment_results_raw
 
     def prep_experiment_input(self, src, dst, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, flow_start_times_list):
         logger.info("-----\nPreparing experiment input MRIs")
@@ -543,17 +537,16 @@ class Experiment():
         except IOError:
             logger.error("An error occurred while reading the file")
 
-    def write_app_trace_paths_to_file(self, app_trace_file_paths_ssird, app_trace_file_paths_dctcp):
+    @staticmethod
+    def write_app_trace_paths_to_file(proto, experiment_family, app_trace_file_paths_list):
         logger.info("-----\nBacking up app trace file paths")
-        parent_dir = f"{APP_TRACE_PATHS_BACKUP_PATH}{self.experiment_family}/"
+        parent_dir = f"{APP_TRACE_PATHS_BACKUP_PATH}{experiment_family}/"
         Path(parent_dir).mkdir(parents=True, exist_ok=True)
-        backup_filepath = parent_dir + self.experiment_name + "_traces.txt"
+        backup_filepath = parent_dir + f"{proto}_app_traces.txt"
         logger.debug(backup_filepath)
         with open(backup_filepath, 'w') as fout:
-            for ssird_trace_path in app_trace_file_paths_ssird:
-                fout.write(f"{ssird_trace_path}\n")
-            for dctcp_trace_path in app_trace_file_paths_dctcp:
-                fout.write(f"{dctcp_trace_path}\n")
+            for path_to_app_trace in app_trace_file_paths_list:
+                fout.write(f"{path_to_app_trace}\n")
 
     '''
     TODO: double-check this calculation! if it works, use it instead of the prev sim_dur calculator.
@@ -597,8 +590,8 @@ class ExperimentGroup:
             ])) == 1)
         self.num_experiments = len(num_byteloads_per_flow_list)
 
-        self.ssird_experiment_results_list = [None] * self.num_experiments
-        self.dctcp_experiment_results_list = [None] * self.num_experiments
+        self.ssird_raw_experiment_results_list = [None] * self.num_experiments
+        self.dctcp_raw_experiment_results_list = [None] * self.num_experiments
         self.processed_results_list = []
 
     def perform_experiment(self):
@@ -614,59 +607,68 @@ class ExperimentGroup:
 
             for exp_id in range(0, self.num_experiments):
                 experiment_name = Experiment.get_experiment_name(self.num_flows, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list[exp_id]) + self.title_addendum
-                experiment = Experiment(self.experiment_family, experiment_name, self.proto_names_l, self.src, self.dst, self.flow_start_times_us_list, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list[exp_id], self.is_full_postproc) 
+                for proto in self.proto_names_l:
+                    experiment = Experiment(self.experiment_family, experiment_name, proto, self.src, self.dst, self.flow_start_times_us_list, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list[exp_id], self.is_full_postproc) 
 
-                # submit experiment to thread pool
-                future = executor.submit(
-                    experiment.run,
-                    exp_id,
-                    ssird_sim_dur_l=self.ssird_sim_dur_list[exp_id],
-                    dctcp_sim_dur_l=self.dctcp_sim_dur_list[exp_id],
-                    log_level=self.log_level
-                ) 
-                futures_list.append((exp_id, future, experiment_name))
+                    # submit experiment to thread pool
+                    future = executor.submit(
+                        experiment.run,
+                        exp_id,
+                        ssird_sim_dur_l=self.ssird_sim_dur_list[exp_id],
+                        dctcp_sim_dur_l=self.dctcp_sim_dur_list[exp_id],
+                        log_level=self.log_level
+                    ) 
+                    futures_list.append((exp_id, future, experiment_name, proto))
 
             # wait for all experiments to complete and collect results
-            for exp_id, future, experiment_name in futures_list:
+            for exp_id, future, experiment_name, proto in futures_list:
                 try:
-                    results_list = future.result()
-                    for result in results_list:
-                        if result.proto == SSIRD_PROTO_NAME:
-                            self.ssird_experiment_results_list[exp_id] = result
-                        elif result.proto == DCTCP_PROTO_NAME:
-                            self.dctcp_experiment_results_list[exp_id] = result
-                        else:
-                            logger.error(f"Unrecognised protocol name '{result.proto}' in experiment result! (experiment_name={experiment_name})")
+                    raw_result = future.result()
+                    if raw_result.proto == SSIRD_PROTO_NAME:
+                        self.ssird_raw_experiment_results_list[exp_id] = raw_result
+                    elif raw_result.proto == DCTCP_PROTO_NAME:
+                        self.dctcp_raw_experiment_results_list[exp_id] = raw_result
+                    else:
+                        logger.error(f"Unrecognised protocol name '{raw_result.proto}' in experiment result! (experiment_name={experiment_name})")
                 except Exception as e:
                     logger.error(f"Experiment {experiment_name} failed: {str(e)}")
 
-        assert(len(self.ssird_experiment_results_list) == self.num_experiments)   
-        assert(len(self.dctcp_experiment_results_list) == self.num_experiments)   
+        assert(len(self.ssird_raw_experiment_results_list) == self.num_experiments)   
+        assert(len(self.dctcp_raw_experiment_results_list) == self.num_experiments)   
         if (SSIRD_PROTO_NAME in self.proto_names_l):
-            assert(all(r.exp_id == i for r, i in zip(self.ssird_experiment_results_list, range(0, self.num_experiments))))
+            assert(all(r.exp_id == i for r, i in zip(self.ssird_raw_experiment_results_list, range(0, self.num_experiments))))
         if (DCTCP_PROTO_NAME in self.proto_names_l):
-            assert(all(r.exp_id == i for r, i in zip(self.dctcp_experiment_results_list, range(0, self.num_experiments))))
+            assert(all(r.exp_id == i for r, i in zip(self.dctcp_raw_experiment_results_list, range(0, self.num_experiments))))
+
+        ssird_path_to_app_trace_files_list = [r.app_trace_file_path for r in self.ssird_raw_experiment_results_list if r is not None]
+        Experiment.write_app_trace_paths_to_file(SSIRD_PROTO_NAME, self.experiment_family, ssird_path_to_app_trace_files_list)
+        dctcp_path_to_app_trace_files_list = [r.app_trace_file_path for r in self.dctcp_raw_experiment_results_list if r is not None]
+        Experiment.write_app_trace_paths_to_file(DCTCP_PROTO_NAME, self.experiment_family, dctcp_path_to_app_trace_files_list)
     
     def post_process_results(self):
         logger.info("\n##### POST PROCESS RESULTS #####")
         for i in range(0, self.num_experiments):
             logger.info(f"=====\n** Num Byteloads Per Flow: {self.num_byteloads_per_flow_list[i]}, Byteload Size (B): {self.byteload_size_B_list[i]}, Inter-Byteload Interval (us): {self.inter_byteload_period_us_list[i]}, ssird_sim_dur (s): {self.ssird_sim_dur_list[i]}, dctcp_sim_dur (s): {self.dctcp_sim_dur_list[i]}")
 
-            ssird_result = self.ssird_experiment_results_list[i]
+            ssird_result = self.ssird_raw_experiment_results_list[i]
             if ssird_result == None:
+                logger.error("No results for SSIRD")
                 ssird_fct = None
                 gdpt_gbps_measured_ssird = None
                 gdpt_gbps_measured_per_flow_list_ssird = None
             else:
+                logger.info(f"Processing SIRD results exp_id {ssird_result.exp_id}:: {ssird_result.num_flows}flo-{ssird_result.num_byteloads}#-{ssird_result.byteload_size_B}B")
                 ssird_fct, gdpt_gbps_measured_ssird, gdpt_gbps_measured_per_flow_list_ssird = ssird_result.process_results_fct()
             logger.info(f"SSIRD FCT: {ssird_fct} ms, Gdpt (overall): {gdpt_gbps_measured_ssird} Gbps, Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_ssird}")
 
-            dctcp_result = self.dctcp_experiment_results_list[i]
+            dctcp_result = self.dctcp_raw_experiment_results_list[i]
             if dctcp_result == None:
+                logger.error("No results for DCTCP")
                 dctcp_fct = None
                 gdpt_gbps_measured_dctcp = None
                 gdpt_gbps_measured_per_flow_list_dctcp = None
             else:
+                logger.info(f"Processing DCTCP results exp_id {dctcp_result.exp_id}:: {dctcp_result.num_flows}flo-{dctcp_result.num_byteloads}#-{dctcp_result.byteload_size_B}B")
                 dctcp_fct, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_dctcp = dctcp_result.process_results_fct()
             logger.info(f"DCTCP FCT: {dctcp_fct} ms, Gtpt (overall): {gdpt_gbps_measured_dctcp} Gbps, Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_dctcp}")
 
