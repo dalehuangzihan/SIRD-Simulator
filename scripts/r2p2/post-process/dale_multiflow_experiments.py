@@ -70,9 +70,10 @@ def multiflow_fct_gdpt_experiment_vary_byteloadsize(is_full_postproc=True, title
     assert num_of_experiments == len(dctcp_fct_list)
 
 def experiment_vary_byteloadsize_largebload_multiflow(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
-    experiment_family = f"FCT_Subpkt_Byteloads{title_addendum}"
+    experiment_family = f"FCT_Large_Byteloads{title_addendum}"
     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
     # proto_names = [dale_fct_experiment.SSIRD_PROTO_NAME]
+    # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
     src = 0
     dst = 1
@@ -86,12 +87,12 @@ def experiment_vary_byteloadsize_largebload_multiflow(is_full_postproc=True, tit
     # NOTE: here we maintain a 3.2Gbps goodput per flow.
 
     KILOBYTE = 1000
-    # byteload_size_KB_list = [4]
-    byteload_size_KB_list = [4, 40, 400, 4000] # 4KB to 400KB byteloads
+    byteload_size_KB_list = [4]
+    # byteload_size_KB_list = [4, 40, 400, 4000] # 4KB to 400KB byteloads
     byteload_size_B_list = [int(n * KILOBYTE) for n in byteload_size_KB_list] 
     num_of_experiments = len(byteload_size_B_list)
     # num_flows = 300
-    num_flows = 10 # TODO: for testing
+    num_flows = 15 # TODO: for testing
     inter_flow_spacing_us = 0 # TODO: for testing
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
 
@@ -127,14 +128,17 @@ def experiment_vary_byteloadsize_largebload_multiflow(is_full_postproc=True, tit
     assert(len(inter_byteload_period_us_list) == num_of_experiments)
 
     # calculate simulation durations for experiment
-    multiplication_factor = 100
-    sim_dur_list = []
-    for i in range(0, len(num_byteloads_per_flow_list)):
-       sim_dur_list.append(dale_experiment_rig.Experiment.get_sim_duration(num_flows, inter_flow_spacing_us, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], multiplication_factor))
-    logger.debug(f"Sim Durations list: {sim_dur_list}")
-    assert(len(sim_dur_list) == num_of_experiments)
-    ssird_sim_dur_list = sim_dur_list
-    dctcp_sim_dur_list = sim_dur_list
+    # multiplication_factor = 100
+    # sim_dur_list = []
+    # for i in range(0, len(num_byteloads_per_flow_list)):
+    #    sim_dur_list.append(dale_experiment_rig.Experiment.get_sim_duration(num_flows, inter_flow_spacing_us, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], multiplication_factor))
+    # logger.debug(f"Sim Durations list: {sim_dur_list}")
+    # assert(len(sim_dur_list) == num_of_experiments)
+    # ssird_sim_dur_list = sim_dur_list
+    # dctcp_sim_dur_list = sim_dur_list
+
+    ssird_sim_dur_list = [0.02] # TODO: tweak
+    dctcp_sim_dur_list = [0.02] # TODO: tweak
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
     gdpt_gbps_theoretical_list = []
@@ -153,7 +157,7 @@ def experiment_vary_byteloadsize_largebload_multiflow(is_full_postproc=True, tit
     logger.info(f"Gdpt GBps theoretical: {gdpt_gbps_theoretical_list}")
     logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
-    return
+    # return
 
     exp_grp = dale_experiment_rig.ExperimentGroup(experiment_family, proto_names, src, dst, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc, log_level, title_addendum)
 
@@ -178,6 +182,7 @@ def experiment_vary_byteloadsize_largebload_multiflow(is_full_postproc=True, tit
 
     assert num_of_experiments == len(ssird_fct_list)
     assert num_of_experiments == len(dctcp_fct_list)
+
 
 def experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"FCT_Subpkt_Byteloads{title_addendum}"
@@ -290,10 +295,7 @@ def experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_a
     assert num_of_experiments == len(dctcp_fct_list)
 
 if __name__ == "__main__":
-    # multiflow_fct_gdpt_experiment_vary_byteloadsize(is_full_postproc=False, title_addendum="_multiflow")
-    # multiflow_fct_gdpt_experiment_vary_byteloadsize(is_full_postproc=False, title_addendum="_multiflow_test_16jul")
-
-    experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=False, title_addendum="_subpkt_multiflow_fastpace", log_level=dale_experiment_rig.LOG_LEVEL_2)
-
-    # experiment_vary_byteloadsize_multiflow(is_full_postproc=False, title_addendum="_multiflow_17jul_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_addendum="_subpkt_multiflow_fastpace", log_level=dale_experiment_rig.LOG_LEVEL_2)
+ 
+    experiment_vary_byteloadsize_largebload_multiflow(is_full_postproc=False, title_addendum="_largepkt_multiflow", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
