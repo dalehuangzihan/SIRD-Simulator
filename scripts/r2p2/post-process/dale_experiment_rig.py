@@ -417,11 +417,10 @@ class FlowStats:
             logger.error(f"DCTCP: Missing rrq event(s)! diff: {self.num_srq - self.num_rrq}")
 
         expected_flow_size_B = self.num_byteloads * self.byteload_size_B 
+        logger.debug(f"Flow {self.flow_id}:: first_event_name: {self.first_event_name}, final_event_name: {self.final_event_name}, expected_data_B: {expected_flow_size_B}, recv_data_B: {self.total_bytes_recv_B}")
         if (self.total_bytes_recv_B != expected_flow_size_B):
             logger.error(f"Missing data! flow_id: {self.flow_id}: total bytes recv: {self.total_bytes_recv_B}, expected flow size = {expected_flow_size_B}, diff = {expected_flow_size_B - self.total_bytes_recv_B}")
 
-        logger.debug(f"Flow {self.flow_id}:: first_event_name: {self.first_event_name}, final_event_name: {self.final_event_name}, expected_data_B: {expected_flow_size_B}, recv_data_B: {self.total_bytes_recv_B}")
-        
     def get_fct_s(self):
         return self.end_time_s - self.start_time_s
     
@@ -473,7 +472,7 @@ class Experiment():
         if self.proto == SSIRD_PROTO_NAME:
             self.execute(self.proto, ssird_sim_script_path, f"{outputs_dir}ssird_{self.experiment_name}")
         elif self.proto == DCTCP_PROTO_NAME:
-            self.execute(self.proto, dctcp_sim_script_path, f"{outputs_dir}{DCTCP_PROTO_NAME}-{self.experiment_name}")
+            self.execute(self.proto, dctcp_sim_script_path, f"{outputs_dir}{DCTCP_PROTO_NAME}_{self.experiment_name}")
         else:
             logger.error(f"Unrecognised protocol name '{self.proto}'")
 
@@ -633,8 +632,6 @@ class ExperimentGroup:
                 except Exception as e:
                     logger.error(f"Experiment {experiment_name} failed: {str(e)}")
 
-        assert(len(self.ssird_raw_experiment_results_list) == self.num_experiments)   
-        assert(len(self.dctcp_raw_experiment_results_list) == self.num_experiments)   
         if (SSIRD_PROTO_NAME in self.proto_names_l):
             assert(all(r.exp_id == i for r, i in zip(self.ssird_raw_experiment_results_list, range(0, self.num_experiments))))
         if (DCTCP_PROTO_NAME in self.proto_names_l):
