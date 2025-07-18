@@ -113,8 +113,8 @@ def get_qts_result_ssird_dctcp(nw_elem, src, dst, num_flows, num_byteloads_per_f
 '''
 ========== NW OVERHEAD PLOTS ==========
 '''
-def get_qts_nw_data_B_ssird_dctcp(num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, app_total_gdpt_gbps, title_addendum=""):
-    ssird_thrpt_gbps_list, dctcp_thrpt_tbps_list, ssird_fct_list, dctcp_fct_list = get_qts_thrpt_ssird_dctcp(num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, title_addendum)
+def get_qts_nw_data_B_ssird_dctcp(src, dst, num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, app_total_gdpt_gbps, title_addendum=""):
+    ssird_thrpt_gbps_list, dctcp_thrpt_tbps_list, ssird_fct_list, dctcp_fct_list = get_qts_thrpt_ssird_dctcp(src, dst, num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, title_addendum)
 
     ssird_total_nw_data_w_overheads_B = [gbps * pow(10,9) * t / 8 for gbps, t in zip(ssird_thrpt_gbps_list, ssird_fct_list)]
     dctcp_total_nw_data_w_overheads_B = [gbps * pow(10,9) * t / 8 for gbps, t in zip(dctcp_thrpt_tbps_list, dctcp_fct_list)]
@@ -128,6 +128,7 @@ def get_qts_nw_data_B_ssird_dctcp(num_flows, num_byteloads_per_flow_list, bytelo
 
     return ssird_total_nw_data_w_overheads_B, dctcp_total_nw_data_w_overheads_B, app_data_total_theory_B, app_data_total_measured_B
 
+'''
 def plot_nw_data_B_ssird_dctcp(ssird_nw_data_B_list, dctcp_nw_data_B_list, byteload_size_B_list, app_data_total_B, num_flows, flow_size_B, flow_rate_gbps, is_log_x=False, y_lim=None, is_per_flow=False,title_addendum=""):
     Path(PATH_TO_NW_DATA_COMPARE_PARENT_DIR).mkdir(parents=True, exist_ok=True)
 
@@ -157,6 +158,7 @@ def plot_nw_data_B_ssird_dctcp(ssird_nw_data_B_list, dctcp_nw_data_B_list, bytel
     filename = f"{filename_prefix}ssird_vs_dctcp_subpkt_multiflow_nw_data_vs_byteload_size_{num_flows}flo_{flow_rate_gbps}Gbps_each{title_addendum}.png"
     plt.savefig(f"{PATH_TO_NW_DATA_COMPARE_PARENT_DIR}{filename}")
     plt.close()
+'''
 
 def plot_nw_data_MB_ssird_dctcp(ssird_nw_data_B_list, dctcp_nw_data_B_list, byteload_size_B_list, app_data_total_B_list, num_flows, flow_size_B, flow_rate_gbps, is_log_x=False, y_lim=None, is_per_flow=False,title_addendum=""):
     Path(PATH_TO_NW_DATA_COMPARE_PARENT_DIR).mkdir(parents=True, exist_ok=True)
@@ -167,13 +169,13 @@ def plot_nw_data_MB_ssird_dctcp(ssird_nw_data_B_list, dctcp_nw_data_B_list, byte
 
     filename_prefix = None
     if (is_per_flow):
-        plt.title(f"SSIRD: Per-Flow Network Data @ {num_flows * flow_size_B/pow(10,3)}KB App Data\n({num_flows} x {flow_size_B}B flows, each at {flow_rate_gbps}Gbps; Total App Gdpt: {num_flows * flow_rate_gbps}Gbps)\n{title_addendum}")
+        plt.title(f"SSIRD: Per-Flow Network Data @ {num_flows * flow_size_B/pow(10,3)}KB Total App Data\n({num_flows} x {flow_size_B}B flows, each at {flow_rate_gbps}Gbps; Total App Gdpt: {num_flows * flow_rate_gbps}Gbps)\n{title_addendum}")
         filename_prefix = "PERFLOW_"
         ssird_nw_data_MB_list = [round(b/pow(10,3), 2) for b in ssird_nw_data_B_list]
         app_data_total_MB_list = [round(b/pow(10,3), 2) for b in app_data_total_B_list]
         plt.ylabel('Network Data (KB)')
     else:
-        plt.title(f"SSIRD: Total Network Data @ {num_flows * flow_size_B/pow(10,6)}MB App Data\n({num_flows} x {flow_size_B}B flows, each at {flow_rate_gbps}Gbps; Total App Gdpt: {num_flows * flow_rate_gbps}Gbps)\n{title_addendum}")
+        plt.title(f"SSIRD: Total Network Data @ {num_flows * flow_size_B/pow(10,6)}MB Total App Data\n({num_flows} x {flow_size_B}B flows, each at {flow_rate_gbps}Gbps; Total App Gdpt: {num_flows * flow_rate_gbps}Gbps)\n{title_addendum}")
         filename_prefix = "TOTAL_"
         ssird_nw_data_MB_list = [round(b/pow(10,6), 2) for b in ssird_nw_data_B_list]
         app_data_total_MB_list = [round(b/pow(10,6), 2) for b in app_data_total_B_list]
@@ -198,24 +200,26 @@ def plot_overall_and_perflow_nw_data_ssird_dctcp(num_flows, num_byteloads_per_fl
     assert(all(n * b == flow_size_B for n, b in zip(num_byteloads_per_flow_list, byteload_size_B_list)))
 
     # OVERALL: -----
-    ssird_total_nw_data_B, dctcp_total_nw_data_B, app_data_total_theory_B, app_data_total_measured_B = get_qts_nw_data_B_ssird_dctcp(num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, overall_gdpt_gbps,title_addendum)
+    ssird_total_nw_data_h0tor4_B, dctcp_total_nw_data_h0tor4_B, app_data_total_theory_B, app_data_total_measured_h0tor4_B = get_qts_nw_data_B_ssird_dctcp("host_0", "tor_4", num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, overall_gdpt_gbps,title_addendum)
+
+    ssird_total_nw_data_h1tor4_B, dctcp_total_nw_data_h1tor4_B, app_data_total_theory_B, app_data_total_measured_h1tor4_B = get_qts_nw_data_B_ssird_dctcp("host_1", "tor_4", num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, overall_gdpt_gbps,title_addendum)
+
+    ssird_total_nw_data_B = [h0tor4 + h1tor4 for h0tor4, h1tor4 in zip(ssird_total_nw_data_h0tor4_B, ssird_total_nw_data_h1tor4_B)]
+    dctcp_total_nw_data_B = [h0tor4 + h1tor4 for h0tor4, h1tor4 in zip(dctcp_total_nw_data_h0tor4_B, dctcp_total_nw_data_h1tor4_B)]
+    
     ssird_overheads_total_theory_B = [s - app_data_total_theory_B for s in ssird_total_nw_data_B]
-    ssird_overheads_total_measured_B = [s - a for s,a in zip(ssird_total_nw_data_B, app_data_total_measured_B)]
     app_data_total_theory_B = [app_data_total_theory_B] * len(ssird_overheads_total_theory_B)
 
     ssird_total_nw_data_B = list(map(lambda x: round(x, 2), ssird_total_nw_data_B))
     dctcp_total_nw_data_B = list(map(lambda x: round(x, 2), dctcp_total_nw_data_B))
     ssird_overheads_total_theory_B = list(map(lambda x: round(x,2), ssird_overheads_total_theory_B))
-    ssird_overheads_total_measured_B = list(map(lambda x: round(x,2), ssird_overheads_total_measured_B))
 
     plot_nw_data_MB_ssird_dctcp(ssird_total_nw_data_B, dctcp_total_nw_data_B, byteload_size_B_list, app_data_total_theory_B, num_flows, flow_size_B, flow_rate_gbps, is_log_x=True, y_lim=y_lim_total, title_addendum=title_addendum + "_overall")
 
     print(f"Theoretical Overall Gdpt Gbps: {theoretical_total_gdpt_gbps}")
-    print(f"Total App Data (measured) (B): {app_data_total_measured_B}")
     print(f"SSIRD NW Data Total (B): {ssird_total_nw_data_B}")
     print(f"DCTCP NW Data Total (B): {dctcp_total_nw_data_B}")
     print(f"** SSIRD Overheads Total (vs theory app data) (B): {ssird_overheads_total_theory_B}")
-    print(f"** SSIRD Overheads Total (vs measured app data) (B): {ssird_overheads_total_measured_B}")
 
     print("---")
     # PER FLOW: -----
@@ -223,23 +227,18 @@ def plot_overall_and_perflow_nw_data_ssird_dctcp(num_flows, num_byteloads_per_fl
     ssird_perflow_nw_data_B = [x / num_flows for x in ssird_total_nw_data_B]
     dctcp_perflow_nw_data_B = [x / num_flows for x in dctcp_total_nw_data_B]
     app_data_perflow_theory_B = [flow_rate_gbps] * len(ssird_perflow_nw_data_B)
-    app_data_perflow_measured_B = [x / num_flows for x in app_data_total_measured_B]
     ssird_overheads_perflow_theory_B = [s - a for s,a in zip(ssird_perflow_nw_data_B, app_data_perflow_theory_B)] 
-    ssird_overheads_perflow_measured_B = [s - a for s,a in zip(ssird_perflow_nw_data_B, app_data_perflow_measured_B)]
     
     ssird_perflow_nw_data_B = list(map(lambda x: round(x, 2), ssird_perflow_nw_data_B))
     dctcp_perflow_nw_data_B = list(map(lambda x: round(x, 2), dctcp_perflow_nw_data_B))
     ssird_overheads_perflow_theory_B = list(map(lambda x: round(x, 2), ssird_overheads_perflow_theory_B))
-    ssird_overheads_perflow_measured_B = list(map(lambda x: round(x,2), ssird_overheads_perflow_measured_B))
 
     plot_nw_data_MB_ssird_dctcp(ssird_perflow_nw_data_B, dctcp_perflow_nw_data_B, byteload_size_B_list, app_data_perflow_theory_B, num_flows, flow_size_B, flow_rate_gbps, is_per_flow=True, y_lim=y_lim_perflow, is_log_x=True, title_addendum=title_addendum + "_perflow")
 
     print(f"Theoretical Perflow Gdpt Gbps: {flow_rate_gbps}")
-    print(f"App Data Per Flow (measured) (B): {app_data_perflow_measured_B}")
     print(f"SSIRD NW Data Per Flow (B): {ssird_perflow_nw_data_B}")
     print(f"DCTCP NW Data Per Flow (B): {dctcp_perflow_nw_data_B}")
     print(f"** SSIRD Overheads Per Flow (vs theory app data) (B): {ssird_overheads_perflow_theory_B}")
-    print(f"** SSIRD Overheads Per Flow (vs measured app data) (B): {ssird_overheads_perflow_measured_B}")
 
 def compare_nw_data_subpkt_multiflow_4B_to_4000B_1flo(y_lim_total=None, y_lim_perflow=None):
     # INFO:__main__:Total Flow Size (Bytes): 40000
@@ -383,7 +382,7 @@ def do_nw_data_plots():
 '''
 ========== THRPT vs GDPT PLOTS ========== 
 '''
-def get_qts_thrpt_ssird_dctcp(num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, title_addendum=""):
+def get_qts_thrpt_ssird_dctcp(src, dst, num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, title_addendum=""):
     num_experiments = len(num_byteloads_per_flow_list)
     assert(len(byteload_size_B_list) == num_experiments)
     assert(len(inter_byteload_period_us_list) == num_experiments)
@@ -393,7 +392,7 @@ def get_qts_thrpt_ssird_dctcp(num_flows, num_byteloads_per_flow_list, byteload_s
     ssird_fct_list = []
     dctcp_fct_list = []
     for i in range(0, num_experiments):
-        ssird_subpkt_result, dctcp_subpkt_result = get_qts_result_ssird_dctcp(HOST, "host_0", "tor_4", num_flows, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], title_addendum) 
+        ssird_subpkt_result, dctcp_subpkt_result = get_qts_result_ssird_dctcp(HOST, src, dst, num_flows, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], title_addendum) 
         ssird_qts_results_list.append(ssird_subpkt_result)
         dctcp_qts_results_list.append(dctcp_subpkt_result)
         ssird_fct_list.append(ssird_subpkt_result.activity_end_time_s)
@@ -404,6 +403,8 @@ def get_qts_thrpt_ssird_dctcp(num_flows, num_byteloads_per_flow_list, byteload_s
 
     return ssird_thrpt_gbps_list, dctcp_thrpt_gbps_list, ssird_fct_list, dctcp_fct_list 
 
+'''
+NOTE: these only use traffic from qts_host_0_tor4!
 def plot_thrpt_ssird_dctcp(ssird_thrpt_gbps_list, dctcp_thrpt_gbps_list, byteload_size_B_list, overall_gdpt_gbps, num_flows, flow_size_B, flow_rate_gbps, is_log_x=False, y_lim=None, is_per_flow=False,title_addendum=""):
     Path(PATH_TO_THRPT_COMPARE_PARENT_DIR).mkdir(parents=True, exist_ok=True)
 
@@ -439,7 +440,7 @@ def plot_overall_and_perflow_thrpt_ssird_dctcp(num_flows, num_byteloads_per_flow
     assert(all(n * b == flow_size_B for n, b in zip(num_byteloads_per_flow_list, byteload_size_B_list)))
 
     # OVERALL: -----
-    ssird_thrpt_gbps_list, dctcp_thrpt_gbps_list, ssird_fct_s_list, dctcp_fct_s_list = get_qts_thrpt_ssird_dctcp(num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, title_addendum)
+    ssird_thrpt_gbps_list, dctcp_thrpt_gbps_list, ssird_fct_s_list, dctcp_fct_s_list = get_qts_thrpt_ssird_dctcp("host_0", "tor_4", num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, title_addendum)
 
     plot_thrpt_ssird_dctcp(ssird_thrpt_gbps_list, dctcp_thrpt_gbps_list, byteload_size_B_list, overall_gdpt_gbps, num_flows, flow_size_B, flow_rate_gbps, is_log_x=True, y_lim=y_lim_total, title_addendum=title_addendum + "_overall")
 
@@ -579,7 +580,7 @@ def compare_thrpt_subpkt_multiflow_4B_to_4000B_15flo_fastpace(y_lim_total=None, 
     # INFO:__main__:* DCTCP FCT: [[0.018869601000000458, 0.01886961300000145, 0.01886962600000075, 0.01886963900000005, 0.018869652000001125, 0.018869665000000424, 0.018869677000001417, 0.018869690000000716, 0.018869703000000015, 0.01886971600000109, 0.01886972900000039, 0.018869741000001383, 0.018869754000000682, 0.018869766999999982, 0.018869780000001057], [0.0018871410000009803, 0.0018871530000001968, 0.0018871660000012724, 0.0018871790000005717, 0.001887191999999871, 0.0018872050000009466, 0.0018872170000001631, 0.0018872300000012387, 0.001887243000000538, 0.0018872560000016136, 0.001887269000000913, 0.0018872810000001294, 0.001887294000001205, 0.0018873070000005043, 0.00188732000000158], [0.00019131400000027554, 0.00019135199999986696, 0.00019139000000123474, 0.00019142800000082616, 0.00019146700000050032, 0.00019150500000009174, 0.00019154300000145952, 0.00019158100000105094, 0.0001916200000007251, 0.00019165800000031652, 0.0001921230000014873, 0.00019216100000107872, 0.00019219900000067014, 0.00019223700000026156, 0.00019227599999993572], [9.296200000008525e-05, 9.330000000140615e-05, 9.363900000103342e-05, 9.39780000006607e-05, 9.431700000028798e-05, 9.465500000160887e-05, 9.499400000123615e-05, 9.533300000086342e-05, 9.56720000004907e-05, 9.601000000003523e-05, 9.634900000143887e-05, 9.668800000106614e-05, 9.702600000061068e-05, 9.736500000023796e-05, 9.770399999986523e-05]]
 
     print("\n@@ 15 FLO NW THRPT")
-    title_addendum = "_subpkt_multiflow_fastpace_test"
+    title_addendum = "_subpkt_multiflow_fastpace"
 
     num_flows = 15
     num_byteloads_per_flow_list = [10000, 1000, 100, 10] # should be [10000, 1000, 100, 10] but there was a naming bug in the experiment
@@ -604,9 +605,24 @@ def do_thrpt_plots():
     # compare_thrpt_subpkt_multiflow_4B_to_4000B_10flo(y_lim_total, y_lim_perflow)
 
     compare_thrpt_subpkt_multiflow_4B_to_4000B_15flo_fastpace()
-
+'''
 
 
 if __name__ == "__main__":
-    do_thrpt_plots()
+    # do_thrpt_plots()
     do_nw_data_plots()
+
+    # # The following is for is for host1 to tor 4:
+    # # 4B per byteload:
+    # ssird_subpkt_result_4B, _ = get_qts_result_ssird_dctcp(HOST, "host_1", "tor_4", num_flows=15, num_byteloads_per_flow=10000, byteload_size_B=4, inter_byteload_period_us=0.01, title_addendum="_subpkt_multiflow_fastpace") 
+    # ssird_thrpt_4B = ssird_subpkt_result_4B.get_avg_thrpt_gbps()
+    # ssird_fct_4B = ssird_subpkt_result_4B.activity_end_time_s
+    # ssird_total_nw_data_w_overheads_4B_B = ssird_thrpt_4B * pow(10,9) * ssird_fct_4B / 8
+    # print(ssird_total_nw_data_w_overheads_4B_B)
+
+    # # 4KB per byteload:
+    # ssird_subpkt_result_4KB, _ = get_qts_result_ssird_dctcp(HOST, "host_1", "tor_4", num_flows=15, num_byteloads_per_flow=10, byteload_size_B=4000, inter_byteload_period_us=10, title_addendum="_subpkt_multiflow_fastpace") 
+    # ssird_thrpt_4KB = ssird_subpkt_result_4KB.get_avg_thrpt_gbps()
+    # ssird_fct_4KB = ssird_subpkt_result_4KB.activity_end_time_s
+    # ssird_total_nw_data_w_overheads_4KB_B = ssird_thrpt_4KB * pow(10,9) * ssird_fct_4KB / 8
+    # print(ssird_total_nw_data_w_overheads_4KB_B)
