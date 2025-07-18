@@ -1,0 +1,153 @@
+
+--- 10 FLO SLOWPACE: ---
+4B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 199947
+Num Credit Pkts: 100857
+Num Data Pkts: 100804
+Total Overheads (B): 33331856
+* P2P Only:
+Num Credit Req Pkts: 100000
+Num Credit Pkts: 100000
+Num Data Pkts: 99947
+Total Overheads (B): 24795760
+---
+40B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 19999
+Num Credit Pkts: 10857
+Num Data Pkts: 10857
+Total Overheads (B): 3460464
+* P2P Only:
+Num Credit Req Pkts: 10000
+Num Credit Pkts: 10000
+Num Data Pkts: 10000
+Total Overheads (B): 2480000
+---
+400B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 1999
+Num Credit Pkts: 1857
+Num Data Pkts: 1857
+Total Overheads (B): 472464
+* P2P Only:
+Num Credit Req Pkts: 1000
+Num Credit Pkts: 1000
+Num Data Pkts: 1000
+Total Overheads (B): 248000
+---
+4000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 200
+Num Credit Pkts: 400
+Num Data Pkts: 400
+Total Overheads (B): 82400
+* P2P Only:
+Num Credit Req Pkts: 100
+Num Credit Pkts: 300
+Num Data Pkts: 300
+Total Overheads (B): 57600
+---
+[1.0001, 1.001, 1.0073, 1.0052]
+
+--- 15 FLO SLOWPACE: ---
+4B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 299921
+Num Credit Pkts: 150857
+Num Data Pkts: 150778
+Total Overheads (B): 49927592
+* P2P Only:
+Num Credit Req Pkts: 150000
+Num Credit Pkts: 150000
+Num Data Pkts: 149921
+Total Overheads (B): 37193680
+---
+40B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 29999
+Num Credit Pkts: 15857
+Num Data Pkts: 15857
+Total Overheads (B): 5120464
+* P2P Only:
+Num Credit Req Pkts: 15000
+Num Credit Pkts: 15000
+Num Data Pkts: 15000
+Total Overheads (B): 3720000
+---
+400B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 2999
+Num Credit Pkts: 2357
+Num Data Pkts: 2357
+Total Overheads (B): 638464
+* P2P Only:
+Num Credit Req Pkts: 1500
+Num Credit Pkts: 1500
+Num Data Pkts: 1500
+Total Overheads (B): 372000
+---
+4000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 300
+Num Credit Pkts: 600
+Num Data Pkts: 600
+Total Overheads (B): 123600
+* P2P Only:
+Num Credit Req Pkts: 150
+Num Credit Pkts: 450
+Num Data Pkts: 450
+Total Overheads (B): 86400
+---
+[1.0001, 1.0007, 1.0054, 1.0056]
+
+--- 15 FLO FASTPACE: ---
+4B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 50025
+Num Credit Pkts: 1192
+Num Data Pkts: 435
+Total Overheads (B): 4337028
+* P2P Only:
+Num Credit Req Pkts: 50010
+Num Credit Pkts: 1177
+Num Data Pkts: 420
+Total Overheads (B): 4333308
+---
+40B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 15015
+Num Credit Pkts: 997
+Num Data Pkts: 435
+Total Overheads (B): 1379808
+* P2P Only:
+Num Credit Req Pkts: 15000
+Num Credit Pkts: 982
+Num Data Pkts: 420
+Total Overheads (B): 1376088
+---
+400B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 2709
+Num Credit Pkts: 2357
+Num Data Pkts: 2142
+Total Overheads (B): 596904
+* P2P Only:
+Num Credit Req Pkts: 1500
+Num Credit Pkts: 1500
+Num Data Pkts: 1285
+Total Overheads (B): 354800
+---
+4000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 290
+Num Credit Pkts: 590
+Num Data Pkts: 587
+Total Overheads (B): 120880
+* P2P Only:
+Num Credit Req Pkts: 150
+Num Credit Pkts: 450
+Num Data Pkts: 448
+Total Overheads (B): 86240
+---
+[1.0, 1.0001, 1.0058, 1.0049]

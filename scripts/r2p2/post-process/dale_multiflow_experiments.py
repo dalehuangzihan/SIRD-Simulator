@@ -192,14 +192,15 @@ def experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_a
     src = 0
     dst = 1
 
-    minimum_interval_us = 0.01
+    minimum_interval_us = 1 #0.01
     total_flow_size_B = 40000
     # NOTE: smallest byteload size that SSIRD sim is set up to use is 4B => with headers this makes a total of 64B per byteload.
     # NOTE: byteload sizes are multiples of 4 so that the inter-byteload periods are later calculated to be whole numbers in the end
     # byteload_size_B_list = [4]
     byteload_size_B_list = [4, 40, 400, 4000] 
     num_of_experiments = len(byteload_size_B_list)
-    num_flows = 15 # TODO: for testing
+    num_flows = 10 # TODO: for testing
+    # num_flows = 15 # TODO: for testing
     inter_flow_spacing_us = 0 # TODO: for testing
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
 
@@ -235,11 +236,11 @@ def experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_a
     assert(len(inter_byteload_period_us_list) == num_of_experiments)
 
     # calculate simulation durations for experiment
-    ssird_sim_dur_multiplication_factor = 10 # TODO: tweak
-    ssird_sim_dur_list = []
-    for i in range(0, len(num_byteloads_per_flow_list)):
-       ssird_sim_dur_list.append(dale_experiment_rig.Experiment.get_sim_duration(num_flows, inter_flow_spacing_us, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], ssird_sim_dur_multiplication_factor))
-    # ssird_sim_dur_list = [0.0130] * num_of_experiments
+    # ssird_sim_dur_multiplication_factor = 10 # TODO: tweak
+    # ssird_sim_dur_list = []
+    # for i in range(0, len(num_byteloads_per_flow_list)):
+    #    ssird_sim_dur_list.append(dale_experiment_rig.Experiment.get_sim_duration(num_flows, inter_flow_spacing_us, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], ssird_sim_dur_multiplication_factor))
+    ssird_sim_dur_list = [0.02] * num_of_experiments
     logger.debug(f"Sim Durations list (SSIRD): {ssird_sim_dur_list}")
     assert(len(ssird_sim_dur_list) == num_of_experiments)
     
@@ -247,7 +248,7 @@ def experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_a
     # dctcp_sim_dur_list = []
     # for i in range(0, len(num_byteloads_per_flow_list)):
     #    dctcp_sim_dur_list.append(dale_experiment_rig.Experiment.get_sim_duration(num_flows, inter_flow_spacing_us, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], dctcp_sim_dur_multiplication_factor))
-    dctcp_sim_dur_list = [0.02, 0.017, 0.017, 0.017] # TODO: tweak
+    dctcp_sim_dur_list = [0.02] * num_of_experiments #[0.02, 0.017, 0.017, 0.017] # TODO: tweak
     logger.debug(f"Sim Durations list (DCTCP): {dctcp_sim_dur_list}")
     assert(len(dctcp_sim_dur_list) == num_of_experiments)
 
@@ -515,9 +516,13 @@ def experiment_vary_byteloadsize_fullrange_multiflow(is_full_postproc=True, titl
     assert num_of_experiments == len(dctcp_fct_list)
 
 if __name__ == "__main__":
+    # ---------- LARGE BYTELOADS ----------
     # experiment_vary_byteloadsize_largebload_multiflow(is_full_postproc=True, title_addendum="_largepkt_multiflow", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
-    experiment_vary_byteloadsize_subpkt_multiflow_150flo(is_full_postproc=False, title_addendum="_subpkt_multiflow_150flo", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # ---------- SUBPKT BYTELOADS ----------
+    experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_addendum="_subpkt_multiflow_slowpace", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_vary_byteloadsize_subpkt_multiflow_150flo(is_full_postproc=False, title_addendum="_subpkt_multiflow_150flo", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
+    # ---------- FULLRANGE BYTELOADS ----------
     # experiment_vary_byteloadsize_fullrange_multiflow(is_full_postproc=False, title_addendum="_fullrange_multiflow", log_level=dale_experiment_rig.LOG_LEVEL_2)
 

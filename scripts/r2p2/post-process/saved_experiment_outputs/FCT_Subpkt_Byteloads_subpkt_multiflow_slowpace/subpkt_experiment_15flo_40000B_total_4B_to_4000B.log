@@ -1,0 +1,465 @@
+DEBUG:__main__:Protos tested: ['SSIRD', 'DCTCP-50']
+DEBUG:__main__:Total_flow_size_B: 40000
+DEBUG:__main__:Byteload sizes list: [4, 40, 400, 4000]
+DEBUG:__main__:Num Flows: 15
+DEBUG:__main__:Inter-flow spacing (us): 0
+DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+DEBUG:__main__:Num Byteloads list: [10000, 1000, 100, 10]
+DEBUG:__main__:Total injection period (us): 10000
+DEBUG:__main__:Inter-Byteload Periods list: [1.0, 10.0, 100.0, 1000.0]
+DEBUG:__main__:Sim Durations list (SSIRD): [0.02, 0.02, 0.02, 0.02]
+DEBUG:__main__:Sim Durations list (DCTCP): [0.02, 0.02, 0.02, 0.02]
+INFO:__main__:Total Flow Size (Bytes): 40000
+INFO:__main__:Total Injection Period (us): 10000
+INFO:__main__:Byteload Size (Bytes): [4, 40, 400, 4000]
+INFO:__main__:Num Byteloads: [10000, 1000, 100, 10]
+INFO:__main__:Intervals (us): [1.0, 10.0, 100.0, 1000.0]
+INFO:__main__:Num flows: 15
+INFO:__main__:Gdpt GBps theoretical: [0.48, 0.48, 0.48, 0.48]
+INFO:__main__:* Sim duration (SSIRD): [0.02, 0.02, 0.02, 0.02]
+INFO:__main__:* Sim duration (DCTCP): [0.02, 0.02, 0.02, 0.02]
+INFO:dale_experiment_rig:
+##### RUN GROUP #####
+INFO:dale_experiment_rig:
+=====
+Execute experiment 15flo-10000#-4B-1000ns_subpkt_multiflow_slowpace
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:
+=====
+Execute experiment 15flo-10000#-4B-1000ns_subpkt_multiflow_slowpace
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:
+=====
+Execute experiment 15flo-1000#-40B-10000ns_subpkt_multiflow_slowpace
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:dale_experiment_rig:
+=====
+Execute experiment 15flo-1000#-40B-10000ns_subpkt_multiflow_slowpace
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:
+=====
+Execute experiment 15flo-100#-400B-100000ns_subpkt_multiflow_slowpace
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:
+=====
+Execute experiment 15flo-100#-400B-100000ns_subpkt_multiflow_slowpace
+INFO:dale_experiment_rig:
+=====
+Execute experiment 15flo-10#-4000B-1000000ns_subpkt_multiflow_slowpace
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:
+=====
+Execute experiment 15flo-10#-4000B-1000000ns_subpkt_multiflow_slowpace
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/SSIRD-15flo-100#-400B-100000ns_subpkt_multiflow_slowpace.sh
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ssird_15flo-100#-400B-100000ns_subpkt_multiflow_slowpace_stdout.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/SSIRD-15flo-1000#-40B-10000ns_subpkt_multiflow_slowpace.sh
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/DCTCP-50-15flo-1000#-40B-10000ns_subpkt_multiflow_slowpace.sh
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ssird_15flo-100#-400B-100000ns_subpkt_multiflow_slowpace_stderr.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ssird_15flo-1000#-40B-10000ns_subpkt_multiflow_slowpace_stdout.out
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ aready exists.
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/DCTCP-50-15flo-10#-4000B-1000000ns_subpkt_multiflow_slowpace.sh
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/DCTCP-50-15flo-100#-400B-100000ns_subpkt_multiflow_slowpace.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/DCTCP-50_15flo-1000#-40B-10000ns_subpkt_multiflow_slowpace_stdout.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/SSIRD-15flo-10000#-4B-1000ns_subpkt_multiflow_slowpace.sh
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ssird_15flo-1000#-40B-10000ns_subpkt_multiflow_slowpace_stderr.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/DCTCP-50_15flo-10#-4000B-1000000ns_subpkt_multiflow_slowpace_stdout.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/SSIRD-15flo-10#-4000B-1000000ns_subpkt_multiflow_slowpace.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/DCTCP-50_15flo-100#-400B-100000ns_subpkt_multiflow_slowpace_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/DCTCP-50_15flo-1000#-40B-10000ns_subpkt_multiflow_slowpace_stderr.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ssird_15flo-10000#-4B-1000ns_subpkt_multiflow_slowpace_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/DCTCP-50_15flo-10#-4000B-1000000ns_subpkt_multiflow_slowpace_stderr.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ssird_15flo-10#-4000B-1000000ns_subpkt_multiflow_slowpace_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/DCTCP-50_15flo-100#-400B-100000ns_subpkt_multiflow_slowpace_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ssird_15flo-10000#-4B-1000ns_subpkt_multiflow_slowpace_stderr.out
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/ssird_15flo-10#-4000B-1000000ns_subpkt_multiflow_slowpace_stderr.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/DCTCP-50-15flo-10000#-4B-1000ns_subpkt_multiflow_slowpace.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/DCTCP-50_15flo-10000#-4B-1000ns_subpkt_multiflow_slowpace_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/DCTCP-50_15flo-10000#-4B-1000ns_subpkt_multiflow_slowpace_stderr.out
+INFO:dale_experiment_rig:-----
+Backing up app trace file paths
+DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/15flo/SSIRD_app_traces.txt
+INFO:dale_experiment_rig:-----
+Backing up app trace file paths
+DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/15flo/DCTCP-50_app_traces.txt
+INFO:dale_experiment_rig:
+##### POST PROCESS RESULTS #####
+INFO:dale_experiment_rig:=====
+** Num Byteloads Per Flow: 10000, Byteload Size (B): 4, Inter-Byteload Interval (us): 1.0, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.02
+INFO:dale_experiment_rig:Processing SIRD results exp_id 0:: 15flo-10000#-4B
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-15flo-10000#-4B-1000ns_subpkt_multiflow_slowpace/data/SSIRD/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9995
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9995
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9995
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9995
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9995
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9995
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9995
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9995
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9995
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9995
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 10:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9995
+DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 11:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9995
+DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 12:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9994
+DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 13:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9994
+DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 14:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9993
+DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:SSIRD FCT: [0.010001614000000103, 0.010001621000000682, 0.010001633999999981, 0.010001664000000687, 0.010001694000001393, 0.010001724000000323, 0.010001754000001029, 0.010001783999999958, 0.010001814000000664, 0.01000184400000137, 0.0100018740000003, 0.010001904000001005, 0.010001933999999935, 0.01000196400000064, 0.010001994000001346] ms, Gdpt (overall): 0.4800448044804224 Gbps, Gdpt (per flow): [0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829]
+INFO:dale_experiment_rig:Processing DCTCP results exp_id 0:: 15flo-10000#-4B
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-15flo-10000#-4B-1000ns_subpkt_multiflow_slowpace/data/DCTCP-50/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 10:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 11:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 12:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 13:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 14:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:DCTCP FCT: [0.018870409000001587, 0.018870421000000803, 0.018870434000000103, 0.018870447000001178, 0.018870460000000477, 0.018871281000000906, 0.018871293000000122, 0.018871306000001198, 0.018871319000000497, 0.018871332000001573, 0.018871345000000872, 0.01887135700000009, 0.018871370000001164, 0.018871383000000463, 0.01887139600000154] ms, Gtpt (overall): 0.4800448044804224 Gbps, Gdpt (per flow): [0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829]
+INFO:dale_experiment_rig:=====
+** Num Byteloads Per Flow: 1000, Byteload Size (B): 40, Inter-Byteload Interval (us): 10.0, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.02
+INFO:dale_experiment_rig:Processing SIRD results exp_id 1:: 15flo-1000#-40B
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-15flo-1000#-40B-10000ns_subpkt_multiflow_slowpace/data/SSIRD/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 1000, num srq events: 1000, num rrq events: 999
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 32000
+ERROR:dale_experiment_rig:Missing data! flow_id: 3: total bytes recv: 32000, expected flow size = 40000, diff = 8000
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 10:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 11:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 12:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 13:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 14:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:SSIRD FCT: [0.009997559000000322, 0.009997589000001028, 0.009997618999999958, 0.009997649000000663, 0.00999767900000137, 0.009997709000000299, 0.009997739000001005, 0.009997768999999934, 0.00999779900000064, 0.009997829000001346, 0.009997859000000275, 0.009997889000000981, 0.00999791899999991, 0.009997949000000617, 0.009997979000001322] ms, Gdpt (overall): 0.48044844844844053 Gbps, Gdpt (per flow): [0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947]
+INFO:dale_experiment_rig:Processing DCTCP results exp_id 1:: 15flo-1000#-40B
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-15flo-1000#-40B-10000ns_subpkt_multiflow_slowpace/data/DCTCP-50/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 10:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 11:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 12:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 13:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 14:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
+DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:DCTCP FCT: [0.009992519000000755, 0.0099925280000015, 0.00999253800000055, 0.009992547000001295, 0.009992557000000346, 0.00999256600000109, 0.009992576000000142, 0.009992585000000886, 0.009992594000001631, 0.009992604000000682, 0.009992613000001427, 0.009992623000000478, 0.009992632000001223, 0.009992642000000274, 0.009992651000001018] ms, Gtpt (overall): 0.48044844844844053 Gbps, Gdpt (per flow): [0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947]
+INFO:dale_experiment_rig:=====
+** Num Byteloads Per Flow: 100, Byteload Size (B): 400, Inter-Byteload Interval (us): 100.0, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.02
+INFO:dale_experiment_rig:Processing SIRD results exp_id 2:: 15flo-100#-400B
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-15flo-100#-400B-100000ns_subpkt_multiflow_slowpace/data/SSIRD/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 100, num srq events: 100, num rrq events: 99
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 32000
+ERROR:dale_experiment_rig:Missing data! flow_id: 3: total bytes recv: 32000, expected flow size = 40000, diff = 8000
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 10:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 11:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 12:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 13:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 14:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:SSIRD FCT: [0.009907617000001423, 0.009907655000001014, 0.009907694000000689, 0.00990773200000028, 0.009907770999999954, 0.009907809000001322, 0.009907847000000913, 0.009907886000000588, 0.009907924000000179, 0.00990796300000163, 0.00990800100000122, 0.009908039000000812, 0.009908078000000486, 0.009908116000000078, 0.009908155000001528] ms, Gdpt (overall): 0.4845252525252516 Gbps, Gdpt (per flow): [0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994]
+INFO:dale_experiment_rig:Processing DCTCP results exp_id 2:: 15flo-100#-400B
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-15flo-100#-400B-100000ns_subpkt_multiflow_slowpace/data/DCTCP-50/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 10:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 11:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 12:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 13:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 14:: num of byteloads: 100, num srq events: 100, num rrq events: 100
+DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:DCTCP FCT: [0.009902575999999996, 0.009902615000001447, 0.009902653000001038, 0.00990269100000063, 0.009902729000000221, 0.009902767999999895, 0.009902806000001263, 0.009902844000000854, 0.009902882000000446, 0.00990292100000012, 0.009902959000001488, 0.00990299700000108, 0.00990303500000067, 0.009903074000000345, 0.009903111999999936] ms, Gtpt (overall): 0.4845252525252516 Gbps, Gdpt (per flow): [0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994]
+INFO:dale_experiment_rig:=====
+** Num Byteloads Per Flow: 10, Byteload Size (B): 4000, Inter-Byteload Interval (us): 1000.0, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.02
+INFO:dale_experiment_rig:Processing SIRD results exp_id 3:: 15flo-10#-4000B
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-15flo-10#-4000B-1000000ns_subpkt_multiflow_slowpace/data/SSIRD/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 32000
+ERROR:dale_experiment_rig:Missing data! flow_id: 3: total bytes recv: 32000, expected flow size = 40000, diff = 8000
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 10:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 11:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 12:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 13:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 14:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:SSIRD FCT: [0.009008002000001625, 0.009008342000001335, 0.009008692000000096, 0.009009032000001582, 0.00900937100000121, 0.009009712000001002, 0.009010052000000712, 0.00901039100000034, 0.009010729999999967, 0.00901106900000137, 0.009011408000000998, 0.009011748000000708, 0.009012087000000335, 0.009012425999999962, 0.009012765000001366] ms, Gdpt (overall): 0.5297777777777577 Gbps, Gdpt (per flow): [0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786]
+INFO:dale_experiment_rig:Processing DCTCP results exp_id 3:: 15flo-10#-4000B
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-15flo-10#-4000B-1000000ns_subpkt_multiflow_slowpace/data/DCTCP-50/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 10:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 11:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 12:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 13:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 14:: num of byteloads: 10, num srq events: 10, num rrq events: 10
+DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:DCTCP FCT: [0.00900296200000028, 0.009003300000001602, 0.009003639000001229, 0.009003978000000856, 0.009004317000000484, 0.009004655000000028, 0.009004994000001432, 0.009005333000001059, 0.009005672000000686, 0.00900601000000023, 0.009006349000001634, 0.009006688000001262, 0.009007026000000806, 0.009007365000000433, 0.00900770400000006] ms, Gtpt (overall): 0.5297777777777577 Gbps, Gdpt (per flow): [0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786]
+INFO:dale_experiment_rig:
+##### GENERATE METRICS #####
+INFO:__main__:Total Flow Size (Bytes): 40000
+INFO:__main__:Total Injection Period (us): 10000
+INFO:__main__:Byteload Size (Bytes): [4, 40, 400, 4000]
+INFO:__main__:Num Byteloads: [10000, 1000, 100, 10]
+INFO:__main__:Intervals (us): [1.0, 10.0, 100.0, 1000.0]
+INFO:__main__:Num flows: 15
+DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+INFO:__main__:Gdpt Gbps theoretical: [0.48, 0.48, 0.48, 0.48]
+INFO:__main__:Gdpt Gbps measured (SSIRD): [0.4800448044804224, 0.48044844844844053, 0.4845252525252516, 0.5297777777777577]
+INFO:__main__:Gdpt Gbps measured (DCTCP): [0.4800448044804224, 0.48044844844844053, 0.4845252525252516, 0.5297777777777577]
+DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829], [0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947], [0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994], [0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786]]
+DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [[0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829, 0.03199999999999829], [0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947, 0.03199999999999947], [0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994, 0.03199999999999994], [0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786, 0.031999999999998786]]
+INFO:__main__:* Sim duration (SSIRD): [0.02, 0.02, 0.02, 0.02]
+INFO:__main__:* Sim duration (DCTCP): [0.02, 0.02, 0.02, 0.02]
+INFO:__main__:* SSIRD FCT: [[0.010001614000000103, 0.010001621000000682, 0.010001633999999981, 0.010001664000000687, 0.010001694000001393, 0.010001724000000323, 0.010001754000001029, 0.010001783999999958, 0.010001814000000664, 0.01000184400000137, 0.0100018740000003, 0.010001904000001005, 0.010001933999999935, 0.01000196400000064, 0.010001994000001346], [0.009997559000000322, 0.009997589000001028, 0.009997618999999958, 0.009997649000000663, 0.00999767900000137, 0.009997709000000299, 0.009997739000001005, 0.009997768999999934, 0.00999779900000064, 0.009997829000001346, 0.009997859000000275, 0.009997889000000981, 0.00999791899999991, 0.009997949000000617, 0.009997979000001322], [0.009907617000001423, 0.009907655000001014, 0.009907694000000689, 0.00990773200000028, 0.009907770999999954, 0.009907809000001322, 0.009907847000000913, 0.009907886000000588, 0.009907924000000179, 0.00990796300000163, 0.00990800100000122, 0.009908039000000812, 0.009908078000000486, 0.009908116000000078, 0.009908155000001528], [0.009008002000001625, 0.009008342000001335, 0.009008692000000096, 0.009009032000001582, 0.00900937100000121, 0.009009712000001002, 0.009010052000000712, 0.00901039100000034, 0.009010729999999967, 0.00901106900000137, 0.009011408000000998, 0.009011748000000708, 0.009012087000000335, 0.009012425999999962, 0.009012765000001366]]
+INFO:__main__:* DCTCP FCT: [[0.018870409000001587, 0.018870421000000803, 0.018870434000000103, 0.018870447000001178, 0.018870460000000477, 0.018871281000000906, 0.018871293000000122, 0.018871306000001198, 0.018871319000000497, 0.018871332000001573, 0.018871345000000872, 0.01887135700000009, 0.018871370000001164, 0.018871383000000463, 0.01887139600000154], [0.009992519000000755, 0.0099925280000015, 0.00999253800000055, 0.009992547000001295, 0.009992557000000346, 0.00999256600000109, 0.009992576000000142, 0.009992585000000886, 0.009992594000001631, 0.009992604000000682, 0.009992613000001427, 0.009992623000000478, 0.009992632000001223, 0.009992642000000274, 0.009992651000001018], [0.009902575999999996, 0.009902615000001447, 0.009902653000001038, 0.00990269100000063, 0.009902729000000221, 0.009902767999999895, 0.009902806000001263, 0.009902844000000854, 0.009902882000000446, 0.00990292100000012, 0.009902959000001488, 0.00990299700000108, 0.00990303500000067, 0.009903074000000345, 0.009903111999999936], [0.00900296200000028, 0.009003300000001602, 0.009003639000001229, 0.009003978000000856, 0.009004317000000484, 0.009004655000000028, 0.009004994000001432, 0.009005333000001059, 0.009005672000000686, 0.00900601000000023, 0.009006349000001634, 0.009006688000001262, 0.009007026000000806, 0.009007365000000433, 0.00900770400000006]]
