@@ -111,7 +111,7 @@ class MultiFlow:
         self.num_flows = len(flow_start_times_us_list)
         self.flows_list = []
 
-        assert(num_byteloads_per_flow > 1) # we want at least 2 byteloads per flow
+        # assert(num_byteloads_per_flow > 1) # we want at least 2 byteloads per flow
         self.init_flows()
 
     def init_flows(self):
@@ -309,8 +309,10 @@ class ExperimentOutputRaw:
             logger.error("An error occurred while reading the file")
     
         # TODO: FIX ME! This total-thrpt calc seems a lil iffy... it overestimates gbps by 5%. Why??
-        measured_total_gdpt_gbps = (total_bytes_sent_until_penultimate_srq_B * 8) / (overall_final_srq_timestamp_s - overall_srq_start_time_s) * pow(10,-9)
-        # measured_total_gdpt_gbps = sum(measured_gdpt_gbps_per_flow_list)
+        if (overall_final_srq_timestamp_s - overall_srq_start_time_s > 0):
+            measured_total_gdpt_gbps = (total_bytes_sent_until_penultimate_srq_B * 8) / (overall_final_srq_timestamp_s - overall_srq_start_time_s) * pow(10,-9)
+        else:
+            measured_total_gdpt_gbps = -1
 
         fct_list = []
         measured_gdpt_gbps_per_flow_list = []
@@ -429,7 +431,10 @@ class FlowStats:
         # here we use the n-1 gaps between the n srq events to calc throughput:
         if self.num_byteloads == 1: return None 
         send_duration_s = self.final_srq_timestamp - self.start_time_s 
-        return (self.total_bytes_sent_until_penultimate_srq_B * 8) / send_duration_s * pow(10,-9)
+        if (send_duration_s > 0):
+            return (self.total_bytes_sent_until_penultimate_srq_B * 8) / send_duration_s * pow(10,-9)
+        else:
+            return -1 
 
 class Experiment():
 

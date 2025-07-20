@@ -308,15 +308,14 @@ def experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_a
     src = 0
     dst = 1
 
-    minimum_interval_us = 1 #0.01
+    minimum_interval_us = 0.01 # 10us
     total_flow_size_B = 40000
     # NOTE: smallest byteload size that SSIRD sim is set up to use is 4B => with headers this makes a total of 64B per byteload.
     # NOTE: byteload sizes are multiples of 4 so that the inter-byteload periods are later calculated to be whole numbers in the end
-    # byteload_size_B_list = [4]
-    byteload_size_B_list = [4, 40, 400, 4000] 
+    # byteload_size_B_list = [40000]
+    byteload_size_B_list = [4, 40, 400, 4000, 40000] 
     num_of_experiments = len(byteload_size_B_list)
-    num_flows = 10 # TODO: for testing
-    # num_flows = 15 # TODO: for testing
+    num_flows = 15 # TODO: for testing
     inter_flow_spacing_us = 0 # TODO: for testing
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
 
@@ -424,7 +423,7 @@ def experiment_vary_byteloadsize_subpkt_multiflow_150flo(is_full_postproc=True, 
     # NOTE: smallest byteload size that SSIRD sim is set up to use is 4B => with headers this makes a total of 64B per byteload.
     # NOTE: byteload sizes are multiples of 4 so that the inter-byteload periods are later calculated to be whole numbers in the end
     # byteload_size_B_list = [4]
-    byteload_size_B_list = [4, 40, 400, 4000] 
+    byteload_size_B_list = [4, 40, 400, 4000, 40000] 
     num_of_experiments = len(byteload_size_B_list)
     num_flows = 150 # TODO: for testing
     inter_flow_spacing_us = 0 # TODO: for testing
@@ -634,11 +633,12 @@ def experiment_vary_byteloadsize_fullrange_multiflow(is_full_postproc=True, titl
 if __name__ == "__main__":
     # ---------- LARGE BYTELOADS ----------
     # experiment_vary_byteloadsize_largebload_multiflow(is_full_postproc=True, title_addendum="_largepkt_multiflow", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_vary_byteloadsize_largebload_multiflow_150flo(is_full_postproc=True, title_addendum="_largepkt_multiflow_150flo", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_vary_byteloadsize_largebload_multiflow_150flo(is_full_postproc=True, title_addendum="_largepkt_multiflow_150flo", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
     # ---------- SUBPKT BYTELOADS ----------
-    # experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_addendum="_subpkt_multiflow_slowpace", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_vary_byteloadsize_subpkt_multiflow_150flo(is_full_postproc=True, title_addendum="_subpkt_multiflow_150flo", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_addendum="_subpkt_multiflow_fastpace", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_addendum="_subpkt_multiflow_fastpace_extended", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_vary_byteloadsize_subpkt_multiflow_150flo(is_full_postproc=True, title_addendum="_subpkt_multiflow_150flo_extended", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
     # ---------- FULLRANGE BYTELOADS ----------
     # experiment_vary_byteloadsize_fullrange_multiflow(is_full_postproc=False, title_addendum="_fullrange_multiflow", log_level=dale_experiment_rig.LOG_LEVEL_2)
