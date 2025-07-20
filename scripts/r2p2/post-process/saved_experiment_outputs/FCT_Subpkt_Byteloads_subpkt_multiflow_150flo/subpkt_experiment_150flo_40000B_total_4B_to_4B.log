@@ -1,0 +1,989 @@
+DEBUG:__main__:Protos tested: ['SSIRD', 'DCTCP-50']
+DEBUG:__main__:Total_flow_size_B: 40000
+DEBUG:__main__:Byteload sizes list: [4]
+DEBUG:__main__:Num Flows: 150
+DEBUG:__main__:Inter-flow spacing (us): 0
+DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+DEBUG:__main__:Num Byteloads list: [10000]
+DEBUG:__main__:Total injection period (us): 1000.0
+DEBUG:__main__:Inter-Byteload Periods list: [0.1]
+DEBUG:__main__:Sim Durations list (DCTCP): [0.03]
+INFO:__main__:Total Flow Size (Bytes): 40000
+INFO:__main__:Total Injection Period (us): 1000.0
+INFO:__main__:Byteload Size (Bytes): [4]
+INFO:__main__:Num Byteloads: [10000]
+INFO:__main__:Intervals (us): [0.1]
+INFO:__main__:Num flows: 150
+INFO:__main__:Gdpt GBps theoretical: [48.0]
+INFO:__main__:* Sim duration (SSIRD): [0.03]
+INFO:__main__:* Sim duration (DCTCP): [0.03]
+INFO:dale_experiment_rig:
+##### RUN GROUP #####
+INFO:dale_experiment_rig:
+=====
+Execute experiment 150flo-10000#-4B-100ns_subpkt_multiflow_150flo
+INFO:dale_experiment_rig:Flags: 1, 0, 0, 0, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.030000; dctcp_sim_duration=0.030000
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:
+=====
+Execute experiment 150flo-10000#-4B-100ns_subpkt_multiflow_150flo
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/
+INFO:dale_experiment_rig:Flags: 1, 0, 0, 0, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.030000; dctcp_sim_duration=0.030000
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/ aready exists.
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/SSIRD-150flo-10000#-4B-100ns_subpkt_multiflow_150flo.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/ssird_150flo-10000#-4B-100ns_subpkt_multiflow_150flo_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/ssird_150flo-10000#-4B-100ns_subpkt_multiflow_150flo_stderr.out
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/ aready exists.
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/DCTCP-50-150flo-10000#-4B-100ns_subpkt_multiflow_150flo.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/DCTCP-50_150flo-10000#-4B-100ns_subpkt_multiflow_150flo_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/DCTCP-50_150flo-10000#-4B-100ns_subpkt_multiflow_150flo_stderr.out
+INFO:dale_experiment_rig:-----
+Backing up app trace file paths
+DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/150flo/SSIRD_app_traces.txt
+INFO:dale_experiment_rig:-----
+Backing up app trace file paths
+DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/FCT_Subpkt_Byteloads_subpkt_multiflow_150flo/150flo/DCTCP-50_app_traces.txt
+INFO:dale_experiment_rig:
+##### POST PROCESS RESULTS #####
+INFO:dale_experiment_rig:=====
+** Num Byteloads Per Flow: 10000, Byteload Size (B): 4, Inter-Byteload Interval (us): 0.1, ssird_sim_dur (s): 0.03, dctcp_sim_dur (s): 0.03
+INFO:dale_experiment_rig:Processing SIRD results exp_id 0:: 150flo-10000#-4B
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-150flo-10000#-4B-100ns_subpkt_multiflow_150flo/data/SSIRD/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 10:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 11:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 12:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 13:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 14:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 15:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 15:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 16:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 16:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 17:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 17:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 18:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 18:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 19:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 19:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 20:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 20:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 21:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 21:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 22:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 22:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 23:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 23:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 24:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 24:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 25:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 25:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 26:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 26:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 27:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 27:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 28:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 28:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 29:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 29:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 30:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 30:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 31:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 31:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 32:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 32:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 33:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 33:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 34:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 34:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 35:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 35:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 36:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 36:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 37:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 37:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 38:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 38:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 39:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 39:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 40:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 40:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 41:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 41:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 42:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 42:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 43:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 43:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 44:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 44:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 45:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 45:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 46:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 46:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 47:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 47:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 48:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 48:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 49:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 49:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 50:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 50:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 51:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 51:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 52:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 52:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 53:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 53:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 54:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 54:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 55:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 55:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 56:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 56:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 57:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 57:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 58:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 58:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 59:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 59:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 60:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 60:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 61:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 61:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 62:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 62:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 63:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 63:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 64:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 64:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 65:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 65:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 66:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 66:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 67:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 67:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 68:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 68:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 69:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 69:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 70:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 70:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 71:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 71:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 72:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 72:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 73:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 73:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 74:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 74:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 75:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 75:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 76:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 76:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 77:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 77:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 78:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 78:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 79:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 79:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 80:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 80:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 81:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 81:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 82:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 82:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 83:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 83:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 84:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 84:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 85:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 85:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 86:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 86:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 87:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 87:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 88:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 88:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 89:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 89:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 90:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 90:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 91:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 91:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 92:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 92:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 93:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 93:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 94:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 94:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 95:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 95:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 96:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 96:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 97:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 97:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 98:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 98:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 99:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 99:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 100:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 100:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 101:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 101:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 102:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 102:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 103:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 103:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 104:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 104:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 105:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 105:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 106:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 106:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 107:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 107:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 108:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 108:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 109:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 109:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 110:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 110:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 111:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 111:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 112:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 112:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 113:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 113:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 114:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 114:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 115:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 115:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 116:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 116:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 117:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 117:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 118:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 118:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 119:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 119:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 120:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 120:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 121:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 121:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 122:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 122:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 123:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 123:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 124:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 124:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 125:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 125:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 126:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 126:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 127:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 127:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 128:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 128:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 129:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 129:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 130:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 130:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 131:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 131:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 132:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 132:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 133:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 133:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 134:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 134:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 135:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 135:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 136:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 136:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 137:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 137:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 138:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 138:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 139:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 139:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 140:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 140:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 141:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 141:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 142:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 142:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 143:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 143:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 144:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 144:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 145:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 145:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 146:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 146:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 147:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 147:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 148:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 148:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:Flow 149:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 149:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 40000
+INFO:dale_experiment_rig:SSIRD FCT: [0.010367057999999929, 0.010556669000001406, 0.010475407000001269, 0.010428004000001323, 0.010468635000000504, 0.010170674000001156, 0.010180832000001416, 0.01053635400000097, 0.010512652000000955, 0.010218077000001102, 0.010126657000000705, 0.010255322000000788, 0.01013342900000147, 0.010394145000001132, 0.01014020100000046, 0.010573599000000655, 0.010380601000001377, 0.01056682699999989, 0.010268866000000543, 0.010326427000000749, 0.010289182000001063, 0.010258708000000283, 0.010451706000001337, 0.01012327100000121, 0.010421232000000558, 0.010424618000000052, 0.010251936000001294, 0.010221463000000597, 0.010197762000000665, 0.01015035900000072, 0.010438162000001583, 0.010482179000000258, 0.010377215000000106, 0.010241779000001117, 0.01029933900000124, 0.010549897000000641, 0.010187604000000405, 0.010465249000001009, 0.01018421800000091, 0.010248551000000106, 0.010157131000001485, 0.01058714300000041, 0.010207919000000842, 0.0103094970000015, 0.010397531000000626, 0.01057698500000015, 0.010590528000001598, 0.010458478000000326, 0.010356900000001446, 0.010553283000000135, 0.010329813000000243, 0.010532968000001475, 0.010455092000000832, 0.010522810000001215, 0.010272252000000037, 0.01035012800000068, 0.010546511000001146, 0.01041107500000038, 0.010383987000000872, 0.010543125999999958, 0.010404303000001391, 0.010441548000001077, 0.010211305000000337, 0.010214691000001608, 0.010265480000001048, 0.010499109000001283, 0.01058037100000142, 0.010174060000000651, 0.010306111000000229, 0.010231621000000857, 0.01019437600000117, 0.010472020999999998, 0.010282410000000297, 0.0101909899999999, 0.010448320000000066, 0.01020114800000016, 0.010414460999999875, 0.01036028600000094, 0.010106342000000268, 0.01033997000000042, 0.010495723000000012, 0.010163903000000474, 0.010292567000000474, 0.01050588000000019, 0.010407689000000886, 0.010302725000000734, 0.010167287999999886, 0.010228235000001362, 0.010417847000001146, 0.010333199000001514, 0.010502495000000778, 0.010238393000001622, 0.010529582000000204, 0.010092798000000514, 0.010444934000000572, 0.010245165000000611, 0.010109728000001539, 0.010279024000000803, 0.010275638000001308, 0.010316269000000489, 0.010285796000001568, 0.010343355999999915, 0.010089412000001019, 0.010434776000000312, 0.010086033000000327, 0.010146973000001225, 0.010096184000000008, 0.010363672000000435, 0.010492337000000518, 0.010295952999999969, 0.010116500000000528, 0.01051603800000045, 0.010387373000000366, 0.0101300430000002, 0.010262094000001554, 0.0103704440000012, 0.010563441000000395, 0.010153745000000214, 0.010312883000000994, 0.010177446000000145, 0.010319654999999983, 0.01039075899999986, 0.01052619600000071, 0.010539740000000464, 0.010461863000001514, 0.0105600550000009, 0.010235007000000351, 0.010099570000001279, 0.010485565000001529, 0.010519423999999944, 0.010119886000000022, 0.010583757000000915, 0.010136815000000965, 0.010143586999999954, 0.010373830000000694, 0.01040091700000012, 0.010113114000001033, 0.010478793000000763, 0.010102956000000773, 0.010323041000001254, 0.010353514000000175, 0.010488951000001023, 0.01050926600000146, 0.01057021300000116, 0.01020453400000143, 0.010224849000000091, 0.010346742000001186, 0.01016051700000098, 0.010431390000000818, 0.010336584000000926] ms, Gdpt (overall): 48.00476847684512 Gbps, Gdpt (per flow): [0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829]
+INFO:dale_experiment_rig:Processing DCTCP results exp_id 0:: 150flo-10000#-4B
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-150flo-10000#-4B-100ns_subpkt_multiflow_150flo/data/DCTCP-50/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 0: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 1: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 2: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 3: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 4: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 5: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 6: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 7: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 8: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 9: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 10:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 10: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 11:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 11: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 12:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 12: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 13:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 13: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 14:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 14: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 15:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 15:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 15: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 16:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 16:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 16: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 17:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 17:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 17: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 18:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 18:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 18: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 19:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 19:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 19: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 20:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 20:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 20: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 21:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 21:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 21: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 22:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 22:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 22: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 23:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 23:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 23: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 24:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 24:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 24: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 25:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 25:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 25: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 26:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 26:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 26: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 27:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 27:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 27: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 28:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 28:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 28: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 29:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 29:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 29: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 30:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 30:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 30: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 31:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 31:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 31: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 32:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 32:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 32: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 33:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 33:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 33: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 34:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 34:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 34: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 35:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 35:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 35: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 36:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 36:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 36: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 37:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 37:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 37: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 38:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 38:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 38: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 39:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 39:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 39: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 40:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 40:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 40: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 41:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 41:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 41: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 42:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 42:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 42: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 43:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 43:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 43: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 44:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 44:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 44: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 45:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 45:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 45: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 46:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 46:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 46: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 47:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 47:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 47: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 48:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 48:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 48: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 49:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 49:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 49: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 50:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 50:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 50: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 51:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 51:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 51: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 52:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 52:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 52: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 53:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 53:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 53: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 54:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 54:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 54: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 55:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 55:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 55: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 56:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 56:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 56: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 57:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 57:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 57: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 58:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 58:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 58: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 59:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 59:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 59: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 60:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 60:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 60: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 61:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 61:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 61: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 62:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 62:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 62: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 63:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 63:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 63: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 64:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 64:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 64: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 65:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 65:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 65: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 66:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 66:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 66: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 67:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 67:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 67: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 68:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 68:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 68: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 69:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 69:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 69: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 70:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 70:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 70: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 71:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 71:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 71: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 72:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 72:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 72: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 73:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 73:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 73: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 74:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 74:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 74: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 75:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 75:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 75: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 76:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 76:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 76: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 77:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 77:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 77: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 78:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 78:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 78: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 79:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 79:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 79: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 80:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 80:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 80: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 81:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 81:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 81: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 82:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 82:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 82: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 83:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 83:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 83: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 84:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 84:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 84: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 85:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 85:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 85: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 86:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 86:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 86: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 87:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 87:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 87: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 88:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 88:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 88: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 89:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 89:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 89: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 90:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 90:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 90: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 91:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 91:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 91: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 92:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 92:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 92: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 93:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 93:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 93: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 94:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 94:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 94: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 95:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 95:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 95: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 96:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 96:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 96: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 97:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 97:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 97: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 98:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 98:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 98: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 99:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 99:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 99: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 100:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 100:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 100: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 101:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 101:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 101: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 102:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 102:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 102: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 103:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 103:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 103: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 104:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 104:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 104: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 105:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 105:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 105: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 106:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 106:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 106: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 107:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 107:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 107: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 108:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 108:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 108: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 109:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 109:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 109: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 110:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 110:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 110: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 111:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 111:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 111: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 112:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 112:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 112: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 113:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 113:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 113: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 114:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 114:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 114: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 115:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 115:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 115: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 116:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 116:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 116: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 117:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 117:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 117: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 118:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 118:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 118: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 119:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 119:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 119: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 120:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 120:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 120: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 121:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 121:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 121: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 122:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 122:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 122: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 123:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 123:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 123: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 124:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1611
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8389
+DEBUG:dale_experiment_rig:Flow 124:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6444
+ERROR:dale_experiment_rig:Missing data! flow_id: 124: total bytes recv: 6444, expected flow size = 40000, diff = 33556
+INFO:dale_experiment_rig:Flow 125:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 125:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 125: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 126:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 126:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 126: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 127:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 127:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 127: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 128:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 128:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 128: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 129:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 129:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 129: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 130:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 130:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 130: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 131:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 131:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 131: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 132:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 132:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 132: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 133:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 133:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 133: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 134:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 134:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 134: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 135:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 135:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 135: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 136:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 136:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 136: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 137:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 137:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 137: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 138:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 138:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 138: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 139:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 139:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 139: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 140:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 140:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 140: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 141:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 141:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 141: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 142:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 142:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 142: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 143:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 143:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 143: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 144:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 144:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 144: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 145:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 145:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 145: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 146:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 146:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 146: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 147:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 147:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 147: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 148:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 148:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 148: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:Flow 149:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1610
+ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 8390
+DEBUG:dale_experiment_rig:Flow 149:: first_event_name: srq, final_event_name: rrq, expected_data_B: 40000, recv_data_B: 6440
+ERROR:dale_experiment_rig:Missing data! flow_id: 149: total bytes recv: 6440, expected flow size = 40000, diff = 33560
+INFO:dale_experiment_rig:DCTCP FCT: [0.030383851000001627, 0.030383864000000926, 0.030383876000000143, 0.03038388900000122, 0.030383902000000518, 0.030383915000001593, 0.030383928000000893, 0.03038394000000011, 0.030383953000001185, 0.030383966000000484, 0.03038397900000156, 0.03038399200000086, 0.030384004000000076, 0.03038401700000115, 0.03038403000000045, 0.030384043000001526, 0.030384056000000825, 0.030384068000000042, 0.030384081000001117, 0.030384094000000417, 0.030388627000000668, 0.030388639999999967, 0.030388653000001042, 0.03038866600000034, 0.030388679000001417, 0.030388691000000634, 0.030388703999999933, 0.03038871700000101, 0.030388730000000308, 0.030388743000001384, 0.0303887550000006, 0.0303887679999999, 0.030388781000000975, 0.030388794000000274, 0.03038880700000135, 0.030388819000000566, 0.030388831999999866, 0.03038884500000094, 0.03038885800000024, 0.030388871000001316, 0.030388883000000533, 0.03038889600000161, 0.030388909000000908, 0.030388922000000207, 0.030388935000001283, 0.0303889470000005, 0.030388960000001575, 0.030388973000000874, 0.030388986000000173, 0.03038899900000125, 0.030389011000000465, 0.03038902400000154, 0.03038903700000084, 0.03038905000000014, 0.030389063000001215, 0.03038907500000043, 0.030389088000001507, 0.030389101000000807, 0.030389114000000106, 0.03038912700000118, 0.030393660000001432, 0.03039367300000073, 0.030393684999999948, 0.030393698000001024, 0.030393711000000323, 0.0303937240000014, 0.030393737000000698, 0.030393748999999914, 0.03039376200000099, 0.03039377500000029, 0.030393788000001365, 0.030393801000000664, 0.03039381299999988, 0.030393826000000956, 0.030393839000000256, 0.03039385200000133, 0.03039386500000063, 0.030393877000001623, 0.030393890000000923, 0.030393903000000222, 0.030393916000001298, 0.030393929000000597, 0.03039394100000159, 0.03039395400000089, 0.030393967000000188, 0.030393980000001264, 0.030393993000000563, 0.030394005000001556, 0.030394018000000855, 0.030394031000000155, 0.03039404400000123, 0.03039405700000053, 0.030394069000001522, 0.03039408200000082, 0.03039409500000012, 0.030394108000001197, 0.030394121000000496, 0.03039413300000149, 0.030394146000000788, 0.030394159000000087, 0.030398692000000338, 0.030398705000001414, 0.030398718000000713, 0.030398731000000012, 0.030398744000001088, 0.030398756000000304, 0.03039876900000138, 0.03039878200000068, 0.03039879499999998, 0.030398808000001054, 0.03039882000000027, 0.030398833000001346, 0.030398846000000646, 0.030398858999999945, 0.03039887200000102, 0.030398884000000237, 0.030398897000001313, 0.030398910000000612, 0.03039892299999991, 0.030398936000000987, 0.030398948000000203, 0.03039896100000128, 0.030398974000000578, 0.030398986999999877, 0.030399000000000953, 0.03037901000000076, 0.03037902300000006, 0.030379036000001136, 0.030379049000000435, 0.03037906200000151, 0.030383594999999985, 0.03038360800000106, 0.030383620000000278, 0.030383633000001353, 0.030383646000000653, 0.030383658999999952, 0.030383672000001027, 0.030383684000000244, 0.03038369700000132, 0.03038371000000062, 0.030383722999999918, 0.030383736000000994, 0.03038374800000021, 0.030383761000001286, 0.030383774000000585, 0.030383786999999884, 0.03038380000000096, 0.030383812000000177, 0.030383825000001252, 0.03038383800000055] ms, Gtpt (overall): 48.00476847684512 Gbps, Gdpt (per flow): [0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829]
+INFO:dale_experiment_rig:
+##### GENERATE METRICS #####
+INFO:__main__:Total Flow Size (Bytes): 40000
+INFO:__main__:Total Injection Period (us): 1000.0
+INFO:__main__:Byteload Size (Bytes): [4]
+INFO:__main__:Num Byteloads: [10000]
+INFO:__main__:Intervals (us): [0.1]
+INFO:__main__:Num flows: 150
+DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+INFO:__main__:Gdpt Gbps theoretical: [48.0]
+INFO:__main__:Gdpt Gbps measured (SSIRD): [48.00476847684512]
+INFO:__main__:Gdpt Gbps measured (DCTCP): [48.00476847684512]
+DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829]]
+DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [[0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829, 0.3199999999999829]]
+INFO:__main__:* Sim duration (SSIRD): [0.03]
+INFO:__main__:* Sim duration (DCTCP): [0.03]
+INFO:__main__:* SSIRD FCT: [[0.010367057999999929, 0.010556669000001406, 0.010475407000001269, 0.010428004000001323, 0.010468635000000504, 0.010170674000001156, 0.010180832000001416, 0.01053635400000097, 0.010512652000000955, 0.010218077000001102, 0.010126657000000705, 0.010255322000000788, 0.01013342900000147, 0.010394145000001132, 0.01014020100000046, 0.010573599000000655, 0.010380601000001377, 0.01056682699999989, 0.010268866000000543, 0.010326427000000749, 0.010289182000001063, 0.010258708000000283, 0.010451706000001337, 0.01012327100000121, 0.010421232000000558, 0.010424618000000052, 0.010251936000001294, 0.010221463000000597, 0.010197762000000665, 0.01015035900000072, 0.010438162000001583, 0.010482179000000258, 0.010377215000000106, 0.010241779000001117, 0.01029933900000124, 0.010549897000000641, 0.010187604000000405, 0.010465249000001009, 0.01018421800000091, 0.010248551000000106, 0.010157131000001485, 0.01058714300000041, 0.010207919000000842, 0.0103094970000015, 0.010397531000000626, 0.01057698500000015, 0.010590528000001598, 0.010458478000000326, 0.010356900000001446, 0.010553283000000135, 0.010329813000000243, 0.010532968000001475, 0.010455092000000832, 0.010522810000001215, 0.010272252000000037, 0.01035012800000068, 0.010546511000001146, 0.01041107500000038, 0.010383987000000872, 0.010543125999999958, 0.010404303000001391, 0.010441548000001077, 0.010211305000000337, 0.010214691000001608, 0.010265480000001048, 0.010499109000001283, 0.01058037100000142, 0.010174060000000651, 0.010306111000000229, 0.010231621000000857, 0.01019437600000117, 0.010472020999999998, 0.010282410000000297, 0.0101909899999999, 0.010448320000000066, 0.01020114800000016, 0.010414460999999875, 0.01036028600000094, 0.010106342000000268, 0.01033997000000042, 0.010495723000000012, 0.010163903000000474, 0.010292567000000474, 0.01050588000000019, 0.010407689000000886, 0.010302725000000734, 0.010167287999999886, 0.010228235000001362, 0.010417847000001146, 0.010333199000001514, 0.010502495000000778, 0.010238393000001622, 0.010529582000000204, 0.010092798000000514, 0.010444934000000572, 0.010245165000000611, 0.010109728000001539, 0.010279024000000803, 0.010275638000001308, 0.010316269000000489, 0.010285796000001568, 0.010343355999999915, 0.010089412000001019, 0.010434776000000312, 0.010086033000000327, 0.010146973000001225, 0.010096184000000008, 0.010363672000000435, 0.010492337000000518, 0.010295952999999969, 0.010116500000000528, 0.01051603800000045, 0.010387373000000366, 0.0101300430000002, 0.010262094000001554, 0.0103704440000012, 0.010563441000000395, 0.010153745000000214, 0.010312883000000994, 0.010177446000000145, 0.010319654999999983, 0.01039075899999986, 0.01052619600000071, 0.010539740000000464, 0.010461863000001514, 0.0105600550000009, 0.010235007000000351, 0.010099570000001279, 0.010485565000001529, 0.010519423999999944, 0.010119886000000022, 0.010583757000000915, 0.010136815000000965, 0.010143586999999954, 0.010373830000000694, 0.01040091700000012, 0.010113114000001033, 0.010478793000000763, 0.010102956000000773, 0.010323041000001254, 0.010353514000000175, 0.010488951000001023, 0.01050926600000146, 0.01057021300000116, 0.01020453400000143, 0.010224849000000091, 0.010346742000001186, 0.01016051700000098, 0.010431390000000818, 0.010336584000000926]]
+INFO:__main__:* DCTCP FCT: [[0.030383851000001627, 0.030383864000000926, 0.030383876000000143, 0.03038388900000122, 0.030383902000000518, 0.030383915000001593, 0.030383928000000893, 0.03038394000000011, 0.030383953000001185, 0.030383966000000484, 0.03038397900000156, 0.03038399200000086, 0.030384004000000076, 0.03038401700000115, 0.03038403000000045, 0.030384043000001526, 0.030384056000000825, 0.030384068000000042, 0.030384081000001117, 0.030384094000000417, 0.030388627000000668, 0.030388639999999967, 0.030388653000001042, 0.03038866600000034, 0.030388679000001417, 0.030388691000000634, 0.030388703999999933, 0.03038871700000101, 0.030388730000000308, 0.030388743000001384, 0.0303887550000006, 0.0303887679999999, 0.030388781000000975, 0.030388794000000274, 0.03038880700000135, 0.030388819000000566, 0.030388831999999866, 0.03038884500000094, 0.03038885800000024, 0.030388871000001316, 0.030388883000000533, 0.03038889600000161, 0.030388909000000908, 0.030388922000000207, 0.030388935000001283, 0.0303889470000005, 0.030388960000001575, 0.030388973000000874, 0.030388986000000173, 0.03038899900000125, 0.030389011000000465, 0.03038902400000154, 0.03038903700000084, 0.03038905000000014, 0.030389063000001215, 0.03038907500000043, 0.030389088000001507, 0.030389101000000807, 0.030389114000000106, 0.03038912700000118, 0.030393660000001432, 0.03039367300000073, 0.030393684999999948, 0.030393698000001024, 0.030393711000000323, 0.0303937240000014, 0.030393737000000698, 0.030393748999999914, 0.03039376200000099, 0.03039377500000029, 0.030393788000001365, 0.030393801000000664, 0.03039381299999988, 0.030393826000000956, 0.030393839000000256, 0.03039385200000133, 0.03039386500000063, 0.030393877000001623, 0.030393890000000923, 0.030393903000000222, 0.030393916000001298, 0.030393929000000597, 0.03039394100000159, 0.03039395400000089, 0.030393967000000188, 0.030393980000001264, 0.030393993000000563, 0.030394005000001556, 0.030394018000000855, 0.030394031000000155, 0.03039404400000123, 0.03039405700000053, 0.030394069000001522, 0.03039408200000082, 0.03039409500000012, 0.030394108000001197, 0.030394121000000496, 0.03039413300000149, 0.030394146000000788, 0.030394159000000087, 0.030398692000000338, 0.030398705000001414, 0.030398718000000713, 0.030398731000000012, 0.030398744000001088, 0.030398756000000304, 0.03039876900000138, 0.03039878200000068, 0.03039879499999998, 0.030398808000001054, 0.03039882000000027, 0.030398833000001346, 0.030398846000000646, 0.030398858999999945, 0.03039887200000102, 0.030398884000000237, 0.030398897000001313, 0.030398910000000612, 0.03039892299999991, 0.030398936000000987, 0.030398948000000203, 0.03039896100000128, 0.030398974000000578, 0.030398986999999877, 0.030399000000000953, 0.03037901000000076, 0.03037902300000006, 0.030379036000001136, 0.030379049000000435, 0.03037906200000151, 0.030383594999999985, 0.03038360800000106, 0.030383620000000278, 0.030383633000001353, 0.030383646000000653, 0.030383658999999952, 0.030383672000001027, 0.030383684000000244, 0.03038369700000132, 0.03038371000000062, 0.030383722999999918, 0.030383736000000994, 0.03038374800000021, 0.030383761000001286, 0.030383774000000585, 0.030383786999999884, 0.03038380000000096, 0.030383812000000177, 0.030383825000001252, 0.03038383800000055]]
