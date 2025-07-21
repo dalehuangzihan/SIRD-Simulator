@@ -355,7 +355,7 @@ def experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_a
     # ssird_sim_dur_list = []
     # for i in range(0, len(num_byteloads_per_flow_list)):
     #    ssird_sim_dur_list.append(dale_experiment_rig.Experiment.get_sim_duration(num_flows, inter_flow_spacing_us, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], ssird_sim_dur_multiplication_factor))
-    ssird_sim_dur_list = [0.02] * num_of_experiments
+    ssird_sim_dur_list = [0.0005, 0.0002, 0.00015, 0.00015, 0.0001] # TODO: tweak
     logger.debug(f"Sim Durations list (SSIRD): {ssird_sim_dur_list}")
     assert(len(ssird_sim_dur_list) == num_of_experiments)
     
@@ -363,7 +363,7 @@ def experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_a
     # dctcp_sim_dur_list = []
     # for i in range(0, len(num_byteloads_per_flow_list)):
     #    dctcp_sim_dur_list.append(dale_experiment_rig.Experiment.get_sim_duration(num_flows, inter_flow_spacing_us, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], dctcp_sim_dur_multiplication_factor))
-    dctcp_sim_dur_list = [0.02] * num_of_experiments #[0.02, 0.017, 0.017, 0.017] # TODO: tweak
+    dctcp_sim_dur_list = [0.02, 0.0023, 0.00024, 0.00014, 0.0001] # TODO: tweak
     logger.debug(f"Sim Durations list (DCTCP): {dctcp_sim_dur_list}")
     assert(len(dctcp_sim_dur_list) == num_of_experiments)
 
