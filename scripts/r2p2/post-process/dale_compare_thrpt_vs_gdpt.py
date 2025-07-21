@@ -439,7 +439,7 @@ def compare_nw_data_subpkt_multiflow_4B_to_4000B_15flo_slowpace(y_lim_total=None
     plot_overall_and_perflow_nw_data_ssird_dctcp(num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, flow_rate_gbps, overall_gdpt_gbps, theoretical_gdpt_total_parallel_gbps, title_addendum, y_lim_total, y_lim_perflow)
 
 
-def compare_nw_data_subpkt_4B_to_400000B_15flo_fastpace_extended(y_lim_total=None, y_lim_perflow=None):
+def compare_nw_data_subpkt_4B_to_40000B_15flo_fastpace_extended(y_lim_total=None, y_lim_perflow=None):
     # INFO:__main__:Total Flow Size (Bytes): 40000
     # INFO:__main__:Total Injection Period (us): 100.0
     # INFO:__main__:Byteload Size (Bytes): [4, 40, 400, 4000, 40000]
@@ -481,7 +481,7 @@ def do_nw_data_plots():
     # compare_nw_data_subpkt_multiflow_4B_to_4000B_10flo_slowpace()
     # compare_nw_data_subpkt_multiflow_4B_to_4000B_15flo_fastpace()
     # compare_nw_data_subpkt_multiflow_4B_to_4000B_15flo_slowpace()
-    compare_nw_data_subpkt_4B_to_400000B_15flo_fastpace_extended()
+    compare_nw_data_subpkt_4B_to_40000B_15flo_fastpace_extended()
 
 '''
 ========== THRPT vs GDPT PLOTS ========== 
