@@ -357,7 +357,7 @@ def experiment_vary_byteloadsize_fullrange_multiflow_31flo(is_full_postproc=True
     # dctcp_sim_dur_list = sim_dur_list
 
     ssird_sim_dur_list = [0.02, 0.02, 0.02, 0.02, 0.02]
-    dctcp_sim_dur_list = [0.02, 0.02, 0.02, 0.02, 0.02]
+    dctcp_sim_dur_list = [0.03, 0.03, 0.03, 0.03, 0.03]
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
     gdpt_gbps_theoretical_list = []
