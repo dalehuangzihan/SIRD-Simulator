@@ -637,8 +637,8 @@ if __name__ == "__main__":
 
     # ---------- SUBPKT BYTELOADS ----------
     # experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_addendum="_subpkt_multiflow_fastpace", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_addendum="_subpkt_multiflow_fastpace_extended", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_vary_byteloadsize_subpkt_multiflow_150flo(is_full_postproc=True, title_addendum="_subpkt_multiflow_150flo_extended", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_addendum="_subpkt_multiflow_fastpace_extended", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_vary_byteloadsize_subpkt_multiflow_150flo(is_full_postproc=True, title_addendum="_subpkt_multiflow_150flo_extended", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
     # ---------- FULLRANGE BYTELOADS ----------
     # experiment_vary_byteloadsize_fullrange_multiflow(is_full_postproc=False, title_addendum="_fullrange_multiflow", log_level=dale_experiment_rig.LOG_LEVEL_2)
