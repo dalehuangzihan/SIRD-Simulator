@@ -10,6 +10,7 @@ LINK_SPEED_BITS_PER_SEC = LINK_SPEED_GIGABITS_PER_SEC * pow(10,9)
 
 MAX_R2P2_PAYLOAD_B = 1458
 DATA_PKT_HEADER_SIZE_B = 80
+CREDIT_REQ_PKT_SIZE_B = 84
 
 # PATH_TO_SCRIPTS_R2P2 = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/"
 PATH_TO_SCRIPTS_R2P2 = "/data/dh1723/SIRD-Simulator/scripts/r2p2/" # NOTE: this is for batch1 server
@@ -37,19 +38,20 @@ def get_theoretical_fct_parallel_flows_s(num_flows, num_byteloads_per_flow_list,
         # Exact-ish way:
         num_data_pkts_per_byteload = max(math.ceil(byteload_size_B_list[i] / MAX_R2P2_PAYLOAD_B), 1)
         hdr_overhead_per_byteload_B = DATA_PKT_HEADER_SIZE_B * num_data_pkts_per_byteload
-        data_rtt_s = (num_flows * (byteload_size_B_list[i] + hdr_overhead_per_byteload_B) * 8) / float(LINK_SPEED_BITS_PER_SEC)
+        data_rtt_s = (num_flows * (byteload_size_B_list[i] + hdr_overhead_per_byteload_B + CREDIT_REQ_PKT_SIZE_B) * 8) / float(LINK_SPEED_BITS_PER_SEC)
         if (inter_byteload_interval_s_list[i] < data_rtt_s):
             # All SRQs will combine together into a uninterrupted flow.
-            print(f"Ideal Fct Calc: Overlap! Interval={inter_byteload_interval_s_list[i]}; Data RTT={data_rtt_s}")
+            # TODO: fix this part of the calculation!
+            print(f"Ideal Fct Calc: Overlap! Byteload size (B)={byteload_size_B_list[i]}; Interval={inter_byteload_interval_s_list[i]}; Data RTT={data_rtt_s}")
             combined_flow_bytes_B = num_flows * num_byteloads_per_flow_list[i] * byteload_size_B_list[i]
             combined_flow_overhead_B = DATA_PKT_HEADER_SIZE_B * max(1, combined_flow_bytes_B / MAX_R2P2_PAYLOAD_B)
             fct = (combined_flow_bytes_B + combined_flow_overhead_B) * 8 / float(LINK_SPEED_BITS_PER_SEC)
         else:
             # SRQs will be separated by gaps; each SRQ will have its own RTT.
             if (num_byteloads_per_flow_list[i] > 1):
-                fct = (num_byteloads_per_flow_list[i] - 1) * inter_byteload_interval_s_list[i] + num_flows * (byteload_size_B_list[i] + hdr_overhead_per_byteload_B) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
+                fct = (num_byteloads_per_flow_list[i] - 1) * inter_byteload_interval_s_list[i] + num_flows * (byteload_size_B_list[i] + hdr_overhead_per_byteload_B + CREDIT_REQ_PKT_SIZE_B) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
             else:
-                fct = num_flows * (byteload_size_B_list[i] + hdr_overhead_per_byteload_B) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
+                fct = num_flows * (byteload_size_B_list[i] + hdr_overhead_per_byteload_B + CREDIT_REQ_PKT_SIZE_B) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
         theoretical_fct_s_list.append(fct)
     return theoretical_fct_s_list
 
