@@ -118,7 +118,7 @@ def plot_thrpt_comparison_graph_trimmed(ssird_thrpt_list, dctcp_thrpt_list, time
     plt.plot(time_axis_ms_list, dctcp_thrpt_list, label="DCTCP", linestyle="-", marker=None, color=DCTCP_PLOT_COLOUR)
     plt.ylabel('Network Throughput (Gbps)')
     plt.xlabel('Time (ms)')
-    plt.title(f"SSIRD vs DCTCP: Networ Throughput (Gbps)\nExperiment: {experiment_name}")
+    plt.title(f"SSIRD vs DCTCP: Network Throughput (Gbps)\nExperiment: {experiment_name}")
     plt.legend()
     plt.grid(True)
 
@@ -153,6 +153,8 @@ if __name__ == "__main__":
     do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 15, 100, 400, 1.0, title_addendum="_subpkt_multiflow_fastpace_extended")
     do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 15, 10, 4000, 10.0, title_addendum="_subpkt_multiflow_fastpace_extended")
     do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 15, 1, 40000, 100.0, title_addendum="_subpkt_multiflow_fastpace_extended")
+
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 15, 10, 400000, 1000, title_addendum="_largepkt_multiflow")
 
     # # time interval experiments
     # do_throughput_plotting_for_experiment(5, 1000000, 50, HOST, "host_0", "tor_4")
