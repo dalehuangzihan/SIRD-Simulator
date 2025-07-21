@@ -2,13 +2,20 @@ import sys
 import subprocess
 from pathlib import Path
 import shutil
+import numpy as np
+import matplotlib.pyplot as plt
 
 import dale_fct_experiment
 import dale_multiflow_serialiser
+import dale_experiment_rig
+import dale_compare_thrpt_vs_gdpt
 
-PATH_TO_SCRIPTS_R2P2 = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/"
+PATH_TO_SCRIPTS_R2P2 = "/data/dh1723/SIRD-Simulator/scripts/r2p2/"
+# PATH_TO_SCRIPTS_R2P2 = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/"
 PATH_TO_POSTPROC = f"{PATH_TO_SCRIPTS_R2P2}post-process/"
 PATH_TO_SIM_RESULTS = f"{PATH_TO_SCRIPTS_R2P2}coord/results/"
+PATH_TO_TMP_PLOT = PATH_TO_POSTPROC + "tmp_plot/"
+PATH_TO_QTS_COMPARE_PARENT_DIR = PATH_TO_TMP_PLOT + "qts_direct_comparison_graphs/"
 
 # Common experiment param; value is meaningful only when req_interval_distr is not 'manual'
 CLIENT_INJECTION_RATE_GBPS = "60"
@@ -20,6 +27,11 @@ TOR = "tor"
 
 THROUGHPUT_COL = 1
 QUEUEING_COL = 2
+
+QTS_CSV_TIMESTEP_S = 0.000001 # 1us
+
+SSIRD_PLOT_COLOUR = 'tab:orange'
+DCTCP_PLOT_COLOUR = 'tab:blue'
 
 def plot_comparison_graph(y_col, title, experiment_name, ssird_csv_rel_path, dctcp_csv_rel_path):
     try:
@@ -66,7 +78,10 @@ def do_queuing_plotting_for_experiment(num_byteloads, byteload_size_B, inter_byt
     plot_comparison_graph(QUEUEING_COL, f"Queueing: SSIRD vs DCTCP ({experiment_name})", experiment_name, ssird_csv_rel_path, dctcp_csv_rel_path)
 
 def do_thrpt_plot_multiflow_exp(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us, nw_elem, src, dst, title_addendum=""):
-    experiment_name = dale_multiflow_serialiser.MultiFlowExperiment.get_experiment_name(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us) + title_addendum
+    # experiment name with interval in us:
+    # experiment_name = dale_multiflow_serialiser.MultiFlowExperiment.get_experiment_name(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us) + title_addendum
+    # experiment name with interval in ns:
+    experiment_name = dale_experiment_rig.Experiment.get_experiment_name(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us) + title_addendum
     print(f"Plotting for experiment: {experiment_name}")
 
     ssird_results_dir = f"SSIRD-{experiment_name}/"
@@ -95,7 +110,50 @@ def do_q_plot_multiflow_exp(num_flows, num_byteloads, byteload_size_B, inter_byt
 
     plot_comparison_graph(QUEUEING_COL, f"Queueing: SSIRD vs DCTCP ({experiment_name})", experiment_name, ssird_csv_rel_path, dctcp_csv_rel_path)
 
+def plot_thrpt_comparison_graph_trimmed(ssird_thrpt_list, dctcp_thrpt_list, time_axis_s_list, experiment_name):
+    plt.figure(figsize=(10,6))
+
+    time_axis_ms_list = [s * 1000 for s in time_axis_s_list]
+    plt.plot(time_axis_ms_list, ssird_thrpt_list, label="SSIRD", linestyle="-", marker=None, color=SSIRD_PLOT_COLOUR)
+    plt.plot(time_axis_ms_list, dctcp_thrpt_list, label="DCTCP", linestyle="-", marker=None, color=DCTCP_PLOT_COLOUR)
+    plt.ylabel('Network Throughput (Gbps)')
+    plt.xlabel('Time (ms)')
+    plt.title(f"SSIRD vs DCTCP: Networ Throughput (Gbps)\nExperiment: {experiment_name}")
+    plt.legend()
+    plt.grid(True)
+
+    filename = f"THRPT_{experiment_name}_ssird_dctcp_qts_direct_compare.png"
+    plt.savefig(f"{PATH_TO_QTS_COMPARE_PARENT_DIR}{filename}")
+    plt.close()
+
+def do_comparison_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum = ""):
+    Path(PATH_TO_QTS_COMPARE_PARENT_DIR).mkdir(parents=True, exist_ok=True)
+    experiment_name = dale_experiment_rig.Experiment.get_experiment_name(num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us)
+
+    ssird_subpkt_result, dctcp_subpkt_result = dale_compare_thrpt_vs_gdpt.get_qts_result_ssird_dctcp(nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum)
+    overall_activity_end_time_s = max(ssird_subpkt_result.activity_end_time_s, dctcp_subpkt_result.activity_end_time_s) 
+    
+    # pad thrpt, q-ing & time to reach overall_activity_end_time_s
+    end_time_padded_us = int((overall_activity_end_time_s * 1.1) * pow(10,6))
+    time_axis_padded_us = range(0, end_time_padded_us, 1)
+    time_axis_padded_s = [s * pow(10,-6) for s in time_axis_padded_us]
+    num_datapoints = len(time_axis_padded_s)
+    ssird_thrpt_padded = ssird_subpkt_result.throughput_gbps_list + [0]*(num_datapoints - len(ssird_subpkt_result.throughput_gbps_list))
+    dctcp_thrpt_padded = dctcp_subpkt_result.throughput_gbps_list + [0]*(num_datapoints - len(dctcp_subpkt_result.throughput_gbps_list))
+    plot_thrpt_comparison_graph_trimmed(ssird_thrpt_padded, dctcp_thrpt_padded, time_axis_padded_s, experiment_name)
+
+    ssird_qing_padded = ssird_subpkt_result.queueing_KB_list +  [0]*(num_datapoints - len(ssird_subpkt_result.queueing_KB_list))
+    dctcp_qing_padded = dctcp_subpkt_result.queueing_KB_list +  [0]*(num_datapoints - len(dctcp_subpkt_result.queueing_KB_list))
+    
+
 if __name__ == "__main__":
+
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 15, 10000, 4, 0.01, title_addendum="_subpkt_multiflow_fastpace_extended")
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 15, 1000, 40, 0.1, title_addendum="_subpkt_multiflow_fastpace_extended")
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 15, 100, 400, 1.0, title_addendum="_subpkt_multiflow_fastpace_extended")
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 15, 10, 4000, 10.0, title_addendum="_subpkt_multiflow_fastpace_extended")
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 15, 1, 40000, 100.0, title_addendum="_subpkt_multiflow_fastpace_extended")
+
     # # time interval experiments
     # do_throughput_plotting_for_experiment(5, 1000000, 50, HOST, "host_0", "tor_4")
     # do_queuing_plotting_for_experiment(5, 1000000, 50, TOR, "tor_4", "host_1")
@@ -109,17 +167,22 @@ if __name__ == "__main__":
     # do_queuing_plotting_for_experiment(10, 1250000, 100, TOR, "tor_4", "host_1")
 
     # subpkt byteload experiments
-    do_thrpt_plot_multiflow_exp(1, 10000, 4, 1, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
-    do_thrpt_plot_multiflow_exp(1, 1000, 40, 10, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
-    do_thrpt_plot_multiflow_exp(1, 100, 400, 100, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
-    do_thrpt_plot_multiflow_exp(1, 10, 4000, 1000, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    # do_thrpt_plot_multiflow_exp(1, 10000, 4, 1, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    # do_thrpt_plot_multiflow_exp(1, 1000, 40, 10, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    # do_thrpt_plot_multiflow_exp(1, 100, 400, 100, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    # do_thrpt_plot_multiflow_exp(1, 10, 4000, 1000, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
 
-    do_thrpt_plot_multiflow_exp(2, 10000, 4, 1, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
-    do_thrpt_plot_multiflow_exp(2, 1000, 40, 10, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
-    do_thrpt_plot_multiflow_exp(2, 100, 400, 100, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
-    do_thrpt_plot_multiflow_exp(2, 10, 4000, 1000, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    # do_thrpt_plot_multiflow_exp(2, 10000, 4, 1, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    # do_thrpt_plot_multiflow_exp(2, 1000, 40, 10, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    # do_thrpt_plot_multiflow_exp(2, 100, 400, 100, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    # do_thrpt_plot_multiflow_exp(2, 10, 4000, 1000, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
 
-    do_thrpt_plot_multiflow_exp(10, 10000, 4, 1, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
-    do_thrpt_plot_multiflow_exp(10, 1000, 40, 10, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
-    do_thrpt_plot_multiflow_exp(10, 100, 400, 100, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
-    do_thrpt_plot_multiflow_exp(10, 10, 4000, 1000, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    # do_thrpt_plot_multiflow_exp(10, 10000, 4, 1, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    # do_thrpt_plot_multiflow_exp(10, 1000, 40, 10, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    # do_thrpt_plot_multiflow_exp(10, 100, 400, 100, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+    # do_thrpt_plot_multiflow_exp(10, 10, 4000, 1000, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow")
+
+    # do_thrpt_plot_multiflow_exp(15, 10000, 4, 0.01, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow_fastpace")
+    # do_thrpt_plot_multiflow_exp(15, 1000, 40, 0.1, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow_fastpace")
+    # do_thrpt_plot_multiflow_exp(15, 100, 400, 1.0, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow_fastpace")
+    # do_thrpt_plot_multiflow_exp(15, 10, 4000, 10.0, HOST, "host_0", "tor_4", title_addendum="_subpkt_multiflow_fastpace")

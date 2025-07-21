@@ -120,8 +120,8 @@ def analyse_fct_slowdown_ssird_vs_ideal(inter_byteload_period_us_list, num_bytel
     # NOTE: max 1 out of 15 flows is 93rd percentile 
     ssird_fct_s_max_list = [max(l) for l in ssird_fct_s_list_list]
     ideal_fct_s_max_list = [max(l) for l in ideal_fct_s_list_list]
-    # print(f"SSIRD FCT (ms) MAX:{ssird_fct_s_max_list}")
-    # print(f"DCTCP FCT (ms) MAX:{ideal_fct_s_max_list}")
+    print(f"SSIRD FCT (ms) MAX:{ssird_fct_s_max_list}")
+    print(f"DCTCP FCT (ms) MAX:{ideal_fct_s_max_list}")
 
     ssird_fct_s_mean_list = [statistics.mean(l) for l in ssird_fct_s_list_list]
     ideal_fct_s_mean_list = [statistics.mean(l) for l in ideal_fct_s_list_list]
