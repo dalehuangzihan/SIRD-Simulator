@@ -206,15 +206,17 @@ def plot_nw_data_MB_overheads_ssird(ssird_total_nw_overheads_B_list, byteload_si
     if (is_per_flow):
         plt.title(f"SSIRD: Per-Flow Network Overheads @ {num_flows * flow_size_B/pow(10,3)}KB Total App Data\n({num_flows} x {flow_size_B}B flows, each at {flow_rate_gbps}Gbps; Total App Gdpt: {num_flows * flow_rate_gbps}Gbps)\n{title_addendum}")
         filename_prefix = "DIFF_PERFLOW_"
-        diff_MB_list = [round(d/pow(10,3), 2) for d in ssird_total_nw_overheads_B_list]
-        plt.ylabel('Network Overhead (KB)')
+        # diff_MB_list = [round(d/pow(10,3), 2) for d in ssird_total_nw_overheads_B_list]
+        # plt.ylabel('Network Overhead (KB)')
     else:
         plt.title(f"SSIRD: Total Network Overheads @ {num_flows * flow_size_B/pow(10,6)}MB Total App Data\n({num_flows} x {flow_size_B}B flows, each at {flow_rate_gbps}Gbps; Total App Gdpt: {num_flows * flow_rate_gbps}Gbps)\n{title_addendum}")
         filename_prefix = "DIFF_TOTAL_"
-        diff_MB_list = [round(d/pow(10,6), 2) for d in ssird_total_nw_overheads_B_list]
-        plt.ylabel('Network Overhead (MB)')
+        # diff_MB_list = [round(d/pow(10,6), 2) for d in ssird_total_nw_overheads_B_list]
+        # plt.ylabel('Network Overhead (MB)')
 
-    plt.plot(byteload_size_B_list, diff_MB_list, label="Total Network Data - App Data", linestyle="-", marker="o", color=SSIRD_PLOT_COLOUR)
+    ssird_overhead_per_app_data_byte_B = [overhead / app_data for overhead, app_data in zip(ssird_total_nw_overheads_B_list, app_data_total_B_list)]
+    plt.plot(byteload_size_B_list, ssird_overhead_per_app_data_byte_B, label="Total Network Data - App Data", linestyle="-", marker="o", color=SSIRD_PLOT_COLOUR)
+    plt.ylabel("Overhead per Byte of App Data (B)")
     plt.legend()
 
     plt.xlabel('Byteload Size (B)')
@@ -224,6 +226,7 @@ def plot_nw_data_MB_overheads_ssird(ssird_total_nw_overheads_B_list, byteload_si
     filename = f"{filename_prefix}ssird_subpkt_multiflow_nw_data_vs_byteload_size_{num_flows}flo_{flow_rate_gbps}Gbps_each{title_addendum}.png"
     plt.savefig(f"{PATH_TO_NW_DATA_COMPARE_PARENT_DIR}{filename}")
     plt.close()
+    print(f"** SSIRD Overhead per App Data (B): {ssird_overhead_per_app_data_byte_B}")
 
 def plot_overall_and_perflow_nw_data_ssird_dctcp(num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, flow_rate_gbps, overall_gdpt_gbps, theoretical_total_gdpt_gbps, title_addendum="", y_lim_total=None, y_lim_perflow=None):
     flow_size_B = num_byteloads_per_flow_list[0] * byteload_size_B_list[0]
@@ -231,7 +234,6 @@ def plot_overall_and_perflow_nw_data_ssird_dctcp(num_flows, num_byteloads_per_fl
 
     # OVERALL: -----
     ssird_total_nw_data_h0tor4_B, dctcp_total_nw_data_h0tor4_B, app_data_total_theory_B, app_data_total_measured_h0tor4_B = get_qts_nw_data_B_ssird_dctcp("host_0", "tor_4", num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, overall_gdpt_gbps,title_addendum)
-
     ssird_total_nw_data_h1tor4_B, dctcp_total_nw_data_h1tor4_B, app_data_total_theory_B, app_data_total_measured_h1tor4_B = get_qts_nw_data_B_ssird_dctcp("host_1", "tor_4", num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, overall_gdpt_gbps,title_addendum)
 
     ssird_total_nw_data_B = [h0tor4 + h1tor4 for h0tor4, h1tor4 in zip(ssird_total_nw_data_h0tor4_B, ssird_total_nw_data_h1tor4_B)]
