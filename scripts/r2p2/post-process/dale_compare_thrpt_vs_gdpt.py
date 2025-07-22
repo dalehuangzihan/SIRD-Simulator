@@ -238,13 +238,13 @@ def plot_overall_and_perflow_nw_data_ssird_dctcp(num_flows, num_byteloads_per_fl
     dctcp_total_nw_data_B = [h0tor4 + h1tor4 for h0tor4, h1tor4 in zip(dctcp_total_nw_data_h0tor4_B, dctcp_total_nw_data_h1tor4_B)]
     
     ssird_overheads_total_theory_B = [s - app_data_total_theory_B for s in ssird_total_nw_data_B]
-    app_data_total_theory_B = [app_data_total_theory_B] * len(ssird_overheads_total_theory_B)
+    app_data_total_theory_B_list = [app_data_total_theory_B] * len(ssird_overheads_total_theory_B)
 
     ssird_total_nw_data_B = list(map(lambda x: round(x, 2), ssird_total_nw_data_B))
     dctcp_total_nw_data_B = list(map(lambda x: round(x, 2), dctcp_total_nw_data_B))
     ssird_overheads_total_theory_B = list(map(lambda x: round(x,2), ssird_overheads_total_theory_B))
 
-    plot_nw_data_MB_ssird_dctcp(ssird_total_nw_data_B, dctcp_total_nw_data_B, byteload_size_B_list, app_data_total_theory_B, num_flows, flow_size_B, flow_rate_gbps, is_log_x=True, y_lim=y_lim_total, title_addendum=title_addendum + "_overall")
+    plot_nw_data_MB_ssird_dctcp(ssird_total_nw_data_B, dctcp_total_nw_data_B, byteload_size_B_list, app_data_total_theory_B_list, num_flows, flow_size_B, flow_rate_gbps, is_log_x=True, y_lim=y_lim_total, title_addendum=title_addendum + "_overall")
 
     print(f"Theoretical Overall Gdpt Gbps: {theoretical_total_gdpt_gbps}")
     print(f"SSIRD NW Data Total (B): {ssird_total_nw_data_B}")
@@ -252,27 +252,47 @@ def plot_overall_and_perflow_nw_data_ssird_dctcp(num_flows, num_byteloads_per_fl
     print(f"** SSIRD Overheads Total (vs theory app data) (B): {ssird_overheads_total_theory_B}")
 
     # plot total overheads:
-    plot_nw_data_MB_overheads_ssird(ssird_overheads_total_theory_B, byteload_size_B_list, app_data_total_theory_B, num_flows, flow_size_B, flow_rate_gbps, is_log_x=True, y_lim=y_lim_total, title_addendum=title_addendum + "_overall") 
-    print(f"")
+    plot_nw_data_MB_overheads_ssird(ssird_overheads_total_theory_B, byteload_size_B_list, app_data_total_theory_B_list, num_flows, flow_size_B, flow_rate_gbps, is_log_x=True, y_lim=y_lim_total, title_addendum=title_addendum + "_overall") 
 
     print("---")
-    # PER FLOW: -----
-    # we can only do this cuz our experiment uses num_flows flows in parallel!
-    ssird_perflow_nw_data_B = [x / num_flows for x in ssird_total_nw_data_B]
-    dctcp_perflow_nw_data_B = [x / num_flows for x in dctcp_total_nw_data_B]
-    app_data_perflow_theory_B = [flow_rate_gbps] * len(ssird_perflow_nw_data_B)
-    ssird_overheads_perflow_theory_B = [s - a for s,a in zip(ssird_perflow_nw_data_B, app_data_perflow_theory_B)] 
+    # OVERALL (SENDER TO RECEIVER ONLY): -----
+    ssird_total_nw_data_sendr_to_recvr_B = ssird_total_nw_data_h0tor4_B
+    dctcp_total_nw_data_sendr_to_recvr_B = dctcp_total_nw_data_h0tor4_B
+
+    ssird_overheads_total_s_to_r_theory_B = [s - app_data_total_theory_B for s in ssird_total_nw_data_sendr_to_recvr_B]
+
+    ssird_total_nw_data_sendr_to_recvr_B = list(map(lambda x: round(x, 2), ssird_total_nw_data_sendr_to_recvr_B))
+    dctcp_total_nw_data_sendr_to_recvr_B = list(map(lambda x: round(x, 2), dctcp_total_nw_data_sendr_to_recvr_B))
+    ssird_overheads_total_s_to_r_theory_B = list(map(lambda x: round(x,2), ssird_overheads_total_s_to_r_theory_B))
+
+    plot_nw_data_MB_ssird_dctcp(ssird_total_nw_data_sendr_to_recvr_B, dctcp_total_nw_data_sendr_to_recvr_B, byteload_size_B_list, app_data_total_theory_B_list, num_flows, flow_size_B, flow_rate_gbps, is_log_x=True, y_lim=y_lim_total, title_addendum=title_addendum + "_overall_s_to_r")
+
+    print(f"Theoretical Overall Gdpt Gbps: {theoretical_total_gdpt_gbps}")
+    print(f"SSIRD NW Data Total (Sendr to Recvr Only) (B): {ssird_total_nw_data_sendr_to_recvr_B}")
+    print(f"DCTCP NW Data Total (Sendr to Recvr Only) (B): {dctcp_total_nw_data_sendr_to_recvr_B}")
+    print(f"** SSIRD Overheads Total (vs theory app data) (Sendr to Recvr Only) (B): {ssird_overheads_total_s_to_r_theory_B}")
+
+    # plot total overheads:
+    plot_nw_data_MB_overheads_ssird(ssird_overheads_total_s_to_r_theory_B, byteload_size_B_list, app_data_total_theory_B_list, num_flows, flow_size_B, flow_rate_gbps, is_log_x=True, y_lim=y_lim_total, title_addendum=title_addendum + "_overall_s_to_r") 
+
+    # print("---")
+    # # PER FLOW: -----
+    # # we can only do this cuz our experiment uses num_flows flows in parallel!
+    # ssird_perflow_nw_data_B = [x / num_flows for x in ssird_total_nw_data_B]
+    # dctcp_perflow_nw_data_B = [x / num_flows for x in dctcp_total_nw_data_B]
+    # app_data_perflow_theory_B = [flow_rate_gbps] * len(ssird_perflow_nw_data_B)
+    # ssird_overheads_perflow_theory_B = [s - a for s,a in zip(ssird_perflow_nw_data_B, app_data_perflow_theory_B)] 
     
-    ssird_perflow_nw_data_B = list(map(lambda x: round(x, 2), ssird_perflow_nw_data_B))
-    dctcp_perflow_nw_data_B = list(map(lambda x: round(x, 2), dctcp_perflow_nw_data_B))
-    ssird_overheads_perflow_theory_B = list(map(lambda x: round(x, 2), ssird_overheads_perflow_theory_B))
+    # ssird_perflow_nw_data_B = list(map(lambda x: round(x, 2), ssird_perflow_nw_data_B))
+    # dctcp_perflow_nw_data_B = list(map(lambda x: round(x, 2), dctcp_perflow_nw_data_B))
+    # ssird_overheads_perflow_theory_B = list(map(lambda x: round(x, 2), ssird_overheads_perflow_theory_B))
 
-    plot_nw_data_MB_ssird_dctcp(ssird_perflow_nw_data_B, dctcp_perflow_nw_data_B, byteload_size_B_list, app_data_perflow_theory_B, num_flows, flow_size_B, flow_rate_gbps, is_per_flow=True, y_lim=y_lim_perflow, is_log_x=True, title_addendum=title_addendum + "_perflow")
+    # plot_nw_data_MB_ssird_dctcp(ssird_perflow_nw_data_B, dctcp_perflow_nw_data_B, byteload_size_B_list, app_data_perflow_theory_B, num_flows, flow_size_B, flow_rate_gbps, is_per_flow=True, y_lim=y_lim_perflow, is_log_x=True, title_addendum=title_addendum + "_perflow")
 
-    print(f"Theoretical Perflow Gdpt Gbps: {flow_rate_gbps}")
-    print(f"SSIRD NW Data Per Flow (B): {ssird_perflow_nw_data_B}")
-    print(f"DCTCP NW Data Per Flow (B): {dctcp_perflow_nw_data_B}")
-    print(f"** SSIRD Overheads Per Flow (vs theory app data) (B): {ssird_overheads_perflow_theory_B}")
+    # print(f"Theoretical Perflow Gdpt Gbps: {flow_rate_gbps}")
+    # print(f"SSIRD NW Data Per Flow (B): {ssird_perflow_nw_data_B}")
+    # print(f"DCTCP NW Data Per Flow (B): {dctcp_perflow_nw_data_B}")
+    # print(f"** SSIRD Overheads Per Flow (vs theory app data) (B): {ssird_overheads_perflow_theory_B}")
 
 
 def compare_nw_data_subpkt_multiflow_4B_to_4000B_1flo(y_lim_total=None, y_lim_perflow=None):
@@ -546,8 +566,9 @@ def do_nw_data_plots():
     # compare_nw_data_subpkt_multiflow_4B_to_4000B_10flo_slowpace()
     # compare_nw_data_subpkt_multiflow_4B_to_4000B_15flo_fastpace()
     # compare_nw_data_subpkt_multiflow_4B_to_4000B_15flo_slowpace()
-    # compare_nw_data_subpkt_4B_to_40000B_15flo_fastpace_extended()
-    compare_nw_data_largepkt_200B_to_2MB_31flo_extended()
+
+    compare_nw_data_subpkt_4B_to_40000B_15flo_fastpace_extended()
+    # compare_nw_data_largepkt_200B_to_2MB_31flo_extended()
     compare_nw_data_fullrange_20B_to_2MB_31flo()
 
 '''
@@ -615,10 +636,10 @@ def plot_overall_and_perflow_thrpt_ssird_dctcp(num_flows, num_byteloads_per_flow
     plot_thrpt_ssird_dctcp(ssird_thrpt_gbps_list, dctcp_thrpt_gbps_list, byteload_size_B_list, overall_gdpt_gbps, num_flows, flow_size_B, flow_rate_gbps, is_log_x=True, y_lim=y_lim_total, title_addendum=title_addendum + "_overall")
 
     print(f"Theoretical Overall Gdpt Gbps: {theoretical_total_gdpt_gbps}")
-    print(f"SSIRD Thrpt Gbps: {ssird_thrpt_gbps_list}")
-    print(f"DCTCP Thrpt Gbps: {dctcp_thrpt_gbps_list}")
-    print(f"SSIRD NW Active Duration (s): {ssird_fct_s_list}")
-    print(f"DCTCP NW Active Duration (s): {dctcp_fct_s_list}")
+    print(f"SSIRD Measured Thrpt Gbps: {ssird_thrpt_gbps_list}")
+    print(f"DCTCP Measured Thrpt Gbps: {dctcp_thrpt_gbps_list}")
+    print(f"SSIRD Measured NW Active Duration (s): {ssird_fct_s_list}")
+    print(f"DCTCP Measured NW Active Duration (s): {dctcp_fct_s_list}")
 
     print("---")
     # PER FLOW: -----
@@ -629,8 +650,8 @@ def plot_overall_and_perflow_thrpt_ssird_dctcp(num_flows, num_byteloads_per_flow
     plot_thrpt_ssird_dctcp(ssird_thrpt_gbps_per_flow_list, dctcp_thrpt_gbps_per_flow_list, byteload_size_B_list, flow_rate_gbps, num_flows, flow_size_B, flow_rate_gbps, is_per_flow=True, y_lim=y_lim_perflow, is_log_x=True, title_addendum=title_addendum + "_perflow")
 
     print(f"Theoretical Overall Gdpt Gbps: {theoretical_total_gdpt_gbps}")
-    print(f"SSIRD Thrpt Per Flow Gbps: {ssird_thrpt_gbps_per_flow_list}")
-    print(f"DCTCP Thrpt Per Flow Gbps: {dctcp_thrpt_gbps_per_flow_list}")
+    print(f"SSIRD Measured Thrpt Per Flow Gbps: {ssird_thrpt_gbps_per_flow_list}")
+    print(f"DCTCP Measured Thrpt Per Flow Gbps: {dctcp_thrpt_gbps_per_flow_list}")
 
 def compare_thrpt_subpkt_multiflow_4B_to_4000B_1flo(y_lim_total=None, y_lim_perflow=None):
     # INFO:__main__:Total Flow Size (Bytes): 40000
@@ -749,13 +770,46 @@ def compare_thrpt_subpkt_multiflow_4B_to_4000B_15flo_fastpace(y_lim_total=None, 
     # INFO:__main__:* SSIRD FCT: [[0.0003420990000009283, 0.00034547899999992637, 0.00034886500000119725, 0.00035225100000069176, 0.00035563600000010354, 0.0003590220000013744, 0.0003624080000008689, 0.00036579400000036344, 0.0003691800000016343, 0.00037256600000112883, 0.00037595200000062334, 0.00037933800000011786, 0.00038272400000138873, 0.00038611000000088325, 0.00038949600000037776], [0.00010683200000016768, 0.00011021100000085937, 0.00011359700000035389, 0.00011698300000162476, 0.00012036900000111928, 0.0001237550000006138, 0.0001271410000001083, 0.00013052700000137918, 0.0001339130000008737, 0.0001372990000003682, 0.00014068499999986273, 0.0001440710000011336, 0.0001474570000006281, 0.0001508420000000399, 0.00015422800000131076], [0.00010167800000004945, 0.00010171600000141723, 0.00010175400000100865, 0.00010179300000068281, 0.00010183100000027423, 0.00010186999999994839, 0.00010190800000131617, 0.00010194600000090759, 0.00010198500000058175, 0.00010202300000017317, 0.00010206200000162369, 0.00010210000000121511, 0.00010213800000080653, 0.00010217700000048069, 0.00010513900000042042], [9.307800000080135e-05, 9.815200000140578e-05, 9.849800000161224e-05, 9.883700000123952e-05, 9.917700000094953e-05, 9.951600000057681e-05, 9.985500000020409e-05, 0.00010019400000160772, 0.000100533000001235, 0.00010087300000094501, 0.00010121200000057229, 0.00010155100000019956, 0.0001018900000016032, 0.00010222900000123047, 0.00010294900000040741]]
     # INFO:__main__:* DCTCP FCT: [[0.018869601000000458, 0.01886961300000145, 0.01886962600000075, 0.01886963900000005, 0.018869652000001125, 0.018869665000000424, 0.018869677000001417, 0.018869690000000716, 0.018869703000000015, 0.01886971600000109, 0.01886972900000039, 0.018869741000001383, 0.018869754000000682, 0.018869766999999982, 0.018869780000001057], [0.0018871410000009803, 0.0018871530000001968, 0.0018871660000012724, 0.0018871790000005717, 0.001887191999999871, 0.0018872050000009466, 0.0018872170000001631, 0.0018872300000012387, 0.001887243000000538, 0.0018872560000016136, 0.001887269000000913, 0.0018872810000001294, 0.001887294000001205, 0.0018873070000005043, 0.00188732000000158], [0.00019131400000027554, 0.00019135199999986696, 0.00019139000000123474, 0.00019142800000082616, 0.00019146700000050032, 0.00019150500000009174, 0.00019154300000145952, 0.00019158100000105094, 0.0001916200000007251, 0.00019165800000031652, 0.0001921230000014873, 0.00019216100000107872, 0.00019219900000067014, 0.00019223700000026156, 0.00019227599999993572], [9.296200000008525e-05, 9.330000000140615e-05, 9.363900000103342e-05, 9.39780000006607e-05, 9.431700000028798e-05, 9.465500000160887e-05, 9.499400000123615e-05, 9.533300000086342e-05, 9.56720000004907e-05, 9.601000000003523e-05, 9.634900000143887e-05, 9.668800000106614e-05, 9.702600000061068e-05, 9.736500000023796e-05, 9.770399999986523e-05]]
 
-    print("\n@@ 15 FLO NW THRPT")
+    print("\n@@ 15 FLO NW THRPT FASTPACE")
     title_addendum = "_subpkt_multiflow_fastpace"
 
     num_flows = 15
     num_byteloads_per_flow_list = [10000, 1000, 100, 10] # should be [10000, 1000, 100, 10] but there was a naming bug in the experiment
     byteload_size_B_list = [4, 40, 400, 4000]
     inter_byteload_period_us_list = [0.01, 0.1, 1, 10]
+
+    theoretical_gdpt_total_parallel_gbps = num_flows * max(byteload_size_B_list) * 8 / (max(inter_byteload_period_us_list) * pow(10,-6)) * pow(10,-9)
+
+    flow_rate_gbps = 3.2
+    overall_gdpt_gbps = 48.0
+
+    plot_overall_and_perflow_thrpt_ssird_dctcp(num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, flow_rate_gbps, overall_gdpt_gbps, theoretical_gdpt_total_parallel_gbps, title_addendum, y_lim_total, y_lim_perflow)
+
+def compare_thrpt_subpkt_multiflow_4B_to_40KB_15flo_fastpace_extended(y_lim_total=None, y_lim_perflow=None):
+    # INFO:__main__:Total Flow Size (Bytes): 40000
+    # INFO:__main__:Total Injection Period (us): 100.0
+    # INFO:__main__:Byteload Size (Bytes): [4, 40, 400, 4000, 40000]
+    # INFO:__main__:Num Byteloads: [10000, 1000, 100, 10, 1]
+    # INFO:__main__:Intervals (us): [0.01, 0.1, 1.0, 10.0, 100.0]
+    # INFO:__main__:Num flows: 15
+    # DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # INFO:__main__:Gdpt Gbps theoretical: [48.0, 48.0, 48.0, 48.0, 48.0]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [48.00448044770111, 48.044844844664645, 48.452525252273034, 52.97777777769212, -1]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [48.00448044770111, 48.044844844664645, 48.452525252273034, 52.97777777769212, -1]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089], [3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982], [3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343], [3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826], [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [[3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089, 3.199999999977089], [3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982, 3.1999999999879982], [3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343, 3.199999999983343], [3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826, 3.199999999994826], [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]]
+    # INFO:__main__:* Sim duration (SSIRD): [0.02, 0.02, 0.02, 0.02, 0.02]
+    # INFO:__main__:* Sim duration (DCTCP): [0.02, 0.02, 0.02, 0.02, 0.02]
+    # INFO:__main__:* SSIRD FCT: [[0.0003420990000009283, 0.00034547899999992637, 0.00034886500000119725, 0.00035225100000069176, 0.00035563600000010354, 0.0003590220000013744, 0.0003624080000008689, 0.00036579400000036344, 0.0003691800000016343, 0.00037256600000112883, 0.00037595200000062334, 0.00037933800000011786, 0.00038272400000138873, 0.00038611000000088325, 0.00038949600000037776], [0.00010683200000016768, 0.00011021100000085937, 0.00011359700000035389, 0.00011698300000162476, 0.00012036900000111928, 0.0001237550000006138, 0.0001271410000001083, 0.00013052700000137918, 0.0001339130000008737, 0.0001372990000003682, 0.00014068499999986273, 0.0001440710000011336, 0.0001474570000006281, 0.0001508420000000399, 0.00015422800000131076], [0.00010167800000004945, 0.00010171600000141723, 0.00010175400000100865, 0.00010179300000068281, 0.00010183100000027423, 0.00010186999999994839, 0.00010190800000131617, 0.00010194600000090759, 0.00010198500000058175, 0.00010202300000017317, 0.00010206200000162369, 0.00010210000000121511, 0.00010213800000080653, 0.00010217700000048069, 0.00010513900000042042], [9.307800000080135e-05, 9.815200000140578e-05, 9.849800000161224e-05, 9.883700000123952e-05, 9.917700000094953e-05, 9.951600000057681e-05, 9.985500000020409e-05, 0.00010019400000160772, 0.000100533000001235, 0.00010087300000094501, 0.00010121200000057229, 0.00010155100000019956, 0.0001018900000016032, 0.00010222900000123047, 0.00010294900000040741], [1.1102000000207113e-05, 1.4481000000898803e-05, 1.7867000000393318e-05, 2.1252999999887834e-05, 2.4639000001158706e-05, 2.8025000000653222e-05, 3.141100000014774e-05, 3.479700000141861e-05, 3.8183000000913125e-05, 4.156900000040764e-05, 4.4954999999902157e-05, 4.834100000117303e-05, 5.1727000000667545e-05, 5.511200000007932e-05, 5.849800000135019e-05]]
+    # INFO:__main__:* DCTCP FCT: [[0.018869601000000458, 0.01886961300000145, 0.01886962600000075, 0.01886963900000005, 0.018869652000001125, 0.018869665000000424, 0.018869677000001417, 0.018869690000000716, 0.018869703000000015, 0.01886971600000109, 0.01886972900000039, 0.018869741000001383, 0.018869754000000682, 0.018869766999999982, 0.018869780000001057], [0.0018871410000009803, 0.0018871530000001968, 0.0018871660000012724, 0.0018871790000005717, 0.001887191999999871, 0.0018872050000009466, 0.0018872170000001631, 0.0018872300000012387, 0.001887243000000538, 0.0018872560000016136, 0.001887269000000913, 0.0018872810000001294, 0.001887294000001205, 0.0018873070000005043, 0.00188732000000158], [0.00019131400000027554, 0.00019135199999986696, 0.00019139000000123474, 0.00019142800000082616, 0.00019146700000050032, 0.00019150500000009174, 0.00019154300000145952, 0.00019158100000105094, 0.0001916200000007251, 0.00019165800000031652, 0.0001921230000014873, 0.00019216100000107872, 0.00019219900000067014, 0.00019223700000026156, 0.00019227599999993572], [9.296200000008525e-05, 9.330000000140615e-05, 9.363900000103342e-05, 9.39780000006607e-05, 9.431700000028798e-05, 9.465500000160887e-05, 9.499400000123615e-05, 9.533300000086342e-05, 9.56720000004907e-05, 9.601000000003523e-05, 9.634900000143887e-05, 9.668800000106614e-05, 9.702600000061068e-05, 9.736500000023796e-05, 9.770399999986523e-05], [5.998000000673187e-06, 9.372000000951175e-06, 1.2747000001311903e-05, 1.6121999999896275e-05, 1.9497000000257003e-05, 2.287100000053499e-05, 2.624600000089572e-05, 2.9621000001256448e-05, 3.2996000001617176e-05, 3.637000000011881e-05, 3.9745000000479536e-05, 4.3120000000840264e-05, 4.649400000111825e-05, 4.986900000147898e-05, 5.324400000006335e-05]]
+
+    print("\n@@ 15 FLO NW THRPT FASTPACE EXTENDED")
+    title_addendum = "_subpkt_multiflow_fastpace_extended"
+
+    num_flows = 15
+    num_byteloads_per_flow_list = [10000, 1000, 100, 10, 1]
+    byteload_size_B_list = [4, 40, 400, 4000, 40000]
+    inter_byteload_period_us_list = [0.01, 0.1, 1.0, 10.0, 100.0]
 
     theoretical_gdpt_total_parallel_gbps = num_flows * max(byteload_size_B_list) * 8 / (max(inter_byteload_period_us_list) * pow(10,-6)) * pow(10,-9)
 
@@ -840,8 +894,8 @@ def do_thrpt_plots():
     # print("========")
     # compare_thrpt_subpkt_multiflow_4B_to_4000B_10flo(y_lim_total, y_lim_perflow)
 
-    # compare_thrpt_subpkt_multiflow_4B_to_4000B_15flo_fastpace()
-    compare_thrpt_largepkt_200B_to_2MB_31flo_extended()
+    compare_thrpt_subpkt_multiflow_4B_to_40KB_15flo_fastpace_extended()
+    # compare_thrpt_largepkt_200B_to_2MB_31flo_extended()
     compare_thrpt_fullrange_20B_to_2MB_31flo()
 
 if __name__ == "__main__":

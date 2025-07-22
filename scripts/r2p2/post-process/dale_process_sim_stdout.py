@@ -21,12 +21,14 @@ class SimOutputStats:
         self.num_credit_pkts = num_credit_pkts
         self.num_data_pkts = num_data_pkts
         self.total_overheads_B = self.num_creditreq_pkts * CREDITREQ_PKT_OVERHEAD_B + self.num_credit_pkts * CREDIT_PKT_OVERHEAD_B + self.num_data_pkts * DATA_PKT_OVERHEAD_B
+        self.total_overheads_sendr_to_recvr_B = self.num_creditreq_pkts * CREDITREQ_PKT_OVERHEAD_B + self.num_data_pkts * DATA_PKT_OVERHEAD_B
 
     def pretty_print(self):
         print(f"Num Credit Req Pkts: {self.num_creditreq_pkts}")
         print(f"Num Credit Pkts: {self.num_credit_pkts}")
         print(f"Num Data Pkts: {self.num_data_pkts}")
         print(f"Total Overheads (B): {self.total_overheads_B}")
+        print(f"Total Overheads (sendr to recvr only) (B): {self.total_overheads_sendr_to_recvr_B}")
     
 
 def look_through_sim_stdout(filepath):
@@ -135,7 +137,7 @@ def proc_10flo_subpkt_exp_sim_outputs_slowpace():
     num_byteloads_list = [10000, 1000, 100, 10]
     byteload_size_B_list = [4, 40, 400, 4000]
     inter_byteload_period_us_list = [1, 10, 100, 1000]
-    nw_overheads_theoretical_15flo_B_list = process_ssird_sim_outputs(10, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, REL_PATH_TO_EXP_FAMILY_SLOWPACE, title_addendum)
+    nw_overheads_theoretical_15flo_B_list, _ = process_ssird_sim_outputs(10, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, REL_PATH_TO_EXP_FAMILY_SLOWPACE, title_addendum)
     nw_overheads_measured_15flo_B_list = [33335286.23, 3463891.25, 475893.74, 82826.25]
     measured_vs_theoretical_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_15flo_B_list, nw_overheads_theoretical_15flo_B_list)]
     print(measured_vs_theoretical_ratio)
@@ -154,11 +156,13 @@ def process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_lis
     num_experiments = len(num_byteloads_list)
 
     nw_overheads_B_list = [] 
+    nw_overheads_s_to_r_only_B_list = []
     for i in range(0, num_experiments):
         experiment_name = dale_experiment_rig.Experiment.get_experiment_name(num_flows, num_byteloads_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i]) + title_addendum
         sim_output_path = PATH_TO_SIM_OUTPUTS + rel_path_to_exp_family + f"ssird_{experiment_name}_stdout.out" 
         sim_stats_nw_overall, sim_stats_p2p_only = look_through_sim_stdout(sim_output_path)
         nw_overheads_B_list.append(sim_stats_nw_overall.total_overheads_B)
+        nw_overheads_s_to_r_only_B_list.append(sim_stats_p2p_only.total_overheads_sendr_to_recvr_B)
         print(f"{byteload_size_B_list[i]}B per byteload:")
         print(f"* NW Overall:")
         sim_stats_nw_overall.pretty_print()
@@ -166,7 +170,7 @@ def process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_lis
         sim_stats_p2p_only.pretty_print()
         print("---")
 
-    return nw_overheads_B_list
+    return nw_overheads_B_list, nw_overheads_s_to_r_only_B_list
 
 def proc_15flo_4B_per_bload_sim_outputs(): 
     experiment_name = dale_experiment_rig.Experiment.get_experiment_name(num_flows=15, num_byteloads=10000, byteload_size_B=4, inter_byteload_period_us=0.01)
@@ -187,10 +191,13 @@ def proc_15flo_subpkt_exp_sim_outputs_fastpace():
     num_byteloads_list = [10000, 1000, 100, 10]
     byteload_size_B_list = [4, 40, 400, 4000]
     inter_byteload_period_us_list = [0.01, 0.1, 1.0, 10.0]
-    nw_overheads_theoretical_15flo_B_list = process_ssird_sim_outputs(15, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, REL_PATH_TO_EXP_FAMILY_FASTPACE, title_addendum)
-    nw_overheads_measured_15flo_B_list = [4337187.5, 1379893.75, 600348.75, 121467.5]
-    measured_vs_theoretical_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_15flo_B_list, nw_overheads_theoretical_15flo_B_list)]
-    print(measured_vs_theoretical_ratio)
+    nw_overheads_theory_total_15flo_B_list, nw_overheads_theory_s_to_r_15flo_B_list = process_ssird_sim_outputs(15, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, REL_PATH_TO_EXP_FAMILY_FASTPACE, title_addendum)
+    nw_overheads_measured_total_15flo_B_list = [4337187.5, 1379893.75, 600348.75, 121467.5]
+    nw_overheads_measured_s_to_r_15flo_B_list = [4235785.0, 1294872.5, 300791.25, 60220.0]
+    measured_vs_theoretical_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_total_15flo_B_list, nw_overheads_theory_total_15flo_B_list)]
+    measured_vs_theoretical_s_to_r_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_s_to_r_15flo_B_list, nw_overheads_theory_s_to_r_15flo_B_list)]
+    print(f"Total: {measured_vs_theoretical_ratio}")
+    print(f"Sendr to Recvr only: {measured_vs_theoretical_s_to_r_ratio}")
 
 def proc_15flo_subpkt_exp_sim_outputs_slowpace():
     print("\n--- 15 FLO SLOWPACE: ---") 
@@ -198,7 +205,7 @@ def proc_15flo_subpkt_exp_sim_outputs_slowpace():
     num_byteloads_list = [10000, 1000, 100, 10]
     byteload_size_B_list = [4, 40, 400, 4000]
     inter_byteload_period_us_list = [1, 10, 100, 1000]
-    nw_overheads_theoretical_15flo_B_list = process_ssird_sim_outputs(15, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, REL_PATH_TO_EXP_FAMILY_SLOWPACE, title_addendum)
+    nw_overheads_theoretical_15flo_B_list, _ = process_ssird_sim_outputs(15, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, REL_PATH_TO_EXP_FAMILY_SLOWPACE, title_addendum)
     nw_overheads_measured_15flo_B_list = [49931017.46, 5123891.25, 641893.75, 124286.25]
     measured_vs_theoretical_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_15flo_B_list, nw_overheads_theoretical_15flo_B_list)]
     print(measured_vs_theoretical_ratio)
@@ -227,10 +234,17 @@ def proc_15flow_subpkt_exp_sim_outputs_fastpace_extended():
     num_byteloads_list = [10000, 1000, 100, 10, 1]
     byteload_size_B_list = [4, 40, 400, 4000, 40000]
     inter_byteload_period_us_list = [0.01, 0.1, 1.0, 10.0, 100.0]
-    nw_overheads_theoretical_15flo_B_list = process_ssird_sim_outputs(15, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, REL_PATH_TO_EXP_FAMILY_FASTPACE_EXTENDED, title_addendum)
-    nw_overheads_measured_15flo_B_list = [4337187.5, 1379893.75, 600348.75, 121467.5, 73920.0]
-    measured_vs_theoretical_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_15flo_B_list, nw_overheads_theoretical_15flo_B_list)]
-    print(measured_vs_theoretical_ratio)
+
+    nw_overheads_theory_total_B_list, nw_overheads_theory_s_to_r_B_list = process_ssird_sim_outputs(15, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, REL_PATH_TO_EXP_FAMILY_FASTPACE_EXTENDED, title_addendum)
+    
+    nw_overheads_measured_total_B_list = [4337187.5, 1379893.75, 600348.75, 121467.5, 73920.0]
+    nw_overheads_measured_s_to_r_B_list = [4235785.0, 1294872.5, 300791.25, 60220.0, 36105.0]
+
+    measured_vs_theoretical_total_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_total_B_list, nw_overheads_theory_total_B_list)]
+    measured_vs_theoretical_s_to_r_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_s_to_r_B_list, nw_overheads_theory_s_to_r_B_list)]
+
+    print(f"Total: {measured_vs_theoretical_total_ratio}")
+    print(f"Sendr to Recvr only: {measured_vs_theoretical_s_to_r_ratio}")
 
 def proc_31flow_largepkt_exp_sim_outputs_fastpace_extended():
     # INFO:__main__:Total Flow Size (Bytes): 2000000
@@ -257,10 +271,17 @@ def proc_31flow_largepkt_exp_sim_outputs_fastpace_extended():
     num_byteloads_list = [10000, 1000, 100, 10, 1]
     byteload_size_B_list = [200, 2000, 20000, 200000, 2000000]
     inter_byteload_period_us_list = [1.0, 10.0, 100.0, 1000.0, 10000.0]
-    nw_overheads_theoretical_15flo_B_list = process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
-    nw_overheads_measured_15flo_B_list = [93441891.13, 15464813.7, 7783916.2, 7121309.95, 6987276.2]
-    measured_vs_theoretical_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_15flo_B_list, nw_overheads_theoretical_15flo_B_list)]
-    print(measured_vs_theoretical_ratio)
+
+    nw_overheads_theory_total_B_list, nw_overheads_theory_s_to_r_B_list = process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+    nw_overheads_measured_total_B_list = [93441891.13, 15464813.7, 7783916.2, 7121309.95, 6987276.2]
+    nw_overheads_measured_s_to_r_B_list = [47878407.42, 7628427.45, 3804767.45, 3473483.7, 3406948.7]
+
+    measured_vs_theoretical_total_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_total_B_list, nw_overheads_theory_total_B_list)]
+    measured_vs_theoretical_s_to_r_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_s_to_r_B_list, nw_overheads_theory_s_to_r_B_list)]
+
+    print(f"Total: {measured_vs_theoretical_total_ratio}")
+    print(f"Sendr to Recvr only: {measured_vs_theoretical_s_to_r_ratio}")
 
 def proc_31flow_fullrange_exp_sim_outputs():
     # INFO:__main__:Total Flow Size (Bytes): 200000
@@ -287,25 +308,32 @@ def proc_31flow_fullrange_exp_sim_outputs():
     num_byteloads_list = [10000, 1000, 100, 10, 1]
     byteload_size_B_list = [20, 200, 2000, 20000, 200000]
     inter_byteload_period_us_list = [0.1, 1.0, 10.0, 100.0, 1000.0]
-    nw_overheads_theoretical_15flo_B_list = process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
-    nw_overheads_measured_15flo_B_list = [26805846.22, 9423469.99, 1666364.99, 815961.24, 712132.5]
-    measured_vs_theoretical_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_15flo_B_list, nw_overheads_theoretical_15flo_B_list)]
-    print(measured_vs_theoretical_ratio)
+
+    nw_overheads_theory_total_B_list, nw_overheads_theory_s_to_r_B_list = process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+    nw_overheads_measured_total_B_list = [26805846.22, 9423469.99, 1666364.99, 815961.24, 712132.5]
+    nw_overheads_measured_s_to_r_B_list = [26385364.98, 4828567.49, 823059.99, 399261.24, 347348.75]
+
+    measured_vs_theoretical_total_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_total_B_list, nw_overheads_theory_total_B_list)]
+    measured_vs_theoretical_s_to_r_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_s_to_r_B_list, nw_overheads_theory_s_to_r_B_list)]
+
+    print(f"Total: {measured_vs_theoretical_total_ratio}")
+    print(f"Sendr to Recvr only: {measured_vs_theoretical_s_to_r_ratio}")
 
 if __name__ == "__main__":
     # proc_1flo_subpkt_exp_sim_outputs()
     # proc_10flo_subpkt_exp_sim_outputs()
 
     # analysing 10 flow subpkt experiment (slowpace)
-    proc_10flo_subpkt_exp_sim_outputs_slowpace()
+    # proc_10flo_subpkt_exp_sim_outputs_slowpace()
 
     # analysing 15 flow subpkt experiment (fastpace)
-    proc_15flo_subpkt_exp_sim_outputs_slowpace()
-    proc_15flo_subpkt_exp_sim_outputs_fastpace()
+    # proc_15flo_subpkt_exp_sim_outputs_slowpace()
+    # proc_15flo_subpkt_exp_sim_outputs_fastpace()
     proc_15flow_subpkt_exp_sim_outputs_fastpace_extended()
 
     # analysing 31 flow large pkt experiment
-    proc_31flow_largepkt_exp_sim_outputs_fastpace_extended()
+    # proc_31flow_largepkt_exp_sim_outputs_fastpace_extended()
     proc_31flow_fullrange_exp_sim_outputs()
 
 
