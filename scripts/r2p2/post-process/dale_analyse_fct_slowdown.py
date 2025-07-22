@@ -31,28 +31,30 @@ def get_theoretical_fct_parallel_flows_s(num_flows, num_byteloads_per_flow_list,
     inter_byteload_interval_s_list = [s * pow(10,-6) for s in inter_byteload_interval_us_list]
 
     theoretical_fct_s_list = []
+    theoretical_thrpt_gbps_list = []
     for i in range(0, num_experiments):
         fct = None
         # Approximation way:
         # fct = num_byteloads_per_flow_list[i] * inter_byteload_interval_s_list[i]
         # Exact-ish way:
         num_data_pkts_per_byteload = max(math.ceil(byteload_size_B_list[i] / MAX_R2P2_PAYLOAD_B), 1)
-        hdr_overhead_per_byteload_B = DATA_PKT_HEADER_SIZE_B * num_data_pkts_per_byteload
-        data_rtt_s = (num_flows * (byteload_size_B_list[i] + hdr_overhead_per_byteload_B + CREDIT_REQ_PKT_SIZE_B) * 8) / float(LINK_SPEED_BITS_PER_SEC)
-        if (inter_byteload_interval_s_list[i] < data_rtt_s):
-            # All SRQs will combine together into a uninterrupted flow.
-            # TODO: fix this part of the calculation!
-            print(f"Ideal Fct Calc: Overlap! Byteload size (B)={byteload_size_B_list[i]}; Interval={inter_byteload_interval_s_list[i]}; Data RTT={data_rtt_s}")
-            combined_flow_bytes_B = num_flows * num_byteloads_per_flow_list[i] * byteload_size_B_list[i]
-            combined_flow_overhead_B = DATA_PKT_HEADER_SIZE_B * max(1, combined_flow_bytes_B / MAX_R2P2_PAYLOAD_B)
-            fct = (combined_flow_bytes_B + combined_flow_overhead_B) * 8 / float(LINK_SPEED_BITS_PER_SEC)
+        d_hdr_overhead_per_byteload_B = DATA_PKT_HEADER_SIZE_B * num_data_pkts_per_byteload
+        
+        theoretical_total_data_per_interval_B = num_flows * (byteload_size_B_list[i] + d_hdr_overhead_per_byteload_B + CREDIT_REQ_PKT_SIZE_B)
+        theoretical_thrpt_per_interval_bps = theoretical_total_data_per_interval_B * 8 / inter_byteload_interval_s_list[i]
+        theoretical_thrpt_gbps_list.append(theoretical_thrpt_per_interval_bps/pow(10,9))
+        if (theoretical_thrpt_per_interval_bps > LINK_SPEED_BITS_PER_SEC):
+            print(f"NB: Theoretical thrpt exceed link speed! Bload size: {byteload_size_B_list[i]}B, Interval: {inter_byteload_interval_us_list[i]}us; Theoretical total data per interval: {theoretical_total_data_per_interval_B}B, Theoretical Thrpt: {theoretical_thrpt_per_interval_bps/pow(10,9)}Gbps")
+
+        if (num_byteloads_per_flow_list[i] > 1):
+            fct = (num_byteloads_per_flow_list[i] - 1) * inter_byteload_interval_s_list[i] + num_flows * (byteload_size_B_list[i] + d_hdr_overhead_per_byteload_B + CREDIT_REQ_PKT_SIZE_B) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
+            # fct = (num_byteloads_per_flow_list[i] - 1) * inter_byteload_interval_s_list[i] + num_flows * (byteload_size_B_list[i]) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
         else:
-            # SRQs will be separated by gaps; each SRQ will have its own RTT.
-            if (num_byteloads_per_flow_list[i] > 1):
-                fct = (num_byteloads_per_flow_list[i] - 1) * inter_byteload_interval_s_list[i] + num_flows * (byteload_size_B_list[i] + hdr_overhead_per_byteload_B + CREDIT_REQ_PKT_SIZE_B) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
-            else:
-                fct = num_flows * (byteload_size_B_list[i] + hdr_overhead_per_byteload_B + CREDIT_REQ_PKT_SIZE_B) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
+            fct = num_flows * (byteload_size_B_list[i] + d_hdr_overhead_per_byteload_B + CREDIT_REQ_PKT_SIZE_B) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
+            # fct = num_flows * (byteload_size_B_list[i]) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
         theoretical_fct_s_list.append(fct)
+
+    print(f"-- Theoretical thrpt per interval: {theoretical_thrpt_gbps_list}")
     return theoretical_fct_s_list
 
 def plot_fct_vs_interval_ssird_vs_ideal(inter_byteload_period_us_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum="", is_log_x=False, is_log_y=False, y_lim=None):
@@ -61,7 +63,7 @@ def plot_fct_vs_interval_ssird_vs_ideal(inter_byteload_period_us_list, ssird_fct
 
     plt.figure(figsize=(10, 6))
     plt.plot(inter_byteload_period_us_list, ssird_fct_ms_list, label="SSIRD", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
-    plt.plot(inter_byteload_period_us_list, ideal_fct_ms_list, label="Ideal (DCTCP conn-pool)", linestyle='-', marker='o', color=IDEAL_PLOT_COLOUR)
+    plt.plot(inter_byteload_period_us_list, ideal_fct_ms_list, label="Ideal (theory)", linestyle='-', marker='o', color=IDEAL_PLOT_COLOUR)
     plt.xlabel('Inter-Byteload Interval (us)')
     plt.ylabel('Flow Completion Time (ms)')
     plt.title(f"FCT: SSIRD vs Ideal: Varying Intervals\n({num_flows} Flows; {flow_size_B}B per Flow; {total_gdpt_gbps}Gbps Total Goodput)\n {title_addendum}")
@@ -83,7 +85,7 @@ def plot_fct_vs_byteload_size_ssird_vs_ideal(byteload_size_B_list, ssird_fct_s_l
 
     plt.figure(figsize=(10, 6))
     plt.plot(byteload_size_B_list, ssird_fct_ms_list, label="SSIRD", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
-    plt.plot(byteload_size_B_list, ideal_fct_ms_list, label="Ideal (DCTCP conn-pool)", linestyle='-', marker='o', color=IDEAL_PLOT_COLOUR)
+    plt.plot(byteload_size_B_list, ideal_fct_ms_list, label="Ideal (theory)", linestyle='-', marker='o', color=IDEAL_PLOT_COLOUR)
     plt.xlabel('Byteload Size (B)')
     plt.ylabel('Flow Completion Time (ms)')
     plt.title(f"FCT: SSIRD vs Ideal: Varying Byteload Size\n({num_flows} Flows; {flow_size_B}B per Flow; {total_gdpt_gbps}Gbps Total Goodput)\n {title_addendum}")
@@ -178,12 +180,14 @@ def analyse_fct_slowdown_ssird_vs_ideal(inter_byteload_period_us_list, num_bytel
     plot_fct_vs_byteload_size_ssird_vs_ideal(byteload_size_B_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=None)
 
     # Plot FCT Diff
-    fct_diff_ylim = (0, 550)
+    # fct_diff_ylim = (0, 2000)
+    fct_diff_ylim = None
     plot_fct_diff_ssird_vs_ideal(VARY_INTERVAL, inter_byteload_period_us_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
     plot_fct_diff_ssird_vs_ideal(VARY_BLOAD_SIZE, byteload_size_B_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
 
     # Plot FCT Slowdown
-    fct_slowdown_ylim = (0, 1.2)
+    # fct_slowdown_ylim = (0, 4)
+    fct_slowdown_ylim = None
     plot_fct_slowdown_ssird_vs_ideal(VARY_INTERVAL, inter_byteload_period_us_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_slowdown_ylim)
     plot_fct_slowdown_ssird_vs_ideal(VARY_BLOAD_SIZE, byteload_size_B_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_slowdown_ylim)
 
@@ -389,7 +393,7 @@ if __name__ == "__main__":
     # analyse_ssird_vs_ideal_fct_large_bload_slowpace_multiflow_48Gbps_gdpt()
     # print("\nLARGE BYTELOADS 150FLO ---")
     # analyse_ssird_vs_ideal_fct_large_bload_slowpace_multiflow_48Gbps_gdpt_150flo()
-    print("\nLARGE BYTELOADS EXTENDED 31FLO ---")
-    analyse_ssird_vs_ideal_fct_largepkt_extended_31flo_49Gbps_gdpt()
+    # print("\nLARGE BYTELOADS EXTENDED 31FLO ---")
+    # analyse_ssird_vs_ideal_fct_largepkt_extended_31flo_49Gbps_gdpt()
     print("\nFULLRANGE 31FLO ---")
     analyse_ssird_vs_ideal_fct_fullrange_31flo_49Gbps_gdpt()
