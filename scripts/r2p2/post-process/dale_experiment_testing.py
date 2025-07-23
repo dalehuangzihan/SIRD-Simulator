@@ -285,7 +285,7 @@ def experiment_vary_interval_5flo(is_full_postproc=True, title_addendum="", log_
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
-    ssird_sim_dur_list = [0.0005, 0.002, 0.02, 0.12]
+    ssird_sim_dur_list = [0.0015, 0.002, 0.02, 0.12]
     dctcp_sim_dur_list = [0.0, 0.0, 0.0, 0.0]
     assert(len(ssird_sim_dur_list) == num_of_experiments)
     assert(len(dctcp_sim_dur_list) == num_of_experiments)
