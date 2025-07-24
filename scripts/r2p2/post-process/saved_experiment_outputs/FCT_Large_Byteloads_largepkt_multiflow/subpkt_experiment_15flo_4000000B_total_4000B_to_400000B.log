@@ -21,109 +21,109 @@ INFO:dale_experiment_rig:
 INFO:dale_experiment_rig:
 =====
 Execute experiment 15flo-1000#-4000B-10000ns_largepkt_multiflow
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 15flo-1000#-4000B-10000ns_largepkt_multiflow
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:
-=====
-Execute experiment 15flo-100#-40000B-100000ns_largepkt_multiflow
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:
-=====
-Execute experiment 15flo-100#-40000B-100000ns_largepkt_multiflow
-INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
 INFO:dale_experiment_rig:
 =====
-Execute experiment 15flo-10#-400000B-1000000ns_largepkt_multiflow
+Execute experiment 15flo-100#-40000B-100000ns_largepkt_multiflow
 INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
+INFO:dale_experiment_rig:
+=====
+Execute experiment 15flo-100#-40000B-100000ns_largepkt_multiflow
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
 INFO:dale_experiment_rig:
 =====
 Execute experiment 15flo-10#-400000B-1000000ns_largepkt_multiflow
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:
+=====
+Execute experiment 15flo-10#-400000B-1000000ns_largepkt_multiflow
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
-INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
 INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
 INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
+INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
+INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
 INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
+Preparing experiment input MRIs
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
-INFO:dale_experiment_rig:-----
-Running experiment for SSIRD
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
 INFO:dale_experiment_rig:-----
 Running experiment for SSIRD
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/SSIRD-15flo-1000#-4000B-10000ns_largepkt_multiflow.sh
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/ssird_15flo-1000#-4000B-10000ns_largepkt_multiflow_stdout.out
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/
 INFO:dale_experiment_rig:-----
 Running experiment for DCTCP-50
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/SSIRD-15flo-100#-40000B-100000ns_largepkt_multiflow.sh
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/ssird_15flo-1000#-4000B-10000ns_largepkt_multiflow_stdout.out
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/DCTCP-50-15flo-1000#-4000B-10000ns_largepkt_multiflow.sh
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/ssird_15flo-100#-40000B-100000ns_largepkt_multiflow_stdout.out
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/ssird_15flo-1000#-4000B-10000ns_largepkt_multiflow_stderr.out
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/DCTCP-50_15flo-1000#-4000B-10000ns_largepkt_multiflow_stdout.out
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/ aready exists.
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/DCTCP-50-15flo-1000#-4000B-10000ns_largepkt_multiflow.sh
 INFO:dale_experiment_rig:-----
 Running experiment for SSIRD
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/ssird_15flo-100#-40000B-100000ns_largepkt_multiflow_stderr.out
 INFO:dale_experiment_rig:-----
-Running experiment for DCTCP-50
-INFO:dale_experiment_rig:-----
-Running experiment for DCTCP-50
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/DCTCP-50_15flo-1000#-4000B-10000ns_largepkt_multiflow_stderr.out
+Running experiment for SSIRD
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/DCTCP-50_15flo-1000#-4000B-10000ns_largepkt_multiflow_stdout.out
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/SSIRD-15flo-10#-400000B-1000000ns_largepkt_multiflow.sh
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/SSIRD-15flo-100#-40000B-100000ns_largepkt_multiflow.sh
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/DCTCP-50_15flo-1000#-4000B-10000ns_largepkt_multiflow_stderr.out
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/ssird_15flo-10#-400000B-1000000ns_largepkt_multiflow_stdout.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/ssird_15flo-100#-40000B-100000ns_largepkt_multiflow_stdout.out
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/DCTCP-50-15flo-10#-400000B-1000000ns_largepkt_multiflow.sh
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow/DCTCP-50-15flo-100#-40000B-100000ns_largepkt_multiflow.sh
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/ssird_15flo-10#-400000B-1000000ns_largepkt_multiflow_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/ssird_15flo-10#-400000B-1000000ns_largepkt_multiflow_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/ssird_15flo-100#-40000B-100000ns_largepkt_multiflow_stderr.out
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/DCTCP-50_15flo-10#-400000B-1000000ns_largepkt_multiflow_stdout.out
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/DCTCP-50_15flo-100#-40000B-100000ns_largepkt_multiflow_stdout.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/ssird_15flo-10#-400000B-1000000ns_largepkt_multiflow_stderr.out
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/DCTCP-50_15flo-10#-400000B-1000000ns_largepkt_multiflow_stderr.out
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow/DCTCP-50_15flo-100#-40000B-100000ns_largepkt_multiflow_stderr.out
 INFO:dale_experiment_rig:-----
@@ -340,7 +340,7 @@ INFO:dale_experiment_rig:Flow 13:: num of byteloads: 10, num srq events: 10, num
 DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4000000, recv_data_B: 4000000
 INFO:dale_experiment_rig:Flow 14:: num of byteloads: 10, num srq events: 10, num rrq events: 10
 DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4000000, recv_data_B: 4000000
-INFO:dale_experiment_rig:DCTCP FCT: [0.009348115999999962, 0.009441260000000895, 0.009478668000001633, 0.009491091000001006, 0.009492196000000064, 0.009493300000000815, 0.009494404000001566, 0.009495508000000541, 0.009496612000001292, 0.009497716000000267, 0.009486170000000627, 0.00948665900000023, 0.009503353000001269, 0.009520728000000034, 0.00951144200000087] ms, Gtpt (overall): 52.97777777777578 Gbps, Gdpt (per flow): [3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879]
+INFO:dale_experiment_rig:DCTCP FCT: [0.009386874000000489, 0.009448274000000367, 0.009494035000001233, 0.009495139000000208, 0.009486293000000146, 0.00948665900000023, 0.009475592000001143, 0.009496256000000258, 0.00949736000000101, 0.009498463999999984, 0.00953674700000029, 0.009500306000001402, 0.009491584000000941, 0.009491949000000943, 0.009492931000000482] ms, Gtpt (overall): 52.97777777777578 Gbps, Gdpt (per flow): [3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879, 3.199999999999879]
 INFO:dale_experiment_rig:
 ##### GENERATE METRICS #####
 INFO:__main__:Total Flow Size (Bytes): 4000000
@@ -358,4 +358,4 @@ DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [[3.1999999999999473, 3.1999
 INFO:__main__:* Sim duration (SSIRD): [0.012, 0.012, 0.012]
 INFO:__main__:* Sim duration (DCTCP): [0.012, 0.012, 0.012]
 INFO:__main__:* SSIRD FCT: [[0.009997756000000635, 0.00999812600000105, 0.009998482000000308, 0.009998822000000018, 0.009999161000001422, 0.00999950000000105, 0.009999839000000676, 0.010000178000000304, 0.010000518000000014, 0.010000857000001417, 0.010001196000001045, 0.010001535000000672, 0.0100018740000003, 0.01000221400000001, 0.010002553000001413], [0.009911042000000592, 0.009914462000001123, 0.0099178490000007, 0.009921229000001475, 0.00992460800000039, 0.009927987000001082, 0.009931365999999997, 0.009934745000000689, 0.009938125000001463, 0.009941504000000378, 0.00994488300000107, 0.009948261999999986, 0.009951641000000677, 0.009955021000001452, 0.009958400000000367], [0.009041423000001103, 0.009075251000000506, 0.00910901800000019, 0.00914278400000157, 0.009176551000001254, 0.009210318000000939, 0.009244085000000624, 0.009277851000000226, 0.00931161799999991, 0.009345385000001372, 0.009379151000000974, 0.009412918000000658, 0.009446685000000343, 0.009480452000000028, 0.009514218000001406]]
-INFO:__main__:* DCTCP FCT: [[0.009992962000000105, 0.009993300000001426, 0.009993639000001053, 0.00999397800000068, 0.009994317000000308, 0.009994655000001629, 0.009994994000001256, 0.009995333000000883, 0.00999567200000051, 0.009996010000000055, 0.009996349000001459, 0.009996688000001086, 0.00999702600000063, 0.009997365000000258, 0.009997703999999885], [0.009905998000000693, 0.009909372000000971, 0.009912747000001332, 0.009916121999999916, 0.009919497000000277, 0.009922871000000555, 0.009926246000000916, 0.009929621000001276, 0.00993299599999986, 0.009936370000000139, 0.0099397450000005, 0.00994312000000086, 0.009946494000001138, 0.009949869000001499, 0.009953244000000083], [0.009348115999999962, 0.009441260000000895, 0.009478668000001633, 0.009491091000001006, 0.009492196000000064, 0.009493300000000815, 0.009494404000001566, 0.009495508000000541, 0.009496612000001292, 0.009497716000000267, 0.009486170000000627, 0.00948665900000023, 0.009503353000001269, 0.009520728000000034, 0.00951144200000087]]
+INFO:__main__:* DCTCP FCT: [[0.009992962000000105, 0.009993300000001426, 0.009993639000001053, 0.00999397800000068, 0.009994317000000308, 0.009994655000001629, 0.009994994000001256, 0.009995333000000883, 0.00999567200000051, 0.009996010000000055, 0.009996349000001459, 0.009996688000001086, 0.00999702600000063, 0.009997365000000258, 0.009997703999999885], [0.009905998000000693, 0.009909372000000971, 0.009912747000001332, 0.009916121999999916, 0.009919497000000277, 0.009922871000000555, 0.009926246000000916, 0.009929621000001276, 0.00993299599999986, 0.009936370000000139, 0.0099397450000005, 0.00994312000000086, 0.009946494000001138, 0.009949869000001499, 0.009953244000000083], [0.009386874000000489, 0.009448274000000367, 0.009494035000001233, 0.009495139000000208, 0.009486293000000146, 0.00948665900000023, 0.009475592000001143, 0.009496256000000258, 0.00949736000000101, 0.009498463999999984, 0.00953674700000029, 0.009500306000001402, 0.009491584000000941, 0.009491949000000943, 0.009492931000000482]]

@@ -14,18 +14,16 @@ INFO:__main__:Num Byteloads: [10000, 1000, 100, 10, 1]
 INFO:__main__:Intervals (us): [1.0, 10.0, 100.0, 1000.0, 10000.0]
 INFO:__main__:Num flows: 31
 INFO:__main__:Gdpt GBps theoretical: [49.6, 49.6, 49.6, 49.6, 49.6]
-INFO:__main__:* Sim duration (SSIRD): [0.02, 0.02, 0.02, 0.02, 0.02]
-INFO:__main__:* Sim duration (DCTCP): [0.02, 0.02, 0.02, 0.02, 0.02]
+INFO:__main__:* Sim duration (SSIRD): [0.012, 0.012, 0.012, 0.012, 0.01]
+INFO:__main__:* Sim duration (DCTCP): [0.022, 0.012, 0.012, 0.012, 0.01]
 INFO:dale_experiment_rig:
 ##### RUN GROUP #####
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-10000#-200B-1000ns_largepkt_multiflow_extended_31flo
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-10000#-200B-1000ns_largepkt_multiflow_extended_31flo
-INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo
@@ -33,54 +31,55 @@ INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
-INFO:dale_experiment_rig:
-=====
-Execute experiment 31flo-100#-20000B-100000ns_largepkt_multiflow_extended_31flo
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-100#-20000B-100000ns_largepkt_multiflow_extended_31flo
-INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:dale_experiment_rig:
+=====
+Execute experiment 31flo-100#-20000B-100000ns_largepkt_multiflow_extended_31flo
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.022000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.022000
+INFO:dale_experiment_rig:
+=====
+Execute experiment 31flo-1#-2000000B-10000000ns_largepkt_multiflow_extended_31flo
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-1#-2000000B-10000000ns_largepkt_multiflow_extended_31flo
-INFO:dale_experiment_rig:
-=====
-Execute experiment 31flo-1#-2000000B-10000000ns_largepkt_multiflow_extended_31flo
-INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
-INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
-INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
+INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
+INFO:dale_experiment_rig:ssird_sim_duration=0.012000; dctcp_sim_duration=0.012000
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
-INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
-INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
-INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
-INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
+INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.010000
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.010000
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
@@ -92,28 +91,25 @@ Preparing experiment input MRIs
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
 INFO:dale_experiment_rig:-----
@@ -123,61 +119,71 @@ Preparing experiment spec scripts
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
 INFO:dale_experiment_rig:-----
 Running experiment for SSIRD
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/SSIRD-31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo.sh
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
-INFO:dale_experiment_rig:-----
-Running experiment for SSIRD
 INFO:dale_experiment_rig:-----
 Running experiment for DCTCP-50
-INFO:dale_experiment_rig:-----
-Running experiment for DCTCP-50
-INFO:dale_experiment_rig:-----
-Running experiment for DCTCP-50
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo_stdout.out
 INFO:dale_experiment_rig:-----
 Running experiment for SSIRD
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/SSIRD-31flo-100#-20000B-100000ns_largepkt_multiflow_extended_31flo.sh
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50-31flo-100#-20000B-100000ns_largepkt_multiflow_extended_31flo.sh
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50-31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo.sh
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50-31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo.sh
-INFO:dale_experiment_rig:-----
-Running experiment for SSIRD
 INFO:dale_experiment_rig:-----
 Running experiment for DCTCP-50
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo_stderr.out
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/SSIRD-31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo.sh
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50-31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo.sh
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/SSIRD-31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo.sh
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-100#-20000B-100000ns_largepkt_multiflow_extended_31flo_stdout.out
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-100#-20000B-100000ns_largepkt_multiflow_extended_31flo_stdout.out
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo_stdout.out
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo_stdout.out
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/SSIRD-31flo-1#-2000000B-10000000ns_largepkt_multiflow_extended_31flo.sh
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50-31flo-1#-2000000B-10000000ns_largepkt_multiflow_extended_31flo.sh
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo_stdout.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/SSIRD-31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo_stdout.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo_stdout.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50-31flo-100#-20000B-100000ns_largepkt_multiflow_extended_31flo.sh
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/SSIRD-31flo-1#-2000000B-10000000ns_largepkt_multiflow_extended_31flo.sh
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-100#-20000B-100000ns_largepkt_multiflow_extended_31flo_stderr.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-100#-20000B-100000ns_largepkt_multiflow_extended_31flo_stderr.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo_stderr.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo_stderr.out
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-1#-2000000B-10000000ns_largepkt_multiflow_extended_31flo_stdout.out
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-1#-2000000B-10000000ns_largepkt_multiflow_extended_31flo_stdout.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo_stderr.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-1#-2000000B-10000000ns_largepkt_multiflow_extended_31flo_stderr.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo_stderr.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-100#-20000B-100000ns_largepkt_multiflow_extended_31flo_stdout.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50-31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-1#-2000000B-10000000ns_largepkt_multiflow_extended_31flo_stdout.out
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-1#-2000000B-10000000ns_largepkt_multiflow_extended_31flo_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-100#-20000B-100000ns_largepkt_multiflow_extended_31flo_stderr.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-1#-2000000B-10000000ns_largepkt_multiflow_extended_31flo_stderr.out
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50_31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo_stderr.out
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
@@ -187,10 +193,6 @@ Running experiment for SSIRD
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/SSIRD-31flo-10000#-200B-1000ns_largepkt_multiflow_extended_31flo.sh
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-10000#-200B-1000ns_largepkt_multiflow_extended_31flo_stdout.out
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ssird_31flo-10000#-200B-1000ns_largepkt_multiflow_extended_31flo_stderr.out
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/ aready exists.
 INFO:dale_experiment_rig:-----
 Running experiment for DCTCP-50
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Large_Byteloads_largepkt_multiflow_extended_31flo/DCTCP-50-31flo-10000#-200B-1000ns_largepkt_multiflow_extended_31flo.sh
@@ -205,7 +207,7 @@ DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/
 INFO:dale_experiment_rig:
 ##### POST PROCESS RESULTS #####
 INFO:dale_experiment_rig:=====
-** Num Byteloads Per Flow: 10000, Byteload Size (B): 200, Inter-Byteload Interval (us): 1.0, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.02
+** Num Byteloads Per Flow: 10000, Byteload Size (B): 200, Inter-Byteload Interval (us): 1.0, ssird_sim_dur (s): 0.012, dctcp_sim_dur (s): 0.022
 INFO:dale_experiment_rig:Processing SIRD results exp_id 0:: 31flo-10000#-200B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-31flo-10000#-200B-1000ns_largepkt_multiflow_extended_31flo/data/SSIRD/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9421
@@ -273,133 +275,71 @@ DEBUG:dale_experiment_rig:Flow 30:: first_event_name: srq, final_event_name: rrq
 INFO:dale_experiment_rig:SSIRD FCT: [0.010001875000000382, 0.010001995000001429, 0.01000223499999997, 0.010001935000000017, 0.010001776000001072, 0.010001821000001243, 0.010002695000000728, 0.010002295000001382, 0.010002325000000312, 0.010002084999999994, 0.0100021150000007, 0.010002025000000359, 0.010002205000001041, 0.010001965000000723, 0.010002505000000994, 0.010001798000001116, 0.010002475000000288, 0.010002265000000676, 0.010002175000000335, 0.010171495999999891, 0.010340277000000953, 0.010509058000000238, 0.010001845000001452, 0.010002355000001018, 0.010002145000001406, 0.010001753000000946, 0.010002055000001064, 0.010001905000001088, 0.010002384999999947, 0.010002445000001359, 0.010002415000000653] ms, Gdpt (overall): 49.604800480045355 Gbps, Gdpt (per flow): [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146]
 INFO:dale_experiment_rig:Processing DCTCP results exp_id 0:: 31flo-10000#-200B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-31flo-10000#-200B-1000ns_largepkt_multiflow_extended_31flo/data/DCTCP-50/60/applications_trace.str
-INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 0: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 1: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 2:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 2: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 3: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 4: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 5:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 5: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 6:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 6: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 7:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 7: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 8:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 8: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 9:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 9: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 10:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 10: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 11:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 11: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 12:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 12: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 13:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 13: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 14:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5173
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4827
-DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034600
-ERROR:dale_experiment_rig:Missing data! flow_id: 14: total bytes recv: 1034600, expected flow size = 2000000, diff = 965400
-INFO:dale_experiment_rig:Flow 15:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 15:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 15: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 16:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 16:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 16: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 17:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 17:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 17: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 18:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 18:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 18: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 19:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 19:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 19: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 20:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 20:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 20: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 21:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 21:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 21: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 22:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 22:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 22: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 23:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 23:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 23: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 24:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 24:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 24: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 25:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 25:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 25: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 26:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 26:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 26: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 27:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 27:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 27: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 28:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 28:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 28: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 29:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 29:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 29: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:Flow 30:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5172
-ERROR:dale_experiment_rig:DCTCP: Missing rrq event(s)! diff: 4828
-DEBUG:dale_experiment_rig:Flow 30:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 1034400
-ERROR:dale_experiment_rig:Missing data! flow_id: 30: total bytes recv: 1034400, expected flow size = 2000000, diff = 965600
-INFO:dale_experiment_rig:DCTCP FCT: [0.020298681999999957, 0.020298704, 0.020298727000000127, 0.02029874900000017, 0.020298771000000215, 0.02029879300000026, 0.020298816000000386, 0.02029883800000043, 0.020298860000000474, 0.020298882000000518, 0.02029890400000056, 0.02029892700000069, 0.020298949000000732, 0.020298971000000776, 0.02029899300000082, 0.020294463000000817, 0.02029448500000086, 0.020294507000000905, 0.02029452900000095, 0.020298415000000958, 0.020298437000001, 0.02029846000000113, 0.020298482000001172, 0.020298504000001216, 0.02029852600000126, 0.020298549000001387, 0.02029857100000143, 0.020298593000001475, 0.02029861500000152, 0.02029863799999987, 0.020298659999999913] ms, Gtpt (overall): 49.604800480045355 Gbps, Gdpt (per flow): [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146]
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 10:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 11:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 12:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 13:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 14:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 15:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 15:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 16:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 16:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 17:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 17:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 18:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 18:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 19:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 19:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 20:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 20:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 21:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 21:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 22:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 22:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 23:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 23:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 24:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 24:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 25:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 25:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 26:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 26:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 27:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 27:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 28:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 28:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 29:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 29:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:Flow 30:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
+DEBUG:dale_experiment_rig:Flow 30:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
+INFO:dale_experiment_rig:DCTCP FCT: [0.010001544000001417, 0.010001567000001543, 0.010001589000001587, 0.010001611000001631, 0.010001632999999899, 0.010001656000000025, 0.01000167800000007, 0.010001700000000113, 0.010001722000000157, 0.010001745000000284, 0.010001767000000328, 0.010001789000000372, 0.010001811000000416, 0.010001834000000542, 0.010001856000000586, 0.01000187800000063, 0.010001900000000674, 0.0100019230000008, 0.010001945000000845, 0.010001967000000889, 0.010001989000000933, 0.01000201200000106, 0.010002034000001103, 0.010002056000001147, 0.010002078000001191, 0.010002100000001235, 0.010002123000001362, 0.010002145000001406, 0.01000216700000145, 0.010002189000001493, 0.01000221200000162] ms, Gtpt (overall): 49.604800480045355 Gbps, Gdpt (per flow): [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146]
 INFO:dale_experiment_rig:=====
-** Num Byteloads Per Flow: 1000, Byteload Size (B): 2000, Inter-Byteload Interval (us): 10.0, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.02
+** Num Byteloads Per Flow: 1000, Byteload Size (B): 2000, Inter-Byteload Interval (us): 10.0, ssird_sim_dur (s): 0.012, dctcp_sim_dur (s): 0.012
 INFO:dale_experiment_rig:Processing SIRD results exp_id 1:: 31flo-1000#-2000B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-31flo-1000#-2000B-10000ns_largepkt_multiflow_extended_31flo/data/SSIRD/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1000, num srq events: 1000, num rrq events: 981
@@ -532,7 +472,7 @@ INFO:dale_experiment_rig:Flow 30:: num of byteloads: 1000, num srq events: 1000,
 DEBUG:dale_experiment_rig:Flow 30:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
 INFO:dale_experiment_rig:DCTCP FCT: [0.009992796000000581, 0.009992968000000602, 0.009993140000000622, 0.009993313000000725, 0.009993485000000746, 0.009993658000000849, 0.00999383000000087, 0.009994003000000973, 0.009994175000000993, 0.009994348000001096, 0.009994520000001117, 0.00999469300000122, 0.00999486500000124, 0.009995038000001344, 0.009995210000001364, 0.009995383000001468, 0.009995555000001488, 0.009995728000001591, 0.009995900000001612, 0.009996072999999939, 0.00999624499999996, 0.009996418000000062, 0.009996590000000083, 0.009996763000000186, 0.009996935000000207, 0.00999710800000031, 0.00999728000000033, 0.00999745200000035, 0.009997625000000454, 0.009997797000000475, 0.009997970000000578] ms, Gtpt (overall): 49.64804804804723 Gbps, Gdpt (per flow): [1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737]
 INFO:dale_experiment_rig:=====
-** Num Byteloads Per Flow: 100, Byteload Size (B): 20000, Inter-Byteload Interval (us): 100.0, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.02
+** Num Byteloads Per Flow: 100, Byteload Size (B): 20000, Inter-Byteload Interval (us): 100.0, ssird_sim_dur (s): 0.012, dctcp_sim_dur (s): 0.012
 INFO:dale_experiment_rig:Processing SIRD results exp_id 2:: 31flo-100#-20000B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-31flo-100#-20000B-100000ns_largepkt_multiflow_extended_31flo/data/SSIRD/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 100, num srq events: 100, num rrq events: 100
@@ -665,7 +605,7 @@ INFO:dale_experiment_rig:Flow 30:: num of byteloads: 100, num srq events: 100, n
 DEBUG:dale_experiment_rig:Flow 30:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
 INFO:dale_experiment_rig:DCTCP FCT: [0.00990431000000136, 0.009905998000000693, 0.009907684999999944, 0.009909372000000971, 0.009911060000000305, 0.009912747000001332, 0.009914435000000665, 0.009916121999999916, 0.009917809000000943, 0.009919497000000277, 0.009921184000001304, 0.009922871000000555, 0.009924558999999888, 0.009926246000000916, 0.009927933000000166, 0.009929621000001276, 0.009931308000000527, 0.00993299599999986, 0.009934683000000888, 0.009936370000000139, 0.009938058000001249, 0.0099397450000005, 0.009941432000001527, 0.00994312000000086, 0.009944807000000111, 0.009946494000001138, 0.009948182000000472, 0.009949869000001499, 0.00995155600000075, 0.009953244000000083, 0.00995493100000111] ms, Gtpt (overall): 50.084848484848386 Gbps, Gdpt (per flow): [1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997]
 INFO:dale_experiment_rig:=====
-** Num Byteloads Per Flow: 10, Byteload Size (B): 200000, Inter-Byteload Interval (us): 1000.0, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.02
+** Num Byteloads Per Flow: 10, Byteload Size (B): 200000, Inter-Byteload Interval (us): 1000.0, ssird_sim_dur (s): 0.012, dctcp_sim_dur (s): 0.012
 INFO:dale_experiment_rig:Processing SIRD results exp_id 3:: 31flo-10#-200000B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-31flo-10#-200000B-1000000ns_largepkt_multiflow_extended_31flo/data/SSIRD/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10, num srq events: 10, num rrq events: 10
@@ -796,9 +736,9 @@ INFO:dale_experiment_rig:Flow 29:: num of byteloads: 10, num srq events: 10, num
 DEBUG:dale_experiment_rig:Flow 29:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
 INFO:dale_experiment_rig:Flow 30:: num of byteloads: 10, num srq events: 10, num rrq events: 10
 DEBUG:dale_experiment_rig:Flow 30:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
-INFO:dale_experiment_rig:DCTCP FCT: [0.009397949000000239, 0.009474854000000477, 0.00951201200000007, 0.00951274800000057, 0.009513485000001154, 0.00951397500000084, 0.00951446600000061, 0.009528285000000025, 0.009528653000000276, 0.009529020000000443, 0.009529388000000694, 0.009529755000000861, 0.009530123000001112, 0.00953049000000128, 0.00953085800000153, 0.009531224999999921, 0.009531593000000171, 0.009531960000000339, 0.00953232800000059, 0.009532695000000757, 0.009533063000001007, 0.009533430000001175, 0.009526029999999963, 0.009526767000000547, 0.009527503000001047, 0.009505489000000367, 0.009505733000001015, 0.009527637000001477, 0.009527759000000913, 0.009527880000000266, 0.009511269000000766] ms, Gtpt (overall): 54.933333333331255 Gbps, Gdpt (per flow): [1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395]
+INFO:dale_experiment_rig:DCTCP FCT: [0.009396103000000267, 0.009471777999999986, 0.009511892000000799, 0.009512013000000152, 0.009512135000001365, 0.009512256000000718, 0.009512377000000072, 0.009512499000001284, 0.009512620000000638, 0.009483219000001597, 0.00951287100000009, 0.009513362000001635, 0.009513852000001322, 0.009514343000001091, 0.009514464000000444, 0.009514955000000214, 0.009515322000000381, 0.009515690000000632, 0.009516180000000318, 0.009516671000000088, 0.009517408000000671, 0.009518144000001172, 0.009518880999999979, 0.00951961700000048, 0.009525365000000008, 0.009521091999999953, 0.009521829000000537, 0.00952256600000112, 0.009523302000001621, 0.009528681000000816, 0.009529419000001482] ms, Gtpt (overall): 54.933333333331255 Gbps, Gdpt (per flow): [1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395]
 INFO:dale_experiment_rig:=====
-** Num Byteloads Per Flow: 1, Byteload Size (B): 2000000, Inter-Byteload Interval (us): 10000.0, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.02
+** Num Byteloads Per Flow: 1, Byteload Size (B): 2000000, Inter-Byteload Interval (us): 10000.0, ssird_sim_dur (s): 0.01, dctcp_sim_dur (s): 0.01
 INFO:dale_experiment_rig:Processing SIRD results exp_id 4:: 31flo-1#-2000000B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-31flo-1#-2000000B-10000000ns_largepkt_multiflow_extended_31flo/data/SSIRD/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1, num srq events: 1, num rrq events: 1
@@ -928,7 +868,7 @@ INFO:dale_experiment_rig:Flow 29:: num of byteloads: 1, num srq events: 1, num r
 DEBUG:dale_experiment_rig:Flow 29:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
 INFO:dale_experiment_rig:Flow 30:: num of byteloads: 1, num srq events: 1, num rrq events: 1
 DEBUG:dale_experiment_rig:Flow 30:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2000000, recv_data_B: 2000000
-INFO:dale_experiment_rig:DCTCP FCT: [0.006056953999999948, 0.00574259100000063, 0.006099590999999904, 0.006105856000001353, 0.0061069250000009845, 0.0060616140000000485, 0.005992653000001624, 0.00602116300000155, 0.006008254000001045, 0.005965717000000481, 0.00589698700000163, 0.005926753000000673, 0.005869682000000154, 0.005926983000000163, 0.0054261910000015234, 0.0046150080000000315, 0.0049654160000009995, 0.005442914000001409, 0.0055182050000013305, 0.005703371000000956, 0.005718864000000323, 0.005718971000000295, 0.0059397749999998695, 0.0060358010000012285, 0.00594062100000059, 0.005996328000000162, 0.006087064000000808, 0.006076006000000689, 0.006088776000000351, 0.006115259000001316, 0.006091836000001294] ms, Gtpt (overall): -1 Gbps, Gdpt (per flow): [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+INFO:dale_experiment_rig:DCTCP FCT: [0.006019087000000312, 0.005662653999999989, 0.005903232000001424, 0.005725641000001502, 0.005847894000000409, 0.005862034000001515, 0.005754904999999866, 0.005462989000001528, 0.0054782370000001634, 0.005386222000000274, 0.005524982000000733, 0.00577101300000038, 0.005903339000001395, 0.00612452400000052, 0.006084593000000638, 0.005920685000001313, 0.006092710000000778, 0.0061004520000000895, 0.006078814000000321, 0.005982794000001235, 0.005968783000000144, 0.005731162000000012, 0.005820219000000293, 0.0058664470000007185, 0.006106064000000799, 0.006041102000001075, 0.0060555950000011904, 0.006042931000001417, 0.006069741000001017, 0.006071201000001025, 0.006102528000001328] ms, Gtpt (overall): -1 Gbps, Gdpt (per flow): [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
 INFO:dale_experiment_rig:
 ##### GENERATE METRICS #####
 INFO:__main__:Total Flow Size (Bytes): 2000000
@@ -943,7 +883,7 @@ INFO:__main__:Gdpt Gbps measured (SSIRD): [49.604800480045355, 49.64804804804723
 INFO:__main__:Gdpt Gbps measured (DCTCP): [49.604800480045355, 49.64804804804723, 50.084848484848386, 54.933333333331255, -1]
 DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146], [1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737], [1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997], [1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395], [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]]
 DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [[1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146], [1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737, 1.5999999999999737], [1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997], [1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395, 1.5999999999999395], [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]]
-INFO:__main__:* Sim duration (SSIRD): [0.02, 0.02, 0.02, 0.02, 0.02]
-INFO:__main__:* Sim duration (DCTCP): [0.02, 0.02, 0.02, 0.02, 0.02]
+INFO:__main__:* Sim duration (SSIRD): [0.012, 0.012, 0.012, 0.012, 0.01]
+INFO:__main__:* Sim duration (DCTCP): [0.022, 0.012, 0.012, 0.012, 0.01]
 INFO:__main__:* SSIRD FCT: [[0.010001875000000382, 0.010001995000001429, 0.01000223499999997, 0.010001935000000017, 0.010001776000001072, 0.010001821000001243, 0.010002695000000728, 0.010002295000001382, 0.010002325000000312, 0.010002084999999994, 0.0100021150000007, 0.010002025000000359, 0.010002205000001041, 0.010001965000000723, 0.010002505000000994, 0.010001798000001116, 0.010002475000000288, 0.010002265000000676, 0.010002175000000335, 0.010171495999999891, 0.010340277000000953, 0.010509058000000238, 0.010001845000001452, 0.010002355000001018, 0.010002145000001406, 0.010001753000000946, 0.010002055000001064, 0.010001905000001088, 0.010002384999999947, 0.010002445000001359, 0.010002415000000653], [0.010000810000001081, 0.010001846000001535, 0.010001674000001515, 0.009999773000000545, 0.009998212000001061, 0.009993350000000234, 0.010002191999999965, 0.010000464000000875, 0.009998557000001185, 0.009998736000000008, 0.010002018999999862, 0.010000118000000668, 0.009993004000000028, 0.009999082000000215, 0.009998909000000111, 0.010000291000000772, 0.009997866000000855, 0.009998384000001082, 0.010000982000001102, 0.009999427000000338, 0.00999317700000013, 0.009999254000000235, 0.010002365000000069, 0.009999600000000441, 0.010000637000000978, 0.010001155000001205, 0.009998039000000958, 0.010001501000001412, 0.009999946000000648, 0.010001328000001308, 0.010002538000000172], [0.009916161000001367, 0.009926297999999889, 0.009949953000001344, 0.009946574000000652, 0.009944884000001153, 0.009948263000000068, 0.009955022000001534, 0.009924609000000473, 0.009941505000000461, 0.009911060000000305, 0.009953333000000342, 0.009917850000000783, 0.009929678000000663, 0.009922919000000974, 0.009912782000000675, 0.009914471000000091, 0.009919540000000282, 0.009960090999999949, 0.009927988000001164, 0.009943193999999878, 0.009921230000001557, 0.009938126000001546, 0.00993136700000008, 0.009956712000001033, 0.009909353000001175, 0.00993643600000027, 0.009933057000001355, 0.00995164200000076, 0.009939815000000962, 0.009934746000000771, 0.009958402000000532], [0.009413096000001175, 0.00949754500000033, 0.009328646000000163, 0.009142857000000504, 0.009244197000001009, 0.009345536000001431, 0.009379316000000415, 0.00927797599999991, 0.009159746999999996, 0.00944687600000016, 0.009176637000001264, 0.00931175600000067, 0.00907529700000076, 0.009125967000001012, 0.00902454600000091, 0.009210417000000248, 0.009362426000000923, 0.009193527000000756, 0.00953132500000109, 0.009429986000000667, 0.009480655000000837, 0.009463766000001428, 0.009514435000001598, 0.0092610870000005, 0.009227307000001517, 0.009396205999999907, 0.009058407000001267, 0.00910907700000152, 0.009092187000000251, 0.009041518000000082, 0.009294866000001178], [0.0035522679999999696, 0.0011892430000006726, 0.0013580300000004542, 0.0015268180000003184, 0.0016956060000001827, 0.002033181000001605, 0.0022019680000013864, 0.0023707560000012506, 0.002539543000001032, 0.0027083310000008964, 0.0008516680000010268, 0.0006828800000011626, 0.004058631000001256, 0.0032146930000003238, 0.003383481000000188, 0.00372105600000161, 0.00017650400000057687, 0.0010204550000008084, 0.0042274180000010375, 0.0038898430000013917, 0.000514093000001381, 0.00034530500000151676, 0.0018643929999999642, 0.004396206000000902, 0.0030459060000005422, 0.002877118000000678, 0.004564993000000683, 0.004733781000000548, 0.004902568000000329, 0.005071356000000193, 0.005240142999999975]]
-INFO:__main__:* DCTCP FCT: [[0.020298681999999957, 0.020298704, 0.020298727000000127, 0.02029874900000017, 0.020298771000000215, 0.02029879300000026, 0.020298816000000386, 0.02029883800000043, 0.020298860000000474, 0.020298882000000518, 0.02029890400000056, 0.02029892700000069, 0.020298949000000732, 0.020298971000000776, 0.02029899300000082, 0.020294463000000817, 0.02029448500000086, 0.020294507000000905, 0.02029452900000095, 0.020298415000000958, 0.020298437000001, 0.02029846000000113, 0.020298482000001172, 0.020298504000001216, 0.02029852600000126, 0.020298549000001387, 0.02029857100000143, 0.020298593000001475, 0.02029861500000152, 0.02029863799999987, 0.020298659999999913], [0.009992796000000581, 0.009992968000000602, 0.009993140000000622, 0.009993313000000725, 0.009993485000000746, 0.009993658000000849, 0.00999383000000087, 0.009994003000000973, 0.009994175000000993, 0.009994348000001096, 0.009994520000001117, 0.00999469300000122, 0.00999486500000124, 0.009995038000001344, 0.009995210000001364, 0.009995383000001468, 0.009995555000001488, 0.009995728000001591, 0.009995900000001612, 0.009996072999999939, 0.00999624499999996, 0.009996418000000062, 0.009996590000000083, 0.009996763000000186, 0.009996935000000207, 0.00999710800000031, 0.00999728000000033, 0.00999745200000035, 0.009997625000000454, 0.009997797000000475, 0.009997970000000578], [0.00990431000000136, 0.009905998000000693, 0.009907684999999944, 0.009909372000000971, 0.009911060000000305, 0.009912747000001332, 0.009914435000000665, 0.009916121999999916, 0.009917809000000943, 0.009919497000000277, 0.009921184000001304, 0.009922871000000555, 0.009924558999999888, 0.009926246000000916, 0.009927933000000166, 0.009929621000001276, 0.009931308000000527, 0.00993299599999986, 0.009934683000000888, 0.009936370000000139, 0.009938058000001249, 0.0099397450000005, 0.009941432000001527, 0.00994312000000086, 0.009944807000000111, 0.009946494000001138, 0.009948182000000472, 0.009949869000001499, 0.00995155600000075, 0.009953244000000083, 0.00995493100000111], [0.009397949000000239, 0.009474854000000477, 0.00951201200000007, 0.00951274800000057, 0.009513485000001154, 0.00951397500000084, 0.00951446600000061, 0.009528285000000025, 0.009528653000000276, 0.009529020000000443, 0.009529388000000694, 0.009529755000000861, 0.009530123000001112, 0.00953049000000128, 0.00953085800000153, 0.009531224999999921, 0.009531593000000171, 0.009531960000000339, 0.00953232800000059, 0.009532695000000757, 0.009533063000001007, 0.009533430000001175, 0.009526029999999963, 0.009526767000000547, 0.009527503000001047, 0.009505489000000367, 0.009505733000001015, 0.009527637000001477, 0.009527759000000913, 0.009527880000000266, 0.009511269000000766], [0.006056953999999948, 0.00574259100000063, 0.006099590999999904, 0.006105856000001353, 0.0061069250000009845, 0.0060616140000000485, 0.005992653000001624, 0.00602116300000155, 0.006008254000001045, 0.005965717000000481, 0.00589698700000163, 0.005926753000000673, 0.005869682000000154, 0.005926983000000163, 0.0054261910000015234, 0.0046150080000000315, 0.0049654160000009995, 0.005442914000001409, 0.0055182050000013305, 0.005703371000000956, 0.005718864000000323, 0.005718971000000295, 0.0059397749999998695, 0.0060358010000012285, 0.00594062100000059, 0.005996328000000162, 0.006087064000000808, 0.006076006000000689, 0.006088776000000351, 0.006115259000001316, 0.006091836000001294]]
+INFO:__main__:* DCTCP FCT: [[0.010001544000001417, 0.010001567000001543, 0.010001589000001587, 0.010001611000001631, 0.010001632999999899, 0.010001656000000025, 0.01000167800000007, 0.010001700000000113, 0.010001722000000157, 0.010001745000000284, 0.010001767000000328, 0.010001789000000372, 0.010001811000000416, 0.010001834000000542, 0.010001856000000586, 0.01000187800000063, 0.010001900000000674, 0.0100019230000008, 0.010001945000000845, 0.010001967000000889, 0.010001989000000933, 0.01000201200000106, 0.010002034000001103, 0.010002056000001147, 0.010002078000001191, 0.010002100000001235, 0.010002123000001362, 0.010002145000001406, 0.01000216700000145, 0.010002189000001493, 0.01000221200000162], [0.009992796000000581, 0.009992968000000602, 0.009993140000000622, 0.009993313000000725, 0.009993485000000746, 0.009993658000000849, 0.00999383000000087, 0.009994003000000973, 0.009994175000000993, 0.009994348000001096, 0.009994520000001117, 0.00999469300000122, 0.00999486500000124, 0.009995038000001344, 0.009995210000001364, 0.009995383000001468, 0.009995555000001488, 0.009995728000001591, 0.009995900000001612, 0.009996072999999939, 0.00999624499999996, 0.009996418000000062, 0.009996590000000083, 0.009996763000000186, 0.009996935000000207, 0.00999710800000031, 0.00999728000000033, 0.00999745200000035, 0.009997625000000454, 0.009997797000000475, 0.009997970000000578], [0.00990431000000136, 0.009905998000000693, 0.009907684999999944, 0.009909372000000971, 0.009911060000000305, 0.009912747000001332, 0.009914435000000665, 0.009916121999999916, 0.009917809000000943, 0.009919497000000277, 0.009921184000001304, 0.009922871000000555, 0.009924558999999888, 0.009926246000000916, 0.009927933000000166, 0.009929621000001276, 0.009931308000000527, 0.00993299599999986, 0.009934683000000888, 0.009936370000000139, 0.009938058000001249, 0.0099397450000005, 0.009941432000001527, 0.00994312000000086, 0.009944807000000111, 0.009946494000001138, 0.009948182000000472, 0.009949869000001499, 0.00995155600000075, 0.009953244000000083, 0.00995493100000111], [0.009396103000000267, 0.009471777999999986, 0.009511892000000799, 0.009512013000000152, 0.009512135000001365, 0.009512256000000718, 0.009512377000000072, 0.009512499000001284, 0.009512620000000638, 0.009483219000001597, 0.00951287100000009, 0.009513362000001635, 0.009513852000001322, 0.009514343000001091, 0.009514464000000444, 0.009514955000000214, 0.009515322000000381, 0.009515690000000632, 0.009516180000000318, 0.009516671000000088, 0.009517408000000671, 0.009518144000001172, 0.009518880999999979, 0.00951961700000048, 0.009525365000000008, 0.009521091999999953, 0.009521829000000537, 0.00952256600000112, 0.009523302000001621, 0.009528681000000816, 0.009529419000001482], [0.006019087000000312, 0.005662653999999989, 0.005903232000001424, 0.005725641000001502, 0.005847894000000409, 0.005862034000001515, 0.005754904999999866, 0.005462989000001528, 0.0054782370000001634, 0.005386222000000274, 0.005524982000000733, 0.00577101300000038, 0.005903339000001395, 0.00612452400000052, 0.006084593000000638, 0.005920685000001313, 0.006092710000000778, 0.0061004520000000895, 0.006078814000000321, 0.005982794000001235, 0.005968783000000144, 0.005731162000000012, 0.005820219000000293, 0.0058664470000007185, 0.006106064000000799, 0.006041102000001075, 0.0060555950000011904, 0.006042931000001417, 0.006069741000001017, 0.006071201000001025, 0.006102528000001328]]
