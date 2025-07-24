@@ -2,6 +2,7 @@ import sys, subprocess
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import csv
+import datetime
 import logging
 import collections
 import math
@@ -604,6 +605,7 @@ class ExperimentGroup:
         return self.generate_overall_experiment_metrics()
     
     def run_group(self):
+        logger.info(f"Experiment started at: {datetime.datetime.now()}")
         logger.info("\n##### RUN GROUP #####")
 
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:

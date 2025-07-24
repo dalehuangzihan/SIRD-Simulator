@@ -95,20 +95,13 @@ def get_qts_result_path(proto, nw_elem, src, dst, num_flows, num_byteloads_per_f
     else:
         print(f"ERROR: proto name '{proto}' unrecognised!")
 
-def get_qts_result_ssird_dctcp(nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum=""):
-    ssird_qts_result_path = get_qts_result_path(SSIRD_PROTO_NAME, nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum)
+def get_qts_result(proto, nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum=""):
+    qts_result_path = get_qts_result_path(proto, nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum)
     # print(ssird_qts_result_path)
 
-    dctcp_qts_result_path = get_qts_result_path(DCTCP_PROTO_NAME, nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum)
-    # print(dctcp_qts_result_path)
-
-    ssird_timestamp_cutoff_s = get_qts_timestamp_cutoff_from_csv(ssird_qts_result_path)
-    dctcp_timestamp_cutoff_s = get_qts_timestamp_cutoff_from_csv(dctcp_qts_result_path)
-
-    ssird_qts_results_obj = get_qts_results_from_csv(nw_elem, src, dst, ssird_qts_result_path, ssird_timestamp_cutoff_s)
-    dctcp_qts_results_obj = get_qts_results_from_csv(nw_elem, src, dst, dctcp_qts_result_path, dctcp_timestamp_cutoff_s)
-
-    return ssird_qts_results_obj, dctcp_qts_results_obj
+    timestamp_cutoff_s = get_qts_timestamp_cutoff_from_csv(qts_result_path)
+    qts_results_obj = get_qts_results_from_csv(nw_elem, src, dst, qts_result_path, timestamp_cutoff_s)
+    return qts_results_obj
 
 '''
 ========== NW OVERHEAD PLOTS ==========
@@ -560,6 +553,39 @@ def compare_nw_data_fullrange_20B_to_2MB_31flo(y_lim_total=None, y_lim_perflow=N
 
     plot_overall_and_perflow_nw_data_ssird_dctcp(num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, flow_rate_gbps, overall_gdpt_gbps, theoretical_gdpt_total_parallel_gbps, title_addendum, y_lim_total, y_lim_perflow)
 
+def compare_nw_data_fullrange_5flo_8gbps_1msRTT(y_lim_total=None, y_lim_perflow=None):
+    # INFO:__main__:Total Flow Size (Bytes): 200000
+    # INFO:__main__:Total Injection Period (us): 1000.0
+    # INFO:__main__:Byteload Size (Bytes): [20, 200, 2000, 20000, 200000]
+    # INFO:__main__:Num Byteloads: [10000, 1000, 100, 10, 1]
+    # INFO:__main__:Intervals (us): [0.1, 1.0, 10.0, 100.0, 1000.0]
+    # INFO:__main__:Num flows: 5
+    # DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0]
+    # INFO:__main__:Gdpt Gbps theoretical: [8.0, 8.0, 8.0, 8.0, 8.0]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [8.000640064005973, 8.006406406404851, 8.064646464633425, 8.711111111097027, -1]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [8.000640064005973, 8.006406406404851, 8.064646464633425, 8.711111111097027, -1]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146], [1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413], [None, None, None, None, None]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [[1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146], [1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413], [None, None, None, None, None]]
+    # INFO:__main__:* Sim duration (SSIRD): [0.01, 0.01, 0.01, 0.01, 0.01]
+    # INFO:__main__:* Sim duration (DCTCP): [0.25, 0.15, 0.15, 0.15, 0.15]
+    # INFO:__main__:* SSIRD FCT: [[0.0015424730000006548, 0.0015846530000001025, 0.001626863000000256, 0.0016690730000004095, 0.0017112530000016335], [0.001650353000000493, 0.0018013730000010497, 0.0019521430000004614, 0.002102363000000551, 0.002253353000000402], [0.00169073600000047, 0.0018903230000013593, 0.0020808350000010023, 0.0022803230000008057, 0.002470859000000658], [0.0016087169999998707, 0.0018086970000013025, 0.0020087000000010846, 0.002208710000001446, 0.0024086410000005998], [0.0015171160000004846, 0.0015339990000011738, 0.0015508830000001694, 0.0015677660000008586, 0.0015846490000015478]]
+    # INFO:__main__:* DCTCP FCT: [[0.001499916000000212, 0.001499924000000874, 0.0014999310000014532, 0.0014999390000003388, 0.0014999470000010007], [0.001499044000000893, 0.0014990670000010198, 0.0014990890000010637, 0.0014991110000011076, 0.0014991330000011516], [0.0014902960000000576, 0.001490468000000078, 0.0014906400000000986, 0.0014908130000002018, 0.0014909850000002223], [0.001401810000000836, 0.0014034980000001696, 0.0014051850000011967, 0.0014068720000004475, 0.0014085600000015575], [0.0025011310000007114, 0.002509867000000554, 0.002518602000000314, 0.0025267230000007856, 0.0025348440000012573]]
+
+    print("\n@@ 5 FLO FULLRANGE NW DATA")
+    title_addendum = "_fullrange_5flo_8gbps_total_1msRTT"
+
+    num_flows = 5
+    num_byteloads_per_flow_list = [10000, 1000, 100, 10, 1] 
+    byteload_size_B_list = [20, 200, 2000, 20000, 200000]
+    inter_byteload_period_us_list = [0.1, 1.0, 10.0, 100.0, 1000.0]
+
+    theoretical_gdpt_total_parallel_gbps = num_flows * max(byteload_size_B_list) * 8 / (max(inter_byteload_period_us_list) * pow(10,-6)) * pow(10,-9)
+
+    flow_rate_gbps = 1.6
+    overall_gdpt_gbps = 8.0
+
+    plot_overall_and_perflow_nw_data_ssird_dctcp(num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, flow_rate_gbps, overall_gdpt_gbps, theoretical_gdpt_total_parallel_gbps, title_addendum, y_lim_total, y_lim_perflow)
+
 def do_nw_data_plots():
     # compare_nw_data_subpkt_multiflow_4B_to_4000B_1flo()
     # print("=====")
@@ -572,6 +598,7 @@ def do_nw_data_plots():
     compare_nw_data_subpkt_4B_to_40000B_15flo_fastpace_extended()
     # compare_nw_data_largepkt_200B_to_2MB_31flo_extended()
     compare_nw_data_fullrange_20B_to_2MB_31flo()
+    compare_nw_data_fullrange_5flo_8gbps_1msRTT()
 
 '''
 ========== THRPT vs GDPT PLOTS ========== 
@@ -586,7 +613,8 @@ def get_qts_thrpt_ssird_dctcp(src, dst, num_flows, num_byteloads_per_flow_list, 
     ssird_fct_list = []
     dctcp_fct_list = []
     for i in range(0, num_experiments):
-        ssird_subpkt_result, dctcp_subpkt_result = get_qts_result_ssird_dctcp(HOST, src, dst, num_flows, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], title_addendum) 
+        ssird_subpkt_result = get_qts_result(SSIRD_PROTO_NAME, HOST, src, dst, num_flows, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], title_addendum) 
+        dctcp_subpkt_result = get_qts_result(DCTCP_PROTO_NAME, HOST, src, dst, num_flows, num_byteloads_per_flow_list[i], byteload_size_B_list[i], inter_byteload_period_us_list[i], title_addendum) 
         ssird_qts_results_list.append(ssird_subpkt_result)
         dctcp_qts_results_list.append(dctcp_subpkt_result)
         ssird_fct_list.append(ssird_subpkt_result.activity_end_time_s)

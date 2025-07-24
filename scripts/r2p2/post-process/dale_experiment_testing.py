@@ -3,9 +3,9 @@ import dale_experiment_rig
 logger = dale_experiment_rig.logging.getLogger(__name__)
 
 def experiment_vary_byteload_number_200KBflo_5flo(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
-    experiment_family = f"FCT_VARY_NUM_BLOAD_SSIRD_ONLY{title_addendum}"
-    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
-    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
+    experiment_family = f"FCT_VARY_NUM_BLOAD{title_addendum}"
+    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
+    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
     src = 0
@@ -65,7 +65,7 @@ def experiment_vary_byteload_number_200KBflo_5flo(is_full_postproc=True, title_a
     # dctcp_sim_dur_list = sim_dur_list
 
     ssird_sim_dur_list = [0.12, 0.12, 0.12]
-    dctcp_sim_dur_list = [0.09, 0.09, 0.09]
+    dctcp_sim_dur_list = [0.2, 0.2, 0.2]
     assert(len(ssird_sim_dur_list) == num_of_experiments)
     assert(len(dctcp_sim_dur_list) == num_of_experiments)
 
@@ -113,9 +113,9 @@ def experiment_vary_byteload_number_200KBflo_5flo(is_full_postproc=True, title_a
     assert num_of_experiments == len(dctcp_fct_list)
 
 def experiment_vary_byteload_size_5flo(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
-    experiment_family = f"FCT_VARY_BLOAD_SIZE_SSIRD_ONLY{title_addendum}"
-    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
-    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
+    experiment_family = f"FCT_VARY_BLOAD_SIZE{title_addendum}"
+    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
+    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
     src = 0
@@ -176,7 +176,7 @@ def experiment_vary_byteload_size_5flo(is_full_postproc=True, title_addendum="",
     # dctcp_sim_dur_list = sim_dur_list
 
     ssird_sim_dur_list = [0.01, 0.01, 0.01]
-    dctcp_sim_dur_list = [0.0, 0.0, 0.0]
+    dctcp_sim_dur_list = [0.1, 0.1, 0.1]
     assert(len(ssird_sim_dur_list) == num_of_experiments)
     assert(len(dctcp_sim_dur_list) == num_of_experiments)
 
@@ -224,9 +224,9 @@ def experiment_vary_byteload_size_5flo(is_full_postproc=True, title_addendum="",
     assert num_of_experiments == len(dctcp_fct_list)
 
 def experiment_vary_interval_5flo(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
-    experiment_family = f"FCT_VARY_INTERVAL_SSIRD_ONLY{title_addendum}"
-    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
-    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
+    experiment_family = f"FCT_VARY_INTERVAL{title_addendum}"
+    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
+    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
     src = 0
@@ -286,7 +286,7 @@ def experiment_vary_interval_5flo(is_full_postproc=True, title_addendum="", log_
     # dctcp_sim_dur_list = sim_dur_list
 
     ssird_sim_dur_list = [0.0015, 0.002, 0.02, 0.12]
-    dctcp_sim_dur_list = [0.0, 0.0, 0.0, 0.0]
+    dctcp_sim_dur_list = [0.02, 0.02, 0.2, 0.3]
     assert(len(ssird_sim_dur_list) == num_of_experiments)
     assert(len(dctcp_sim_dur_list) == num_of_experiments)
 
@@ -337,6 +337,6 @@ def experiment_vary_interval_5flo(is_full_postproc=True, title_addendum="", log_
 if __name__ == "__main__":
     ### 1ms RTT experiments:
     # experiment_vary_byteload_number_200KBflo_5flo(is_full_postproc=True, title_addendum="_vary_num_bload_5flo_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_vary_byteload_size_5flo(is_full_postproc=True, title_addendum="_vary_bload_size_5flo_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_vary_interval_5flo(is_full_postproc=True, title_addendum="_vary_interval_5flo_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_vary_byteload_size_5flo(is_full_postproc=True, title_addendum="_vary_bload_size_5flo_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_vary_interval_5flo(is_full_postproc=True, title_addendum="_vary_interval_5flo_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
