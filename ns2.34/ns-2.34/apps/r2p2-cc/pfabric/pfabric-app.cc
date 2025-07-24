@@ -266,6 +266,8 @@ void PfabricApplication<T>::forward_request(RequestIdTuple &req_id, free_connect
     // remove agent from free pool
     T *agent = pool->back();
     pool->pop_back();
+    /* Dale: don't remove agent from conn pool (to bypass conn pool contention) */
+    pool->push_front(agent);
 
     // also pass this client's address
     req_id.cl_addr_ = local_addr_;
@@ -405,7 +407,8 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
             int pool_size;
             try
             {
-                dstid_to_free_agent_pool_.at(srvr_addr)->push_back(agent);
+                /* Dale: don't need to add agent back to queue, cuz we never removed it (for bypassing conn-pool contention) */
+                // dstid_to_free_agent_pool_.at(srvr_addr)->push_back(agent);
                 // check for queued requests waiting for connections in this pool
                 queued_requests_t *req_queue = nullptr;
                 if (dstid_to_queued_requests_.find(srvr_addr) != dstid_to_queued_requests_.end())

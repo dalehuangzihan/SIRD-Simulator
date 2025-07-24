@@ -47,7 +47,9 @@ public:
     void send_incast() override;
 
 protected:
-    typedef std::vector<T *> free_connections_pool_t;
+    /* Dale: use dequeue for conn pool to allow cycling through of conns */
+    typedef std::deque<T *> free_connections_pool_t;
+    // typedef std::vector<T *> free_connections_pool_t;
     typedef std::queue<RequestIdTuple> queued_requests_t;
     int command(int argc, const char *const *argv);
     void start_app() override;
