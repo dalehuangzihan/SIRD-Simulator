@@ -8,6 +8,8 @@ IDEAL_PLOT_COLOUR = 'tab:blue'
 LINK_SPEED_GIGABITS_PER_SEC = 100 # 100 GBps link speed
 LINK_SPEED_BITS_PER_SEC = LINK_SPEED_GIGABITS_PER_SEC * pow(10,9)
 
+RTT_S = 1 * pow(10,-3) # 1ms RTT
+
 MAX_R2P2_PAYLOAD_B = 1458
 DATA_PKT_HEADER_SIZE_B = 80
 CREDIT_REQ_PKT_SIZE_B = 84
@@ -35,7 +37,8 @@ def get_theoretical_fct_parallel_flows_s(num_flows, num_byteloads_per_flow_list,
     for i in range(0, num_experiments):
         fct = None
         # Approximation way:
-        # fct = num_byteloads_per_flow_list[i] * inter_byteload_interval_s_list[i]
+        # fct = 0.5*RTT_S + num_byteloads_per_flow_list[i] * inter_byteload_interval_s_list[i]
+
         # Exact-ish way:
         num_data_pkts_per_byteload = max(math.ceil(byteload_size_B_list[i] / MAX_R2P2_PAYLOAD_B), 1)
         d_hdr_overhead_per_byteload_B = DATA_PKT_HEADER_SIZE_B * num_data_pkts_per_byteload
@@ -49,10 +52,11 @@ def get_theoretical_fct_parallel_flows_s(num_flows, num_byteloads_per_flow_list,
         # NOTE: ideal FCT should not include overheads from credit requests and data.
         if (num_byteloads_per_flow_list[i] > 1):
             # fct = (num_byteloads_per_flow_list[i] - 1) * inter_byteload_interval_s_list[i] + num_flows * (byteload_size_B_list[i] + d_hdr_overhead_per_byteload_B + CREDIT_REQ_PKT_SIZE_B) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
-            fct = (num_byteloads_per_flow_list[i] - 1) * inter_byteload_interval_s_list[i] + num_flows * (byteload_size_B_list[i]) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
+            fct = (num_byteloads_per_flow_list[i]-1)*inter_byteload_interval_s_list[i] + 0.5*RTT_S + num_flows*(byteload_size_B_list[i])*8/float(LINK_SPEED_BITS_PER_SEC) 
         else:
             # fct = num_flows * (byteload_size_B_list[i] + d_hdr_overhead_per_byteload_B + CREDIT_REQ_PKT_SIZE_B) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
-            fct = num_flows * (byteload_size_B_list[i]) * 8 / float(LINK_SPEED_BITS_PER_SEC) 
+            fct = 0.5*RTT_S + num_flows*(byteload_size_B_list[i])*8/float(LINK_SPEED_BITS_PER_SEC) 
+
         theoretical_fct_s_list.append(fct)
 
     print(f"-- Theoretical thrpt per interval: {theoretical_thrpt_gbps_list}")
@@ -543,8 +547,34 @@ def analyse_ssird_vs_ideal_fct_vary_bload_size_1msRTT():
 
 
 def analyse_ssird_vs_ideal_fct_vary_bload_interval_1msRTT():
-    # TODO
-    pass
+    # INFO:__main__:Total Flow Size (Bytes): 200000
+    # INFO:__main__:Byteload Size (Bytes): [20, 20, 20, 20]
+    # INFO:__main__:Num Byteloads: [10000, 10000, 10000, 10000]
+    # INFO:__main__:Intervals (us): [0.01, 0.1, 1, 10]
+    # INFO:__main__:Num flows: 5
+    # DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0]
+    # INFO:__main__:Gdpt Gbps theoretical: [80.0, 8.0, 0.8, 0.08]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [80.00640063949119, 8.000640064005973, 0.8000640064005973, 0.080006400640064]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None, None, None, None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446], [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146], [0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145], [0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None, None, None, None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.0015, 0.002, 0.02, 0.12]
+    # INFO:__main__:* Sim duration (DCTCP): [0.0, 0.0, 0.0, 0.0]
+    # INFO:__main__:* SSIRD FCT: [[0.001517223000000456, 0.0015341060000011453, 0.0015509890000000581, 0.0015678720000007473, 0.0015847560000015193], [0.0015424730000006548, 0.0015846530000001025, 0.001626863000000256, 0.0016690730000004095, 0.0017112530000016335], [0.01049907600000033, 0.010499106000001035, 0.010499135999999964, 0.01049917300000125, 0.010499203000000179], [0.10049007799999998, 0.10049010800000069, 0.1004901380000014, 0.1004901750000009, 0.10049020500000161]]
+    # INFO:__main__:* DCTCP FCT: [None, None, None, None]
+    title_addendum = "_vary_interval_5flo_1msRTT"
+
+    num_flows = 5
+    flow_size_B = 200000
+    total_gdpt_gbps = -1
+    inter_byteload_period_us_list = [0.01, 0.1, 1, 10]
+    num_byteloads_list = [10000, 10000, 10000, 10000]
+    byteload_size_B_list = [20, 20, 20, 20]
+    ssird_fct_s_list_list = [[0.001517223000000456, 0.0015341060000011453, 0.0015509890000000581, 0.0015678720000007473, 0.0015847560000015193], [0.0015424730000006548, 0.0015846530000001025, 0.001626863000000256, 0.0016690730000004095, 0.0017112530000016335], [0.01049907600000033, 0.010499106000001035, 0.010499135999999964, 0.01049917300000125, 0.010499203000000179], [0.10049007799999998, 0.10049010800000069, 0.1004901380000014, 0.1004901750000009, 0.10049020500000161]]
+    dctcp_fct_s_list_list = [[0]*num_flows for n in num_byteloads_list]
+
+    print(f"Byteload Size (B): {byteload_size_B_list}")
+    analyse_fct_slowdown_ssird_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum)
 
 if __name__ == "__main__":
 
@@ -581,5 +611,5 @@ if __name__ == "__main__":
     print("\nTESTING: VARY BLOAD SIZE (20B to 2000B) (1ms RTT)")
     analyse_ssird_vs_ideal_fct_vary_bload_size_1msRTT()
 
-    # print("\nTESTING: VARY BLOAD INTERVAL (1ms RTT)")
-    # analyse_ssird_vs_ideal_fct_vary_bload_interval_1msRTT()
+    print("\nTESTING: VARY BLOAD INTERVAL (1ms RTT)")
+    analyse_ssird_vs_ideal_fct_vary_bload_interval_1msRTT()
