@@ -844,7 +844,8 @@ void R2p2CCHybrid::received_credit(Packet *pkt)
     int32_t receiver = ip_hdr->src().addr_;
     assert(credit_amount_bytes <= MAX_ETHERNET_FRAME_ON_WIRE);
     assert(credit_amount_bytes >= 1 + R2P2_ALL_HEADERS_SIZE + INTER_PKT_GAP_SIZE + ETHERNET_PREAMBLE_SIZE);
-    slog::log4(debug_, this_addr_, "R2p2CCHybrid::received_credit() from receiver:",
+    /* Dale: change from log4 to log2 */
+    slog::log2(debug_, this_addr_, "R2p2CCHybrid::received_credit() from receiver:",
                receiver, "req_id:", r2p2_hdr->req_id(), "that credits:", credit_amount_bytes, "credit pad:", r2p2_hdr->credit_pad());
 
     // Find message state
