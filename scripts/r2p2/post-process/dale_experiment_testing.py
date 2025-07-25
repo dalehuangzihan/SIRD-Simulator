@@ -337,6 +337,6 @@ def experiment_vary_interval_5flo(is_full_postproc=True, title_addendum="", log_
 if __name__ == "__main__":
     ### 1ms RTT experiments:
     # experiment_vary_byteload_number_200KBflo_5flo(is_full_postproc=True, title_addendum="_vary_num_bload_5flo_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_vary_byteload_size_5flo(is_full_postproc=True, title_addendum="_vary_bload_size_5flo_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_vary_interval_5flo(is_full_postproc=True, title_addendum="_vary_interval_5flo_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_vary_byteload_size_5flo(is_full_postproc=True, title_addendum="_vary_bload_size_5flo_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_vary_interval_5flo(is_full_postproc=True, title_addendum="_vary_interval_5flo_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
 

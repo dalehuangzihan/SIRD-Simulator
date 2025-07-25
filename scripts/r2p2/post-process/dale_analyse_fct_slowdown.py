@@ -497,7 +497,6 @@ def analyse_ssird_vs_ideal_fct_fullrange_31flo_49Gbps_gdpt_1mssRTT():
     print(f"Byteload Size (B): {byteload_size_B_list}")
     analyse_fct_slowdown_ssird_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s, title_addendum)
 
-
 def analyse_ssird_vs_ideal_fct_fullrange_5flo_8Gbps_gdpt_1msRTT():
     # INFO:__main__:Total Flow Size (Bytes): 200000
     # INFO:__main__:Total Injection Period (us): 1000.0
@@ -532,7 +531,75 @@ def analyse_ssird_vs_ideal_fct_fullrange_5flo_8Gbps_gdpt_1msRTT():
     print(f"Byteload Size (B): {byteload_size_B_list}")
     analyse_fct_slowdown_ssird_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s, title_addendum)
 
-def analyse_ssird_vs_ideal_fct_vary_num_bload_1msRTT():
+def analyse_ssird_vs_ideal_fct_fullrange_1flo_8Gbps_gdpt_1msRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 200000
+    # INFO:__main__:Total Injection Period (us): 1000.0
+    # INFO:__main__:Byteload Size (Bytes): [20, 200, 2000, 20000, 200000]
+    # INFO:__main__:Num Byteloads: [10000, 1000, 100, 10, 1]
+    # INFO:__main__:Intervals (us): [0.1, 1.0, 10.0, 100.0, 1000.0]
+    # INFO:__main__:Num flows: 1
+    # DEBUG:__main__:Flow start times (us): [0]
+    # INFO:__main__:Gdpt Gbps theoretical: [1.6, 1.6, 1.6, 1.6, 1.6]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [1.5999999999999146, 1.5999999999996892, 1.599999999997413, 1.599999999997413, -1]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None, None, None, None, None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.5999999999999146], [1.5999999999996892], [1.599999999997413], [1.599999999997413], [None]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None, None, None, None, None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.01, 0.01, 0.01, 0.01, 0.01]
+    # INFO:__main__:* Sim duration (DCTCP): [0.25, 0.15, 0.15, 0.15, 0.15]
+    # INFO:__main__:* SSIRD FCT: [[0.0017111230000015354], [0.0022531030000010333], [0.0024703430000005966], [0.002401922000000667], [0.0015171160000004846]]
+    # INFO:__main__:* DCTCP FCT: [None, None, None, None, None]
+
+    title_addendum = "_fullrange_1flo_1pt6gbps_total_1msRTT"
+
+    rtt_s = RTT_1MS_S
+    num_flows = 1
+    flow_size_B = 200000
+    total_gdpt_gbps = 1.6
+    inter_byteload_period_us_list = [0.1, 1.0, 10.0, 100.0, 1000.0]
+    num_byteloads_list = [10000, 1000, 100, 10, 1]
+    byteload_size_B_list = [20, 200, 2000, 20000, 200000]
+    ssird_fct_s_list_list = [[0.0017111230000015354], [0.0022531030000010333], [0.0024703430000005966], [0.002401922000000667], [0.0015171160000004846]]
+    dctcp_fct_s_list_list = [[0] * num_flows] * len(num_byteloads_list)
+
+    print(f"RTT (us): {rtt_s * pow(10,6)}")
+    print(f"Byteload Size (B): {byteload_size_B_list}")
+    analyse_fct_slowdown_ssird_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s, title_addendum)
+
+def analyse_ssird_vs_ideal_fct_large_bload_20MBflo_5flo_8gbps_total():
+    # INFO:__main__:Total Flow Size (Bytes): 20000000
+    # INFO:__main__:Total Injection Period (us): 100000
+    # INFO:__main__:Byteload Size (Bytes): [2000, 20000, 200000, 2000000, 20000000]
+    # INFO:__main__:Num Byteloads: [10000, 1000, 100, 10, 1]
+    # INFO:__main__:Intervals (us): [10.0, 100.0, 1000.0, 10000.0, 100000.0]
+    # INFO:__main__:Num flows: 5
+    # DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0]
+    # INFO:__main__:Gdpt Gbps theoretical: [8.0, 8.0, 8.0, 8.0, 8.0]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [8.000640064006399, 8.006406406406416, 8.064646464646449, 8.711111111110952, -1]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None, None, None, None, None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.5999999999999996, 1.5999999999999996, 1.5999999999999996, 1.5999999999999996, 1.5999999999999996], [1.600000000000002, 1.600000000000002, 1.600000000000002, 1.600000000000002, 1.600000000000002], [1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997, 1.599999999999997], [1.599999999999971, 1.599999999999971, 1.599999999999971, 1.599999999999971, 1.599999999999971], [None, None, None, None, None]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None, None, None, None, None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.2, 0.2, 0.2, 0.2, 0.2]
+    # INFO:__main__:* Sim duration (DCTCP): [0, 0, 0, 0, 0]
+    # INFO:__main__:* SSIRD FCT: [[0.10049035800000006, 0.10049053100000016, 0.10049071100000084, 0.10049089000000144, 0.10098098899999997], [0.10040187500000108, 0.10040358900000079, 0.10040528500000079, 0.10040698100000078, 0.1014067720000007], [0.0995170690000009, 0.09953395800000031, 0.09955084800000158, 0.09956773800000107, 0.10058411300000003], [0.09166895600000124, 0.09183773700000053, 0.09200651800000159, 0.0921752980000008, 0.09234407900000008], [0.003188028000000287, 0.004875830000001358, 0.006563632000000652, 0.008251433999999946, 0.009939236000001017]]
+    # INFO:__main__:* DCTCP FCT: [None, None, None, None, None]
+
+    title_addendum = "_large_bload_20MBflo_5flo_total_1msRTT"
+
+    rtt_s = RTT_1MS_S
+    num_flows = 5
+    flow_size_B = 20000000
+    total_gdpt_gbps = 8.0
+    inter_byteload_period_us_list = [10.0, 100.0, 1000.0, 10000.0, 100000.0]
+    num_byteloads_list = [10000, 1000, 100, 10, 1]
+    byteload_size_B_list = [2000, 20000, 200000, 2000000, 20000000]
+    ssird_fct_s_list_list = [[0.10049035800000006, 0.10049053100000016, 0.10049071100000084, 0.10049089000000144, 0.10098098899999997], [0.10040187500000108, 0.10040358900000079, 0.10040528500000079, 0.10040698100000078, 0.1014067720000007], [0.0995170690000009, 0.09953395800000031, 0.09955084800000158, 0.09956773800000107, 0.10058411300000003], [0.09166895600000124, 0.09183773700000053, 0.09200651800000159, 0.0921752980000008, 0.09234407900000008], [0.003188028000000287, 0.004875830000001358, 0.006563632000000652, 0.008251433999999946, 0.009939236000001017]]
+    dctcp_fct_s_list_list = [[0] * num_flows] * len(num_byteloads_list)
+
+    print(f"RTT (us): {rtt_s * pow(10,6)}")
+    print(f"Byteload Size (B): {byteload_size_B_list}")
+    analyse_fct_slowdown_ssird_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s, title_addendum)
+
+def analyse_ssird_vs_ideal_fct_vary_num_bload_5flo_1msRTT():
     # INFO:__main__:Total Flow Size (Bytes): 200000
     # INFO:__main__:Byteload Size (Bytes): [20, 200, 2000]
     # INFO:__main__:Num Byteloads: [10000, 1000, 100]
@@ -564,7 +631,7 @@ def analyse_ssird_vs_ideal_fct_vary_num_bload_1msRTT():
     print(f"Byteload Size (B): {byteload_size_B_list}")
     analyse_fct_slowdown_ssird_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s, title_addendum)
 
-def analyse_ssird_vs_ideal_fct_vary_bload_size_1msRTT():
+def analyse_ssird_vs_ideal_fct_vary_bload_size_5flo_1msRTT():
     # INFO:__main__:Byteload Size (Bytes): [20, 200, 2000]
     # INFO:__main__:Num Byteloads: [100, 100, 100]
     # INFO:__main__:Intervals (us): [10.0, 10.0, 10.0]
@@ -596,7 +663,7 @@ def analyse_ssird_vs_ideal_fct_vary_bload_size_1msRTT():
     analyse_fct_slowdown_ssird_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s, title_addendum)
 
 
-def analyse_ssird_vs_ideal_fct_vary_bload_interval_1msRTT():
+def analyse_ssird_vs_ideal_fct_vary_bload_interval_5flo_1msRTT():
     # INFO:__main__:Total Flow Size (Bytes): 200000
     # INFO:__main__:Byteload Size (Bytes): [20, 20, 20, 20]
     # INFO:__main__:Num Byteloads: [10000, 10000, 10000, 10000]
@@ -657,11 +724,17 @@ if __name__ == "__main__":
     print("\nFULLRANGE 5FLO 8GBPS Gdpt (1ms RTT) ---")
     analyse_ssird_vs_ideal_fct_fullrange_5flo_8Gbps_gdpt_1msRTT()
 
-    print("\nTESTING: VARY BLOAD NUMBER (1ms RTT)")
-    analyse_ssird_vs_ideal_fct_vary_num_bload_1msRTT()
+    print("\nFULLRANGE 1FLO 1.6GBPS Gdpt (1ms RTT) ---")
+    analyse_ssird_vs_ideal_fct_fullrange_1flo_8Gbps_gdpt_1msRTT()
 
-    print("\nTESTING: VARY BLOAD SIZE (20B to 2000B) (1ms RTT)")
-    analyse_ssird_vs_ideal_fct_vary_bload_size_1msRTT()
+    print("\nLARGE BLOADS 20MB FLO 5FLO 8GBPS Gdpt (1ms RTT) ---")
+    analyse_ssird_vs_ideal_fct_large_bload_20MBflo_5flo_8gbps_total()
 
-    print("\nTESTING: VARY BLOAD INTERVAL (1ms RTT)")
-    analyse_ssird_vs_ideal_fct_vary_bload_interval_1msRTT()
+    print("\nTESTING: 5FLO VARY BLOAD NUMBER (1ms RTT)")
+    analyse_ssird_vs_ideal_fct_vary_num_bload_5flo_1msRTT()
+
+    print("\nTESTING: 5FLO VARY BLOAD SIZE (1ms RTT)")
+    analyse_ssird_vs_ideal_fct_vary_bload_size_5flo_1msRTT()
+
+    print("\nTESTING: 5FLO VARY BLOAD INTERVAL (1ms RTT)")
+    analyse_ssird_vs_ideal_fct_vary_bload_interval_5flo_1msRTT()

@@ -14,6 +14,8 @@ Num Data Pkts: 420
 Total Overheads (B): 4333308
 Total Overheads (sendr to recvr only) (B): 4234440
 ---
+Sender: Gdpt (Gbps): 94.61856889435472, data sent (B): 600000, Start timestamp (s): 10.00033706, End timestamp (s) 10.00038779, Data pkts count: 420
+===
 40B per byteload:
 * NW Overall:
 Num Credit Req Pkts: 15015
@@ -28,6 +30,8 @@ Num Data Pkts: 420
 Total Overheads (B): 1376088
 Total Overheads (sendr to recvr only) (B): 1293600
 ---
+Sender: Gdpt (Gbps): 94.61856889435472, data sent (B): 600000, Start timestamp (s): 10.0001018, End timestamp (s) 10.00015253, Data pkts count: 420
+===
 400B per byteload:
 * NW Overall:
 Num Credit Req Pkts: 2709
@@ -42,6 +46,8 @@ Num Data Pkts: 1285
 Total Overheads (B): 354800
 Total Overheads (sendr to recvr only) (B): 228800
 ---
+Sender: Gdpt (Gbps): 49.367479173233775, data sent (B): 600000, Start timestamp (s): 10.00000619, End timestamp (s) 10.00010342, Data pkts count: 1285
+===
 4000B per byteload:
 * NW Overall:
 Num Credit Req Pkts: 290
@@ -56,6 +62,8 @@ Num Data Pkts: 448
 Total Overheads (B): 86240
 Total Overheads (sendr to recvr only) (B): 48440
 ---
+Sender: Gdpt (Gbps): 50.45726900028654, data sent (B): 600000, Start timestamp (s): 10.0000061, End timestamp (s) 10.00010123, Data pkts count: 448
+===
 40000B per byteload:
 * NW Overall:
 Num Credit Req Pkts: 30
@@ -70,6 +78,8 @@ Num Data Pkts: 420
 Total Overheads (B): 70140
 Total Overheads (sendr to recvr only) (B): 34860
 ---
+Sender: Gdpt (Gbps): 94.67455621454533, data sent (B): 600000, Start timestamp (s): 10.0000061, End timestamp (s) 10.0000568, Data pkts count: 420
+===
 Total: [1.0, 1.0001, 1.0058, 1.0049, 1.0008]
 Sendr to Recvr only: [1.0003, 1.001, 1.3146, 1.2432, 1.0357]
 
@@ -88,6 +98,8 @@ Num Data Pkts: 4278
 Total Overheads (B): 26797284
 Total Overheads (sendr to recvr only) (B): 26382240
 ---
+Sender: Gdpt (Gbps): 94.7360378944994, data sent (B): 6200000, Start timestamp (s): 10.0020842, End timestamp (s) 10.00260776, Data pkts count: 4278
+===
 200B per byteload:
 * NW Overall:
 Num Credit Req Pkts: 57351
@@ -102,6 +114,8 @@ Num Data Pkts: 26910
 Total Overheads (B): 7066128
 Total Overheads (sendr to recvr only) (B): 4756800
 ---
+Sender: Gdpt (Gbps): 47.44141559062502, data sent (B): 6200000, Start timestamp (s): 10.00000619, End timestamp (s) 10.00105169, Data pkts count: 26910
+===
 2000B per byteload:
 * NW Overall:
 Num Credit Req Pkts: 6084
@@ -116,6 +130,8 @@ Num Data Pkts: 6134
 Total Overheads (B): 1271920
 Total Overheads (sendr to recvr only) (B): 751120
 ---
+Sender: Gdpt (Gbps): 49.84573949570897, data sent (B): 6200000, Start timestamp (s): 10.0000061, End timestamp (s) 10.00100117, Data pkts count: 6134
+===
 20000B per byteload:
 * NW Overall:
 Num Credit Req Pkts: 620
@@ -130,6 +146,8 @@ Num Data Pkts: 4340
 Total Overheads (B): 737800
 Total Overheads (sendr to recvr only) (B): 373240
 ---
+Sender: Gdpt (Gbps): 52.07677124024084, data sent (B): 6200000, Start timestamp (s): 10.0000061, End timestamp (s) 10.00095854, Data pkts count: 4340
+===
 200000B per byteload:
 * NW Overall:
 Num Credit Req Pkts: 62
@@ -144,5 +162,91 @@ Num Data Pkts: 4278
 Total Overheads (B): 704196
 Total Overheads (sendr to recvr only) (B): 344844
 ---
+Sender: Gdpt (Gbps): 94.72518238432193, data sent (B): 6200000, Start timestamp (s): 10.0000061, End timestamp (s) 10.00052972, Data pkts count: 4278
+===
 Total: [1.0, 1.0004, 1.0019, 1.0016, 1.0003]
 Sendr to Recvr only: [1.0001, 1.0151, 1.0958, 1.0697, 1.0073]
+
+--- 5 FLO FULLRANGE 8Gbps RTT=1ms: ---
+20B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 50005
+Num Credit Pkts: 50005
+Num Data Pkts: 695
+Total Overheads (B): 8456440
+Total Overheads (sendr to recvr only) (B): 4256020
+* P2P Only:
+Num Credit Req Pkts: 50000
+Num Credit Pkts: 50000
+Num Data Pkts: 690
+Total Overheads (B): 8455200
+Total Overheads (sendr to recvr only) (B): 4255200
+---
+Sender: Gdpt (Gbps): 37.95966785275959, data sent (B): 1000000, Start timestamp (s): 10.00100135, End timestamp (s) 10.0012121, Data pkts count: 690
+===
+200B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 5005
+Num Credit Pkts: 5005
+Num Data Pkts: 695
+Total Overheads (B): 896440
+Total Overheads (sendr to recvr only) (B): 476020
+* P2P Only:
+Num Credit Req Pkts: 5000
+Num Credit Pkts: 5000
+Num Data Pkts: 690
+Total Overheads (B): 895200
+Total Overheads (sendr to recvr only) (B): 475200
+---
+Sender: Gdpt (Gbps): 10.636883393170042, data sent (B): 1000000, Start timestamp (s): 10.00100207, End timestamp (s) 10.00175417, Data pkts count: 690
+===
+2000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 505
+Num Credit Pkts: 1005
+Num Data Pkts: 695
+Total Overheads (B): 182440
+Total Overheads (sendr to recvr only) (B): 98020
+* P2P Only:
+Num Credit Req Pkts: 500
+Num Credit Pkts: 1000
+Num Data Pkts: 690
+Total Overheads (B): 181200
+Total Overheads (sendr to recvr only) (B): 97200
+---
+Sender: Gdpt (Gbps): 8.242664029023057, data sent (B): 1000000, Start timestamp (s): 10.00100111, End timestamp (s) 10.00197167, Data pkts count: 690
+===
+20000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 55
+Num Credit Pkts: 705
+Num Data Pkts: 695
+Total Overheads (B): 119440
+Total Overheads (sendr to recvr only) (B): 60220
+* P2P Only:
+Num Credit Req Pkts: 50
+Num Credit Pkts: 700
+Num Data Pkts: 690
+Total Overheads (B): 118200
+Total Overheads (sendr to recvr only) (B): 59400
+---
+Sender: Gdpt (Gbps): 8.807274809004534, data sent (B): 1000000, Start timestamp (s): 10.00100111, End timestamp (s) 10.00190945, Data pkts count: 690
+===
+200000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 10
+Num Credit Pkts: 695
+Num Data Pkts: 695
+Total Overheads (B): 114820
+Total Overheads (sendr to recvr only) (B): 56440
+* P2P Only:
+Num Credit Req Pkts: 5
+Num Credit Pkts: 690
+Num Data Pkts: 690
+Total Overheads (B): 113580
+Total Overheads (sendr to recvr only) (B): 55620
+---
+Sender: Gdpt (Gbps): 94.831673780284, data sent (B): 1000000, Start timestamp (s): 10.00100111, End timestamp (s) 10.00108547, Data pkts count: 690
+===
+Total: [1.0, 0.9996, 1.0002, 1.0004, 1.0004]
+Sendr to Recvr only: [1.0001, 1.0002, 1.0045, 1.0069, 1.0073]

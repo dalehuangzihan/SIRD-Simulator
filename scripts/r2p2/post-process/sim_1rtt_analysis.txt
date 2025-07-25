@@ -1,0 +1,308 @@
+
+--- 5 FLO FULLRANGE 8Gbps RTT=1ms: ---
+20B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 50005
+Num Credit Pkts: 50005
+Num Data Pkts: 695
+Total Overheads (B): 8456440
+Total Overheads (sendr to recvr only) (B): 4256020
+* P2P Only:
+Num Credit Req Pkts: 50000
+Num Credit Pkts: 50000
+Num Data Pkts: 690
+Total Overheads (B): 8455200
+Total Overheads (sendr to recvr only) (B): 4255200
+---
+Sender: Gdpt (Gbps): 37.95966785275959, data sent (B): 1000000, Start timestamp (s): 10.00100135, End timestamp (s) 10.0012121, Data pkts count: 690
+---
+Receiver: Credit Send Rate (Gbps): 8.001040135222798, credit data sent (B): 1000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001500943, Data pkts count: 50000
+---
+Sender: Credit Recv Rate (Gbps): 8.001040135222798, credit data recv (B): 1000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001500943, Data pkts count: 50000
+===
+200B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 5005
+Num Credit Pkts: 5005
+Num Data Pkts: 695
+Total Overheads (B): 896440
+Total Overheads (sendr to recvr only) (B): 476020
+* P2P Only:
+Num Credit Req Pkts: 5000
+Num Credit Pkts: 5000
+Num Data Pkts: 690
+Total Overheads (B): 895200
+Total Overheads (sendr to recvr only) (B): 475200
+---
+Sender: Gdpt (Gbps): 10.636883393170042, data sent (B): 1000000, Start timestamp (s): 10.00100207, End timestamp (s) 10.00175417, Data pkts count: 690
+---
+Receiver: Credit Send Rate (Gbps): 8.00800800800645, credit data sent (B): 1000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001500073, Data pkts count: 5000
+---
+Sender: Credit Recv Rate (Gbps): 8.00800800800645, credit data recv (B): 1000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001500073, Data pkts count: 5000
+===
+2000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 505
+Num Credit Pkts: 1005
+Num Data Pkts: 695
+Total Overheads (B): 182440
+Total Overheads (sendr to recvr only) (B): 98020
+* P2P Only:
+Num Credit Req Pkts: 500
+Num Credit Pkts: 1000
+Num Data Pkts: 690
+Total Overheads (B): 181200
+Total Overheads (sendr to recvr only) (B): 97200
+---
+Sender: Gdpt (Gbps): 8.242664029023057, data sent (B): 1000000, Start timestamp (s): 10.00100111, End timestamp (s) 10.00197167, Data pkts count: 690
+---
+Receiver: Credit Send Rate (Gbps): 8.074935400524936, credit data sent (B): 1000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001491793, Data pkts count: 1000
+---
+Sender: Credit Recv Rate (Gbps): 8.074935400524936, credit data recv (B): 1000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001491793, Data pkts count: 1000
+===
+20000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 55
+Num Credit Pkts: 705
+Num Data Pkts: 695
+Total Overheads (B): 119440
+Total Overheads (sendr to recvr only) (B): 60220
+* P2P Only:
+Num Credit Req Pkts: 50
+Num Credit Pkts: 700
+Num Data Pkts: 690
+Total Overheads (B): 118200
+Total Overheads (sendr to recvr only) (B): 59400
+---
+Sender: Gdpt (Gbps): 8.807274809004534, data sent (B): 1000000, Start timestamp (s): 10.00100111, End timestamp (s) 10.00190945, Data pkts count: 690
+---
+Receiver: Credit Send Rate (Gbps): 8.807856608103194, credit data sent (B): 1000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001409353, Data pkts count: 700
+---
+Sender: Credit Recv Rate (Gbps): 8.807856608103194, credit data recv (B): 1000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001409353, Data pkts count: 700
+===
+200000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 10
+Num Credit Pkts: 695
+Num Data Pkts: 695
+Total Overheads (B): 114820
+Total Overheads (sendr to recvr only) (B): 56440
+* P2P Only:
+Num Credit Req Pkts: 5
+Num Credit Pkts: 690
+Num Data Pkts: 690
+Total Overheads (B): 113580
+Total Overheads (sendr to recvr only) (B): 55620
+---
+Sender: Gdpt (Gbps): 94.831673780284, data sent (B): 1000000, Start timestamp (s): 10.00100111, End timestamp (s) 10.00108547, Data pkts count: 690
+---
+Receiver: Credit Send Rate (Gbps): 94.831673780284, credit data sent (B): 1000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.000585433, Data pkts count: 690
+---
+Sender: Credit Recv Rate (Gbps): 94.831673780284, credit data recv (B): 1000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.000585433, Data pkts count: 690
+===
+Total: [1.0, 0.9996, 1.0002, 1.0004, 1.0004]
+Sendr to Recvr only: [1.0001, 1.0002, 1.0045, 1.0069, 1.0073]
+
+--- 5 FLO FULLRANGE 8Gbps RTT=1ms: ---
+2000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 88994
+Num Credit Pkts: 138994
+Num Data Pkts: 131679
+Total Overheads (B): 29685312
+Total Overheads (sendr to recvr only) (B): 18009816
+* P2P Only:
+Num Credit Req Pkts: 50000
+Num Credit Pkts: 100000
+Num Data Pkts: 93085
+Total Overheads (B): 20046800
+Total Overheads (sendr to recvr only) (B): 11646800
+---
+Sender: Gdpt (Gbps): 8.041763935989932, data sent (B): 100000000, Start timestamp (s): 10.00100111, End timestamp (s) 10.100481772, Data pkts count: 93085
+---
+Receiver: Credit Send Rate (Gbps): 8.000742228856614, credit data sent (B): 100000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.100491796, Data pkts count: 100000
+---
+Sender: Credit Recv Rate (Gbps): 8.000742228856614, credit data recv (B): 100000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.100491796, Data pkts count: 100000
+===
+20000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 8900
+Num Credit Pkts: 73900
+Num Data Pkts: 73552
+Total Overheads (B): 12839360
+Total Overheads (sendr to recvr only) (B): 6631760
+* P2P Only:
+Num Credit Req Pkts: 5000
+Num Credit Pkts: 70000
+Num Data Pkts: 69690
+Total Overheads (B): 11875200
+Total Overheads (sendr to recvr only) (B): 5995200
+---
+Sender: Gdpt (Gbps): 8.007490847538133, data sent (B): 100000000, Start timestamp (s): 10.00100111, End timestamp (s) 10.100907562, Data pkts count: 69690
+---
+Receiver: Credit Send Rate (Gbps): 8.007344095784367, credit data sent (B): 100000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.100409356, Data pkts count: 70000
+---
+Sender: Credit Recv Rate (Gbps): 8.007344095784367, credit data recv (B): 100000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.100409356, Data pkts count: 70000
+===
+200000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 893
+Num Credit Pkts: 69393
+Num Data Pkts: 69301
+Total Overheads (B): 11448104
+Total Overheads (sendr to recvr only) (B): 5619092
+* P2P Only:
+Num Credit Req Pkts: 500
+Num Credit Pkts: 69000
+Num Data Pkts: 68910
+Total Overheads (B): 11350800
+Total Overheads (sendr to recvr only) (B): 5554800
+---
+Sender: Gdpt (Gbps): 8.073974399364928, data sent (B): 100000000, Start timestamp (s): 10.00100111, End timestamp (s) 10.100084902, Data pkts count: 68910
+---
+Receiver: Credit Send Rate (Gbps): 8.073932760065965, credit data sent (B): 100000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.099585376, Data pkts count: 69000
+---
+Sender: Credit Recv Rate (Gbps): 8.073932760065965, credit data recv (B): 100000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.099585376, Data pkts count: 69000
+===
+2000000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 100
+Num Credit Pkts: 68650
+Num Data Pkts: 68650
+Total Overheads (B): 11267000
+Total Overheads (sendr to recvr only) (B): 5500400
+* P2P Only:
+Num Credit Req Pkts: 50
+Num Credit Pkts: 68600
+Num Data Pkts: 68600
+Total Overheads (B): 11254600
+Total Overheads (sendr to recvr only) (B): 5492200
+---
+Sender: Gdpt (Gbps): 8.806332263664952, data sent (B): 100000000, Start timestamp (s): 10.00100111, End timestamp (s) 10.091844832, Data pkts count: 68600
+---
+Receiver: Credit Send Rate (Gbps): 8.806332166725586, credit data sent (B): 100000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.091344796, Data pkts count: 68600
+---
+Sender: Credit Recv Rate (Gbps): 8.806332166725586, credit data recv (B): 100000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.091344796, Data pkts count: 68600
+===
+20000000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 10
+Num Credit Pkts: 68595
+Num Data Pkts: 68595
+Total Overheads (B): 11250420
+Total Overheads (sendr to recvr only) (B): 5488440
+* P2P Only:
+Num Credit Req Pkts: 5
+Num Credit Pkts: 68590
+Num Data Pkts: 68590
+Total Overheads (B): 11249180
+Total Overheads (sendr to recvr only) (B): 5487620
+---
+Sender: Gdpt (Gbps): 94.79897285314199, data sent (B): 100000000, Start timestamp (s): 10.00100111, End timestamp (s) 10.00944002, Data pkts count: 68590
+---
+Receiver: Credit Send Rate (Gbps): 94.799298627389, credit data sent (B): 100000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.008939954, Data pkts count: 68590
+---
+Sender: Credit Recv Rate (Gbps): 94.799298627389, credit data recv (B): 100000000, Start timestamp (s): 10.000501073, End timestamp (s) 10.008939954, Data pkts count: 68590
+===
+
+--- 1 FLO FULLRANGE 1.6Gbps RTT=1ms: ---
+20B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 10001
+Num Credit Pkts: 10001
+Num Data Pkts: 139
+Total Overheads (B): 1691288
+Total Overheads (sendr to recvr only) (B): 851204
+* P2P Only:
+Num Credit Req Pkts: 10000
+Num Credit Pkts: 10000
+Num Data Pkts: 138
+Total Overheads (B): 1691040
+Total Overheads (sendr to recvr only) (B): 851040
+---
+Sender: Gdpt (Gbps): 7.636502481917257, data sent (B): 200000, Start timestamp (s): 10.00100255, End timestamp (s) 10.00121207, Data pkts count: 138
+---
+Receiver: Credit Send Rate (Gbps): 1.6002560409687285, credit data sent (B): 200000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001500913, Data pkts count: 10000
+---
+Sender: Credit Recv Rate (Gbps): 1.6002560409687285, credit data recv (B): 200000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001500913, Data pkts count: 10000
+===
+200B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 1001
+Num Credit Pkts: 1001
+Num Data Pkts: 139
+Total Overheads (B): 179288
+Total Overheads (sendr to recvr only) (B): 95204
+* P2P Only:
+Num Credit Req Pkts: 1000
+Num Credit Pkts: 1000
+Num Data Pkts: 138
+Total Overheads (B): 179040
+Total Overheads (sendr to recvr only) (B): 95040
+---
+Sender: Gdpt (Gbps): 2.139066030292527, data sent (B): 200000, Start timestamp (s): 10.00100606, End timestamp (s) 10.00175405, Data pkts count: 138
+---
+Receiver: Credit Send Rate (Gbps): 1.6016977996696, credit data sent (B): 200000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001500013, Data pkts count: 1000
+---
+Sender: Credit Recv Rate (Gbps): 1.6016977996696, credit data recv (B): 200000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001500013, Data pkts count: 1000
+===
+2000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 101
+Num Credit Pkts: 201
+Num Data Pkts: 139
+Total Overheads (B): 36488
+Total Overheads (sendr to recvr only) (B): 19604
+* P2P Only:
+Num Credit Req Pkts: 100
+Num Credit Pkts: 200
+Num Data Pkts: 138
+Total Overheads (B): 36240
+Total Overheads (sendr to recvr only) (B): 19440
+---
+Sender: Gdpt (Gbps): 1.6493995154899304, data sent (B): 200000, Start timestamp (s): 10.00100111, End timestamp (s) 10.00197116, Data pkts count: 138
+---
+Receiver: Credit Send Rate (Gbps): 1.6161126430532549, credit data sent (B): 200000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001491103, Data pkts count: 200
+---
+Sender: Credit Recv Rate (Gbps): 1.6161126430532549, credit data recv (B): 200000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001491103, Data pkts count: 200
+===
+20000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 11
+Num Credit Pkts: 141
+Num Data Pkts: 139
+Total Overheads (B): 23888
+Total Overheads (sendr to recvr only) (B): 12044
+* P2P Only:
+Num Credit Req Pkts: 10
+Num Credit Pkts: 140
+Num Data Pkts: 138
+Total Overheads (B): 23640
+Total Overheads (sendr to recvr only) (B): 11880
+---
+Sender: Gdpt (Gbps): 1.7745835274309356, data sent (B): 200000, Start timestamp (s): 10.00100111, End timestamp (s) 10.00190273, Data pkts count: 138
+---
+Receiver: Credit Send Rate (Gbps): 1.7748197448707554, credit data sent (B): 200000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001402573, Data pkts count: 140
+---
+Sender: Credit Recv Rate (Gbps): 1.7748197448707554, credit data recv (B): 200000, Start timestamp (s): 10.000501073, End timestamp (s) 10.001402573, Data pkts count: 140
+===
+200000B per byteload:
+* NW Overall:
+Num Credit Req Pkts: 2
+Num Credit Pkts: 139
+Num Data Pkts: 139
+Total Overheads (B): 22964
+Total Overheads (sendr to recvr only) (B): 11288
+* P2P Only:
+Num Credit Req Pkts: 1
+Num Credit Pkts: 138
+Num Data Pkts: 138
+Total Overheads (B): 22716
+Total Overheads (sendr to recvr only) (B): 11124
+---
+Sender: Gdpt (Gbps): 95.06833036325759, data sent (B): 200000, Start timestamp (s): 10.00100111, End timestamp (s) 10.00101794, Data pkts count: 138
+---
+Receiver: Credit Send Rate (Gbps): 95.06833036325759, credit data sent (B): 200000, Start timestamp (s): 10.000501073, End timestamp (s) 10.000517903, Data pkts count: 138
+---
+Sender: Credit Recv Rate (Gbps): 95.06833036325759, credit data recv (B): 200000, Start timestamp (s): 10.000501073, End timestamp (s) 10.000517903, Data pkts count: 138
+===
