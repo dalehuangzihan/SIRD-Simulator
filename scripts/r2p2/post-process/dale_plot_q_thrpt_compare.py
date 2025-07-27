@@ -196,6 +196,11 @@ def do_dctcp_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_flow,
 
 
 if __name__ == "__main__":
+    do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 1, 10000, 20, 0.1, title_addendum="_fullrange_1flo_1pt6gbps_total_1msRTT")
+    do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 1, 1000, 200, 1.0, title_addendum="_fullrange_1flo_1pt6gbps_total_1msRTT")
+    do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 1, 100, 2000, 10, title_addendum="_fullrange_1flo_1pt6gbps_total_1msRTT")
+    do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 1, 10, 20000, 100, title_addendum="_fullrange_1flo_1pt6gbps_total_1msRTT")
+    do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 1, 1, 200000, 1000, title_addendum="_fullrange_1flo_1pt6gbps_total_1msRTT")
 
     do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 5, 10000, 20, 0.1, title_addendum="_fullrange_5flo_8gbps_total_1msRTT")
     do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 5, 1000, 200, 1.0, title_addendum="_fullrange_5flo_8gbps_total_1msRTT")

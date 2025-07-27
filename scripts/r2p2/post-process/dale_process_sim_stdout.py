@@ -1,3 +1,5 @@
+import pandas as pd
+import matplotlib.pyplot as plt
 import math
 import dale_experiment_rig
 
@@ -17,6 +19,11 @@ REL_PATH_TO_EXP_FAMILY_FASTPACE = "FCT_Subpkt_Byteloads_subpkt_multiflow_fastpac
 REL_PATH_TO_EXP_FAMILY_FASTPACE_EXTENDED = "FCT_Subpkt_Byteloads_subpkt_multiflow_fastpace_extended/"
 REL_PATH_TO_EXP_FAMILY_SLOWPACE = "FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/"
 
+# PATH_TO_SCRIPTS_R2P2 = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/"
+PATH_TO_SCRIPTS_R2P2 = "/data/dh1723/SIRD-Simulator/scripts/r2p2/" # NOTE: use this for batch1 server
+PATH_TO_POSTPROC = f"{PATH_TO_SCRIPTS_R2P2}post-process/"
+PATH_TO_TMP_PLOT = PATH_TO_POSTPROC + "tmp_plot/"
+
 class SimOutputStats:
     def __init__(self, num_creditreq_pkts, num_credit_pkts, num_data_pkts):
         self.num_creditreq_pkts = num_creditreq_pkts
@@ -31,7 +38,26 @@ class SimOutputStats:
         print(f"Num Data Pkts: {self.num_data_pkts}")
         print(f"Total Overheads (B): {self.total_overheads_B}")
         print(f"Total Overheads (sendr to recvr only) (B): {self.total_overheads_sendr_to_recvr_B}")
-    
+
+class DataPktStats:
+    def __init__(self, count_d_pkts, total_data_sent_B, start_time_s, end_time_s, thrpt_bps, timestamps_s_list, data_sent_cumu_B_list):
+        self.count_d_pkts = count_d_pkts
+        self.total_data_sent_B = total_data_sent_B
+        self.start_time_s = start_time_s
+        self.end_time_s = end_time_s
+        self.thrpt_bps = thrpt_bps
+        self.timestamps_s_list = timestamps_s_list
+        self.data_sent_cumu_B_list = data_sent_cumu_B_list
+
+class CreditPktStats:
+    def __init__(self, count_credit_pkts, total_credit_B, start_time_s, end_time_s, credit_rate_bps, timestamps_s_list, credit_cumu_B_list):
+        self.count_credit_pkts = count_credit_pkts
+        self.total_credit_B = total_credit_B
+        self.start_time_s = start_time_s
+        self.end_time_s = end_time_s
+        self.credit_rate_bps = credit_rate_bps
+        self.timestamps_s_list = timestamps_s_list
+        self.credit_cumu_B_list = credit_cumu_B_list
 
 def count_cr_r_d_pkts_in_sim_stdout(filepath):
     num_creditreq_pkts = 0
@@ -67,7 +93,37 @@ def count_cr_r_d_pkts_in_sim_stdout(filepath):
     sim_output_stats_p2p_data_transf_only = SimOutputStats(num_creditreq_pkts_0_to_1, num_credit_pkts_1_to_0, num_data_pkts_0_to_1)
     return sim_output_stats_overall_nw, sim_output_stats_p2p_data_transf_only
 
+def get_actual_sender_thrpt_bps(filepath):
+    timestamps_s_list = []
+    data_sent_cumu_B_list = []
+
+    count_d_pkts = 0
+    total_data_sent_B = 0
+    start_time_s = math.inf
+    end_time_s = -1
+    with open(filepath, 'r') as file:
+        for line in file:
+            if f"0 {D_PKT_SUBSTRING}" in line:
+                count_d_pkts += 1
+                tokens_list = line.split(" ")
+                timestamp_s = float(tokens_list[0])
+                data_to_send_B = int(tokens_list[-1])
+
+                total_data_sent_B += data_to_send_B
+                start_time_s = min(timestamp_s, start_time_s)
+                end_time_s = max(timestamp_s, end_time_s)
+
+                timestamps_s_list.append(timestamp_s)
+                data_sent_cumu_B_list.append(total_data_sent_B)
+    
+    thrpt_bps = total_data_sent_B * 8/(end_time_s - start_time_s)
+    return DataPktStats(count_d_pkts, total_data_sent_B, start_time_s, end_time_s, thrpt_bps, timestamps_s_list, data_sent_cumu_B_list)
+    # return count_d_pkts, total_data_sent_B, start_time_s, end_time_s, thrpt_bps, timestamps_s_list, data_sent_cumu_B_list
+
 def get_actual_sender_gdpt_bps(filepath):
+    timestamps_s_list = []
+    data_sent_cumu_B_list = []
+
     count_d_pkts = 0
     total_data_sent_B = 0
     start_time_s = math.inf
@@ -83,12 +139,48 @@ def get_actual_sender_gdpt_bps(filepath):
                 total_data_sent_B += (data_to_send_B - PKT_HDR_SIZE_B)
                 start_time_s = min(timestamp_s, start_time_s)
                 end_time_s = max(timestamp_s, end_time_s)
+
+                timestamps_s_list.append(timestamp_s)
+                data_sent_cumu_B_list.append(total_data_sent_B)
     
     gdpt_bps = total_data_sent_B * 8/(end_time_s - start_time_s)
 
-    return count_d_pkts, total_data_sent_B, start_time_s, end_time_s, gdpt_bps
+    return DataPktStats(count_d_pkts, total_data_sent_B, start_time_s, end_time_s, gdpt_bps, timestamps_s_list, data_sent_cumu_B_list)
+    # return count_d_pkts, total_data_sent_B, start_time_s, end_time_s, gdpt_bps, timestamps_s_list, data_sent_cumu_B_list
+
+def get_credit_send_rate_bps(filepath):
+    timestamps_s_list = []
+    credit_sent_cumu_B_list = []
+
+    count_credit_pkts = 0
+    total_credit_B = 0
+    start_time_s = math.inf
+    end_time_s = -1
+    with open(filepath, 'r') as file:
+        for line in file:
+            if f"1 {C_PKT_SUBSTRING}" in line:
+                count_credit_pkts += 1
+                tokens_list = line.split(" ")
+                timestamp_s = float(tokens_list[0])
+
+                idx_of_credit_data_token = tokens_list.index("credit_needed:") + 1
+                credit_B = int(tokens_list[idx_of_credit_data_token])
+                total_credit_B += credit_B
+
+                start_time_s = min(timestamp_s, start_time_s)
+                end_time_s = max(timestamp_s, end_time_s)
+
+                timestamps_s_list.append(timestamp_s)
+                credit_sent_cumu_B_list.append(total_credit_B)
+
+    credit_send_rate_bps = total_credit_B * 8 / (end_time_s - start_time_s)
+    return CreditPktStats(count_credit_pkts, total_credit_B, start_time_s, end_time_s, credit_send_rate_bps, timestamps_s_list, credit_sent_cumu_B_list)
+    # return count_credit_pkts, total_credit_B, start_time_s, end_time_s, credit_send_rate_bps, timestamps_s_list, credit_sent_cumu_B_list
 
 def get_credit_data_send_rate_bps(filepath):
+    timestamps_s_list = []
+    credit_sent_cumu_B_list = []
+
     count_credit_pkts = 0
     total_credit_data_B = 0
     start_time_s = math.inf
@@ -99,15 +191,53 @@ def get_credit_data_send_rate_bps(filepath):
                 count_credit_pkts += 1
                 tokens_list = line.split(" ")
                 timestamp_s = float(tokens_list[0])
+
                 idx_of_credit_data_token = tokens_list.index("credit_needed_data") + 1
                 credit_data_B = int(tokens_list[idx_of_credit_data_token])
                 total_credit_data_B += credit_data_B
+
                 start_time_s = min(timestamp_s, start_time_s)
                 end_time_s = max(timestamp_s, end_time_s)
-    credit_send_rate_bps = total_credit_data_B * 8 / (end_time_s - start_time_s)
-    return count_credit_pkts, total_credit_data_B, start_time_s, end_time_s, credit_send_rate_bps
+
+                timestamps_s_list.append(timestamp_s)
+                credit_sent_cumu_B_list.append(total_credit_data_B)
+
+    credit_data_send_rate_bps = total_credit_data_B * 8 / (end_time_s - start_time_s)
+    return CreditPktStats(count_credit_pkts, total_credit_data_B, start_time_s, end_time_s, credit_data_send_rate_bps, timestamps_s_list, credit_sent_cumu_B_list)
+    # return count_credit_pkts, total_credit_data_B, start_time_s, end_time_s, credit_data_send_rate_bps, timestamps_s_list, credit_sent_cumu_B_list
+
+def get_credit_recv_rate_bps(filepath):
+    timestamps_s_list = []
+    credit_recv_cumu_B_list = []
+
+    count_credit_pkts = 0
+    total_credit_B = 0
+    start_time_s = math.inf
+    end_time_s = -1
+    with open(filepath, 'r') as file:
+        for line in file:
+            if f"0 {C_PKT_RECV_SUBSTRING}" in line:
+                count_credit_pkts += 1
+                tokens_list = line.split(" ")
+                timestamp_s = float(tokens_list[0])
+                idx_of_credit_token = tokens_list.index("credits:") + 1
+                credit_B = int(tokens_list[idx_of_credit_token])
+
+                total_credit_B += credit_B
+                start_time_s = min(timestamp_s, start_time_s)
+                end_time_s = max(timestamp_s, end_time_s)
+
+                timestamps_s_list.append(timestamp_s)
+                credit_recv_cumu_B_list.append(total_credit_B)
+
+    credit_recv_rate_bps = total_credit_B * 8 / (end_time_s - start_time_s)
+    return CreditPktStats(count_credit_pkts, total_credit_B, start_time_s, end_time_s, credit_recv_rate_bps, timestamps_s_list, credit_recv_cumu_B_list)
+    # return count_credit_pkts, total_credit_B, start_time_s, end_time_s, credit_recv_rate_bps, timestamps_s_list, credit_recv_cumu_B_list
 
 def get_credit_data_recv_rate_bps(filepath):
+    timestamps_s_list = []
+    credit_data_recv_cumu_B_list = []
+
     count_credit_pkts = 0
     total_credit_data_B = 0
     start_time_s = math.inf
@@ -120,11 +250,17 @@ def get_credit_data_recv_rate_bps(filepath):
                 timestamp_s = float(tokens_list[0])
                 idx_of_credit_data_token = tokens_list.index("credits:") + 1
                 credit_data_B = int(tokens_list[idx_of_credit_data_token]) - PKT_HDR_SIZE_B
+
                 total_credit_data_B += credit_data_B
                 start_time_s = min(timestamp_s, start_time_s)
                 end_time_s = max(timestamp_s, end_time_s)
-    credit_recv_rate_bps = total_credit_data_B * 8 / (end_time_s - start_time_s)
-    return count_credit_pkts, total_credit_data_B, start_time_s, end_time_s, credit_recv_rate_bps
+
+                timestamps_s_list.append(timestamp_s)
+                credit_data_recv_cumu_B_list.append(total_credit_data_B)
+
+    credit_data_recv_rate_bps = total_credit_data_B * 8 / (end_time_s - start_time_s)
+    return CreditPktStats(count_credit_pkts, total_credit_data_B, start_time_s, end_time_s, credit_data_recv_rate_bps, timestamps_s_list, credit_data_recv_cumu_B_list)
+    # return count_credit_pkts, total_credit_data_B, start_time_s, end_time_s, credit_data_recv_rate_bps, timestamps_s_list, credit_data_recv_cumu_B_list
 
 # '''
 # ======== 1 FLO SUBPKT EXPERIMENTS ========
@@ -229,24 +365,72 @@ def process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_lis
         sim_stats_p2p_only.pretty_print()
         print("---")
 
-        # Get SSIRD sender actual gdpt
-        count_d_pkts, total_data_sent_B, d_send_start_time_s, d_send_end_time_s, gdpt_bps = get_actual_sender_gdpt_bps(sim_output_path)
-        actual_app_thrpt_gbps.append(gdpt_bps)
-        print(f"Sender: Gdpt (Gbps): {gdpt_bps/pow(10,9)}, data sent (B): {total_data_sent_B}, Start timestamp (s): {d_send_start_time_s}, End timestamp (s) {d_send_end_time_s}, Data pkts count: {count_d_pkts}")
-        print("---")
+        # Get SSIRD sender actual gdpt (data)
+        data_send_stats = get_actual_sender_gdpt_bps(sim_output_path)
+        actual_app_thrpt_gbps.append(data_send_stats.thrpt_bps)
+        print(f"Sender: DATA Gdpt (Gbps): {data_send_stats.thrpt_bps/pow(10,9)}, data sent (B): {data_send_stats.total_data_sent_B}, Start timestamp (s): {data_send_stats.start_time_s}, End timestamp (s) {data_send_stats.end_time_s}, Data pkts count: {data_send_stats.count_d_pkts}")
 
-        # Get SSIRD sender credit-send rate
-        count_sent_c_pkts, total_credit_data_sent_B, c_send_start_time_s, c_send_end_time_s, credit_send_rate_bps = get_credit_data_send_rate_bps(sim_output_path)
-        print(f"Receiver: Credit Send Rate (Gbps): {credit_send_rate_bps/pow(10,9)}, credit data sent (B): {total_credit_data_sent_B}, Start timestamp (s): {c_send_start_time_s}, End timestamp (s) {c_send_end_time_s}, Data pkts count: {count_sent_c_pkts}")
-        print("---")
+        # Get SSIRD sender credit (data) send rate
+        credit_data_send_stats = get_credit_data_send_rate_bps(sim_output_path)
+        print(f"Receiver: Credit DATA Send Rate (Gbps): {credit_data_send_stats.credit_rate_bps/pow(10,9)}, credit data sent (B): {credit_data_send_stats.total_credit_B}, Start timestamp (s): {credit_data_send_stats.start_time_s}, End timestamp (s) {credit_data_send_stats.end_time_s}, Credit pkts count: {credit_data_send_stats.count_credit_pkts}")
 
-        # Get SSIRD sender credit-recv rate
-        count_recv_c_pkts, total_credit_data_recv_B, c_recv_start_time_s, c_recv_end_time_s, credit_recv_rate_bps = get_credit_data_send_rate_bps(sim_output_path)
-        print(f"Sender: Credit Recv Rate (Gbps): {credit_recv_rate_bps/pow(10,9)}, credit data recv (B): {total_credit_data_recv_B}, Start timestamp (s): {c_recv_start_time_s}, End timestamp (s) {c_recv_end_time_s}, Data pkts count: {count_recv_c_pkts}")
+        # Get SSIRD sender credit (data) recv rate
+        credit_data_recv_stats = get_credit_data_recv_rate_bps(sim_output_path)
+        print(f"Sender: Credit DATA Recv Rate (Gbps): {credit_data_recv_stats.credit_rate_bps/pow(10,9)}, credit data recv (B): {credit_data_recv_stats.total_credit_B}, Start timestamp (s): {credit_data_recv_stats.start_time_s}, End timestamp (s) {credit_data_recv_stats.end_time_s}, Credit pkts count: {credit_data_recv_stats.count_credit_pkts}")
 
+        plot_c_d_timeseries_cumu(f"DATA_ONLY_{experiment_name}", credit_data_send_stats.timestamps_s_list, credit_data_send_stats.credit_cumu_B_list, credit_data_recv_stats.timestamps_s_list, credit_data_recv_stats.credit_cumu_B_list, data_send_stats.timestamps_s_list, data_send_stats.data_sent_cumu_B_list)
 
         print("===")
+
+        # Get SSIRD sender thrpt
+        data_send_raw_stats = get_actual_sender_thrpt_bps(sim_output_path)
+        print(f"Sender: RAW Thrpt (Gbps): {data_send_raw_stats.thrpt_bps/pow(10,9)}, data+hdrs sent (B): {data_send_raw_stats.total_data_sent_B}, Start timestamp (s): {data_send_raw_stats.start_time_s}, End timestamp (s) {data_send_raw_stats.end_time_s}, Credit pkts count: {data_send_raw_stats.count_d_pkts}")
+
+        # Get SSIRD sender credit (raw) send rate
+        credit_send_stats = get_credit_send_rate_bps(sim_output_path)
+        print(f"Receiver: Credit RAW Send Rate (Gbps): {credit_send_stats.credit_rate_bps/pow(10,9)}, credit sent (B): {credit_send_stats.total_credit_B}, Start timestamp (s): {credit_send_stats.start_time_s}, End timestamp (s) {credit_send_stats.end_time_s}, Credit pkts count: {credit_send_stats.count_credit_pkts}")
+
+        # Get SSIRD sender credit(raw) recv rate
+        credit_recv_stats = get_credit_recv_rate_bps(sim_output_path)
+        print(f"Sender: Credit RAW Recv Rate (Gbps): {credit_recv_stats.credit_rate_bps/pow(10,9)}, credit recv (B): {credit_recv_stats.total_credit_B}, Start timestamp (s): {credit_recv_stats.start_time_s}, End timestamp (s) {credit_recv_stats.end_time_s}, Credit pkts count: {credit_recv_stats.count_credit_pkts}")
+
+        plot_c_d_timeseries_cumu(f"RAW_{experiment_name}", credit_send_stats.timestamps_s_list, credit_send_stats.credit_cumu_B_list, credit_recv_stats.timestamps_s_list, credit_recv_stats.credit_cumu_B_list, data_send_raw_stats.timestamps_s_list, data_send_raw_stats.data_sent_cumu_B_list)
+
+        print("##########")
+
     return nw_overheads_B_list, nw_overheads_s_to_r_only_B_list, actual_app_thrpt_gbps
+
+def plot_c_d_timeseries_cumu(plot_name, c_sent_timestamps_s_list, c_sent_cumu_B_list, c_recv_timestamps_s_list, c_recv_cumu_B_list, d_sent_timestamps_s_list, d_sent_cumu_B_list):
+    sim_start_time_s = 10
+    # Convert to pandas series and aggregate values with the same timestamp together
+    c_sent_time_series_cumu = pd.Series(c_sent_cumu_B_list, index=[(t-sim_start_time_s)*1000 for t in c_sent_timestamps_s_list]).groupby(level=0).sum()
+    c_recv_time_series_cumu = pd.Series(c_recv_cumu_B_list, index=[(t-sim_start_time_s)*1000 for t in c_recv_timestamps_s_list]).groupby(level=0).sum()
+    d_sent_time_series_cumu = pd.Series(d_sent_cumu_B_list, index=[(t-sim_start_time_s)*1000 for t in d_sent_timestamps_s_list]).groupby(level=0).sum()
+
+    # Get the union of all time series
+    all_times = c_sent_time_series_cumu.index.union(c_recv_time_series_cumu.index).union(d_sent_time_series_cumu.index)
+
+    # Reindex each series to include all times, filling missing value with Nan and then forward-fill
+    c_sent_time_series_cumu_aligned = c_sent_time_series_cumu.reindex(all_times).ffill().fillna(0)
+    c_recv_time_series_cumu_aligned = c_recv_time_series_cumu.reindex(all_times).ffill().fillna(0)
+    d_sent_time_series_cumu_aligned = d_sent_time_series_cumu.reindex(all_times).ffill().fillna(0)
+
+    # plot
+    plt.figure(figsize=(10,6))
+    plt.plot(c_sent_time_series_cumu_aligned, label="C Sent by Receiver")
+    plt.plot(c_recv_time_series_cumu_aligned, label="C Recv by Sender")
+    plt.plot(d_sent_time_series_cumu_aligned, label="D Sent by Sender")
+    plt.xlabel('Time (ms)')
+    plt.ylabel('Bytes (Cumulative) (B)')
+    plt.title(f"Cumulative Credit pkt, Data pkt bytes exchanged btw Sender & Receiver\n{plot_name}")
+    plt.legend()
+    plt.grid(True)
+    
+    plt.xlim(left=0)
+
+    filename = f"{plot_name}_c_d_timeseries_cumu.png"
+    plt.savefig(f"{PATH_TO_TMP_PLOT}{filename}")
+    plt.close()
 
 '''
 ======== 15 FLO SUBPKT FASTPACE EXPERIMENTS ========
@@ -591,7 +775,7 @@ if __name__ == "__main__":
 
     # 1RTT verification experiments ---
     proc_5flo_fullrange_exp_sim_outputs_1msRTT()
-    proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT()
+    # proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT()
     proc_1flo_fullrange_exp_sim_outputs_1msRTT()
 
     # proc_5flo_test_vary_bload_num_1msRTT()
