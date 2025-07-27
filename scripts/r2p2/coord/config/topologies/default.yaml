@@ -18,7 +18,7 @@ core_link_speed_gbps: 40
 # Normally used for prop delay. Will also use to model switch processing latency.
 # ASsuming 0.5us port-to-port latency based on this https://www.mellanox.com/related-docs/prod_eth_switches/PB_SN2410.pdf
 core_link_latency_ms: 0.0005 # applies to links other than host uplinks and downlinks
-# Dale: increase leaf-link latency to 0.25ms help increase RTT to 1ms, to reduce margin of error in experiment latency measurements in h0->tor->h1 topo
-leaf_link_latency_ms: 0.25 # applies to host uplinks and downlinks
-# leaf_link_latency_ms: 0.00125 # applies to host uplinks and downlinks
+# # Dale: increase leaf-link latency to 0.25ms help increase RTT to 1ms, to reduce margin of error in experiment latency measurements in h0->tor->h1 topo
+# leaf_link_latency_ms: 0.25 # applies to host uplinks and downlinks
+leaf_link_latency_ms: 0.00125 # applies to host uplinks and downlinks
 host_placement: "uniform"

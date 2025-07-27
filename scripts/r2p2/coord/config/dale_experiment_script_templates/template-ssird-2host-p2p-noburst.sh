@@ -26,11 +26,11 @@ mean_req_size_B_l='121848' # only meanigful if req_size_distr is not manual
 global_debug='6' 
 
 # ===================== R2P2 Parameters =====================
-# Dale: re-adjust sendr-recvr pair credit budget after changing RTT from 5us to 1ms
-r2p2_budgets_intra_max_bytes_l='21600000'
-r2p2_elet_srpb_l='14400000'
-# r2p2_budgets_intra_max_bytes_l='108000'
-# r2p2_elet_srpb_l='72000'
+# # Dale: re-adjust sendr-recvr pair credit budget after changing RTT from 5us to 1ms
+# r2p2_budgets_intra_max_bytes_l='21600000'
+# r2p2_elet_srpb_l='14400000'
+r2p2_budgets_intra_max_bytes_l='108000'
+r2p2_elet_srpb_l='72000'
 r2p2_unsolicited_thresh_bytes_l="0" # no bursts
 r2p2_hybrid_sender_policy_l="1"
 r2p2_sender_policy_ratio_l='0.5'

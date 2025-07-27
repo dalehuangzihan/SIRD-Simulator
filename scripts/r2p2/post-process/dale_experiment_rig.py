@@ -168,26 +168,31 @@ class ManualReqInterval():
         self.parent_dir = parent_dir
         self.experiment_name = experiment_name
 
-    def create_p2p_mri(self, multiflow_obj):
+    def create_p2p_mri(self, multiflow_obj_list):
+        # NOTE: each multiflow obj is for a unique sender-recvr pair
         '''
         Creates MRI csv file of multiple flows of the same kind between a single src, dst pair.
         '''
-        src = multiflow_obj.src
-        dst = multiflow_obj.dst
-        
         mri_filepath = self.get_mri_filepath(self.parent_dir, self.experiment_name)
-        mri_byteloads_spec = []    
-        mri_byteloads_spec.append(str(src))
+        mri_byteloads_spec_list = []
 
-        serialised_byteloads_list = multiflow_obj.serialise_flows_to_byteloads()
-        for i in range(0, len(serialised_byteloads_list)):
-            bl = serialised_byteloads_list[i]
-            time_spec = bl.relative_interval_us * self.MICROSECOND_S
-            if i == 0: time_spec += self.MRI_START_TIME_S 
-            byteload_str = "{:.10f}|{}|{}|{}".format(time_spec, str(dst), bl.size_B, bl.flow_id)
-            mri_byteloads_spec.append(byteload_str)
+        for multiflow_obj in multiflow_obj_list:
+            src = multiflow_obj.src
+            dst = multiflow_obj.dst
 
-        self.mri_list_to_csv(mri_byteloads_spec, mri_filepath)
+            mri_byteloads_spec = []    
+            mri_byteloads_spec.append(str(src))
+
+            serialised_byteloads_list = multiflow_obj.serialise_flows_to_byteloads()
+            for i in range(0, len(serialised_byteloads_list)):
+                bl = serialised_byteloads_list[i]
+                time_spec = bl.relative_interval_us * self.MICROSECOND_S
+                if i == 0: time_spec += self.MRI_START_TIME_S 
+                byteload_str = "{:.10f}|{}|{}|{}".format(time_spec, str(dst), bl.size_B, bl.flow_id)
+                mri_byteloads_spec.append(byteload_str)
+            mri_byteloads_spec_list.append(mri_byteloads_spec)
+
+        self.mri_list_to_csv(mri_byteloads_spec_list, mri_filepath)
         return mri_filepath
 
     @staticmethod
@@ -195,10 +200,11 @@ class ManualReqInterval():
         return parent_dir + experiment_name + ".csv"
 
     @staticmethod
-    def mri_list_to_csv(mri_list, mri_filepath):
+    def mri_list_to_csv(mri_byteloads_spec_list, mri_filepath):
         with open(mri_filepath, 'w') as mri_file:
             wr = csv.writer(mri_file, quoting=csv.QUOTE_NONE)
-            wr.writerow(mri_list)
+            for mri_byteloads_spec in mri_byteloads_spec_list:
+                wr.writerow(mri_byteloads_spec)
 
 class SimSpecScript:
     PATH_TO_SSIRD_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-ssird-2host-p2p-noburst.sh"
@@ -263,11 +269,12 @@ class ExperimentOutputRaw:
     '''
     Is the raw un-processed experiment outputs
     '''
-    def __init__(self, exp_id, experiment_family, experiment_name, app_trace_file_path, proto, num_flows, num_byteloads, byteload_size_B):
+    def __init__(self, exp_id, experiment_family, experiment_name, app_trace_file_path, proto, src_dst_pairs_list, num_flows, num_byteloads, byteload_size_B):
         self.exp_id = exp_id
         self.experiment_family = experiment_family
         self.experiment_name = experiment_name
         self.proto = proto
+        self.src_dst_pairs_list = src_dst_pairs_list
         self.app_trace_file_path = app_trace_file_path
 
         self.num_flows = num_flows
@@ -278,8 +285,11 @@ class ExperimentOutputRaw:
         logger.info(f"Processing results from {self.app_trace_file_path}")
         
         d = {}
-        for i in range(0, self.num_flows):
-            d[i] = FlowStats(self.proto, i, self.num_byteloads, self.byteload_size_B)
+        for src, dst in self.src_dst_pairs_list:
+            for flow_id in range(0, self.num_flows):
+                src_dst_pair = sorted([src,dst]) # each src-dst pair is unique, so both h0->h1 and h1->h0 flows should be treated as under the same src-dst pair
+                dict_key = (src_dst_pair[0], src_dst_pair[1], flow_id)
+                d[dict_key] = FlowStats(self.proto, src, dst, flow_id, self.num_byteloads, self.byteload_size_B)
         flow_stats_dict = collections.OrderedDict(sorted(d.items()))
         del d
 
@@ -294,7 +304,11 @@ class ExperimentOutputRaw:
                 for line in lines:
                     flow_trace_event = FlowTraceEvent.read_flow_trace_from_str(line)
                     flow_id = flow_trace_event.get_app_level_id()
-                    flow_stats_dict.get(flow_id).update_flow_stats(flow_trace_event)
+                    src = flow_trace_event.get_local_addr()
+                    dst = flow_trace_event.get_remote_addr()
+                    src_dst_pair = sorted([src,dst]) # each src-dst pair is unique, so both h0->h1 and h1->h0 flows should be treated as under the same src-dst pair
+                    dict_key = (src_dst_pair[0], src_dst_pair[1], flow_id)
+                    flow_stats_dict.get(dict_key).update_flow_stats(flow_trace_event)
 
                     if (flow_trace_event.get_event() == FlowTraceEvent.SRQ_EVENT):
                         overall_srq_start_time_s = min(flow_trace_event.get_timestamp(), overall_srq_start_time_s)
@@ -350,6 +364,10 @@ class FlowTraceEvent:
         return int(self.req_size)
     def get_app_level_id(self):
         return int(self.app_level_id)
+    def get_local_addr(self):
+        return int(self.local_addr)
+    def get_remote_addr(self):
+        return int(self.remote_addr)
 
     @staticmethod
     def read_flow_trace_from_str(str_line):
@@ -358,8 +376,10 @@ class FlowTraceEvent:
         return FlowTraceEvent(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7], tokens[8], tokens[9], tokens[10], tokens[11])
 
 class FlowStats:
-    def __init__(self, proto, flow_id, num_byteloads, byteload_size_B):
+    def __init__(self, proto, src, dst, flow_id, num_byteloads, byteload_size_B):
         self.proto = proto
+        self.src = src
+        self.dst = dst
         self.flow_id = flow_id
         self.num_byteloads = num_byteloads
         self.byteload_size_B = byteload_size_B if byteload_size_B > 4 else 4 # is the actual byteload size as per ssird sim
@@ -439,12 +459,11 @@ class FlowStats:
 
 class Experiment():
 
-    def __init__(self, experiment_family, experiment_name, proto, src, dst, flow_start_times_us_list, num_byteloads, byteload_size_B, inter_byteload_period_us, is_full_postproc=False):
+    def __init__(self, experiment_family, experiment_name, proto, src_dst_pairs_list, flow_start_times_us_list, num_byteloads, byteload_size_B, inter_byteload_period_us, is_full_postproc=False):
         self.experiment_family = experiment_family
         self.proto = proto
 
-        self.src = src
-        self.dst = dst
+        self.src_dst_pairs_list = src_dst_pairs_list
         self.num_byteloads = num_byteloads
         self.byteload_size_B = byteload_size_B
         self.inter_byteload_period_us = inter_byteload_period_us
@@ -468,7 +487,7 @@ class Experiment():
         logger.info(f'Flags: {self.run_simulations}, {self.run_post_proc}, {self.create_timeseires}, {self.create_plots}, {self.delete_current}')
         logger.info("ssird_sim_duration={:f}; dctcp_sim_duration={:f}".format(ssird_sim_dur_l, dctcp_sim_dur_l))
 
-        self.prep_experiment_input(self.src, self.dst, self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us, self.flow_start_times_us_list)
+        self.prep_experiment_input(self.src_dst_pairs_list, self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us, self.flow_start_times_us_list)
         ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(ssird_sim_duration=ssird_sim_dur_l, dctcp_sim_duration=dctcp_sim_dur_l, experiment_name=self.experiment_name, log_level=log_level)
 
         outputs_dir = f"{PATH_TO_SIM_COORD}outputs/{self.experiment_family}/"
@@ -482,11 +501,11 @@ class Experiment():
         else:
             logger.error(f"Unrecognised protocol name '{self.proto}'")
 
-        experiment_results_raw = ExperimentOutputRaw(exp_id, self.experiment_family, self.experiment_name, app_trace_file_path, self.proto, self.num_flows, self.num_byteloads, self.byteload_size_B)
+        experiment_results_raw = ExperimentOutputRaw(exp_id, self.experiment_family, self.experiment_name, app_trace_file_path, self.proto, self.src_dst_pairs_list, self.num_flows, self.num_byteloads, self.byteload_size_B)
 
         return experiment_results_raw
 
-    def prep_experiment_input(self, src, dst, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, flow_start_times_list):
+    def prep_experiment_input(self, src_dst_pairs_list, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, flow_start_times_list):
         logger.info("-----\nPreparing experiment input MRIs")
         try:
             logger.info("### Creating MRI inputs parent dir: " + self.mri_input_dir)
@@ -495,8 +514,11 @@ class Experiment():
             logger.info("File " + self.mri_input_dir + " aready exists.")
         
         mri = ManualReqInterval(self.mri_input_dir, self.experiment_name)
-        multiflow_obj = MultiFlow(src, dst, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, flow_start_times_list)  
-        mri_filepath = mri.create_p2p_mri(multiflow_obj)
+        multiflow_obj_list = []
+        for src, dst in src_dst_pairs_list:
+            multiflow_obj = MultiFlow(src, dst, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, flow_start_times_list)  
+            multiflow_obj_list.append(multiflow_obj)
+        mri_filepath = mri.create_p2p_mri(multiflow_obj_list)
         return mri_filepath
 
     def prep_experiment_spec_scripts(self, ssird_sim_duration, dctcp_sim_duration, experiment_name, log_level):
@@ -571,11 +593,10 @@ class Experiment():
 
 class ExperimentGroup:
 
-    def __init__(self, experiment_family, proto_names_list, src, dst, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc=False, log_level=LOG_LEVEL_2, title_addendum=""):
+    def __init__(self, experiment_family, proto_names_list, src_dst_pairs_list, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc=False, log_level=LOG_LEVEL_2, title_addendum=""):
         self.experiment_family = experiment_family
         self.proto_names_l = proto_names_list
-        self.src = src
-        self.dst = dst
+        self.src_dst_pairs_list = src_dst_pairs_list
         self.num_flows = len(flow_start_times_us_list)
         self.flow_start_times_us_list = flow_start_times_us_list
         self.num_byteloads_per_flow_list = num_byteloads_per_flow_list
@@ -614,7 +635,7 @@ class ExperimentGroup:
             for exp_id in range(0, self.num_experiments):
                 experiment_name = Experiment.get_experiment_name(self.num_flows, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list[exp_id]) + self.title_addendum
                 for proto in self.proto_names_l:
-                    experiment = Experiment(self.experiment_family, experiment_name, proto, self.src, self.dst, self.flow_start_times_us_list, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list[exp_id], self.is_full_postproc) 
+                    experiment = Experiment(self.experiment_family, experiment_name, proto, self.src_dst_pairs_list, self.flow_start_times_us_list, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list[exp_id], self.is_full_postproc) 
 
                     # submit experiment to thread pool
                     future = executor.submit(
