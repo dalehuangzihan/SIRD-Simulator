@@ -667,10 +667,38 @@ def proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT():
     # INFO:__main__:* SSIRD FCT: [[0.10049035800000006, 0.10049053100000016, 0.10049071100000084, 0.10049089000000144, 0.10098098899999997], [0.10040187500000108, 0.10040358900000079, 0.10040528500000079, 0.10040698100000078, 0.1014067720000007], [0.0995170690000009, 0.09953395800000031, 0.09955084800000158, 0.09956773800000107, 0.10058411300000003], [0.09166895600000124, 0.09183773700000053, 0.09200651800000159, 0.0921752980000008, 0.09234407900000008], [0.003188028000000287, 0.004875830000001358, 0.006563632000000652, 0.008251433999999946, 0.009939236000001017]]
     # INFO:__main__:* DCTCP FCT: [None, None, None, None, None]
 
-    print("\n--- 5 FLO FULLRANGE 8Gbps RTT=1ms: ---")
+    print("\n--- 5 FLO LARGE BLOAD 8Gbps RTT=1ms: ---")
     title_addendum = "_large_bload_20MBflo_5flo_8gbps_total_1msRTT"
     rel_path_to_exp_family_output_dir = "FCT_LARGE_Byteloads_SSIRD_ONLY_large_bload_20MBflo_5flo_8gbps_total_1msRTT/"
     num_flows = 5
+    num_byteloads_list = [10000, 1000, 100, 10, 1]
+    byteload_size_B_list = [2000, 20000, 200000, 2000000, 20000000]
+    inter_byteload_period_us_list = [10.0, 100.0, 1000.0, 10000.0, 100000.0]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_1flo_large_bload_20MBflo_1pt6gbps_exp_sim_outputs_1msRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 20000000
+    # INFO:__main__:Total Injection Period (us): 100000
+    # INFO:__main__:Byteload Size (Bytes): [2000, 20000, 200000, 2000000, 20000000]
+    # INFO:__main__:Num Byteloads: [10000, 1000, 100, 10, 1]
+    # INFO:__main__:Intervals (us): [10.0, 100.0, 1000.0, 10000.0, 100000.0]
+    # INFO:__main__:Num flows: 1
+    # DEBUG:__main__:Flow start times (us): [0]
+    # INFO:__main__:Gdpt Gbps theoretical: [1.6, 1.6, 1.6, 1.6, 1.6]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [1.5999999999999996, 1.600000000000002, 1.599999999999997, 1.599999999999971, -1]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None, None, None, None, None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.5999999999999996], [1.600000000000002], [1.599999999999997], [1.599999999999971], [None]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None, None, None, None, None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.2, 0.2, 0.2, 0.2, 0.2]
+    # INFO:__main__:* Sim duration (DCTCP): [0, 0, 0, 0, 0]
+    # INFO:__main__:* SSIRD FCT: [[0.10049035800000006], [0.10130184000000142], [0.10051659500000021], [0.09166895600000124], [0.003188028000000287]]
+    # INFO:__main__:* DCTCP FCT: [None, None, None, None, None]
+
+    print("\n--- 1 FLO LARGE BLOAD 1.6Gbps RTT=1ms: ---")
+    title_addendum = "_large_bload_20MBflo_1flo_1pt6gbps_total_1msRTT"
+    rel_path_to_exp_family_output_dir = "FCT_LARGE_Byteloads_SSIRD_ONLY_large_bload_20MBflo_1flo_1pt6gbps_total_1msRTT/"
+    num_flows = 1
     num_byteloads_list = [10000, 1000, 100, 10, 1]
     byteload_size_B_list = [2000, 20000, 200000, 2000000, 20000000]
     inter_byteload_period_us_list = [10.0, 100.0, 1000.0, 10000.0, 100000.0]
@@ -777,6 +805,7 @@ if __name__ == "__main__":
     proc_5flo_fullrange_exp_sim_outputs_1msRTT()
     # proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT()
     proc_1flo_fullrange_exp_sim_outputs_1msRTT()
+    proc_1flo_large_bload_20MBflo_1pt6gbps_exp_sim_outputs_1msRTT()
 
     # proc_5flo_test_vary_bload_num_1msRTT()
     # proc_5flo_test_vary_bload_size_1msRTT()
