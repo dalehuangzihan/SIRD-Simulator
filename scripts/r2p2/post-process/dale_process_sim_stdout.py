@@ -384,7 +384,7 @@ def process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_lis
 
         # Get SSIRD sender thrpt
         data_send_raw_stats = get_actual_sender_thrpt_bps(sim_output_path)
-        print(f"Sender: RAW Thrpt (Gbps): {data_send_raw_stats.thrpt_bps/pow(10,9)}, data+hdrs sent (B): {data_send_raw_stats.total_data_sent_B}, Start timestamp (s): {data_send_raw_stats.start_time_s}, End timestamp (s) {data_send_raw_stats.end_time_s}, Credit pkts count: {data_send_raw_stats.count_d_pkts}")
+        print(f"Sender: RAW Thrpt (Gbps): {data_send_raw_stats.thrpt_bps/pow(10,9)}, data+hdrs sent (B): {data_send_raw_stats.total_data_sent_B}, Start timestamp (s): {data_send_raw_stats.start_time_s}, End timestamp (s) {data_send_raw_stats.end_time_s}, Data pkts count: {data_send_raw_stats.count_d_pkts}")
 
         # Get SSIRD sender credit (raw) send rate
         credit_send_stats = get_credit_send_rate_bps(sim_output_path)
