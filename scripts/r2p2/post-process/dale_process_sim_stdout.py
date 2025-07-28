@@ -1,3 +1,4 @@
+from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
@@ -23,6 +24,7 @@ REL_PATH_TO_EXP_FAMILY_SLOWPACE = "FCT_Subpkt_Byteloads_subpkt_multiflow_slowpac
 PATH_TO_SCRIPTS_R2P2 = "/data/dh1723/SIRD-Simulator/scripts/r2p2/" # NOTE: use this for batch1 server
 PATH_TO_POSTPROC = f"{PATH_TO_SCRIPTS_R2P2}post-process/"
 PATH_TO_TMP_PLOT = PATH_TO_POSTPROC + "tmp_plot/"
+PATH_TO_PROC_SIM_OUTPUT_DIR = PATH_TO_TMP_PLOT + "proc_sim_outputs/"
 
 class SimOutputStats:
     def __init__(self, num_creditreq_pkts, num_credit_pkts, num_data_pkts):
@@ -428,8 +430,9 @@ def plot_c_d_timeseries_cumu(plot_name, c_sent_timestamps_s_list, c_sent_cumu_B_
     
     plt.xlim(left=0)
 
+    Path(PATH_TO_PROC_SIM_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
     filename = f"{plot_name}_c_d_timeseries_cumu.png"
-    plt.savefig(f"{PATH_TO_TMP_PLOT}{filename}")
+    plt.savefig(f"{PATH_TO_PROC_SIM_OUTPUT_DIR}{filename}")
     plt.close()
 
 '''
