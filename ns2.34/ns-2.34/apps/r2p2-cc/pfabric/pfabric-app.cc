@@ -275,7 +275,8 @@ void PfabricApplication<T>::forward_request(RequestIdTuple &req_id, free_connect
     // add agent to busy agents
     req_id_to_busy_agent_[req_id.app_level_id_] = std::make_tuple(srvr_addr, 0, agent);
 
-    slog::log5(debug_, local_addr_, "PfabricApplication::forward_request() of size", req_id.msg_bytes_, req_id.is_request_, "flow_id_:", req_id.flow_id_);
+    /* Dale: elevate from log5 to log2 */
+    slog::log2(debug_, local_addr_, "PfabricApplication::forward_request() of size", req_id.msg_bytes_, req_id.is_request_, "flow_id_:", req_id.flow_id_);
     // send msg
     assert(agent != nullptr);
     assert(req_id.is_request_);
@@ -335,7 +336,8 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
         if (req_state->bytes_recvd_ == req_state->total_size_B_)
         {
             double msg_created_at = req_id_tup.ts_;
-            slog::log4(debug_, local_addr_, "PfabricApplication - whole request received. size", req_state->bytes_recvd_,
+            /* Dale: elevate from lo4 to log2 */
+            slog::log2(debug_, local_addr_, "PfabricApplication - whole request received. size", req_state->bytes_recvd_,
                        "From:", req_id_tup.cl_addr_, "that was created on:", msg_created_at);
             assert(msg_created_at > 9.9); // assumes sim starts at 10.0
             if (do_trace_)

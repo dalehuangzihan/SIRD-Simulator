@@ -110,7 +110,7 @@ def do_q_plot_multiflow_exp(num_flows, num_byteloads, byteload_size_B, inter_byt
 
     plot_comparison_graph(QUEUEING_COL, f"Queueing: SSIRD vs DCTCP ({experiment_name})", experiment_name, ssird_csv_rel_path, dctcp_csv_rel_path)
 
-def plot_thrpt_comparison_graph_trimmed(ssird_thrpt_list, dctcp_thrpt_list, time_axis_s_list, experiment_name):
+def plot_thrpt_comparison_graph_trimmed(ssird_thrpt_list, dctcp_thrpt_list, time_axis_s_list, experiment_name, title_addendum):
     plt.figure(figsize=(10,6))
 
     time_axis_ms_list = [s * 1000 for s in time_axis_s_list]
@@ -122,11 +122,13 @@ def plot_thrpt_comparison_graph_trimmed(ssird_thrpt_list, dctcp_thrpt_list, time
     plt.legend()
     plt.grid(True)
 
-    filename = f"THRPT_{experiment_name}_ssird_dctcp_qts_direct_compare.png"
-    plt.savefig(f"{PATH_TO_QTS_COMPARE_PARENT_DIR}{filename}")
+    filename = f"THRPT_{experiment_name}_ssird_dctcp_qts_compare.png"
+    parent_dir = f"{PATH_TO_QTS_COMPARE_PARENT_DIR}{title_addendum}/"
+    Path(parent_dir).mkdir(parents=True, exist_ok=True)
+    plt.savefig(f"{parent_dir}{filename}")
     plt.close()
 
-def plot_thrpt_graph_trimmed(thrpt_list, time_axis_s_list, experiment_name):
+def plot_thrpt_graph_trimmed(thrpt_list, time_axis_s_list, experiment_name, title_addendum):
     plt.figure(figsize=(10,6))
 
     time_axis_ms_list = [s * 1000 for s in time_axis_s_list]
@@ -137,12 +139,31 @@ def plot_thrpt_graph_trimmed(thrpt_list, time_axis_s_list, experiment_name):
     plt.grid(True)
 
     filename = f"THRPT_{experiment_name}_qts.png"
-    plt.savefig(f"{PATH_TO_QTS_COMPARE_PARENT_DIR}{filename}")
+    parent_dir = f"{PATH_TO_QTS_COMPARE_PARENT_DIR}{title_addendum}/"
+    Path(parent_dir).mkdir(parents=True, exist_ok=True)
+    plt.savefig(f"{parent_dir}{filename}")
+    plt.close()
+
+def plot_qing_comparison_graph_trimmed(ssird_qing_list, dctcp_qing_list, time_axis_s_list, experiment_name, nw_elem, src, dst, title_addendum):
+    plt.figure(figsize=(10,6))
+
+    time_axis_ms_list = [s * 1000 for s in time_axis_s_list]
+    plt.plot(time_axis_ms_list, ssird_qing_list, label="SSIRD", linestyle="-", marker=None, color=SSIRD_PLOT_COLOUR)
+    plt.plot(time_axis_ms_list, dctcp_qing_list, label="DCTCP", linestyle="-", marker=None, color=DCTCP_PLOT_COLOUR)
+    plt.ylabel('Queuing (KB)')
+    plt.xlabel('Time (ms)')
+    plt.title(f"SSIRD vs DCTCP: Queuing (KB)\nnw_elem={nw_elem}, src={src}, dst={dst}\nExperiment: {experiment_name}")
+    plt.legend()
+    plt.grid(True)
+
+    filename = f"QING_{experiment_name}_ssird_dctcp_qts_compare.png"
+    parent_dir = f"{PATH_TO_QTS_COMPARE_PARENT_DIR}{title_addendum}/"
+    Path(parent_dir).mkdir(parents=True, exist_ok=True)
+    plt.savefig(f"{parent_dir}{filename}")
     plt.close()
 
 def do_comparison_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum = ""):
-    Path(PATH_TO_QTS_COMPARE_PARENT_DIR).mkdir(parents=True, exist_ok=True)
-    experiment_name = title_addendum + dale_experiment_rig.Experiment.get_experiment_name(num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us)
+    experiment_name = title_addendum + "_" + dale_experiment_rig.Experiment.get_experiment_name(num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us)
 
     ssird_subpkt_result = dale_compare_thrpt_vs_gdpt.get_qts_result(dale_compare_thrpt_vs_gdpt.SSIRD_PROTO_NAME, nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum)
     dctcp_subpkt_result = dale_compare_thrpt_vs_gdpt.get_qts_result(dale_compare_thrpt_vs_gdpt.DCTCP_PROTO_NAME, nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum)
@@ -155,13 +176,13 @@ def do_comparison_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_
     num_datapoints = len(time_axis_padded_s)
     ssird_thrpt_padded = ssird_subpkt_result.throughput_gbps_list + [0]*(num_datapoints - len(ssird_subpkt_result.throughput_gbps_list))
     dctcp_thrpt_padded = dctcp_subpkt_result.throughput_gbps_list + [0]*(num_datapoints - len(dctcp_subpkt_result.throughput_gbps_list))
-    plot_thrpt_comparison_graph_trimmed(ssird_thrpt_padded, dctcp_thrpt_padded, time_axis_padded_s, experiment_name)
+    plot_thrpt_comparison_graph_trimmed(ssird_thrpt_padded, dctcp_thrpt_padded, time_axis_padded_s, experiment_name, title_addendum)
 
     ssird_qing_padded = ssird_subpkt_result.queueing_KB_list +  [0]*(num_datapoints - len(ssird_subpkt_result.queueing_KB_list))
     dctcp_qing_padded = dctcp_subpkt_result.queueing_KB_list +  [0]*(num_datapoints - len(dctcp_subpkt_result.queueing_KB_list))
+    plot_qing_comparison_graph_trimmed(ssird_qing_padded, dctcp_qing_padded, time_axis_padded_s, experiment_name, nw_elem, src, dst, title_addendum)
     
 def do_ssird_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum = ""):
-    Path(PATH_TO_QTS_COMPARE_PARENT_DIR).mkdir(parents=True, exist_ok=True)
     experiment_name = "SSIRD_" + title_addendum + dale_experiment_rig.Experiment.get_experiment_name(num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us)
 
     ssird_subpkt_result = dale_compare_thrpt_vs_gdpt.get_qts_result(dale_compare_thrpt_vs_gdpt.SSIRD_PROTO_NAME, nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum)
@@ -173,12 +194,11 @@ def do_ssird_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_flow,
     time_axis_padded_s = [s * pow(10,-6) for s in time_axis_padded_us]
     num_datapoints = len(time_axis_padded_s)
     ssird_thrpt_padded = ssird_subpkt_result.throughput_gbps_list + [0]*(num_datapoints - len(ssird_subpkt_result.throughput_gbps_list))
-    plot_thrpt_graph_trimmed(ssird_thrpt_padded, time_axis_padded_s, experiment_name)
+    plot_thrpt_graph_trimmed(ssird_thrpt_padded, time_axis_padded_s, experiment_name, title_addendum)
 
     ssird_qing_padded = ssird_subpkt_result.queueing_KB_list +  [0]*(num_datapoints - len(ssird_subpkt_result.queueing_KB_list))
 
 def do_dctcp_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum = ""):
-    Path(PATH_TO_QTS_COMPARE_PARENT_DIR).mkdir(parents=True, exist_ok=True)
     experiment_name = "DCTCP_" + title_addendum + dale_experiment_rig.Experiment.get_experiment_name(num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us)
 
     ssird_subpkt_result = dale_compare_thrpt_vs_gdpt.get_qts_result(dale_compare_thrpt_vs_gdpt.DCTCP_PROTO_NAME, nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum)
@@ -190,7 +210,7 @@ def do_dctcp_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_flow,
     time_axis_padded_s = [s * pow(10,-6) for s in time_axis_padded_us]
     num_datapoints = len(time_axis_padded_s)
     ssird_thrpt_padded = ssird_subpkt_result.throughput_gbps_list + [0]*(num_datapoints - len(ssird_subpkt_result.throughput_gbps_list))
-    plot_thrpt_graph_trimmed(ssird_thrpt_padded, time_axis_padded_s, experiment_name)
+    plot_thrpt_graph_trimmed(ssird_thrpt_padded, time_axis_padded_s, experiment_name, title_addendum)
 
     ssird_qing_padded = ssird_subpkt_result.queueing_KB_list +  [0]*(num_datapoints - len(ssird_subpkt_result.queueing_KB_list))
 
@@ -243,3 +263,4 @@ if __name__ == "__main__":
     do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 5, 10, 2000000, 10000, title_addendum="_large_bload_20MBflo_5flo_8gbps_total_1msRTT")
     do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 5, 1, 20000000, 100000, title_addendum="_large_bload_20MBflo_5flo_8gbps_total_1msRTT")
 
+    do_comparison_graph_trimmed(TOR, "tor_4", "host_0", 5, 100, 2000, 1, title_addendum="_incast_3to1_5flo_16GbpsFlo_200KBflo")

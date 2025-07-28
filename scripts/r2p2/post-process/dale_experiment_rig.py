@@ -119,11 +119,11 @@ class MultiFlow:
         for i in range(0, self.num_flows):
             flow_start_time_us = self.flow_start_times_us_list[i]
             self.flows_list.append(Flow(self.src, self.dst, i, self.num_byteloads_per_flow, self.byteload_size_B, self.byteload_interval_us, flow_start_time_us))
-        print(f"num flows: {len(self.flows_list)}")
+        logger.debug(f"num flows: {len(self.flows_list)}")
     
     def serialise_flows_to_byteloads(self):
         if len(self.flows_list) < 1:
-            print(f"Flows list is empty (size={len(self.flows_list)})!", file=sys.stderr)
+            logging.error(f"Flows list is empty (size={len(self.flows_list)})!")
             return
         serialised_byteloads_list = [] 
         for flow in self.flows_list:
