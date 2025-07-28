@@ -201,7 +201,7 @@ void PfabricApplication<T>::send_request(RequestIdTuple *arg_req, size_t arg_siz
     * Use only for tracing! Does not work if we use flow-id as app-level-id in actual sim, cuz pFabric sim does not expect the same connection to receive multiple requests before it's released!
     */
     if (do_trace_)
-        trace_state("srq", -1, -1, req_id.flow_id_, -1, next_req_size, -1, pool->size());
+        trace_state("srq", srvr_addr, -1, req_id.flow_id_, -1, next_req_size, -1, pool->size());
     reqs_sent_++;
 
     queued_requests_t *req_queue = nullptr;

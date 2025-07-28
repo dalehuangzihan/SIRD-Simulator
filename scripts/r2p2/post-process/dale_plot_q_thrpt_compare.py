@@ -142,7 +142,7 @@ def plot_thrpt_graph_trimmed(thrpt_list, time_axis_s_list, experiment_name):
 
 def do_comparison_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum = ""):
     Path(PATH_TO_QTS_COMPARE_PARENT_DIR).mkdir(parents=True, exist_ok=True)
-    experiment_name = dale_experiment_rig.Experiment.get_experiment_name(num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us)
+    experiment_name = title_addendum + dale_experiment_rig.Experiment.get_experiment_name(num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us)
 
     ssird_subpkt_result = dale_compare_thrpt_vs_gdpt.get_qts_result(dale_compare_thrpt_vs_gdpt.SSIRD_PROTO_NAME, nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum)
     dctcp_subpkt_result = dale_compare_thrpt_vs_gdpt.get_qts_result(dale_compare_thrpt_vs_gdpt.DCTCP_PROTO_NAME, nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum)
@@ -179,7 +179,7 @@ def do_ssird_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_flow,
 
 def do_dctcp_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum = ""):
     Path(PATH_TO_QTS_COMPARE_PARENT_DIR).mkdir(parents=True, exist_ok=True)
-    experiment_name = "DCTCP_" + dale_experiment_rig.Experiment.get_experiment_name(num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us)
+    experiment_name = "DCTCP_" + title_addendum + dale_experiment_rig.Experiment.get_experiment_name(num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us)
 
     ssird_subpkt_result = dale_compare_thrpt_vs_gdpt.get_qts_result(dale_compare_thrpt_vs_gdpt.DCTCP_PROTO_NAME, nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum)
     overall_activity_end_time_s = ssird_subpkt_result.activity_end_time_s
@@ -196,6 +196,16 @@ def do_dctcp_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_flow,
 
 
 if __name__ == "__main__":
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 15, 10000, 4, 0.01, "_subpkt_multiflow_fastpace_extended")
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 15, 1000, 40, 0.1, "_subpkt_multiflow_fastpace_extended")
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 15, 100, 400, 1, "_subpkt_multiflow_fastpace_extended")
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 15, 10, 4000, 10, "_subpkt_multiflow_fastpace_extended")
+
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 31, 10000, 20, 0.1, "_fullrange_31flo")
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 31, 1000, 200, 1, "_fullrange_31flo")
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 31, 100, 2000, 10, "_fullrange_31flo")
+    do_comparison_graph_trimmed(HOST, "host_0", "tor_4", 31, 10, 20000, 100, "_fullrange_31flo")
+
     do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 1, 10000, 20, 0.1, title_addendum="_fullrange_1flo_1pt6gbps_total_1msRTT")
     do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 1, 1000, 200, 1.0, title_addendum="_fullrange_1flo_1pt6gbps_total_1msRTT")
     do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 1, 100, 2000, 10, title_addendum="_fullrange_1flo_1pt6gbps_total_1msRTT")
@@ -232,3 +242,4 @@ if __name__ == "__main__":
     do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 5, 100, 200000, 1000, title_addendum="_large_bload_20MBflo_5flo_8gbps_total_1msRTT")
     do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 5, 10, 2000000, 10000, title_addendum="_large_bload_20MBflo_5flo_8gbps_total_1msRTT")
     do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 5, 1, 20000000, 100000, title_addendum="_large_bload_20MBflo_5flo_8gbps_total_1msRTT")
+

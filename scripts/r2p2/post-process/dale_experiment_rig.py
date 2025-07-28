@@ -669,6 +669,7 @@ class ExperimentGroup:
         Experiment.write_app_trace_paths_to_file(SSIRD_PROTO_NAME, self.experiment_family, self.num_flows, ssird_path_to_app_trace_files_list)
         dctcp_path_to_app_trace_files_list = [r.app_trace_file_path for r in self.dctcp_raw_experiment_results_list if r is not None]
         Experiment.write_app_trace_paths_to_file(DCTCP_PROTO_NAME, self.experiment_family, self.num_flows, dctcp_path_to_app_trace_files_list)
+        logger.info(f"Simulations ended at: {datetime.datetime.now()}")
     
     def post_process_results(self):
         logger.info("\n##### POST PROCESS RESULTS #####")

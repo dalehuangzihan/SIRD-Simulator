@@ -4,8 +4,8 @@ logger = dale_experiment_rig.logging.getLogger(__name__)
 
 def experiment_incast_3_to_1_test(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"FCT_Incast{title_addendum}"
-    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
-    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
+    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
+    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
     src_dst_pairs_list = [(1,0), (2,0), (3,0)]
@@ -21,7 +21,7 @@ def experiment_incast_3_to_1_test(is_full_postproc=True, title_addendum="", log_
     byteload_size_B_list = [int(n * KILOBYTE) for n in byteload_size_KB_list] 
     num_of_experiments = len(byteload_size_B_list)
     num_flows_per_sr_pair = 31 
-    # num_flows = 2
+    # num_flows_per_sr_pair = 2
     inter_flow_spacing_us = 0 # TODO: for testing
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows_per_sr_pair)]
 
@@ -116,4 +116,5 @@ def experiment_incast_3_to_1_test(is_full_postproc=True, title_addendum="", log_
     assert num_of_experiments == len(dctcp_fct_list)
 
 if __name__ == "__main__":
-    experiment_incast_3_to_1_test(is_full_postproc=False, title_addendum="_3to1_incast_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_incast_3_to_1_test(is_full_postproc=True, title_addendum="_3to1_incast_test_2flo", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_incast_3_to_1_test(is_full_postproc=True, title_addendum="_3to1_incast_test_31flo", log_level=dale_experiment_rig.LOG_LEVEL_2)
