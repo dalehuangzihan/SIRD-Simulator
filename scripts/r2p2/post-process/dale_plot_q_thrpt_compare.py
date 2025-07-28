@@ -264,3 +264,4 @@ if __name__ == "__main__":
     do_ssird_graph_trimmed(HOST, "host_0", "tor_4", 5, 1, 20000000, 100000, title_addendum="_large_bload_20MBflo_5flo_8gbps_total_1msRTT")
 
     do_comparison_graph_trimmed(TOR, "tor_4", "host_0", 5, 100, 2000, 1, title_addendum="_incast_3to1_5flo_16GbpsFlo_200KBflo")
+    do_comparison_graph_trimmed(TOR, "tor_4", "host_0", 31, 10, 2000, 10, title_addendum="_3to1_incast_test_31flo")
