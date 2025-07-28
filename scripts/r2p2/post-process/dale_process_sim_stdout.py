@@ -118,7 +118,10 @@ def get_actual_sender_thrpt_bps(filepath):
                 timestamps_s_list.append(timestamp_s)
                 data_sent_cumu_B_list.append(total_data_sent_B)
     
-    thrpt_bps = total_data_sent_B * 8/(end_time_s - start_time_s)
+    if (end_time_s - start_time_s > 0):
+        thrpt_bps = total_data_sent_B * 8/(end_time_s - start_time_s)
+    else:
+        thrpt_bps = -1
     return DataPktStats(count_d_pkts, total_data_sent_B, start_time_s, end_time_s, thrpt_bps, timestamps_s_list, data_sent_cumu_B_list)
     # return count_d_pkts, total_data_sent_B, start_time_s, end_time_s, thrpt_bps, timestamps_s_list, data_sent_cumu_B_list
 
@@ -145,7 +148,10 @@ def get_actual_sender_gdpt_bps(filepath):
                 timestamps_s_list.append(timestamp_s)
                 data_sent_cumu_B_list.append(total_data_sent_B)
     
-    gdpt_bps = total_data_sent_B * 8/(end_time_s - start_time_s)
+    if (end_time_s - start_time_s > 0):
+        gdpt_bps = total_data_sent_B * 8/(end_time_s - start_time_s)
+    else:
+        gdpt_bps = -1
 
     return DataPktStats(count_d_pkts, total_data_sent_B, start_time_s, end_time_s, gdpt_bps, timestamps_s_list, data_sent_cumu_B_list)
     # return count_d_pkts, total_data_sent_B, start_time_s, end_time_s, gdpt_bps, timestamps_s_list, data_sent_cumu_B_list
@@ -380,7 +386,7 @@ def process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_lis
         credit_data_recv_stats = get_credit_data_recv_rate_bps(sim_output_path)
         print(f"Sender: Credit DATA Recv Rate (Gbps): {credit_data_recv_stats.credit_rate_bps/pow(10,9)}, credit data recv (B): {credit_data_recv_stats.total_credit_B}, Start timestamp (s): {credit_data_recv_stats.start_time_s}, End timestamp (s) {credit_data_recv_stats.end_time_s}, Credit pkts count: {credit_data_recv_stats.count_credit_pkts}")
 
-        plot_c_d_timeseries_cumu(f"DATA_ONLY_{experiment_name}", credit_data_send_stats.timestamps_s_list, credit_data_send_stats.credit_cumu_B_list, credit_data_recv_stats.timestamps_s_list, credit_data_recv_stats.credit_cumu_B_list, data_send_stats.timestamps_s_list, data_send_stats.data_sent_cumu_B_list)
+        plot_c_d_timeseries_cumu(f"DATA_ONLY_{experiment_name}", credit_data_send_stats.timestamps_s_list, credit_data_send_stats.credit_cumu_B_list, credit_data_recv_stats.timestamps_s_list, credit_data_recv_stats.credit_cumu_B_list, data_send_stats.timestamps_s_list, data_send_stats.data_sent_cumu_B_list, title_addendum)
 
         print("===")
 
@@ -396,13 +402,13 @@ def process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_lis
         credit_recv_stats = get_credit_recv_rate_bps(sim_output_path)
         print(f"Sender: Credit RAW Recv Rate (Gbps): {credit_recv_stats.credit_rate_bps/pow(10,9)}, credit recv (B): {credit_recv_stats.total_credit_B}, Start timestamp (s): {credit_recv_stats.start_time_s}, End timestamp (s) {credit_recv_stats.end_time_s}, Credit pkts count: {credit_recv_stats.count_credit_pkts}")
 
-        plot_c_d_timeseries_cumu(f"RAW_{experiment_name}", credit_send_stats.timestamps_s_list, credit_send_stats.credit_cumu_B_list, credit_recv_stats.timestamps_s_list, credit_recv_stats.credit_cumu_B_list, data_send_raw_stats.timestamps_s_list, data_send_raw_stats.data_sent_cumu_B_list)
+        plot_c_d_timeseries_cumu(f"RAW_{experiment_name}", credit_send_stats.timestamps_s_list, credit_send_stats.credit_cumu_B_list, credit_recv_stats.timestamps_s_list, credit_recv_stats.credit_cumu_B_list, data_send_raw_stats.timestamps_s_list, data_send_raw_stats.data_sent_cumu_B_list, title_addendum)
 
         print("##########")
 
     return nw_overheads_B_list, nw_overheads_s_to_r_only_B_list, actual_app_thrpt_gbps
 
-def plot_c_d_timeseries_cumu(plot_name, c_sent_timestamps_s_list, c_sent_cumu_B_list, c_recv_timestamps_s_list, c_recv_cumu_B_list, d_sent_timestamps_s_list, d_sent_cumu_B_list):
+def plot_c_d_timeseries_cumu(plot_name, c_sent_timestamps_s_list, c_sent_cumu_B_list, c_recv_timestamps_s_list, c_recv_cumu_B_list, d_sent_timestamps_s_list, d_sent_cumu_B_list, title_addendum):
     sim_start_time_s = 10
     # Convert to pandas series and aggregate values with the same timestamp together
     c_sent_time_series_cumu = pd.Series(c_sent_cumu_B_list, index=[(t-sim_start_time_s)*1000 for t in c_sent_timestamps_s_list]).groupby(level=0).sum()
@@ -430,9 +436,10 @@ def plot_c_d_timeseries_cumu(plot_name, c_sent_timestamps_s_list, c_sent_cumu_B_
     
     plt.xlim(left=0)
 
-    Path(PATH_TO_PROC_SIM_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
+    plot_save_dir = f"{PATH_TO_PROC_SIM_OUTPUT_DIR}{title_addendum}/"
+    Path(plot_save_dir).mkdir(parents=True, exist_ok=True)
     filename = f"{plot_name}_c_d_timeseries_cumu.png"
-    plt.savefig(f"{PATH_TO_PROC_SIM_OUTPUT_DIR}{filename}")
+    plt.savefig(f"{plot_save_dir}{filename}")
     plt.close()
 
 '''
@@ -587,6 +594,10 @@ def proc_31flow_fullrange_exp_sim_outputs():
     print(f"Total: {measured_vs_theoretical_total_ratio}")
     print(f"Sendr to Recvr only: {measured_vs_theoretical_s_to_r_ratio}")
 
+'''
+========= 1ms RTT experiments =========
+'''
+
 def proc_5flo_fullrange_exp_sim_outputs_1msRTT():
     # INFO:__main__:Total Flow Size (Bytes): 200000
     # INFO:__main__:Total Injection Period (us): 1000.0
@@ -709,29 +720,54 @@ def proc_1flo_large_bload_20MBflo_1pt6gbps_exp_sim_outputs_1msRTT():
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
 def proc_5flo_test_vary_bload_num_1msRTT():
-    # INFO:__main__:Total Flow Size (Bytes): 200000
-    # INFO:__main__:Byteload Size (Bytes): [20, 200, 2000]
-    # INFO:__main__:Num Byteloads: [10000, 1000, 100]
-    # INFO:__main__:Intervals (us): [10.0, 10.0, 10.0]
+    # INFO:__main__:Byteload Size (Bytes): [20, 20, 20, 20]
+    # INFO:__main__:Num Byteloads: [10000, 1000, 100, 10]
+    # INFO:__main__:Intervals (us): [10.0, 10.0, 10.0, 10.0]
     # INFO:__main__:Num flows: 5
     # DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0]
-    # INFO:__main__:Gdpt Gbps theoretical: [0.08, 0.8, 8.0]
-    # INFO:__main__:Gdpt Gbps measured (SSIRD): [0.080006400640064, 0.8006406406406275, 8.064646464633425]
-    # INFO:__main__:Gdpt Gbps measured (DCTCP): [0.080006400640064, 0.8006406406406275, 8.064646464633425]
-    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997], [0.15999999999999737, 0.15999999999999737, 0.15999999999999737, 0.15999999999999737, 0.15999999999999737], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413]]
-    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [[0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997], [0.15999999999999737, 0.15999999999999737, 0.15999999999999737, 0.15999999999999737, 0.15999999999999737], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413]]
-    # INFO:__main__:* Sim duration (SSIRD): [0.12, 0.12, 0.12]
-    # INFO:__main__:* Sim duration (DCTCP): [0.2, 0.2, 0.2]
-    # INFO:__main__:* SSIRD FCT: [[0.10049007799999998, 0.10049010800000069, 0.1004901380000014, 0.1004901750000009, 0.10049020500000161], [0.010490079000000208, 0.010490105000000582, 0.010490135000001288, 0.010490165000000218, 0.010620380000000651], [0.00169073600000047, 0.0018903230000013593, 0.0020808350000010023, 0.0022803230000008057, 0.002470859000000658]]
-    # INFO:__main__:* DCTCP FCT: [[0.10049001600000018, 0.10049002400000084, 0.10049003100000142, 0.10049003900000031, 0.10049004700000097], [0.010490044000000864, 0.010490067000000991, 0.010490089000001035, 0.010490111000001079, 0.010490133000001123], [0.0014902960000000576, 0.001490468000000078, 0.0014906400000000986, 0.0014908130000002018, 0.0014909850000002223]]
+    # INFO:__main__:Gdpt Gbps theoretical: [0.08, 0.08, 0.08, 0.08]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [0.080006400640064, 0.08006406406406275, 0.08064646464633425, 0.08711111111097027]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None, None, None, None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997], [0.015999999999999737, 0.015999999999999737, 0.015999999999999737, 0.015999999999999737, 0.015999999999999737], [0.015999999999974132, 0.015999999999974132, 0.015999999999974132, 0.015999999999974132, 0.015999999999974132], [0.015999999999974132, 0.015999999999974132, 0.015999999999974132, 0.015999999999974132, 0.015999999999974132]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None, None, None, None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.12, 0.12, 0.12, 0.12]
+    # INFO:__main__:* Sim duration (DCTCP): [0.2, 0.2, 0.2, 0.2]
+    # INFO:__main__:* SSIRD FCT: [[0.10049007799999998, 0.10049010800000069, 0.1004901380000014, 0.1004901750000009, 0.10049020500000161], [0.01049007599999996, 0.010490106000000665, 0.010490136000001371, 0.01049017300000088, 0.010490203000001586], [0.0015402000000008798, 0.0015801900000003144, 0.0016201800000015254, 0.00167019000000046, 0.0017101799999998946], [0.001500155000000447, 0.0015101150000003116, 0.0015101450000010175, 0.0015201350000015879, 0.0015201650000005174]]
+    # INFO:__main__:* DCTCP FCT: [None, None, None, None]
     print("\nTESTING: 5FLO VARY BLOAD NUMBER (1ms RTT)")
     title_addendum = "_vary_num_bload_5flo_1msRTT"
     rel_path_to_exp_family_output_dir = "FCT_VARY_NUM_BLOAD_vary_num_bload_5flo_1msRTT/"
 
     num_flows = 5
-    inter_byteload_period_us_list = [10.0, 10.0, 10.0]
-    num_byteloads_list = [10000, 1000, 100]
-    byteload_size_B_list = [20, 200, 2000]
+    inter_byteload_period_us_list = [10.0, 10.0, 10.0, 10.0]
+    num_byteloads_list = [10000, 1000, 100, 10]
+    byteload_size_B_list = [20, 20, 20, 20]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_1flo_test_vary_bload_num_1msRTT():
+    # INFO:__main__:Byteload Size (Bytes): [20, 20, 20, 20]
+    # INFO:__main__:Num Byteloads: [10000, 1000, 100, 10]
+    # INFO:__main__:Intervals (us): [10.0, 10.0, 10.0, 10.0]
+    # INFO:__main__:Num flows: 1
+    # DEBUG:__main__:Flow start times (us): [0]
+    # INFO:__main__:Gdpt Gbps theoretical: [0.016, 0.016, 0.016, 0.016]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [0.015999999999999997, 0.015999999999999737, 0.015999999999974132, 0.015999999999974132]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None, None, None, None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[0.015999999999999997], [0.015999999999999737], [0.015999999999974132], [0.015999999999974132]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None, None, None, None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.12, 0.12, 0.12, 0.12]
+    # INFO:__main__:* Sim duration (DCTCP): [0.2, 0.2, 0.2, 0.2]
+    # INFO:__main__:* SSIRD FCT: [[0.10049007799999998], [0.01049007599999996], [0.001710150000000965], [0.001520105000000882]]
+    # INFO:__main__:* DCTCP FCT: [None, None, None, None]
+    print("\nTESTING: 1FLO VARY BLOAD NUMBER (1ms RTT)")
+    title_addendum = "_vary_num_bload_1flo_1msRTT"
+    rel_path_to_exp_family_output_dir = "FCT_VARY_NUM_BLOAD_vary_num_bload_1flo_1msRTT/"
+
+    num_flows = 1
+    inter_byteload_period_us_list = [10.0, 10.0, 10.0, 10.0]
+    num_byteloads_list = [10000, 1000, 100, 10]
+    byteload_size_B_list = [20, 20, 20, 20]
 
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
@@ -755,6 +791,32 @@ def proc_5flo_test_vary_bload_size_1msRTT():
     rel_path_to_exp_family_output_dir = "FCT_VARY_BLOAD_SIZE_vary_bload_size_5flo_1msRTT/"
 
     num_flows = 5
+    inter_byteload_period_us_list = [10.0, 10.0, 10.0]
+    num_byteloads_list = [100, 100, 100]
+    byteload_size_B_list = [20, 200, 2000]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_1flo_test_vary_bload_size_1msRTT():
+    # INFO:__main__:Byteload Size (Bytes): [20, 200, 2000]
+    # INFO:__main__:Num Byteloads: [100, 100, 100]
+    # INFO:__main__:Intervals (us): [10.0, 10.0, 10.0]
+    # INFO:__main__:Num flows: 1
+    # DEBUG:__main__:Flow start times (us): [0]
+    # INFO:__main__:Gdpt Gbps theoretical: [0.016, 0.16, 1.6]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [0.015999999999974132, 0.1599999999997413, 1.599999999997413]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None, None, None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[0.015999999999974132], [0.1599999999997413], [1.599999999997413]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None, None, None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.01, 0.01, 0.01]
+    # INFO:__main__:* Sim duration (DCTCP): [0.1, 0.1, 0.1]
+    # INFO:__main__:* SSIRD FCT: [[0.001710150000000965], [0.002250230000001352], [0.0024703430000005966]]
+    # INFO:__main__:* DCTCP FCT: [None, None, None]
+    print("\nTESTING: 1FLO VARY BLOAD SIZE (1ms RTT)")
+    title_addendum = "_vary_bload_size_1flo_1msRTT"
+    rel_path_to_exp_family_output_dir = "FCT_VARY_BLOAD_SIZE_vary_bload_size_1flo_1msRTT/"
+
+    num_flows = 1
     inter_byteload_period_us_list = [10.0, 10.0, 10.0]
     num_byteloads_list = [100, 100, 100]
     byteload_size_B_list = [20, 200, 2000]
@@ -788,6 +850,33 @@ def proc_5flo_test_vary_interval_1msRTT():
 
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
+def proc_1flo_test_vary_interval_1msRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 200000
+    # INFO:__main__:Byteload Size (Bytes): [20, 20, 20, 20]
+    # INFO:__main__:Num Byteloads: [10000, 10000, 10000, 10000]
+    # INFO:__main__:Intervals (us): [0.01, 0.1, 1, 10]
+    # INFO:__main__:Num flows: 1
+    # DEBUG:__main__:Flow start times (us): [0]
+    # INFO:__main__:Gdpt Gbps theoretical: [16.0, 1.6, 0.16, 0.016]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [15.999999999885446, 1.5999999999999146, 0.15999999999999145, 0.015999999999999997]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None, None, None, None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[15.999999999885446], [1.5999999999999146], [0.15999999999999145], [0.015999999999999997]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None, None, None, None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.0015, 0.002, 0.02, 0.12]
+    # INFO:__main__:* Sim duration (DCTCP): [0.02, 0.02, 0.2, 0.3]
+    # INFO:__main__:* SSIRD FCT: [[0.0015455030000008918], [0.0017111230000015354], [0.01049907600000033], [0.10049007799999998]]
+    # INFO:__main__:* DCTCP FCT: [None, None, None, None]
+    print("\nTESTING: 1FLO VARY BLOAD INTERVAL (1ms RTT)")
+    title_addendum = "_vary_interval_1flo_1msRTT"
+    rel_path_to_exp_family_output_dir = "FCT_VARY_INTERVAL_vary_interval_1flo_1msRTT/"
+
+    num_flows = 1
+    inter_byteload_period_us_list = [0.01, 0.1, 1, 10]
+    num_byteloads_list = [10000, 10000, 10000, 10000]
+    byteload_size_B_list = [20, 20, 20, 20]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
 if __name__ == "__main__":
     ## proc_1flo_subpkt_exp_sim_outputs()
     ## proc_10flo_subpkt_exp_sim_outputs()
@@ -813,5 +902,8 @@ if __name__ == "__main__":
     # proc_5flo_test_vary_bload_num_1msRTT()
     # proc_5flo_test_vary_bload_size_1msRTT()
     # proc_5flo_test_vary_interval_1msRTT()
+    proc_1flo_test_vary_bload_num_1msRTT()
+    proc_1flo_test_vary_bload_size_1msRTT()
+    proc_1flo_test_vary_interval_1msRTT()
 
 
