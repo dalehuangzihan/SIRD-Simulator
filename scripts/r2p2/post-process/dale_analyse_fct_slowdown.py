@@ -55,6 +55,7 @@ def get_theoretical_fct_parallel_flows_s(num_flows, num_byteloads_per_flow_list,
 
         app_gdpt_bps = num_flows * byteload_size_B_list[i] * 8 / inter_byteload_interval_s_list[i]
         if (app_gdpt_bps > LINK_SPEED_BITS_PER_SEC):
+            print(f"App gdpt ({app_gdpt_bps}) exceeds link speed")
             flow_size_b = num_byteloads_per_flow_list[i] * byteload_size_B_list[i] * 8
             total_data_transmitted_b = num_flows * flow_size_b
             fct = 0.5*rtt_s + total_data_transmitted_b/LINK_SPEED_BITS_PER_SEC 
@@ -869,10 +870,10 @@ if __name__ == "__main__":
     # print("\nLARGE BYTELOADS EXTENDED 31FLO ---")
     # analyse_ssird_vs_ideal_fct_largepkt_extended_31flo_49Gbps_gdpt()
 
-    # print("\nFULLRANGE 31FLO ---")
-    # analyse_ssird_vs_ideal_fct_fullrange_31flo_49Gbps_gdpt()
-    # print("\nFULLRANGE 5FLO 8GBPS Gdpt ---")
-    # analyse_ssird_vs_ideal_fct_fullrange_5flo_8Gbps_gdpt()
+    print("\nFULLRANGE 31FLO ---")
+    analyse_ssird_vs_ideal_fct_fullrange_31flo_49Gbps_gdpt()
+    print("\nFULLRANGE 5FLO 8GBPS Gdpt ---")
+    analyse_ssird_vs_ideal_fct_fullrange_5flo_8Gbps_gdpt()
 
     # 1ms RTT experiments:
 

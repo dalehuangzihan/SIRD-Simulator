@@ -594,6 +594,34 @@ def proc_31flow_fullrange_exp_sim_outputs():
     print(f"Total: {measured_vs_theoretical_total_ratio}")
     print(f"Sendr to Recvr only: {measured_vs_theoretical_s_to_r_ratio}")
 
+def proc_5flo_fullrange_exp_sim_outputs_5usRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 200000
+    # INFO:__main__:Total Injection Period (us): 1000.0
+    # INFO:__main__:Byteload Size (Bytes): [20, 200, 2000, 20000, 200000]
+    # INFO:__main__:Num Byteloads: [10000, 1000, 100, 10, 1]
+    # INFO:__main__:Intervals (us): [0.1, 1.0, 10.0, 100.0, 1000.0]
+    # INFO:__main__:Num flows: 5
+    # DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0]
+    # INFO:__main__:Gdpt Gbps theoretical: [8.0, 8.0, 8.0, 8.0, 8.0]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [8.000640064005973, 8.006406406404851, 8.064646464633425, 8.711111111097027, -1]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [8.000640064005973, 8.006406406404851, 8.064646464633425, 8.711111111097027, -1]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146], [1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413], [None, None, None, None, None]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [[1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146], [1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413], [None, None, None, None, None]]
+    # INFO:__main__:* Sim duration (SSIRD): [0.01, 0.01, 0.01, 0.01, 0.01]
+    # INFO:__main__:* Sim duration (DCTCP): [0.25, 0.15, 0.15, 0.15, 0.15]
+    # INFO:__main__:* SSIRD FCT: [[0.0010024500000014314, 0.001002458000000317, 0.00100247600000003, 0.0010025120000012322, 0.0009999000000000535], [0.0010016050000007937, 0.0010016350000014995, 0.001001665000000429, 0.0010016950000011349, 0.0010017250000000644], [0.000997836000001584, 0.000998046000001196, 0.000998226000000102, 0.0009984060000007844, 0.0009985790000008876], [0.0009093530000008343, 0.0009110420000002506, 0.0009127430000006598, 0.0009144320000000761, 0.0009161290000001543], [2.460600000020463e-05, 4.149600000147302e-05, 5.8386000000965055e-05, 7.527600000045709e-05, 9.216599999994912e-05]]
+    # INFO:__main__:* DCTCP FCT: [[0.0010024160000003945, 0.0010024240000010565, 0.0010024310000016357, 0.0010024390000005212, 0.0010024470000011831], [0.0010015440000010756, 0.0010015670000012022, 0.0010015890000012462, 0.00100161100000129, 0.001001633000001334], [0.00099279600000024, 0.0009929680000002605, 0.000993140000000281, 0.0009933130000003842, 0.0009934850000004047], [0.0009043100000010185, 0.000905998000000352, 0.0009076850000013792, 0.00090937200000063, 0.0009110599999999636], [8.259700000046166e-05, 8.358000000008303e-05, 8.468600000099968e-05, 8.579200000013998e-05, 8.689700000097389e-05]]
+
+    print("\n--- 5 FLO FULLRANGE 8Gbps RTT=5us: ---")
+    title_addendum = "_fullrange_5flo_8gbps_total"
+    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total/"
+    num_flows = 5
+    num_byteloads_list = [10000, 1000, 100, 10, 1]
+    byteload_size_B_list = [20, 200, 2000, 20000, 200000]
+    inter_byteload_period_us_list = [0.1, 1.0, 10.0, 100.0, 1000.0]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
 '''
 ========= 1ms RTT experiments =========
 '''
@@ -893,17 +921,18 @@ if __name__ == "__main__":
     ## proc_31flow_largepkt_exp_sim_outputs_fastpace_extended()
     # proc_31flow_fullrange_exp_sim_outputs()
 
-    # 1RTT verification experiments ---
+    # Analysing 5 flow fullrange experiment (5us RTT)
+    proc_5flo_fullrange_exp_sim_outputs_5usRTT()
+
+    # # 1RTT verification experiments ---
     proc_5flo_fullrange_exp_sim_outputs_1msRTT()
-    # proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT()
+    # # proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT()
     proc_1flo_fullrange_exp_sim_outputs_1msRTT()
     proc_1flo_large_bload_20MBflo_1pt6gbps_exp_sim_outputs_1msRTT()
 
-    # proc_5flo_test_vary_bload_num_1msRTT()
-    # proc_5flo_test_vary_bload_size_1msRTT()
-    # proc_5flo_test_vary_interval_1msRTT()
+    # # proc_5flo_test_vary_bload_num_1msRTT()
+    # # proc_5flo_test_vary_bload_size_1msRTT()
+    # # proc_5flo_test_vary_interval_1msRTT()
     proc_1flo_test_vary_bload_num_1msRTT()
     proc_1flo_test_vary_bload_size_1msRTT()
     proc_1flo_test_vary_interval_1msRTT()
-
-
