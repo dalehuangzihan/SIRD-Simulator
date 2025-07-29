@@ -437,7 +437,7 @@ def experiment_1458B_10us_1flo(is_full_postproc=True, title_addendum="", log_lev
     assert num_of_experiments == len(ssird_fct_list)
     assert num_of_experiments == len(dctcp_fct_list)
 
-def experiment_1560B_10us_1flo(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
+def experiment_1462B_10us_1flo(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"Normal_Byteloads{title_addendum}"
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
@@ -446,9 +446,9 @@ def experiment_1560B_10us_1flo(is_full_postproc=True, title_addendum="", log_lev
     src_dst_pairs_list = [(0,1)]
 
     minimum_interval_us = 10
-    total_flow_size_B = 1560 * 5 # 5 bloads
+    total_flow_size_B = 1462 * 3 # 5 bloads
 
-    byteload_size_B_list = [1560] 
+    byteload_size_B_list = [1462] 
     num_of_experiments = len(byteload_size_B_list)
     num_flows = 1
     inter_flow_spacing_us = 0 # TODO: for testing
@@ -655,10 +655,12 @@ if __name__ == "__main__":
     ''' Credit Leak Tests: '''
     # 5us RTT ---
     # experiment_1458B_10us_1flo(is_full_postproc=True, title_addendum="_1458B_1flo_credit_leak", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_1462B_10us_1flo(is_full_postproc=True, title_addendum="_1462B_1flo_3bload_credit_leak", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_1560B_10us_1flo(is_full_postproc=True, title_addendum="_1560B_1flo_credit_leak", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_2000B_10us_1flo(is_full_postproc=True, title_addendum="_2000B_1flo_credit_leak", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
     # 1ms RTT ---
     # experiment_1458B_10us_1flo(is_full_postproc=True, title_addendum="_1458B_1flo_credit_leak_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_1462B_10us_1flo(is_full_postproc=True, title_addendum="_1462B_1flo_3bload_credit_leak_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_1560B_10us_1flo(is_full_postproc=True, title_addendum="_1560B_1flo_credit_leak_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_2000B_10us_1flo(is_full_postproc=True, title_addendum="_2000B_1flo_credit_leak_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_2000B_10us_1flo(is_full_postproc=True, title_addendum="_2000B_1flo_credit_leak_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)

@@ -985,6 +985,30 @@ def proc_credit_leak_investigation_1458B_1flo_1msRTT():
 
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
+def proc_credit_leak_investigation_1462B_1flo_5usRTT():
+    print("\nCredit leak Investigation: 1462B, 10us, 1Flo, 5usRTT")
+    title_addendum = "_1462B_1flo_3bload_credit_leak"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1462B_1flo_3bload_credit_leak/"
+
+    num_flows = 1
+    inter_byteload_period_us_list = [10]
+    num_byteloads_list = [3]
+    byteload_size_B_list = [1462]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_credit_leak_investigation_1462B_1flo_1msRTT():
+    print("\nCredit leak Investigation: 1462B, 10us, 1Flo, 1msRTT")
+    title_addendum = "_1462B_1flo_3bload_credit_leak_1msRTT"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1462B_1flo_3bload_credit_leak_1msRTT/"
+
+    num_flows = 1
+    inter_byteload_period_us_list = [10]
+    num_byteloads_list = [3]
+    byteload_size_B_list = [1462]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
 def proc_credit_leak_investigation_1560B_1flo_5usRTT():
     # INFO:__main__:Total Flow Size (Bytes): 7800
     # INFO:__main__:Total Injection Period (us): 50
@@ -1004,11 +1028,11 @@ def proc_credit_leak_investigation_1560B_1flo_5usRTT():
     # INFO:__main__:* DCTCP FCT: [None]
     print("\nCredit leak Investigation: 1560B, 10us, 1Flo, 5usRTT")
     title_addendum = "_1560B_1flo_credit_leak"
-    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1560B_1flo_credit_leak/"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1560B_1flo_3bloads_credit_leak/"
 
     num_flows = 1
     inter_byteload_period_us_list = [10]
-    num_byteloads_list = [5]
+    num_byteloads_list = [3]
     byteload_size_B_list = [1560]
 
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
@@ -1032,11 +1056,11 @@ def proc_credit_leak_investigation_1560B_1flo_1msRTT():
     # INFO:__main__:* DCTCP FCT: [None]
     print("\nCredit leak Investigation: 1560B, 10us, 1Flo, 1msRTT")
     title_addendum = "_1560B_1flo_credit_leak_1msRTT"
-    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1560B_1flo_credit_leak_1msRTT/"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1560B_1flo_3bloads_credit_leak_1msRTT/"
 
     num_flows = 1
     inter_byteload_period_us_list = [10]
-    num_byteloads_list = [5]
+    num_byteloads_list = [3]
     byteload_size_B_list = [1560]
 
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
@@ -1133,11 +1157,13 @@ if __name__ == "__main__":
     # proc_normal_bloads_1458B_85flo_99pt144Gbps_1msRTT()
 
     ''' --- CREDIT LEAK INVESTIGATION (RTT = 5us) ---'''
-    proc_credit_leak_investigation_1458B_1flo_5usRTT()
-    proc_credit_leak_investigation_1560B_1flo_5usRTT()
-    proc_credit_leak_investigation_2000B_1flo_5usRTT()
+    # proc_credit_leak_investigation_1458B_1flo_5usRTT()
+    proc_credit_leak_investigation_1462B_1flo_5usRTT()
+    # proc_credit_leak_investigation_1560B_1flo_5usRTT()
+    # proc_credit_leak_investigation_2000B_1flo_5usRTT()
 
     ''' --- CREDIT LEAK INVESTIGATION (RTT = 1ms) --- '''
-    proc_credit_leak_investigation_1458B_1flo_1msRTT()
-    proc_credit_leak_investigation_1560B_1flo_1msRTT()
-    proc_credit_leak_investigation_2000B_1flo_1msRTT()
+    # proc_credit_leak_investigation_1458B_1flo_1msRTT()
+    proc_credit_leak_investigation_1462B_1flo_1msRTT()
+    # proc_credit_leak_investigation_1560B_1flo_1msRTT()
+    # proc_credit_leak_investigation_2000B_1flo_1msRTT()
