@@ -1,3 +1,4 @@
+from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
@@ -23,6 +24,7 @@ REL_PATH_TO_EXP_FAMILY_SLOWPACE = "FCT_Subpkt_Byteloads_subpkt_multiflow_slowpac
 PATH_TO_SCRIPTS_R2P2 = "/data/dh1723/SIRD-Simulator/scripts/r2p2/" # NOTE: use this for batch1 server
 PATH_TO_POSTPROC = f"{PATH_TO_SCRIPTS_R2P2}post-process/"
 PATH_TO_TMP_PLOT = PATH_TO_POSTPROC + "tmp_plot/"
+PATH_TO_PROC_SIM_OUTPUT_DIR = PATH_TO_TMP_PLOT + "proc_sim_outputs/"
 
 class SimOutputStats:
     def __init__(self, num_creditreq_pkts, num_credit_pkts, num_data_pkts):
@@ -378,7 +380,7 @@ def process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_lis
         credit_data_recv_stats = get_credit_data_recv_rate_bps(sim_output_path)
         print(f"Sender: Credit DATA Recv Rate (Gbps): {credit_data_recv_stats.credit_rate_bps/pow(10,9)}, credit data recv (B): {credit_data_recv_stats.total_credit_B}, Start timestamp (s): {credit_data_recv_stats.start_time_s}, End timestamp (s) {credit_data_recv_stats.end_time_s}, Credit pkts count: {credit_data_recv_stats.count_credit_pkts}")
 
-        plot_c_d_timeseries_cumu(f"DATA_ONLY_{experiment_name}", credit_data_send_stats.timestamps_s_list, credit_data_send_stats.credit_cumu_B_list, credit_data_recv_stats.timestamps_s_list, credit_data_recv_stats.credit_cumu_B_list, data_send_stats.timestamps_s_list, data_send_stats.data_sent_cumu_B_list)
+        plot_c_d_timeseries_cumu(f"DATA_ONLY_{experiment_name}", credit_data_send_stats.timestamps_s_list, credit_data_send_stats.credit_cumu_B_list, credit_data_recv_stats.timestamps_s_list, credit_data_recv_stats.credit_cumu_B_list, data_send_stats.timestamps_s_list, data_send_stats.data_sent_cumu_B_list, title_addendum)
 
         print("===")
 
@@ -394,13 +396,13 @@ def process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_lis
         credit_recv_stats = get_credit_recv_rate_bps(sim_output_path)
         print(f"Sender: Credit RAW Recv Rate (Gbps): {credit_recv_stats.credit_rate_bps/pow(10,9)}, credit recv (B): {credit_recv_stats.total_credit_B}, Start timestamp (s): {credit_recv_stats.start_time_s}, End timestamp (s) {credit_recv_stats.end_time_s}, Credit pkts count: {credit_recv_stats.count_credit_pkts}")
 
-        plot_c_d_timeseries_cumu(f"RAW_{experiment_name}", credit_send_stats.timestamps_s_list, credit_send_stats.credit_cumu_B_list, credit_recv_stats.timestamps_s_list, credit_recv_stats.credit_cumu_B_list, data_send_raw_stats.timestamps_s_list, data_send_raw_stats.data_sent_cumu_B_list)
+        plot_c_d_timeseries_cumu(f"RAW_{experiment_name}", credit_send_stats.timestamps_s_list, credit_send_stats.credit_cumu_B_list, credit_recv_stats.timestamps_s_list, credit_recv_stats.credit_cumu_B_list, data_send_raw_stats.timestamps_s_list, data_send_raw_stats.data_sent_cumu_B_list, title_addendum)
 
         print("##########")
 
     return nw_overheads_B_list, nw_overheads_s_to_r_only_B_list, actual_app_thrpt_gbps
 
-def plot_c_d_timeseries_cumu(plot_name, c_sent_timestamps_s_list, c_sent_cumu_B_list, c_recv_timestamps_s_list, c_recv_cumu_B_list, d_sent_timestamps_s_list, d_sent_cumu_B_list):
+def plot_c_d_timeseries_cumu(plot_name, c_sent_timestamps_s_list, c_sent_cumu_B_list, c_recv_timestamps_s_list, c_recv_cumu_B_list, d_sent_timestamps_s_list, d_sent_cumu_B_list, title_addendum):
     sim_start_time_s = 10
     # Convert to pandas series and aggregate values with the same timestamp together
     c_sent_time_series_cumu = pd.Series(c_sent_cumu_B_list, index=[(t-sim_start_time_s)*1000 for t in c_sent_timestamps_s_list]).groupby(level=0).sum()
@@ -428,8 +430,10 @@ def plot_c_d_timeseries_cumu(plot_name, c_sent_timestamps_s_list, c_sent_cumu_B_
     
     plt.xlim(left=0)
 
+    plot_save_dir = f"{PATH_TO_PROC_SIM_OUTPUT_DIR}{title_addendum}/"
+    Path(plot_save_dir).mkdir(parents=True, exist_ok=True)
     filename = f"{plot_name}_c_d_timeseries_cumu.png"
-    plt.savefig(f"{PATH_TO_TMP_PLOT}{filename}")
+    plt.savefig(f"{plot_save_dir}{filename}")
     plt.close()
 
 '''
@@ -757,6 +761,342 @@ def proc_5flo_test_vary_interval_1msRTT():
 
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
+def proc_normal_bloads_1458B_8flo_99pt312Gbps_5usRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 145800
+    # INFO:__main__:Total Injection Period (us): 100
+    # INFO:__main__:Byteload Size (Bytes): [1458]
+    # INFO:__main__:Num Byteloads: [100]
+    # INFO:__main__:Intervals (us): [1.0]
+    # INFO:__main__:Num flows: 8
+    # DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0, 0, 0, 0]
+    # INFO:__main__:Gdpt Gbps theoretical: [93.312]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [94.13672727223725]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[11.663999999939284, 11.663999999939284, 11.663999999939284, 11.663999999939284, 11.663999999939284, 11.663999999939284, 11.663999999939284, 11.663999999939284]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.005, 0.005, 0.005, 0.005, 0.005]
+    # INFO:__main__:* Sim duration (DCTCP): [0.3, 0.3, 0.3, 0.3, 0.3]
+    # INFO:__main__:* SSIRD FCT: [[0.00010190200000081973, 0.00010203200000091783, 0.00010216200000101594, 0.00010229100000103131, 0.00010242100000112941, 0.00010255100000122752, 0.00010268100000132563, 0.00011486400000038088]]
+    # INFO:__main__:* DCTCP FCT: [None]
+    print("\nNormal Bloads: 1458B, 8Flo, 99.312Gbps, 5usRTT")
+    title_addendum = "_1458B_8flo_93pt312Gbps"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1458B_8flo_93pt312Gbps/"
+
+    num_flows = 8
+    inter_byteload_period_us_list = [1]
+    num_byteloads_list = [100]
+    byteload_size_B_list = [1458]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_normal_bloads_1458B_8flo_99pt312Gbps_1msRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 145800
+    # INFO:__main__:Total Injection Period (us): 100
+    # INFO:__main__:Byteload Size (Bytes): [1458]
+    # INFO:__main__:Num Byteloads: [100]
+    # INFO:__main__:Intervals (us): [1.0]
+    # INFO:__main__:Num flows: 8
+    # DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0, 0, 0, 0]
+    # INFO:__main__:Gdpt Gbps theoretical: [93.312]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [94.13672727223725]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[11.663999999939284, 11.663999999939284, 11.663999999939284, 11.663999999939284, 11.663999999939284, 11.663999999939284, 11.663999999939284, 11.663999999939284]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.005, 0.005, 0.005, 0.005, 0.005]
+    # INFO:__main__:* Sim duration (DCTCP): [0.3, 0.3, 0.3, 0.3, 0.3]
+    # INFO:__main__:* SSIRD FCT: [[0.001512664999999913, 0.0015251570000014425, 0.0015376850000006215, 0.0015501770000003745, 0.001562675000000624, 0.001575167000000377, 0.0015876650000006265, 0.0016001570000003795]]
+    # INFO:__main__:* DCTCP FCT: [None]
+    print("\nNormal Bloads: 1458B, 8Flo, 99.312Gbps, 1msRTT")
+    title_addendum = "_1458B_8flo_93pt312Gbps_1msRTT"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1458B_8flo_93pt312Gbps_1msRTT/"
+
+    num_flows = 8
+    inter_byteload_period_us_list = [1]
+    num_byteloads_list = [100]
+    byteload_size_B_list = [1458]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_normal_bloads_1458B_85flo_99pt144Gbps_5usRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 145800
+    # INFO:__main__:Total Injection Period (us): 1000
+    # INFO:__main__:Byteload Size (Bytes): [1458]
+    # INFO:__main__:Num Byteloads: [100]
+    # INFO:__main__:Intervals (us): [10.0]
+    # INFO:__main__:Num flows: 85
+    # DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # INFO:__main__:Gdpt Gbps theoretical: [99.144]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [100.13367272711083]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.005, 0.005, 0.005, 0.005, 0.005]
+    # INFO:__main__:* Sim duration (DCTCP): [0.3, 0.3, 0.3, 0.3, 0.3]
+    # INFO:__main__:* SSIRD FCT: [[0.0009955380000015168, 0.0009972600000001108, 0.0009991060000000829, 0.000996522000001221, 0.0009961530000008878, 0.0010007050000009343, 0.001001321000000388, 0.000997014000001073, 0.0010020590000010543, 0.0010021820000005732, 0.0009950459999998884, 0.000999352000000897, 0.001001443999999907, 0.0010666550000006936, 0.0009941840000013968, 0.0009962760000004067, 0.0009966450000007399, 0.0009981220000003788, 0.0009973830000014061, 0.0009998440000007491, 0.0010008280000004532, 0.0009997210000012302, 0.000997876000001341, 0.0009943070000009158, 0.00100181300000024, 0.0010174389999999534, 0.0009935690000002495, 0.0009982449999998977, 0.0009936920000015448, 0.0010023050000000922, 0.0010005820000014154, 0.0009934460000007306, 0.0009957840000005547, 0.0010011980000008691, 0.000998491000000712, 0.0010025510000009064, 0.0009944300000004347, 0.0009959070000000736, 0.0009939380000005826, 0.0010000900000015633, 0.0010543510000005085, 0.000998860000001045, 0.0009977519999999629, 0.0009960300000013689, 0.000999475000000416, 0.000999597999999935, 0.0010003360000006012, 0.0010912630000010637, 0.0010015670000012022, 0.0011035670000012487, 0.0009954150000002215, 0.0010004590000001201, 0.0009940610000001016, 0.000999967000000268, 0.0009967680000002588, 0.0009938150000010637, 0.000998368000001193, 0.000997629000000444, 0.0009945529999999536, 0.0011158710000014338, 0.001000952000000055, 0.0009951690000011837, 0.0009963989999999256, 0.0009992290000013782, 0.0009948000000008506, 0.000997506000000925, 0.0010789590000008786, 0.0010420470000003235, 0.0010051350000015447, 0.000994676000001249, 0.0009979990000008598, 0.0010002130000010823, 0.0010297430000001384, 0.0009952920000007026, 0.0010010750000013502, 0.000997137000000592, 0.000998983000000564, 0.0009956610000010357, 0.0009986140000002308, 0.0009949230000003695, 0.0010019360000015354, 0.0010016900000007212, 0.000998737000001526, 0.0010024280000013874, 0.000996891000001554]]
+    # INFO:__main__:* DCTCP FCT: [None]
+    print("\nNormal Bloads: 1458B, 85Flo, 99.144Gbps, 5usRTT")
+    title_addendum = "_1458B_85flo_99pt144Gbps"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1458B_85flo_99pt144Gbps/"
+
+    num_flows = 85
+    inter_byteload_period_us_list = [10]
+    num_byteloads_list = [100]
+    byteload_size_B_list = [1458]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_normal_bloads_1458B_85flo_99pt144Gbps_1msRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 145800
+    # INFO:__main__:Total Injection Period (us): 1000
+    # INFO:__main__:Byteload Size (Bytes): [1458]
+    # INFO:__main__:Num Byteloads: [100]
+    # INFO:__main__:Intervals (us): [10.0]
+    # INFO:__main__:Num flows: 85
+    # DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # INFO:__main__:Gdpt Gbps theoretical: [99.144]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [100.13367272711083]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143, 1.1663999999981143]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.005, 0.005, 0.005, 0.005, 0.005]
+    # INFO:__main__:* Sim duration (DCTCP): [0.3, 0.3, 0.3, 0.3, 0.3]
+    # INFO:__main__:* SSIRD FCT: [[0.0021892570000012768, 0.00239842500000087, 0.0018201370000010542, 0.0015740570000009058, 0.0019923930000000922, 0.002287689000000981, 0.0017463129999999438, 0.0021031289999999814, 0.002484553000000389, 0.0015986650000012759, 0.0020908250000015727, 0.0016232729999998696, 0.0025337820000004285, 0.0019308730000009433, 0.001881657000000203, 0.0020293050000006474, 0.00242303300000124, 0.0021154330000001664, 0.0019185690000007583, 0.0017340090000015351, 0.0016478810000002397, 0.00169709700000098, 0.0022261690000000556, 0.002201561000001462, 0.002386121000000685, 0.001684793000000795, 0.0022384730000002406, 0.00172170500000135, 0.0019554810000013134, 0.002472249000000204, 0.001783225000000499, 0.0020662170000012026, 0.0021523450000007216, 0.0018324410000012392, 0.0015863610000010908, 0.0019677850000014985, 0.002312297000001351, 0.0023738170000005, 0.001610969000001461, 0.0016355770000000547, 0.0025460930000011928, 0.0024476410000016102, 0.0021400410000005365, 0.001770921000000314, 0.001869353000000018, 0.0019062650000005732, 0.0022138649999998705, 0.002324601000001536, 0.0021277370000003515, 0.0015617530000007207, 0.0022630810000006107, 0.002361513000000315, 0.0018447450000014243, 0.0018570490000016093, 0.0025214720000015234, 0.0018939610000003881, 0.0016601850000004248, 0.002509161000000759, 0.002275385000000796, 0.002299993000001166, 0.001980088999999907, 0.002435337000001425, 0.0020046970000002773, 0.0015248410000001655, 0.002410729000001055, 0.0015494490000005356, 0.0021646490000009067, 0.002496857000000574, 0.0022507770000004257, 0.0023492090000001298, 0.001709401000001165, 0.0020416090000008325, 0.0020785210000013876, 0.002459945000000019, 0.0021769530000010917, 0.0015125369999999805, 0.0016724890000006098, 0.0017586170000001289, 0.0020170010000004623, 0.0023369049999999447, 0.001807833000000869, 0.0019431770000011284, 0.0020539130000010175, 0.0015371450000003506, 0.001795529000000684]]
+    # INFO:__main__:* DCTCP FCT: [None]
+    print("\nNormal Bloads: 1458B, 85Flo, 99.144Gbps, 1msRTT")
+    title_addendum = "_1458B_85flo_99pt144Gbps_1msRTT"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1458B_85flo_99pt144Gbps_1msRTT/"
+
+    num_flows = 85
+    inter_byteload_period_us_list = [10]
+    num_byteloads_list = [100]
+    byteload_size_B_list = [1458]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_normal_bloads_1560B_8flo_99pt84Gbps_5usRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 156000
+    # INFO:__main__:Total Injection Period (us): 100
+    # INFO:__main__:Byteload Size (Bytes): [1560]
+    # INFO:__main__:Num Byteloads: [100]
+    # INFO:__main__:Intervals (us): [1.0]
+    # INFO:__main__:Num flows: 8
+    # DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0, 0, 0, 0]
+    # INFO:__main__:Gdpt Gbps theoretical: [99.84]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [100.72242424189994]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[12.479999999935037, 12.479999999935037, 12.479999999935037, 12.479999999935037, 12.479999999935037, 12.479999999935037, 12.479999999935037, 12.479999999935037]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.005, 0.005, 0.005, 0.005, 0.005]
+    # INFO:__main__:* Sim duration (DCTCP): [0.3, 0.3, 0.3, 0.3, 0.3]
+    # INFO:__main__:* SSIRD FCT: [[0.00010188400000110676, 0.00010202200000009043, 0.0001021660000013469, 0.00010231000000082702, 0.00010245500000038987, 0.00010259899999986999, 0.00011129000000131839, 0.00012446100000040872]]
+    # INFO:__main__:* DCTCP FCT: [None]
+    print("\nNormal Bloads: 1560B, 8Flo, 99.84Gbps, 5usRTT")
+    title_addendum = "_1560B_8flo_99pt84Gbps"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1560B_8flo_99pt84Gbps/"
+
+    num_flows = 8
+    inter_byteload_period_us_list = [1]
+    num_byteloads_list = [100]
+    byteload_size_B_list = [1560]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_normal_bloads_1560B_8flo_99pt84Gbps_1msRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 156000
+    # INFO:__main__:Total Injection Period (us): 100
+    # INFO:__main__:Byteload Size (Bytes): [1560]
+    # INFO:__main__:Num Byteloads: [100]
+    # INFO:__main__:Intervals (us): [1.0]
+    # INFO:__main__:Num flows: 8
+    # DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0, 0, 0, 0]
+    # INFO:__main__:Gdpt Gbps theoretical: [99.84]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [100.72242424189994]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[12.479999999935037, 12.479999999935037, 12.479999999935037, 12.479999999935037, 12.479999999935037, 12.479999999935037, 12.479999999935037, 12.479999999935037]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.005, 0.005, 0.005, 0.005, 0.005]
+    # INFO:__main__:* Sim duration (DCTCP): [0.3, 0.3, 0.3, 0.3, 0.3]
+    # INFO:__main__:* SSIRD FCT: [[0.001513491000000755, 0.0015266680000003419, 0.0015398320000006294, 0.0015529970000009996, 0.0015661620000013698, 0.0015793269999999637, 0.0015924930000004167, 0.0016056570000007042]]
+    # INFO:__main__:* DCTCP FCT: [None]
+    print("\nNormal Bloads: 1560B, 8Flo, 99.84Gbps, 1msRTT")
+    title_addendum = "_1560B_8flo_99pt84Gbps_1msRTT"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1560B_8flo_99pt84Gbps_1msRTT/"
+
+    num_flows = 8
+    inter_byteload_period_us_list = [1]
+    num_byteloads_list = [100]
+    byteload_size_B_list = [1560]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_credit_leak_investigation_1458B_1flo_5usRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 7290
+    # INFO:__main__:Total Injection Period (us): 50
+    # INFO:__main__:Byteload Size (Bytes): [1458]
+    # INFO:__main__:Num Byteloads: [5]
+    # INFO:__main__:Intervals (us): [10.0]
+    # INFO:__main__:Num flows: 1
+    # DEBUG:__main__:Flow start times (us): [0]
+    # INFO:__main__:Gdpt Gbps theoretical: [1.1664]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [1.1663999999923587]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.1663999999923587]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.01]
+    # INFO:__main__:* Sim duration (DCTCP): [0.0]
+    # INFO:__main__:* SSIRD FCT: [[4.780600000131585e-05]]
+    # INFO:__main__:* DCTCP FCT: [None]
+    print("\nCredit leak Investigation: 1458B, 10us, 1Flo, 5usRTT")
+    title_addendum = "_1458B_1flo_credit_leak"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1458B_1flo_credit_leak/"
+
+    num_flows = 1
+    inter_byteload_period_us_list = [10]
+    num_byteloads_list = [5]
+    byteload_size_B_list = [1458]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_credit_leak_investigation_1458B_1flo_1msRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 7290
+    # INFO:__main__:Total Injection Period (us): 50
+    # INFO:__main__:Byteload Size (Bytes): [1458]
+    # INFO:__main__:Num Byteloads: [5]
+    # INFO:__main__:Intervals (us): [10.0]
+    # INFO:__main__:Num flows: 1
+    # DEBUG:__main__:Flow start times (us): [0]
+    # INFO:__main__:Gdpt Gbps theoretical: [1.1664]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [1.1663999999923587]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.1663999999923587]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.01]
+    # INFO:__main__:* Sim duration (DCTCP): [0.0]
+    # INFO:__main__:* SSIRD FCT: [[0.0015403160000015959]]
+    # INFO:__main__:* DCTCP FCT: [None]
+    print("\nCredit leak Investigation: 1458B, 10us, 1Flo, 1msRTT")
+    title_addendum = "_1458B_1flo_credit_leak_1msRTT"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1458B_1flo_credit_leak_1msRTT/"
+
+    num_flows = 1
+    inter_byteload_period_us_list = [10]
+    num_byteloads_list = [5]
+    byteload_size_B_list = [1458]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_credit_leak_investigation_1560B_1flo_5usRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 7800
+    # INFO:__main__:Total Injection Period (us): 50
+    # INFO:__main__:Byteload Size (Bytes): [1560]
+    # INFO:__main__:Num Byteloads: [5]
+    # INFO:__main__:Intervals (us): [10.0]
+    # INFO:__main__:Num flows: 1
+    # DEBUG:__main__:Flow start times (us): [0]
+    # INFO:__main__:Gdpt Gbps theoretical: [1.248]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [1.2479999999918243]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.2479999999918243]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.01]
+    # INFO:__main__:* Sim duration (DCTCP): [0.0]
+    # INFO:__main__:* SSIRD FCT: [[4.78210000007806e-05]]
+    # INFO:__main__:* DCTCP FCT: [None]
+    print("\nCredit leak Investigation: 1560B, 10us, 1Flo, 5usRTT")
+    title_addendum = "_1560B_1flo_credit_leak"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1560B_1flo_credit_leak/"
+
+    num_flows = 1
+    inter_byteload_period_us_list = [10]
+    num_byteloads_list = [5]
+    byteload_size_B_list = [1560]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_credit_leak_investigation_1560B_1flo_1msRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 7800
+    # INFO:__main__:Total Injection Period (us): 50
+    # INFO:__main__:Byteload Size (Bytes): [1560]
+    # INFO:__main__:Num Byteloads: [5]
+    # INFO:__main__:Intervals (us): [10.0]
+    # INFO:__main__:Num flows: 1
+    # DEBUG:__main__:Flow start times (us): [0]
+    # INFO:__main__:Gdpt Gbps theoretical: [1.248]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [1.2479999999918243]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.2479999999918243]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.01]
+    # INFO:__main__:* Sim duration (DCTCP): [0.0]
+    # INFO:__main__:* SSIRD FCT: [[0.0015403630000001556]]
+    # INFO:__main__:* DCTCP FCT: [None]
+    print("\nCredit leak Investigation: 1560B, 10us, 1Flo, 1msRTT")
+    title_addendum = "_1560B_1flo_credit_leak_1msRTT"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_1560B_1flo_credit_leak_1msRTT/"
+
+    num_flows = 1
+    inter_byteload_period_us_list = [10]
+    num_byteloads_list = [5]
+    byteload_size_B_list = [1560]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_credit_leak_investigation_2000B_1flo_5usRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 10000
+    # INFO:__main__:Total Injection Period (us): 50
+    # INFO:__main__:Byteload Size (Bytes): [2000]
+    # INFO:__main__:Num Byteloads: [5]
+    # INFO:__main__:Intervals (us): [10.0]
+    # INFO:__main__:Num flows: 1
+    # DEBUG:__main__:Flow start times (us): [0]
+    # INFO:__main__:Gdpt Gbps theoretical: [1.6]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [1.5999999999895183]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.5999999999895183]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.01]
+    # INFO:__main__:* Sim duration (DCTCP): [0.0]
+    # INFO:__main__:* SSIRD FCT: [[4.78560000001238e-05]]
+    # INFO:__main__:* DCTCP FCT: [None]
+    print("\nCredit leak Investigation: 2000B, 10us, 1Flo, 5usRTT")
+    title_addendum = "_2000B_1flo_credit_leak"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_2000B_1flo_credit_leak/"
+
+    num_flows = 1
+    inter_byteload_period_us_list = [10]
+    num_byteloads_list = [5]
+    byteload_size_B_list = [2000]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_credit_leak_investigation_2000B_1flo_1msRTT():
+    # INFO:__main__:Total Flow Size (Bytes): 10000
+    # INFO:__main__:Total Injection Period (us): 50
+    # INFO:__main__:Byteload Size (Bytes): [2000]
+    # INFO:__main__:Num Byteloads: [5]
+    # INFO:__main__:Intervals (us): [10.0]
+    # INFO:__main__:Num flows: 1
+    # DEBUG:__main__:Flow start times (us): [0]
+    # INFO:__main__:Gdpt Gbps theoretical: [1.6]
+    # INFO:__main__:Gdpt Gbps measured (SSIRD): [1.5999999999895183]
+    # INFO:__main__:Gdpt Gbps measured (DCTCP): [None]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.5999999999895183]]
+    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [None]
+    # INFO:__main__:* Sim duration (SSIRD): [0.01]
+    # INFO:__main__:* Sim duration (DCTCP): [0.0]
+    # INFO:__main__:* SSIRD FCT: [[0.0015404230000015673]]
+    # INFO:__main__:* DCTCP FCT: [None]
+    print("\nCredit leak Investigation: 2000B, 10us, 1Flo, 1msRTT")
+    title_addendum = "_2000B_1flo_credit_leak_1msRTT"
+    rel_path_to_exp_family_output_dir = "Normal_Byteloads_2000B_1flo_credit_leak_1msRTT/"
+
+    num_flows = 1
+    inter_byteload_period_us_list = [10]
+    num_byteloads_list = [5]
+    byteload_size_B_list = [2000]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
 if __name__ == "__main__":
     ## proc_1flo_subpkt_exp_sim_outputs()
     ## proc_10flo_subpkt_exp_sim_outputs()
@@ -774,12 +1114,30 @@ if __name__ == "__main__":
     # proc_31flow_fullrange_exp_sim_outputs()
 
     # 1RTT verification experiments ---
-    proc_5flo_fullrange_exp_sim_outputs_1msRTT()
+    # proc_5flo_fullrange_exp_sim_outputs_1msRTT()
     # proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT()
-    proc_1flo_fullrange_exp_sim_outputs_1msRTT()
+    # proc_1flo_fullrange_exp_sim_outputs_1msRTT()
 
     # proc_5flo_test_vary_bload_num_1msRTT()
     # proc_5flo_test_vary_bload_size_1msRTT()
     # proc_5flo_test_vary_interval_1msRTT()
 
+    # ''' Normal Bload Size Experiments (RTT = 5us) --- '''
+    # proc_normal_bloads_1458B_8flo_99pt312Gbps_5usRTT()
+    # proc_normal_bloads_1560B_8flo_99pt84Gbps_5usRTT()
+    # proc_normal_bloads_1458B_85flo_99pt144Gbps_5usRTT()
 
+    # ''' Normal Bload Size Experiments (RTT = 1ms) --- '''
+    # proc_normal_bloads_1458B_8flo_99pt312Gbps_1msRTT()
+    # proc_normal_bloads_1560B_8flo_99pt84Gbps_1msRTT()
+    # proc_normal_bloads_1458B_85flo_99pt144Gbps_1msRTT()
+
+    ''' --- CREDIT LEAK INVESTIGATION (RTT = 5us) ---'''
+    proc_credit_leak_investigation_1458B_1flo_5usRTT()
+    proc_credit_leak_investigation_1560B_1flo_5usRTT()
+    proc_credit_leak_investigation_2000B_1flo_5usRTT()
+
+    ''' --- CREDIT LEAK INVESTIGATION (RTT = 1ms) --- '''
+    proc_credit_leak_investigation_1458B_1flo_1msRTT()
+    proc_credit_leak_investigation_1560B_1flo_1msRTT()
+    proc_credit_leak_investigation_2000B_1flo_1msRTT()

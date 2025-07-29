@@ -330,13 +330,13 @@ class ExperimentOutputRaw:
             measured_total_gdpt_gbps = -1
 
         fct_list = []
-        measured_gdpt_gbps_per_flow_list = []
+        measured_app_gdpt_gbps_per_flow_list = []
         for _, flow_stats_obj in flow_stats_dict.items():
             flow_stats_obj.check_flow_stats()
             fct_list.append(flow_stats_obj.get_fct_s())
-            measured_gdpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_gdpt_for_flow_gbps())
+            measured_app_gdpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_app_gdpt_for_flow_gbps())
 
-        return fct_list, measured_total_gdpt_gbps, measured_gdpt_gbps_per_flow_list
+        return fct_list, measured_total_gdpt_gbps, measured_app_gdpt_gbps_per_flow_list
 
 class FlowTraceEvent:
     SRQ_EVENT = "srq"
@@ -447,7 +447,7 @@ class FlowStats:
     def get_fct_s(self):
         return self.end_time_s - self.start_time_s
     
-    def get_measured_gdpt_for_flow_gbps(self):
+    def get_measured_app_gdpt_for_flow_gbps(self):
         # returns in Gbps
         # here we use the n-1 gaps between the n srq events to calc throughput:
         if self.num_byteloads == 1: return None 
@@ -680,12 +680,12 @@ class ExperimentGroup:
             if ssird_result == None:
                 logger.error("No results for SSIRD")
                 ssird_fct = None
-                gdpt_gbps_measured_ssird = None
-                gdpt_gbps_measured_per_flow_list_ssird = None
+                app_gdpt_gbps_measured_ssird = None
+                app_gdpt_gbps_measured_per_flow_list_ssird = None
             else:
                 logger.info(f"Processing SIRD results exp_id {ssird_result.exp_id}:: {ssird_result.num_flows}flo-{ssird_result.num_byteloads}#-{ssird_result.byteload_size_B}B")
-                ssird_fct, gdpt_gbps_measured_ssird, gdpt_gbps_measured_per_flow_list_ssird = ssird_result.process_results_fct()
-            logger.info(f"SSIRD FCT: {ssird_fct} ms, Gdpt (overall): {gdpt_gbps_measured_ssird} Gbps, Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_ssird}")
+                ssird_fct, app_gdpt_gbps_measured_ssird, app_gdpt_gbps_measured_per_flow_list_ssird = ssird_result.process_results_fct()
+            logger.info(f"SSIRD FCT: {ssird_fct} ms, App Gdpt (overall): {app_gdpt_gbps_measured_ssird} Gbps, App Gdpt (per flow): {app_gdpt_gbps_measured_per_flow_list_ssird}")
 
             dctcp_result = self.dctcp_raw_experiment_results_list[i]
             if dctcp_result == None:
@@ -696,9 +696,9 @@ class ExperimentGroup:
             else:
                 logger.info(f"Processing DCTCP results exp_id {dctcp_result.exp_id}:: {dctcp_result.num_flows}flo-{dctcp_result.num_byteloads}#-{dctcp_result.byteload_size_B}B")
                 dctcp_fct, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_dctcp = dctcp_result.process_results_fct()
-            logger.info(f"DCTCP FCT: {dctcp_fct} ms, Gtpt (overall): {gdpt_gbps_measured_dctcp} Gbps, Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_dctcp}")
+            logger.info(f"DCTCP FCT: {dctcp_fct} ms, App Gtpt (overall): {gdpt_gbps_measured_dctcp} Gbps, App Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_dctcp}")
 
-            processed_result = ExperimentResults(ssird_fct, dctcp_fct, gdpt_gbps_measured_ssird, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_ssird, gdpt_gbps_measured_per_flow_list_dctcp)
+            processed_result = ExperimentResults(ssird_fct, dctcp_fct, app_gdpt_gbps_measured_ssird, gdpt_gbps_measured_dctcp, app_gdpt_gbps_measured_per_flow_list_ssird, gdpt_gbps_measured_per_flow_list_dctcp)
             self.processed_results_list.append(processed_result)
 
     def generate_overall_experiment_metrics(self):
