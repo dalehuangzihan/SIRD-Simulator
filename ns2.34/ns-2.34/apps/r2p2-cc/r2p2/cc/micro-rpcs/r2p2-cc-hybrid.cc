@@ -1110,7 +1110,7 @@ void R2p2CCHybrid::send_data()
                 {
                     msg_state->data_pkts_to_send_queue_.push_back(data_to_send); 
                 }
-                slog::log2(debug_, this_addr_, "msg (", std::get<2>(msg_state->req_id_), ") data pkt queue size=", msg_state->data_pkts_to_send_queue_.size());
+                slog::log2(debug_, this_addr_, "@ Fwd CR: msg (", std::get<2>(msg_state->req_id_), ") data pkt queue size=", msg_state->data_pkts_to_send_queue_.size());
                 // /** Dale: pretty print for testing only; TODO: demote to log7 */
                 // for (int i = 0; i < msg_state->data_pkts_to_send_queue_.size(); i++)
                 // {
@@ -1164,6 +1164,7 @@ void R2p2CCHybrid::send_data()
     uint64_t credit_avail = msg_state->rcvr_state_->avail_credit_bytes_;
     
     /* Dale: send bytes using the packetisation manner used when we sent CR pkts and recived C pkts */
+    slog::log2(debug_, this_addr_, "@ before sending pkt of msg (", std::get<2>(msg_state->req_id_), "), data_to_send queue size=", msg_state->data_pkts_to_send_queue_.size());
     assert(msg_state->data_pkts_to_send_queue_.size() > 0);
     uint16_t data_to_send_for_this_pkt = msg_state->data_pkts_to_send_queue_.front();
     msg_state->data_pkts_to_send_queue_.pop_front();
