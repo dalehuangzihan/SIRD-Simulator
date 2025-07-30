@@ -6,10 +6,11 @@ import datetime
 import logging
 import collections
 import math
+import numpy as np
 
 # for thread pool
-# MAX_WORKERS = 4 
-MAX_WORKERS = 12 # NOTE: use this for batch1 server
+MAX_WORKERS = 4 
+# MAX_WORKERS = 12 # NOTE: use this for batch1 server
 
 MIN_BYTELOAD_INTERVAL_US = 0.001 # is 1ns
 
@@ -21,8 +22,8 @@ LINK_SPEED_BITS_PER_SEC = 100 * pow(10,9) * 8 # 100Gbps
 SSIRD_PROTO_NAME = "SSIRD"
 DCTCP_PROTO_NAME = f"DCTCP-{DCTCP_ECN_MARKING_THRESHOLD}"
 
-# PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
-PATH_TO_SIRD_SIM = "/data/dh1723/SIRD-Simulator/" # NOTE: use this for batch1 server
+PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
+# PATH_TO_SIRD_SIM = "/data/dh1723/SIRD-Simulator/" # NOTE: use this for batch1 server
 PATH_TO_SIM_COORD = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/"
 PATH_TO_POST_PROCESS = PATH_TO_SIRD_SIM + "scripts/r2p2/post-process/"
 PATH_TO_SIM_RESULTS = PATH_TO_SIM_COORD + "results/"
@@ -593,7 +594,7 @@ class Experiment():
 
 class ExperimentGroup:
 
-    def __init__(self, experiment_family, proto_names_list, src_dst_pairs_list, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc=False, log_level=LOG_LEVEL_2, title_addendum=""):
+    def __init__(self, experiment_family, proto_names_list, src_dst_pairs_list, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_periods_us_list_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc=False, log_level=LOG_LEVEL_2, title_addendum=""):
         self.experiment_family = experiment_family
         self.proto_names_l = proto_names_list
         self.src_dst_pairs_list = src_dst_pairs_list
@@ -601,7 +602,7 @@ class ExperimentGroup:
         self.flow_start_times_us_list = flow_start_times_us_list
         self.num_byteloads_per_flow_list = num_byteloads_per_flow_list
         self.byteload_size_B_list = byteload_size_B_list
-        self.inter_byteload_period_us_list = inter_byteload_period_us_list
+        self.inter_byteload_period_us_list_list = inter_byteload_periods_us_list_list
         self.is_full_postproc = is_full_postproc
         self.ssird_sim_dur_list = ssird_sim_dur_list
         self.dctcp_sim_dur_list = dctcp_sim_dur_list
@@ -612,7 +613,7 @@ class ExperimentGroup:
         assert(len(set([
             len(num_byteloads_per_flow_list),
             len(byteload_size_B_list),
-            len(inter_byteload_period_us_list)
+            len(inter_byteload_periods_us_list_list)
             ])) == 1)
         self.num_experiments = len(num_byteloads_per_flow_list)
 
@@ -633,9 +634,9 @@ class ExperimentGroup:
             futures_list = []
 
             for exp_id in range(0, self.num_experiments):
-                experiment_name = Experiment.get_experiment_name(self.num_flows, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list[exp_id]) + self.title_addendum
+                experiment_name = Experiment.get_experiment_name(self.num_flows, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list_list[exp_id]) + self.title_addendum
                 for proto in self.proto_names_l:
-                    experiment = Experiment(self.experiment_family, experiment_name, proto, self.src_dst_pairs_list, self.flow_start_times_us_list, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list[exp_id], self.is_full_postproc) 
+                    experiment = Experiment(self.experiment_family, experiment_name, proto, self.src_dst_pairs_list, self.flow_start_times_us_list, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list_list[exp_id], self.is_full_postproc) 
 
                     # submit experiment to thread pool
                     future = executor.submit(
@@ -674,7 +675,7 @@ class ExperimentGroup:
     def post_process_results(self):
         logger.info("\n##### POST PROCESS RESULTS #####")
         for i in range(0, self.num_experiments):
-            logger.info(f"=====\n** Num Byteloads Per Flow: {self.num_byteloads_per_flow_list[i]}, Byteload Size (B): {self.byteload_size_B_list[i]}, Inter-Byteload Interval (us): {self.inter_byteload_period_us_list[i]}, ssird_sim_dur (s): {self.ssird_sim_dur_list[i]}, dctcp_sim_dur (s): {self.dctcp_sim_dur_list[i]}")
+            logger.info(f"=====\n** Num Byteloads Per Flow: {self.num_byteloads_per_flow_list[i]}, Byteload Size (B): {self.byteload_size_B_list[i]}, Inter-Byteload Interval (us): {self.inter_byteload_period_us_list_list[i]}, ssird_sim_dur (s): {self.ssird_sim_dur_list[i]}, dctcp_sim_dur (s): {self.dctcp_sim_dur_list[i]}")
 
             ssird_result = self.ssird_raw_experiment_results_list[i]
             if ssird_result == None:
@@ -732,3 +733,101 @@ def init_logs(experiment_family, logs_file_name, log_level=logging.DEBUG):
             logging.StreamHandler()
         ]
     )
+
+''' --- Poisson Process --- '''
+# Each flow must maintain have a given flow rate. Flow size must be close to a target value.
+# For each flow: inter-bload intervals are drawn from poisson process; bload sizes can vary; fixed num bloads per flow 
+# Bload sizes must > 4
+
+class PoissonFlow:
+
+    MAX_ATTEMPTS = int(pow(10,6))
+
+    def __init__(self, flow_rate_bps, target_flow_size_b, min_num_bloads, max_num_bloads, min_byteload_size_B=4, flow_size_error_threshold=0.3):
+        self.flow_rate_bps = flow_rate_bps
+        self.min_num_bloads = min_num_bloads
+        self.max_num_bloads = max_num_bloads
+        self.min_byteload_size_b = min_byteload_size_B
+
+        self.target_flow_size_b = target_flow_size_b
+        self.mean_interval_us = 1.0
+
+        self.flow_size_error_threshold = flow_size_error_threshold
+    
+    def generate_flow(self):
+        """
+        Generate a single flow with:
+        - Poisson process intervals
+        - Strictly fixed rate R
+        - Total size ≈ target_size
+        - Between min_chunks and max_chunks
+        - All chunk sizes ≥ min_chunk_size
+        """
+        best_flow = None
+        best_size_error_ratio = float('inf')
+        
+        # Try multiple configurations to find best match
+        for _ in range(self.MAX_ATTEMPTS):
+            # Randomly select number of chunks within bounds
+            num_chunks = np.random.randint(self.min_num_bloads, self.max_num_bloads + 1)
+            
+            # Generate intervals
+            intervals_us = np.random.exponential(self.mean_interval_us, num_chunks)
+            
+            # Compute ideal chunk sizes
+            ideal_byteload_sizes_b = self.flow_rate_bps * intervals_us
+            
+            # Round to integers ≥ min_chunk_size
+            byteload_size_b_list = np.maximum(np.round(ideal_byteload_sizes_b), self.min_byteload_size_b).astype(int)
+            
+            # Calculate total size
+            total_size = np.sum(byteload_size_b_list)
+            size_error_ratio = abs(total_size - self.target_flow_size_b) / self.target_flow_size_b
+            
+            # Keep track of best match
+            if size_error_ratio < best_size_error_ratio:
+                best_size_error_ratio = size_error_ratio
+                best_flow = {
+                    'intervals': intervals_us,
+                    'chunk_sizes': byteload_size_b_list,
+                    'total_size': total_size,
+                    'total_time': np.sum(intervals_us),
+                    'num_chunks': num_chunks
+                }
+                
+                # Early exit if we find a good enough match
+                if best_size_error_ratio < self.flow_size_error_threshold:
+                    break
+        
+        # Redistribute any rounding error to maintain exact rate
+        ideal_total_size_b = self.flow_rate_bps * best_flow['total_time']
+        total_size_error_b = int(ideal_total_size_b - best_flow['total_size'])
+        if total_size_error_b != 0:
+            # Apply error to largest chunk (minimizes relative impact)
+            largest_idx = np.argmax(best_flow['chunk_sizes'])
+            best_flow['chunk_sizes'][largest_idx] += total_size_error_b
+            best_flow['total_size'] += total_size_error_b
+        
+        # Verify final properties
+        best_flow['actual_rate'] = best_flow['total_size'] / best_flow['total_time']
+        
+        return best_flow
+
+if __name__ == "__main__":
+
+    target_flow_rate_bps = 8 * pow(10, 9)
+    target_flow_size_B = 100000
+    min_num_bloads = 5
+    max_num_bloads = 100
+    min_bload_size = 4
+
+    poisson_flow_generator = PoissonFlow(target_flow_rate_bps, target_flow_size_B * 8, min_num_bloads, max_num_bloads, min_bload_size)
+    flow = poisson_flow_generator.generate_flow()
+
+    print(f"Generated flow with {flow['num_chunks']} chunks")
+    print(f"Total size: {flow['total_size']} bits (target: {target_flow_size_B*8})")
+    print(f"Total time: {flow['total_time']:.3f} sec")
+    print(f"Actual rate: {flow['actual_rate']/pow(10,9):.5f} Gbps (target: {target_flow_rate_bps/pow(10,9):.5f})")
+    print("\nChunk details:")
+    for i, (t, c) in enumerate(zip(flow['intervals'], flow['chunk_sizes'])):
+        print(f"Chunk {i+1}: Interval = {t:.3f}s, Size = {c/8} bytes")

@@ -13,15 +13,15 @@ CREDITREQ_PKT_OVERHEAD_B = 84
 CREDIT_PKT_OVERHEAD_B = 84
 PKT_HDR_SIZE_B = 80
 
-# PATH_TO_SIM_OUTPUTS = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/"
-PATH_TO_SIM_OUTPUTS = "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/" # NOTE: use this for batch1 server
+PATH_TO_SIM_OUTPUTS = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/"
+# PATH_TO_SIM_OUTPUTS = "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/" # NOTE: use this for batch1 server
 REL_PATH_TO_EXP_FAMILY = "FCT_Subpkt_Byteloads_subpkt_multiflow/"
 REL_PATH_TO_EXP_FAMILY_FASTPACE = "FCT_Subpkt_Byteloads_subpkt_multiflow_fastpace/"
 REL_PATH_TO_EXP_FAMILY_FASTPACE_EXTENDED = "FCT_Subpkt_Byteloads_subpkt_multiflow_fastpace_extended/"
 REL_PATH_TO_EXP_FAMILY_SLOWPACE = "FCT_Subpkt_Byteloads_subpkt_multiflow_slowpace/"
 
-# PATH_TO_SCRIPTS_R2P2 = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/"
-PATH_TO_SCRIPTS_R2P2 = "/data/dh1723/SIRD-Simulator/scripts/r2p2/" # NOTE: use this for batch1 server
+PATH_TO_SCRIPTS_R2P2 = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/"
+# PATH_TO_SCRIPTS_R2P2 = "/data/dh1723/SIRD-Simulator/scripts/r2p2/" # NOTE: use this for batch1 server
 PATH_TO_POSTPROC = f"{PATH_TO_SCRIPTS_R2P2}post-process/"
 PATH_TO_TMP_PLOT = PATH_TO_POSTPROC + "tmp_plot/"
 PATH_TO_PROC_SIM_OUTPUT_DIR = PATH_TO_TMP_PLOT + "proc_sim_outputs/"
