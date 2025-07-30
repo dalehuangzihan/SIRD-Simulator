@@ -3,6 +3,7 @@
 
 #include <map>
 #include <vector>
+#include <deque>
 #include <list>
 #include <set>
 #include "r2p2-hdr.h"
@@ -255,6 +256,8 @@ namespace hysup
         bool is_msg_ext_serviced_by_sendr_;
         /* Dale: track amount of credits already requested from previous message extensions */
         int credit_data_already_requested_;
+        /* Dale: track credit pkts (for app data only) received from rcvr (used for keeping CR and D packetisation consistent; pkt data size will never exceed 1458 */
+        std::deque<uint16_t> credit_data_pkts_queue_;
     };
 
     class OutboundMsgs
