@@ -1110,11 +1110,12 @@ void R2p2CCHybrid::send_data()
                 {
                     msg_state->data_pkts_to_send_queue_.push_back(data_to_send); 
                 }
-                /** Dale: pretty print for testing only; TODO: demote to log6 */
-                for (int i = 0; i < msg_state->data_pkts_to_send_queue_.size(); i++)
-                {
-                    slog::log2(debug_, this_addr_, "msg (", std::get<2>(msg_state->req_id_), ") data pkt queue [", i, "]: ", msg_state->data_pkts_to_send_queue_[i]);
-                }
+                slog::log2(debug_, this_addr_, "msg (", std::get<2>(msg_state->req_id_), ") data pkt queue size=", msg_state->data_pkts_to_send_queue_.size());
+                // /** Dale: pretty print for testing only; TODO: demote to log7 */
+                // for (int i = 0; i < msg_state->data_pkts_to_send_queue_.size(); i++)
+                // {
+                //     slog::log7(debug_, this_addr_, "msg (", std::get<2>(msg_state->req_id_), ") data pkt queue [", i, "]: ", msg_state->data_pkts_to_send_queue_[i]);
+                // }
             }
 
             slog::log5(debug_, this_addr_, "Activating message:", std::get<2>(msg_state->req_id_),

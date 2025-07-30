@@ -355,7 +355,8 @@ def experiment_vary_byteloadsize_fullrange_multiflow_5flo_8gbps_total(is_full_po
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
-    ssird_sim_dur_list = [0.01, 0.01, 0.01, 0.01, 0.01]
+    # ssird_sim_dur_list = [0.01, 0.01, 0.01, 0.01, 0.01]
+    ssird_sim_dur_list = [0.05, 0.05, 0.05, 0.05, 0.05]
     dctcp_sim_dur_list = [0.25, 0.15, 0.15, 0.15, 0.15]
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
@@ -407,8 +408,7 @@ def experiment_vary_byteloadsize_fullrange_multiflow_1flo_1pt6gbps_total(is_full
     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
-    src = 0
-    dst = 1
+    src_dst_pairs_list = [(0,1)]
 
     minimum_interval_us = 0.1 # 0.1us
     total_flow_size_B = 200000 # 200KB
@@ -486,7 +486,7 @@ def experiment_vary_byteloadsize_fullrange_multiflow_1flo_1pt6gbps_total(is_full
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
     # return
 
-    exp_grp = dale_experiment_rig.ExperimentGroup(experiment_family, proto_names, src, dst, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc, log_level, title_addendum)
+    exp_grp = dale_experiment_rig.ExperimentGroup(experiment_family, proto_names, src_dst_pairs_list, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc, log_level, title_addendum)
 
     ssird_fct_list, dctcp_fct_list, gdpt_gbps_measured_list_ssird, gdpt_gbps_measured_list_dctcp, gdpt_gbps_measured_per_flow_list_list_ssird, gdpt_gbps_measured_per_flow_list_list_dctcp = exp_grp.perform_experiment()
 
@@ -1188,12 +1188,14 @@ if __name__ == "__main__":
     # experiment_vary_byteloadsize_subpkt_multiflow_150flo(is_full_postproc=True, title_addendum="_subpkt_multiflow_150flo_extended", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
     # ---------- FULLRANGE BYTELOADS ----------
-    # experiment_vary_byteloadsize_fullrange_multiflow(is_full_postproc=False, title_addendum="_fullrange_multiflow", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_vary_byteloadsize_fullrange_multiflow_31flo(is_full_postproc=True, title_addendum="_fullrange_31flo", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_vary_byteloadsize_fullrange_multiflow_5flo_8gbps_total(is_full_postproc=True, title_addendum="_fullrange_5flo_8gbps_total", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    ## experiment_vary_byteloadsize_fullrange_multiflow(is_full_postproc=False, title_addendum="_fullrange_multiflow", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_vary_byteloadsize_fullrange_multiflow_31flo(is_full_postproc=True, title_addendum="_fullrange_31flo_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_vary_byteloadsize_fullrange_multiflow_5flo_8gbps_total(is_full_postproc=True, title_addendum="_fullrange_5flo_8gbps_total", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_vary_byteloadsize_fullrange_multiflow_1flo_1pt6gbps_total(is_full_postproc=True, title_addendum="_fullrange_1flo_1pt6gbps_total", log_level=dale_experiment_rig.LOG_LEVEL_2)
     
     ### 1ms RTT experiments:
-    # experiment_vary_byteloadsize_fullrange_multiflow_31flo(is_full_postproc=True, title_addendum="_fullrange_31flo_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_vary_byteloadsize_fullrange_multiflow_31flo(is_full_postproc=True, title_addendum="_fullrange_31flo_1msRTT_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_vary_byteloadsize_fullrange_multiflow_5flo_8gbps_total(is_full_postproc=True, title_addendum="_fullrange_5flo_8gbps_total_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_vary_byteloadsize_fullrange_multiflow_1flo_1pt6gbps_total(is_full_postproc=True, title_addendum="_fullrange_1flo_1pt6gbps_total_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
+
     # experiment_vary_byteloadsize_large_bload_20MBflo_5flo_8gbps_total(is_full_postproc=True, title_addendum="_large_bload_20MBflo_5flo_8gbps_total_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
