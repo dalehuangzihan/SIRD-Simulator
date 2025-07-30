@@ -897,14 +897,6 @@ void R2p2CCHybrid::received_credit(Packet *pkt)
             }
         } // else state may have been deleted
     }
-    /* Dale: track credit pkts (for app data only) received from rcvr (used for keeping CR and D packetisation consistent; pkt data size will never exceed 1458 */
-    uint16_t credit_amount_data_bytes = credit_amount_bytes - (R2P2_ALL_HEADERS_SIZE + INTER_PKT_GAP_SIZE + ETHERNET_PREAMBLE_SIZE);
-    msg_state->credit_data_pkts_queue_.push_front(credit_amount_data_bytes);
-    /** Dale: pretty print for testing only; TODO: demote to log6 */
-    for (int i = 0; i < msg_state->credit_data_pkts_queue_.size(); i++)
-    {
-        slog::log2(debug_, this_addr_, "credit queue [", i, "]: ", msg_state->credit_data_pkts_queue_[i]);
-    }
 
     // Find receiver state
     hysup::ReceiverState *rcvr_state = receivers_->find(ip_hdr->src().addr_);
@@ -1106,6 +1098,23 @@ void R2p2CCHybrid::send_data()
                 msg_state->is_msg_ext_serviced_by_sendr_ = true;
                 /* Dale: update amount of credit already requested */
                 msg_state->credit_data_already_requested_ += hdr.credit_req(); 
+
+                /* Dale: use same packetisation mtd as rcvr when it sends credits for this CR, so we can keep C and D packetisation constent*/
+                uint64_t data_to_send = hdr.credit_req();
+                while (data_to_send >= MAX_R2P2_PAYLOAD)
+                {
+                    msg_state->data_pkts_to_send_queue_.push_back(MAX_R2P2_PAYLOAD);
+                    data_to_send -= MAX_R2P2_PAYLOAD;
+                }
+                if (data_to_send > 0)
+                {
+                    msg_state->data_pkts_to_send_queue_.push_back(data_to_send); 
+                }
+                /** Dale: pretty print for testing only; TODO: demote to log6 */
+                for (int i = 0; i < msg_state->data_pkts_to_send_queue_.size(); i++)
+                {
+                    slog::log2(debug_, this_addr_, "msg (", std::get<2>(msg_state->req_id_), ") data pkt queue [", i, "]: ", msg_state->data_pkts_to_send_queue_[i]);
+                }
             }
 
             slog::log5(debug_, this_addr_, "Activating message:", std::get<2>(msg_state->req_id_),
@@ -1154,12 +1163,12 @@ void R2p2CCHybrid::send_data()
     uint64_t credit_avail = msg_state->rcvr_state_->avail_credit_bytes_;
     
     /* Dale: send bytes using the packetisation manner used when we sent CR pkts and recived C pkts */
-    assert(msg_state->credit_data_pkts_queue_.size() > 0);
-    uint16_t credited_data_for_this_pkt = msg_state->credit_data_pkts_queue_.back();
-    msg_state->credit_data_pkts_queue_.pop_back();
-    assert(credited_data_for_this_pkt > 0);
+    assert(msg_state->data_pkts_to_send_queue_.size() > 0);
+    uint16_t data_to_send_for_this_pkt = msg_state->data_pkts_to_send_queue_.front();
+    msg_state->data_pkts_to_send_queue_.pop_front();
+    assert(data_to_send_for_this_pkt > 0);
 
-    uint32_t to_send = std::max(std::min((uint32_t)MAX_R2P2_PAYLOAD, (uint32_t)credited_data_for_this_pkt) + R2P2_ALL_HEADERS_SIZE + INTER_PKT_GAP_SIZE + ETHERNET_PREAMBLE_SIZE, (uint32_t)MIN_ETHERNET_FRAME_ON_WIRE);
+    uint32_t to_send = std::max(std::min((uint32_t)MAX_R2P2_PAYLOAD, (uint32_t)data_to_send_for_this_pkt) + R2P2_ALL_HEADERS_SIZE + INTER_PKT_GAP_SIZE + ETHERNET_PREAMBLE_SIZE, (uint32_t)MIN_ETHERNET_FRAME_ON_WIRE);
     assert(credit_avail >= to_send);
     assert(to_send >= ps->want_to_send_bytes_);
 
@@ -1169,7 +1178,7 @@ void R2p2CCHybrid::send_data()
                "rcvr:", msg_state->remote_addr_, "credit avail:", credit_avail, "to_send", to_send);
 
     /* Dale: use credit_data_for_this_pkt as payload value instead */
-    int payload = credited_data_for_this_pkt;
+    int payload = data_to_send_for_this_pkt;
     // int payload = 0;
     // bool all_will_be_sent = msg_state->unsent_bytes_ <= (uint32_t)MAX_R2P2_PAYLOAD;
     // if (all_will_be_sent)

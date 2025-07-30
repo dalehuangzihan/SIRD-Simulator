@@ -438,17 +438,17 @@ void hysup::ReceiverState::want_to_send(PolicyState &ps)
 
         msg_state = out_msgs_->next();
 
-        /* Dale: send bytes using the packetisation manner used when we sent CR pkts and recived C pkts */
+        /* Dale: send Data pkts using the packetisation manner used by rcvr to send C pkts */
         uint64_t to_send = 0;
-        if(msg_state->credit_data_pkts_queue_.size() > 0)
+        if(msg_state->data_pkts_to_send_queue_.size() > 0)
         {
-            /* Dale: udpate_policy_state() can call want_to_send() before credit arrives; this is a hack to avoid trying to access the credit data queue before it's populated */
-            uint16_t credited_data_for_this_pkt = msg_state->credit_data_pkts_queue_.back();
-            assert(credited_data_for_this_pkt > 0);
-            to_send = std::max(std::min((uint32_t)MAX_R2P2_PAYLOAD, (uint32_t)credited_data_for_this_pkt) + R2P2_ALL_HEADERS_SIZE + INTER_PKT_GAP_SIZE + ETHERNET_PREAMBLE_SIZE, (uint32_t)MIN_ETHERNET_FRAME_ON_WIRE);
+            uint16_t data_to_send_in_this_pkt = msg_state->data_pkts_to_send_queue_.front();
+            assert(data_to_send_in_this_pkt > 0);
+            to_send = std::max(std::min((uint32_t)MAX_R2P2_PAYLOAD, (uint32_t)data_to_send_in_this_pkt) + R2P2_ALL_HEADERS_SIZE + INTER_PKT_GAP_SIZE + ETHERNET_PREAMBLE_SIZE, (uint32_t)MIN_ETHERNET_FRAME_ON_WIRE);
         }
         else
         {
+            /* Dale: udpate_policy_state() can call want_to_send() before credit is requested (?); this is a hack to avoid trying to access the msg data pkt queue before it's populated */
             to_send = std::max(std::min((uint32_t)MAX_R2P2_PAYLOAD, msg_state->unsent_bytes_) + R2P2_ALL_HEADERS_SIZE + INTER_PKT_GAP_SIZE + ETHERNET_PREAMBLE_SIZE, (uint32_t)MIN_ETHERNET_FRAME_ON_WIRE);
         }
         assert(to_send >= MIN_ETHERNET_FRAME_ON_WIRE);
