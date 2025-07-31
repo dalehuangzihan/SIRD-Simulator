@@ -238,7 +238,7 @@ namespace hysup
               is_msg_ext_serviced_by_sendr_(true),
               credit_data_already_requested_(0){}
         hdr_r2p2 *r2p2_hdr_; // the REQRDY/"REP0" header
-        uint32_t total_bytes_;
+        uint64_t total_bytes_;
         uint32_t unsent_bytes_;
         bool is_request_;
         bool sent_anouncement_; // whether a packet that announces this message has been sent
@@ -256,9 +256,12 @@ namespace hysup
         bool is_msg_ext_serviced_by_sendr_;
         /* Dale: track amount of credits already requested from previous message extensions */
         int credit_data_already_requested_;
-        /* Dale: track packetisation of data pkts, so we can keeping CR, C and D packetisation consistent to avoid credit leakage; pkt data size will never exceed 1458 */
+        /** Dale:
+         * Track packetisation of data pkts, so we can keeping CR, C and D packetisation consistent to avoid credit leakage; pkt data size will never exceed 1458
+         * Tuple stores <data_in_pkt, total_msg_bytes_so_far>
+         */
         std::deque<uint16_t> data_pkts_to_send_queue_;
-        std::deque<uint16_t> credit_requests_to_send_queue_;
+        std::deque<std::tuple<uint16_t, uint64_t>> credit_requests_to_send_queue_;
     };
 
     class OutboundMsgs
