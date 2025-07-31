@@ -14,9 +14,9 @@ INFO:__main__:Num Byteloads: [10000, 1000, 100, 10, 1]
 INFO:__main__:Intervals (us): [0.1, 1.0, 10.0, 100.0, 1000.0]
 INFO:__main__:Num flows: 5
 INFO:__main__:Gdpt GBps theoretical: [8.0, 8.0, 8.0, 8.0, 8.0]
-INFO:__main__:* Sim duration (SSIRD): [0.01, 0.01, 0.01, 0.01, 0.01]
-INFO:__main__:* Sim duration (DCTCP): [0.25, 0.15, 0.15, 0.15, 0.15]
-INFO:dale_experiment_rig:Experiment started at: 2025-07-24 15:54:19.869650
+INFO:__main__:* Sim duration (SSIRD): [0.005, 0.005, 0.05, 0.005, 0.005]
+INFO:__main__:* Sim duration (DCTCP): [0.003, 0.003, 0.003, 0.003, 0.003]
+INFO:dale_experiment_rig:Experiment started at: 2025-07-31 11:51:11.597037
 INFO:dale_experiment_rig:
 ##### RUN GROUP #####
 INFO:dale_experiment_rig:
@@ -29,174 +29,184 @@ INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:
 =====
 Execute experiment 5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.250000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.250000
-INFO:dale_experiment_rig:
-=====
-Execute experiment 5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
+INFO:dale_experiment_rig:ssird_sim_duration=0.005000; dctcp_sim_duration=0.003000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:
+=====
+Execute experiment 5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT
+INFO:dale_experiment_rig:ssird_sim_duration=0.005000; dctcp_sim_duration=0.003000
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
 INFO:dale_experiment_rig:
 =====
 Execute experiment 5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT
-INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.150000
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:
 =====
 Execute experiment 5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
+INFO:dale_experiment_rig:ssird_sim_duration=0.005000; dctcp_sim_duration=0.003000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 5flo-1#-200000B-1000000ns_fullrange_5flo_8gbps_total_1msRTT
+INFO:dale_experiment_rig:ssird_sim_duration=0.005000; dctcp_sim_duration=0.003000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 5flo-1#-200000B-1000000ns_fullrange_5flo_8gbps_total_1msRTT
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.150000
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.150000
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
-INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.150000
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
-INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.150000
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
-INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.150000
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
-INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.150000
-INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.150000
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.050000; dctcp_sim_duration=0.003000
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.050000; dctcp_sim_duration=0.003000
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+INFO:dale_experiment_rig:ssird_sim_duration=0.005000; dctcp_sim_duration=0.003000
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
+INFO:dale_experiment_rig:ssird_sim_duration=0.005000; dctcp_sim_duration=0.003000
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+INFO:dale_experiment_rig:ssird_sim_duration=0.005000; dctcp_sim_duration=0.003000
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+INFO:dale_experiment_rig:ssird_sim_duration=0.005000; dctcp_sim_duration=0.003000
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+DEBUG:dale_experiment_rig:num flows: 5
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+DEBUG:dale_experiment_rig:num flows: 5
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+DEBUG:dale_experiment_rig:num flows: 5
+DEBUG:dale_experiment_rig:num flows: 5
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+DEBUG:dale_experiment_rig:num flows: 5
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+DEBUG:dale_experiment_rig:num flows: 5
+DEBUG:dale_experiment_rig:num flows: 5
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+DEBUG:dale_experiment_rig:num flows: 5
+DEBUG:dale_experiment_rig:num flows: 5
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+DEBUG:dale_experiment_rig:num flows: 5
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
 INFO:dale_experiment_rig:-----
 Running experiment for SSIRD
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
 INFO:dale_experiment_rig:-----
 Running experiment for SSIRD
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
-INFO:dale_experiment_rig:-----
-Running experiment for DCTCP-50
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/SSIRD-5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT.sh
 INFO:dale_experiment_rig:-----
 Running experiment for DCTCP-50
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/SSIRD-5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT.sh
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ aready exists.
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50-5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT.sh
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50-5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT.sh
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
 INFO:dale_experiment_rig:-----
 Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/SSIRD-5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT.sh
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50-5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT.sh
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
 INFO:dale_experiment_rig:-----
-Running experiment for DCTCP-50
-INFO:dale_experiment_rig:-----
 Running experiment for SSIRD
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
-INFO:dale_experiment_rig:-----
-Running experiment for SSIRD
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
-INFO:dale_experiment_rig:-----
-Running experiment for SSIRD
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50-5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT.sh
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50-5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT.sh
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/SSIRD-5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT.sh
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/SSIRD-5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT.sh
 INFO:dale_experiment_rig:-----
 Running experiment for DCTCP-50
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/SSIRD-5flo-1#-200000B-1000000ns_fullrange_5flo_8gbps_total_1msRTT.sh
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50-5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT.sh
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/SSIRD-5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT.sh
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50-5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50-5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT.sh
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/SSIRD-5flo-1#-200000B-1000000ns_fullrange_5flo_8gbps_total_1msRTT.sh
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50-5flo-1#-200000B-1000000ns_fullrange_5flo_8gbps_total_1msRTT.sh
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-1#-200000B-1000000ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-1#-200000B-1000000ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-1#-200000B-1000000ns_fullrange_5flo_8gbps_total_1msRTT_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/ssird_5flo-1#-200000B-1000000ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/DCTCP-50_5flo-1#-200000B-1000000ns_fullrange_5flo_8gbps_total_1msRTT_stderr.out
 INFO:dale_experiment_rig:-----
@@ -205,10 +215,11 @@ DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/
 INFO:dale_experiment_rig:-----
 Backing up app trace file paths
 DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/5flo/DCTCP-50_app_traces.txt
+INFO:dale_experiment_rig:Simulations ended at: 2025-07-31 12:03:33.668073
 INFO:dale_experiment_rig:
 ##### POST PROCESS RESULTS #####
 INFO:dale_experiment_rig:=====
-** Num Byteloads Per Flow: 10000, Byteload Size (B): 20, Inter-Byteload Interval (us): 0.1, ssird_sim_dur (s): 0.01, dctcp_sim_dur (s): 0.25
+** Num Byteloads Per Flow: 10000, Byteload Size (B): 20, Inter-Byteload Interval (us): 0.1, ssird_sim_dur (s): 0.005, dctcp_sim_dur (s): 0.003
 INFO:dale_experiment_rig:Processing SIRD results exp_id 0:: 5flo-10000#-20B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT/data/SSIRD/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
@@ -221,7 +232,7 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:SSIRD FCT: [0.0015424730000006548, 0.0015846530000001025, 0.001626863000000256, 0.0016690730000004095, 0.0017112530000016335] ms, Gdpt (overall): 8.000640064005973 Gbps, Gdpt (per flow): [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146]
+INFO:dale_experiment_rig:SSIRD FCT: [0.002499966000000242, 0.002499996000000948, 0.0025000259999998775, 0.002700095999999874, 0.0030000960000009513] ms, App Gdpt (overall): 8.000640064005973 Gbps, App Gdpt (per flow): [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146]
 INFO:dale_experiment_rig:Processing DCTCP results exp_id 0:: 5flo-10000#-20B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5flo-10000#-20B-100ns_fullrange_5flo_8gbps_total_1msRTT/data/DCTCP-50/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
@@ -234,9 +245,9 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:DCTCP FCT: [0.001499916000000212, 0.001499924000000874, 0.0014999310000014532, 0.0014999390000003388, 0.0014999470000010007] ms, Gtpt (overall): 8.000640064005973 Gbps, Gdpt (per flow): [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146]
+INFO:dale_experiment_rig:DCTCP FCT: [0.001499916000000212, 0.001499924000000874, 0.0014999310000014532, 0.0014999390000003388, 0.0014999470000010007] ms, App Gtpt (overall): 8.000640064005973 Gbps, App Gdpt (per flow): [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146]
 INFO:dale_experiment_rig:=====
-** Num Byteloads Per Flow: 1000, Byteload Size (B): 200, Inter-Byteload Interval (us): 1.0, ssird_sim_dur (s): 0.01, dctcp_sim_dur (s): 0.15
+** Num Byteloads Per Flow: 1000, Byteload Size (B): 200, Inter-Byteload Interval (us): 1.0, ssird_sim_dur (s): 0.005, dctcp_sim_dur (s): 0.003
 INFO:dale_experiment_rig:Processing SIRD results exp_id 1:: 5flo-1000#-200B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT/data/SSIRD/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1
@@ -249,7 +260,7 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 1000, num srq events: 1000, 
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:SSIRD FCT: [0.001650353000000493, 0.0018013730000010497, 0.0019521430000004614, 0.002102363000000551, 0.002253353000000402] ms, Gdpt (overall): 8.006406406404851 Gbps, Gdpt (per flow): [1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892]
+INFO:dale_experiment_rig:SSIRD FCT: [0.002499095000001006, 0.0024991249999999354, 0.0024991550000006413, 0.002499185000001347, 0.0024992150000002766] ms, App Gdpt (overall): 8.006406406404851 Gbps, App Gdpt (per flow): [1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892]
 INFO:dale_experiment_rig:Processing DCTCP results exp_id 1:: 5flo-1000#-200B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5flo-1000#-200B-1000ns_fullrange_5flo_8gbps_total_1msRTT/data/DCTCP-50/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
@@ -262,9 +273,9 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 1000, num srq events: 1000, 
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1000, num srq events: 1000, num rrq events: 1000
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:DCTCP FCT: [0.001499044000000893, 0.0014990670000010198, 0.0014990890000010637, 0.0014991110000011076, 0.0014991330000011516] ms, Gtpt (overall): 8.006406406404851 Gbps, Gdpt (per flow): [1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892]
+INFO:dale_experiment_rig:DCTCP FCT: [0.001499044000000893, 0.0014990670000010198, 0.0014990890000010637, 0.0014991110000011076, 0.0014991330000011516] ms, App Gtpt (overall): 8.006406406404851 Gbps, App Gdpt (per flow): [1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892]
 INFO:dale_experiment_rig:=====
-** Num Byteloads Per Flow: 100, Byteload Size (B): 2000, Inter-Byteload Interval (us): 10.0, ssird_sim_dur (s): 0.01, dctcp_sim_dur (s): 0.15
+** Num Byteloads Per Flow: 100, Byteload Size (B): 2000, Inter-Byteload Interval (us): 10.0, ssird_sim_dur (s): 0.05, dctcp_sim_dur (s): 0.003
 INFO:dale_experiment_rig:Processing SIRD results exp_id 2:: 5flo-100#-2000B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT/data/SSIRD/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 100, num srq events: 100, num rrq events: 1
@@ -277,7 +288,7 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 100, num srq events: 100, nu
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 100, num srq events: 100, num rrq events: 1
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:SSIRD FCT: [0.00169073600000047, 0.0018903230000013593, 0.0020808350000010023, 0.0022803230000008057, 0.002470859000000658] ms, Gdpt (overall): 8.064646464633425 Gbps, Gdpt (per flow): [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413]
+INFO:dale_experiment_rig:SSIRD FCT: [0.002491037000000418, 0.002490469000001383, 0.002490642000001486, 0.0024908150000015894, 0.00249098700000161] ms, App Gdpt (overall): 8.064646464633425 Gbps, App Gdpt (per flow): [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413]
 INFO:dale_experiment_rig:Processing DCTCP results exp_id 2:: 5flo-100#-2000B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5flo-100#-2000B-10000ns_fullrange_5flo_8gbps_total_1msRTT/data/DCTCP-50/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 100, num srq events: 100, num rrq events: 100
@@ -290,9 +301,9 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 100, num srq events: 100, nu
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 100, num srq events: 100, num rrq events: 100
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:DCTCP FCT: [0.0014902960000000576, 0.001490468000000078, 0.0014906400000000986, 0.0014908130000002018, 0.0014909850000002223] ms, Gtpt (overall): 8.064646464633425 Gbps, Gdpt (per flow): [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413]
+INFO:dale_experiment_rig:DCTCP FCT: [0.0014902960000000576, 0.001490468000000078, 0.0014906400000000986, 0.0014908130000002018, 0.0014909850000002223] ms, App Gtpt (overall): 8.064646464633425 Gbps, App Gdpt (per flow): [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413]
 INFO:dale_experiment_rig:=====
-** Num Byteloads Per Flow: 10, Byteload Size (B): 20000, Inter-Byteload Interval (us): 100.0, ssird_sim_dur (s): 0.01, dctcp_sim_dur (s): 0.15
+** Num Byteloads Per Flow: 10, Byteload Size (B): 20000, Inter-Byteload Interval (us): 100.0, ssird_sim_dur (s): 0.005, dctcp_sim_dur (s): 0.003
 INFO:dale_experiment_rig:Processing SIRD results exp_id 3:: 5flo-10#-20000B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT/data/SSIRD/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10, num srq events: 10, num rrq events: 1
@@ -305,7 +316,7 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10, num srq events: 10, num 
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10, num srq events: 10, num rrq events: 1
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:SSIRD FCT: [0.0016087169999998707, 0.0018086970000013025, 0.0020087000000010846, 0.002208710000001446, 0.0024086410000005998] ms, Gdpt (overall): 8.711111111097027 Gbps, Gdpt (per flow): [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413]
+INFO:dale_experiment_rig:SSIRD FCT: [0.0024086210000007213, 0.0024019860000006332, 0.0024036750000000495, 0.002405365000001325, 0.002407055000000824] ms, App Gdpt (overall): 8.711111111097027 Gbps, App Gdpt (per flow): [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413]
 INFO:dale_experiment_rig:Processing DCTCP results exp_id 3:: 5flo-10#-20000B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5flo-10#-20000B-100000ns_fullrange_5flo_8gbps_total_1msRTT/data/DCTCP-50/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10, num srq events: 10, num rrq events: 10
@@ -318,9 +329,9 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10, num srq events: 10, num 
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10, num srq events: 10, num rrq events: 10
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:DCTCP FCT: [0.001401810000000836, 0.0014034980000001696, 0.0014051850000011967, 0.0014068720000004475, 0.0014085600000015575] ms, Gtpt (overall): 8.711111111097027 Gbps, Gdpt (per flow): [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413]
+INFO:dale_experiment_rig:DCTCP FCT: [0.001401810000000836, 0.0014034980000001696, 0.0014051850000011967, 0.0014068720000004475, 0.0014085600000015575] ms, App Gtpt (overall): 8.711111111097027 Gbps, App Gdpt (per flow): [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413]
 INFO:dale_experiment_rig:=====
-** Num Byteloads Per Flow: 1, Byteload Size (B): 200000, Inter-Byteload Interval (us): 1000.0, ssird_sim_dur (s): 0.01, dctcp_sim_dur (s): 0.15
+** Num Byteloads Per Flow: 1, Byteload Size (B): 200000, Inter-Byteload Interval (us): 1000.0, ssird_sim_dur (s): 0.005, dctcp_sim_dur (s): 0.003
 INFO:dale_experiment_rig:Processing SIRD results exp_id 4:: 5flo-1#-200000B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5flo-1#-200000B-1000000ns_fullrange_5flo_8gbps_total_1msRTT/data/SSIRD/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1, num srq events: 1, num rrq events: 1
@@ -333,7 +344,7 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 1, num srq events: 1, num rr
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1, num srq events: 1, num rrq events: 1
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:SSIRD FCT: [0.0015171160000004846, 0.0015339990000011738, 0.0015508830000001694, 0.0015677660000008586, 0.0015846490000015478] ms, Gdpt (overall): -1 Gbps, Gdpt (per flow): [None, None, None, None, None]
+INFO:dale_experiment_rig:SSIRD FCT: [0.0015171160000004846, 0.0015339990000011738, 0.0015508830000001694, 0.0015677660000008586, 0.0015846490000015478] ms, App Gdpt (overall): -1 Gbps, App Gdpt (per flow): [None, None, None, None, None]
 INFO:dale_experiment_rig:Processing DCTCP results exp_id 4:: 5flo-1#-200000B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5flo-1#-200000B-1000000ns_fullrange_5flo_8gbps_total_1msRTT/data/DCTCP-50/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1, num srq events: 1, num rrq events: 1
@@ -346,7 +357,7 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 1, num srq events: 1, num rr
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1, num srq events: 1, num rrq events: 1
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:DCTCP FCT: [0.0025011310000007114, 0.002509867000000554, 0.002518602000000314, 0.0025267230000007856, 0.0025348440000012573] ms, Gtpt (overall): -1 Gbps, Gdpt (per flow): [None, None, None, None, None]
+INFO:dale_experiment_rig:DCTCP FCT: [0.0025011310000007114, 0.002509867000000554, 0.002518602000000314, 0.0025267230000007856, 0.0025348440000012573] ms, App Gtpt (overall): -1 Gbps, App Gdpt (per flow): [None, None, None, None, None]
 INFO:dale_experiment_rig:
 ##### GENERATE METRICS #####
 INFO:__main__:Total Flow Size (Bytes): 200000
@@ -361,7 +372,7 @@ INFO:__main__:Gdpt Gbps measured (SSIRD): [8.000640064005973, 8.006406406404851,
 INFO:__main__:Gdpt Gbps measured (DCTCP): [8.000640064005973, 8.006406406404851, 8.064646464633425, 8.711111111097027, -1]
 DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146], [1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413], [None, None, None, None, None]]
 DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [[1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146], [1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892, 1.5999999999996892], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413], [1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413, 1.599999999997413], [None, None, None, None, None]]
-INFO:__main__:* Sim duration (SSIRD): [0.01, 0.01, 0.01, 0.01, 0.01]
-INFO:__main__:* Sim duration (DCTCP): [0.25, 0.15, 0.15, 0.15, 0.15]
-INFO:__main__:* SSIRD FCT: [[0.0015424730000006548, 0.0015846530000001025, 0.001626863000000256, 0.0016690730000004095, 0.0017112530000016335], [0.001650353000000493, 0.0018013730000010497, 0.0019521430000004614, 0.002102363000000551, 0.002253353000000402], [0.00169073600000047, 0.0018903230000013593, 0.0020808350000010023, 0.0022803230000008057, 0.002470859000000658], [0.0016087169999998707, 0.0018086970000013025, 0.0020087000000010846, 0.002208710000001446, 0.0024086410000005998], [0.0015171160000004846, 0.0015339990000011738, 0.0015508830000001694, 0.0015677660000008586, 0.0015846490000015478]]
+INFO:__main__:* Sim duration (SSIRD): [0.005, 0.005, 0.05, 0.005, 0.005]
+INFO:__main__:* Sim duration (DCTCP): [0.003, 0.003, 0.003, 0.003, 0.003]
+INFO:__main__:* SSIRD FCT: [[0.002499966000000242, 0.002499996000000948, 0.0025000259999998775, 0.002700095999999874, 0.0030000960000009513], [0.002499095000001006, 0.0024991249999999354, 0.0024991550000006413, 0.002499185000001347, 0.0024992150000002766], [0.002491037000000418, 0.002490469000001383, 0.002490642000001486, 0.0024908150000015894, 0.00249098700000161], [0.0024086210000007213, 0.0024019860000006332, 0.0024036750000000495, 0.002405365000001325, 0.002407055000000824], [0.0015171160000004846, 0.0015339990000011738, 0.0015508830000001694, 0.0015677660000008586, 0.0015846490000015478]]
 INFO:__main__:* DCTCP FCT: [[0.001499916000000212, 0.001499924000000874, 0.0014999310000014532, 0.0014999390000003388, 0.0014999470000010007], [0.001499044000000893, 0.0014990670000010198, 0.0014990890000010637, 0.0014991110000011076, 0.0014991330000011516], [0.0014902960000000576, 0.001490468000000078, 0.0014906400000000986, 0.0014908130000002018, 0.0014909850000002223], [0.001401810000000836, 0.0014034980000001696, 0.0014051850000011967, 0.0014068720000004475, 0.0014085600000015575], [0.0025011310000007114, 0.002509867000000554, 0.002518602000000314, 0.0025267230000007856, 0.0025348440000012573]]
