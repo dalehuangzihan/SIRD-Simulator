@@ -256,8 +256,9 @@ namespace hysup
         bool is_msg_ext_serviced_by_sendr_;
         /* Dale: track amount of credits already requested from previous message extensions */
         int credit_data_already_requested_;
-        /* Dale: track packetisation of credit pkts, so we can keeping CR and D packetisation consistent to avoid credit leakage; pkt data size will never exceed 1458 */
+        /* Dale: track packetisation of data pkts, so we can keeping CR, C and D packetisation consistent to avoid credit leakage; pkt data size will never exceed 1458 */
         std::deque<uint16_t> data_pkts_to_send_queue_;
+        std::deque<uint16_t> credit_requests_to_send_queue_;
     };
 
     class OutboundMsgs
@@ -398,6 +399,8 @@ namespace hysup
 
         /* Dale: track whether msg is a message extension */
         bool is_msg_extension_;
+        /* Dale: track how sender packetises data in its credit requests; allows us to send credits using this same packetisation*/
+        std::deque<uint16_t> pending_credit_req_data_queue_;
     };
 
     class InboundMsgs

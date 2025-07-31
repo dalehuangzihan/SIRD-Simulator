@@ -417,7 +417,7 @@ class FlowStats:
         elif (trace_event_name == FlowTraceEvent.RRQ_EVENT):
             self.num_rrq += 1
             if (self.proto == SSIRD_PROTO_NAME):
-                # ssird rrq shows cumulative recved-data size
+                # each ssird rrq shows cumulative recved-data size that progressively increases as data chunks reach the receiver-side app
                 self.total_bytes_recv_B = flow_trace_event.get_req_size()
             elif (self.proto == DCTCP_PROTO_NAME):
                 self.total_bytes_recv_B += flow_trace_event.get_req_size()

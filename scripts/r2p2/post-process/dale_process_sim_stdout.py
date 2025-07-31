@@ -527,31 +527,34 @@ def proc_31flow_largepkt_exp_sim_outputs_fastpace_extended():
 
 ''' ----- FULLRANGE EXPERIMENTS ----- '''
 
-def proc_31flow_fullrange_exp_sim_outputs():
+def proc_31flow_fullrange_exp_sim_outputs_5usRTT():
 
     print("\n--- 31 FLO FULLRANGE 49.6Gbps: ---")
-    title_addendum = "_fullrange_31flo"
-    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_31flo/"
+    title_addendum = "_fullrange_31flo_credit_steal"
+    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/"
     num_flows = 31
     num_byteloads_list = [10000, 1000, 100, 10, 1]
     byteload_size_B_list = [20, 200, 2000, 20000, 200000]
     inter_byteload_period_us_list = [0.1, 1.0, 10.0, 100.0, 1000.0]
 
-    nw_overheads_theory_total_B_list, nw_overheads_theory_s_to_r_B_list, _ = process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
-    nw_overheads_measured_total_B_list = [26805846.22, 9423469.99, 1666364.99, 815961.24, 712132.5]
-    nw_overheads_measured_s_to_r_B_list = [26385364.98, 4828567.49, 823059.99, 399261.24, 347348.75]
+def proc_31flow_fullrange_exp_sim_outputs_1msRTT():
 
-    measured_vs_theoretical_total_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_total_B_list, nw_overheads_theory_total_B_list)]
-    measured_vs_theoretical_s_to_r_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_s_to_r_B_list, nw_overheads_theory_s_to_r_B_list)]
+    print("\n--- 31 FLO FULLRANGE 49.6Gbps: ---")
+    title_addendum = "_fullrange_31flo_1msRTT_credit_steal"
+    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_31flo_1msRTT_credit_steal/"
+    num_flows = 31
+    num_byteloads_list = [10000, 1000, 100, 10, 1]
+    byteload_size_B_list = [20, 200, 2000, 20000, 200000]
+    inter_byteload_period_us_list = [0.1, 1.0, 10.0, 100.0, 1000.0]
 
-    print(f"Total: {measured_vs_theoretical_total_ratio}")
-    print(f"Sendr to Recvr only: {measured_vs_theoretical_s_to_r_ratio}")
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
 def proc_5flo_fullrange_exp_sim_outputs_5usRTT():
     print("\n--- 5 FLO FULLRANGE 8Gbps RTT=5us: ---")
-    title_addendum = "_fullrange_5flo_8gbps_total"
-    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total/"
+    title_addendum = "_fullrange_5flo_8gbps_total_credit_steal"
+    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_credit_steal/"
     num_flows = 5
     num_byteloads_list = [10000, 1000, 100, 10, 1]
     byteload_size_B_list = [20, 200, 2000, 20000, 200000]
@@ -562,8 +565,8 @@ def proc_5flo_fullrange_exp_sim_outputs_5usRTT():
 def proc_5flo_fullrange_exp_sim_outputs_1msRTT():
 
     print("\n--- 5 FLO FULLRANGE 8Gbps RTT=1ms: ---")
-    title_addendum = "_fullrange_5flo_8gbps_total_1msRTT"
-    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT/"
+    title_addendum = "_fullrange_5flo_8gbps_total_1msRTT_credit_steal"
+    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT_credit_steal/"
     num_flows = 5
     num_byteloads_list = [10000, 1000, 100, 10, 1]
     byteload_size_B_list = [20, 200, 2000, 20000, 200000]
@@ -573,8 +576,8 @@ def proc_5flo_fullrange_exp_sim_outputs_1msRTT():
 
 def proc_1flo_fullrange_exp_sim_outputs_5usRTT():
     print("\n--- 1 FLO FULLRANGE 1.6Gbps RTT=5us: ---")
-    title_addendum = "_fullrange_1flo_1pt6gbps_total"
-    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_1flo_1pt6gbps_total/"
+    title_addendum = "_fullrange_1flo_1pt6gbps_total_credit_steal"
+    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_1flo_1pt6gbps_total_credit_steal/"
     num_flows = 1
     num_byteloads_list = [10000, 1000, 100, 10, 1]
     byteload_size_B_list = [20, 200, 2000, 20000, 200000]
@@ -585,8 +588,8 @@ def proc_1flo_fullrange_exp_sim_outputs_5usRTT():
 def proc_1flo_fullrange_exp_sim_outputs_1msRTT():
 
     print("\n--- 1 FLO FULLRANGE 1.6Gbps RTT=1ms: ---")
-    title_addendum = "_fullrange_1flo_1pt6gbps_total_1msRTT"
-    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_1flo_1pt6gbps_total_1msRTT/"
+    title_addendum = "_fullrange_1flo_1pt6gbps_total_1msRTT_credit_steal"
+    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_1flo_1pt6gbps_total_1msRTT_credit_steal/"
     num_flows = 1
     num_byteloads_list = [10000, 1000, 100, 10, 1]
     byteload_size_B_list = [20, 200, 2000, 20000, 200000]
@@ -779,6 +782,7 @@ def proc_credit_leak_investigation_1462B_5flo_5usRTT():
 
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
+
 def proc_credit_leak_investigation_1462B_1flo_1msRTT():
     print("\nCredit leak Investigation: 1462B, 10us, 1Flo, 1msRTT")
     title_addendum = "_1462B_1flo_3bload_credit_leak_1msRTT_test"
@@ -821,10 +825,12 @@ if __name__ == "__main__":
 
     # 1RTT verification experiments ---
     ## proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT()
+    proc_31flow_fullrange_exp_sim_outputs_5usRTT()
+    proc_31flow_fullrange_exp_sim_outputs_1msRTT()
     proc_5flo_fullrange_exp_sim_outputs_5usRTT()
     proc_5flo_fullrange_exp_sim_outputs_1msRTT()
-    # proc_1flo_fullrange_exp_sim_outputs_5usRTT()
-    # proc_1flo_fullrange_exp_sim_outputs_1msRTT()
+    proc_1flo_fullrange_exp_sim_outputs_5usRTT()
+    proc_1flo_fullrange_exp_sim_outputs_1msRTT()
 
     # proc_5flo_test_vary_bload_num_1msRTT()
     # proc_5flo_test_vary_bload_size_1msRTT()

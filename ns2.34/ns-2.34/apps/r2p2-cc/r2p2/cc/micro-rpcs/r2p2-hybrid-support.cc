@@ -465,9 +465,9 @@ void hysup::ReceiverState::want_to_send(PolicyState &ps)
 
                 /** Dale: 
                  * Don't allow msg states with 0 unsent bytes to be sent.
-                 * 30/07/2025: Janky Hack: Don't allow msg states that've not yet asked for credits to send => ensures that we have C pkt packetisation info before we send D pkt. Still allows approx of SRPT.
+                 * 31/07/2025: Don't allow msg states that've not yet asked for credits to send. Still allows approx of SRPT.
                  */
-                if (!msg_state->sent_anouncement_ && msg_state->unsent_bytes_ > 0 && msg_state->data_pkts_to_send_queue_.size() > 0)
+                if (!msg_state->sent_anouncement_ && msg_state->unsent_bytes_ > 0 && msg_state->data_pkts_to_send_queue_.size() > 0 && msg_state->credit_requests_to_send_queue_.size() < msg_state->data_pkts_to_send_queue_.size())
                 {
                     // slog::log5(debug_, this_addr_, "Data: Next msg !msg_state->sent_anouncement_ (", std::get<2>(msg_state->req_id_),
                     //            ") attributes: unsent_bytes_:", msg_state->unsent_bytes_,
@@ -486,9 +486,9 @@ void hysup::ReceiverState::want_to_send(PolicyState &ps)
 
                 /** Dale: 
                  * Don't allow msg states with 0 unsent bytes to be sent.
-                 * 30/07/2025: Janky Hack: Don't allow msg states that've not yet asked for credits to send => ensures that we have C pkt packetisation info before we send D pkt. Still allows approx of SRPT.
+                 * 31/07/2025: Don't allow msg states that've not yet asked for credits to send. Still allows approx of SRPT.
                  */
-                if (msg_state->unsent_bytes_ > 0 && msg_state->data_pkts_to_send_queue_.size() > 0)
+                if (msg_state->unsent_bytes_ > 0 && msg_state->data_pkts_to_send_queue_.size() > 0 && msg_state->credit_requests_to_send_queue_.size() < msg_state->data_pkts_to_send_queue_.size())
                 {
                     ps.can_send_ = true;
                     ps.msg_state_ = msg_state;
