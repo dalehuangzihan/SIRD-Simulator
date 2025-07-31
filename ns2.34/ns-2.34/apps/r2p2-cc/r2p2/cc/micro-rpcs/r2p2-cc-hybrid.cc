@@ -908,6 +908,11 @@ void R2p2CCHybrid::received_credit(Packet *pkt)
     // assert(rcvr_state->avail_credit_data_bytes_ >= 0); // I think this can happen because a chunk of cerdit for the last part of a larger message can be used by a smaller message etc (i.e., credit is not always "aligned")
     rcvr_state->avail_credit_data_bytes_ += credit_data_net;
     // outbound_->total_available_credit_ += credit_amount_bytes;
+
+    /* Dale: track packetisation of credit (data) pkts, so we can keeping CR and D packetisation consistent to avoid credit leakage; pkt data size will never exceed 1458 */
+    msg_state->data_pkts_to_send_queue_.push_back(credit_data_net);
+    slog::log2(debug_, this_addr_, "@ rcv credit: msg (", std::get<2>(msg_state->req_id_), ") data pkt queue size=", msg_state->data_pkts_to_send_queue_.size());
+
     stats->credit_received_ += credit_amount_bytes;
     slog::log5(debug_, this_addr_, "credit received:", stats->credit_received_, "credit used:", stats->credit_used_, "diff:", stats->credit_received_ - stats->credit_used_);
     assert(stats->credit_used_ <= stats->credit_received_);
@@ -1099,23 +1104,23 @@ void R2p2CCHybrid::send_data()
                 /* Dale: update amount of credit already requested */
                 msg_state->credit_data_already_requested_ += hdr.credit_req(); 
 
-                /* Dale: use same packetisation mtd as rcvr when it sends credits for this CR, so we can keep C and D packetisation constent*/
-                uint64_t data_to_send = hdr.credit_req();
-                while (data_to_send >= MAX_R2P2_PAYLOAD)
-                {
-                    msg_state->data_pkts_to_send_queue_.push_back(MAX_R2P2_PAYLOAD);
-                    data_to_send -= MAX_R2P2_PAYLOAD;
-                }
-                if (data_to_send > 0)
-                {
-                    msg_state->data_pkts_to_send_queue_.push_back(data_to_send); 
-                }
-                slog::log2(debug_, this_addr_, "@ Fwd CR: msg (", std::get<2>(msg_state->req_id_), ") data pkt queue size=", msg_state->data_pkts_to_send_queue_.size());
-                // /** Dale: pretty print for testing only; TODO: demote to log7 */
-                // for (int i = 0; i < msg_state->data_pkts_to_send_queue_.size(); i++)
+                // /* Dale: use same packetisation mtd as rcvr when it sends credits for this CR, so we can keep C and D packetisation constent*/
+                // uint64_t data_to_send = hdr.credit_req();
+                // while (data_to_send >= MAX_R2P2_PAYLOAD)
                 // {
-                //     slog::log7(debug_, this_addr_, "msg (", std::get<2>(msg_state->req_id_), ") data pkt queue [", i, "]: ", msg_state->data_pkts_to_send_queue_[i]);
+                //     msg_state->data_pkts_to_send_queue_.push_back(MAX_R2P2_PAYLOAD);
+                //     data_to_send -= MAX_R2P2_PAYLOAD;
                 // }
+                // if (data_to_send > 0)
+                // {
+                //     msg_state->data_pkts_to_send_queue_.push_back(data_to_send); 
+                // }
+                // slog::log2(debug_, this_addr_, "@ Fwd CR: msg (", std::get<2>(msg_state->req_id_), ") data pkt queue size=", msg_state->data_pkts_to_send_queue_.size());
+                // // /** Dale: pretty print for testing only; TODO: demote to log7 */
+                // // for (int i = 0; i < msg_state->data_pkts_to_send_queue_.size(); i++)
+                // // {
+                // //     slog::log7(debug_, this_addr_, "msg (", std::get<2>(msg_state->req_id_), ") data pkt queue [", i, "]: ", msg_state->data_pkts_to_send_queue_[i]);
+                // // }
             }
 
             slog::log5(debug_, this_addr_, "Activating message:", std::get<2>(msg_state->req_id_),

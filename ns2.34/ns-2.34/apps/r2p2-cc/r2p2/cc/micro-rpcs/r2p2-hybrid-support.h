@@ -256,7 +256,7 @@ namespace hysup
         bool is_msg_ext_serviced_by_sendr_;
         /* Dale: track amount of credits already requested from previous message extensions */
         int credit_data_already_requested_;
-        /* Dale: track data packetisation (make sender send at same packetisation as rcvr issues credits), so we can keeping CR and D packetisation consistent; pkt data size will never exceed 1458 */
+        /* Dale: track packetisation of credit pkts, so we can keeping CR and D packetisation consistent to avoid credit leakage; pkt data size will never exceed 1458 */
         std::deque<uint16_t> data_pkts_to_send_queue_;
     };
 

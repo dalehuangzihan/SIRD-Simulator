@@ -302,11 +302,13 @@ def experiment_vary_byteloadsize_fullrange_multiflow_5flo_8gbps_total(is_full_po
     src_dst_pairs_list = [(0,1)]
 
     minimum_interval_us = 0.1 # 0.1us
+    # total_flow_size_B = 20000 # 20KB # FOR TESTING ONLY
     total_flow_size_B = 200000 # 200KB
     # NOTE: smallest byteload size that SSIRD sim is set up to use is 4B => with headers this makes a total of 64B per byteload.
     # NOTE: byteload sizes are multiples of 4 so that the inter-byteload periods are later calculated to be whole numbers in the end
 
     KILOBYTE = 1000
+    # byteload_size_KB_list = [0.02]
     byteload_size_KB_list = [0.02, 0.2, 2, 20, 200] # 20B to 200KB byteloads
     byteload_size_B_list = [int(n * KILOBYTE) for n in byteload_size_KB_list] 
     num_of_experiments = len(byteload_size_B_list)
@@ -355,9 +357,12 @@ def experiment_vary_byteloadsize_fullrange_multiflow_5flo_8gbps_total(is_full_po
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
+    # ssird_sim_dur_list = [0.001] # for 5us RTT
+    # ssird_sim_dur_list = [0.006] # for 1ms RTT
+
     # ssird_sim_dur_list = [0.01, 0.01, 0.01, 0.01, 0.01]
-    ssird_sim_dur_list = [0.05, 0.05, 0.05, 0.05, 0.05]
-    dctcp_sim_dur_list = [0.25, 0.15, 0.15, 0.15, 0.15]
+    ssird_sim_dur_list = [0.005, 0.005, 0.05, 0.005, 0.005]
+    dctcp_sim_dur_list = [0.003, 0.003, 0.003, 0.003, 0.003]
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
     gdpt_gbps_theoretical_list = []
@@ -404,8 +409,8 @@ def experiment_vary_byteloadsize_fullrange_multiflow_5flo_8gbps_total(is_full_po
 
 def experiment_vary_byteloadsize_fullrange_multiflow_1flo_1pt6gbps_total(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"FCT_Fullrange_Byteloads{title_addendum}"
-    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
-    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
+    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
+    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
     src_dst_pairs_list = [(0,1)]
@@ -464,8 +469,8 @@ def experiment_vary_byteloadsize_fullrange_multiflow_1flo_1pt6gbps_total(is_full
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
-    ssird_sim_dur_list = [0.01, 0.01, 0.01, 0.01, 0.01]
-    dctcp_sim_dur_list = [0.25, 0.15, 0.15, 0.15, 0.15]
+    ssird_sim_dur_list = [0.003, 0.003, 0.003, 0.003, 0.003]
+    dctcp_sim_dur_list = [0.003, 0.003, 0.003, 0.003, 0.003]
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
     gdpt_gbps_theoretical_list = []
@@ -681,9 +686,9 @@ def experiment_vary_byteloadsize_fullrange_multiflow_31flo(is_full_postproc=True
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
-    ssird_sim_dur_list = [0.02, 0.02, 0.02, 0.02, 0.02]
+    ssird_sim_dur_list = [0.01, 0.01, 0.01, 0.01, 0.01]
     # dctcp_sim_dur_list = [0.03, 0.03, 0.03, 0.03, 0.03] # for RTT = 5us
-    dctcp_sim_dur_list = [0.3, 0.3, 0.3, 0.3, 0.3] # for RTT = 1ms
+    dctcp_sim_dur_list = [0.01, 0.01, 0.01, 0.01, 0.01] # for RTT = 1ms
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
     gdpt_gbps_theoretical_list = []
@@ -1189,12 +1194,12 @@ if __name__ == "__main__":
 
     # ---------- FULLRANGE BYTELOADS ----------
     ## experiment_vary_byteloadsize_fullrange_multiflow(is_full_postproc=False, title_addendum="_fullrange_multiflow", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_vary_byteloadsize_fullrange_multiflow_31flo(is_full_postproc=True, title_addendum="_fullrange_31flo_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_vary_byteloadsize_fullrange_multiflow_31flo(is_full_postproc=True, title_addendum="_fullrange_31flo", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_vary_byteloadsize_fullrange_multiflow_5flo_8gbps_total(is_full_postproc=True, title_addendum="_fullrange_5flo_8gbps_total", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_vary_byteloadsize_fullrange_multiflow_1flo_1pt6gbps_total(is_full_postproc=True, title_addendum="_fullrange_1flo_1pt6gbps_total", log_level=dale_experiment_rig.LOG_LEVEL_2)
     
     ### 1ms RTT experiments:
-    # experiment_vary_byteloadsize_fullrange_multiflow_31flo(is_full_postproc=True, title_addendum="_fullrange_31flo_1msRTT_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_vary_byteloadsize_fullrange_multiflow_31flo(is_full_postproc=True, title_addendum="_fullrange_31flo_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_vary_byteloadsize_fullrange_multiflow_5flo_8gbps_total(is_full_postproc=True, title_addendum="_fullrange_5flo_8gbps_total_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_vary_byteloadsize_fullrange_multiflow_1flo_1pt6gbps_total(is_full_postproc=True, title_addendum="_fullrange_1flo_1pt6gbps_total_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
