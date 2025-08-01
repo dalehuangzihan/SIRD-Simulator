@@ -60,9 +60,8 @@ def experiment_1458B_bloads_8flo_93pt312Gbps_gdpt(is_full_postproc=True, title_a
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
-    ssird_sim_dur_list = [0.005, 0.005, 0.005, 0.005, 0.005]
-    # dctcp_sim_dur_list = [0.03, 0.03, 0.03, 0.03, 0.03] # for RTT = 5us
-    dctcp_sim_dur_list = [0.3, 0.3, 0.3, 0.3, 0.3] # for RTT = 1ms
+    ssird_sim_dur_list = [0.0005, 0.0005, 0.0005, 0.0005, 0.0005] # for RTT = 5us
+    dctcp_sim_dur_list = [0.001, 0.001, 0.001, 0.001, 0.001] # for RTT = 5us
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
     gdpt_gbps_theoretical_list = []
@@ -85,7 +84,7 @@ def experiment_1458B_bloads_8flo_93pt312Gbps_gdpt(is_full_postproc=True, title_a
 
     exp_grp = dale_experiment_rig.ExperimentGroup(experiment_family, proto_names, src_dst_pairs_list, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc, log_level, title_addendum)
 
-    ssird_fct_list, dctcp_fct_list, gdpt_gbps_measured_list_ssird, gdpt_gbps_measured_list_dctcp, gdpt_gbps_measured_per_flow_list_list_ssird, gdpt_gbps_measured_per_flow_list_list_dctcp = exp_grp.perform_experiment()
+    exp_metrics = exp_grp.perform_experiment()
 
     logger.info(f"Total Flow Size (Bytes): {total_flow_size_B}")
     logger.info(f"Total Injection Period (us): {total_injection_period_us}")
@@ -95,19 +94,26 @@ def experiment_1458B_bloads_8flo_93pt312Gbps_gdpt(is_full_postproc=True, title_a
     logger.info(f"Num flows: {num_flows}")
     logger.debug(f"Flow start times (us): {flow_start_times_us_list}")
     logger.info(f"Gdpt Gbps theoretical: {gdpt_gbps_theoretical_list}")
-    logger.info(f"Gdpt Gbps measured (SSIRD): {gdpt_gbps_measured_list_ssird}")
-    logger.info(f"Gdpt Gbps measured (DCTCP): {gdpt_gbps_measured_list_dctcp}")
-    logger.debug(f"Gdpt Gbps measured per flow (SSIRD): {gdpt_gbps_measured_per_flow_list_list_ssird}")
-    logger.debug(f"Gdpt Gbps measured per flow (DCTCP): {gdpt_gbps_measured_per_flow_list_list_dctcp}")
+
+    logger.info(f"APP Gdpt Gbps measured (SSIRD): {exp_metrics.total_app_gdpt_gbps_measured_list_ssird }")
+    logger.info(f"APP Gdpt Gbps measured (DCTCP): {exp_metrics.total_app_gdpt_gbps_measured_list_dctcp}")
+    logger.debug(f"APP Gdpt Gbps measured per flow (SSIRD): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_ssird}")
+    logger.debug(f"APP Gdpt Gbps measured per flow (DCTCP): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_dctcp}")
+
+    logger.info(f"NW Gdpt Gbps measured (SSIRD): {exp_metrics.total_nw_gdpt_gbps_measured_list_ssird}")
+    logger.info(f"NW Gdpt Gbps measured (DCTCP): {exp_metrics.total_nw_gdpt_gbps_measured_list_dctcp}")
+    logger.debug(f"NW Gdpt Gbps measured per flow (SSIRD): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_ssird}")
+    logger.debug(f"NW Gdpt Gbps measured per flow (DCTCP): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_dctcp}")
+
     logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
-    logger.info(f"* SSIRD FCT: {ssird_fct_list}")
-    logger.info(f"* DCTCP FCT: {dctcp_fct_list}")
+    logger.info(f"* SSIRD FCT: {exp_metrics.ssird_fct_list}")
+    logger.info(f"* DCTCP FCT: {exp_metrics.dctcp_fct_list}")
 
-    assert num_of_experiments == len(ssird_fct_list)
-    assert num_of_experiments == len(dctcp_fct_list)
+    assert num_of_experiments == len(exp_metrics.ssird_fct_list)
+    assert num_of_experiments == len(exp_metrics.dctcp_fct_list)
 
-def experiment_1560B_bloads_8flo_99pt84Gbps_gdpt(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
+def experiment_1560B_bloads_9flo_112Gbps_gdpt(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"Normal_Byteloads{title_addendum}"
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
@@ -120,7 +126,7 @@ def experiment_1560B_bloads_8flo_99pt84Gbps_gdpt(is_full_postproc=True, title_ad
 
     byteload_size_B_list = [1560] 
     num_of_experiments = len(byteload_size_B_list)
-    num_flows = 8 # for 99.84Gbps total app goodput
+    num_flows = 9 # for 112Gbps total app goodput
     inter_flow_spacing_us = 0 # TODO: for testing
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
 
@@ -190,7 +196,7 @@ def experiment_1560B_bloads_8flo_99pt84Gbps_gdpt(is_full_postproc=True, title_ad
 
     exp_grp = dale_experiment_rig.ExperimentGroup(experiment_family, proto_names, src_dst_pairs_list, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc, log_level, title_addendum)
 
-    ssird_fct_list, dctcp_fct_list, gdpt_gbps_measured_list_ssird, gdpt_gbps_measured_list_dctcp, gdpt_gbps_measured_per_flow_list_list_ssird, gdpt_gbps_measured_per_flow_list_list_dctcp = exp_grp.perform_experiment()
+    exp_metrics = exp_grp.perform_experiment()
 
     logger.info(f"Total Flow Size (Bytes): {total_flow_size_B}")
     logger.info(f"Total Injection Period (us): {total_injection_period_us}")
@@ -200,17 +206,24 @@ def experiment_1560B_bloads_8flo_99pt84Gbps_gdpt(is_full_postproc=True, title_ad
     logger.info(f"Num flows: {num_flows}")
     logger.debug(f"Flow start times (us): {flow_start_times_us_list}")
     logger.info(f"Gdpt Gbps theoretical: {gdpt_gbps_theoretical_list}")
-    logger.info(f"Gdpt Gbps measured (SSIRD): {gdpt_gbps_measured_list_ssird}")
-    logger.info(f"Gdpt Gbps measured (DCTCP): {gdpt_gbps_measured_list_dctcp}")
-    logger.debug(f"Gdpt Gbps measured per flow (SSIRD): {gdpt_gbps_measured_per_flow_list_list_ssird}")
-    logger.debug(f"Gdpt Gbps measured per flow (DCTCP): {gdpt_gbps_measured_per_flow_list_list_dctcp}")
+
+    logger.info(f"APP Gdpt Gbps measured (SSIRD): {exp_metrics.total_app_gdpt_gbps_measured_list_ssird }")
+    logger.info(f"APP Gdpt Gbps measured (DCTCP): {exp_metrics.total_app_gdpt_gbps_measured_list_dctcp}")
+    logger.debug(f"APP Gdpt Gbps measured per flow (SSIRD): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_ssird}")
+    logger.debug(f"APP Gdpt Gbps measured per flow (DCTCP): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_dctcp}")
+
+    logger.info(f"NW Gdpt Gbps measured (SSIRD): {exp_metrics.total_nw_gdpt_gbps_measured_list_ssird}")
+    logger.info(f"NW Gdpt Gbps measured (DCTCP): {exp_metrics.total_nw_gdpt_gbps_measured_list_dctcp}")
+    logger.debug(f"NW Gdpt Gbps measured per flow (SSIRD): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_ssird}")
+    logger.debug(f"NW Gdpt Gbps measured per flow (DCTCP): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_dctcp}")
+
     logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
-    logger.info(f"* SSIRD FCT: {ssird_fct_list}")
-    logger.info(f"* DCTCP FCT: {dctcp_fct_list}")
+    logger.info(f"* SSIRD FCT: {exp_metrics.ssird_fct_list}")
+    logger.info(f"* DCTCP FCT: {exp_metrics.dctcp_fct_list}")
 
-    assert num_of_experiments == len(ssird_fct_list)
-    assert num_of_experiments == len(dctcp_fct_list)
+    assert num_of_experiments == len(exp_metrics.ssird_fct_list)
+    assert num_of_experiments == len(exp_metrics.dctcp_fct_list)
 
 def experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"Normal_Byteloads{title_addendum}"
@@ -295,7 +308,7 @@ def experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_
 
     exp_grp = dale_experiment_rig.ExperimentGroup(experiment_family, proto_names, src_dst_pairs_list, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc, log_level, title_addendum)
 
-    ssird_fct_list, dctcp_fct_list, gdpt_gbps_measured_list_ssird, gdpt_gbps_measured_list_dctcp, gdpt_gbps_measured_per_flow_list_list_ssird, gdpt_gbps_measured_per_flow_list_list_dctcp = exp_grp.perform_experiment()
+    exp_metrics = exp_grp.perform_experiment()
 
     logger.info(f"Total Flow Size (Bytes): {total_flow_size_B}")
     logger.info(f"Total Injection Period (us): {total_injection_period_us}")
@@ -305,25 +318,32 @@ def experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_
     logger.info(f"Num flows: {num_flows}")
     logger.debug(f"Flow start times (us): {flow_start_times_us_list}")
     logger.info(f"Gdpt Gbps theoretical: {gdpt_gbps_theoretical_list}")
-    logger.info(f"Gdpt Gbps measured (SSIRD): {gdpt_gbps_measured_list_ssird}")
-    logger.info(f"Gdpt Gbps measured (DCTCP): {gdpt_gbps_measured_list_dctcp}")
-    logger.debug(f"Gdpt Gbps measured per flow (SSIRD): {gdpt_gbps_measured_per_flow_list_list_ssird}")
-    logger.debug(f"Gdpt Gbps measured per flow (DCTCP): {gdpt_gbps_measured_per_flow_list_list_dctcp}")
+
+    logger.info(f"APP Gdpt Gbps measured (SSIRD): {exp_metrics.total_app_gdpt_gbps_measured_list_ssird }")
+    logger.info(f"APP Gdpt Gbps measured (DCTCP): {exp_metrics.total_app_gdpt_gbps_measured_list_dctcp}")
+    logger.debug(f"APP Gdpt Gbps measured per flow (SSIRD): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_ssird}")
+    logger.debug(f"APP Gdpt Gbps measured per flow (DCTCP): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_dctcp}")
+
+    logger.info(f"NW Gdpt Gbps measured (SSIRD): {exp_metrics.total_nw_gdpt_gbps_measured_list_ssird}")
+    logger.info(f"NW Gdpt Gbps measured (DCTCP): {exp_metrics.total_nw_gdpt_gbps_measured_list_dctcp}")
+    logger.debug(f"NW Gdpt Gbps measured per flow (SSIRD): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_ssird}")
+    logger.debug(f"NW Gdpt Gbps measured per flow (DCTCP): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_dctcp}")
+
     logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
-    logger.info(f"* SSIRD FCT: {ssird_fct_list}")
-    logger.info(f"* DCTCP FCT: {dctcp_fct_list}")
+    logger.info(f"* SSIRD FCT: {exp_metrics.ssird_fct_list}")
+    logger.info(f"* DCTCP FCT: {exp_metrics.dctcp_fct_list}")
 
-    assert num_of_experiments == len(ssird_fct_list)
-    assert num_of_experiments == len(dctcp_fct_list)
+    assert num_of_experiments == len(exp_metrics.ssird_fct_list)
+    assert num_of_experiments == len(exp_metrics.dctcp_fct_list)
 
 
 if __name__ == "__main__":
 
     # RTT = 5us ----    
     # experiment_1458B_bloads_8flo_93pt312Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_8flo_93pt312Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_1560B_bloads_8flo_99pt84Gbps_gdpt(is_full_postproc=True, title_addendum="_1560B_8flo_99pt84Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_85flo_99pt144Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_1560B_bloads_9flo_112Gbps_gdpt(is_full_postproc=True, title_addendum="_1560B_9flo_112Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_85flo_99pt144Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
     # RTT = 1ms ----
     # experiment_1458B_bloads_8flo_93pt312Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_8flo_93pt312Gbps_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
