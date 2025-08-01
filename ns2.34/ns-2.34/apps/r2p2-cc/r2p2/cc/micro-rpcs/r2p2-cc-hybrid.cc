@@ -2040,7 +2040,7 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
             slog::log4(debug_, this_addr_, "Removing inbound message state of msg", std::get<2>(msg_state->req_id_));
             inbound_->remove(msg_state);
         }
-        slog::log2(debug_, this_addr_, "GAGA");
+        // slog::log2(debug_, this_addr_, "GAGA");
         return 2;
     }
     // retrieve sender state
@@ -2064,16 +2064,16 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
     assert(uncreditd_data >= 0);
     if (uncreditd_data == 0)
     {
-        slog::log2(debug_, this_addr_, "msg=", std::get<2>(msg_state->req_id_), "KEKE: data_bytes_expected_=", msg_state->data_bytes_expected_, "data_bytes_granted_=", msg_state->data_bytes_granted_);
+        // slog::log2(debug_, this_addr_, "msg=", std::get<2>(msg_state->req_id_), "KEKE: data_bytes_expected_=", msg_state->data_bytes_expected_, "data_bytes_granted_=", msg_state->data_bytes_granted_);
         return 1;
     }
     /* Dale: request credits in same packetisation manner as how sender sent credit requests */
     if (msg_state->pending_credit_req_data_queue_.size() == 0)
     {
-        slog::log2(debug_, this_addr_, "msg=", std::get<2>(msg_state->req_id_), "JEJE");
+        // slog::log2(debug_, this_addr_, "msg=", std::get<2>(msg_state->req_id_), "JEJE");
         return 1;
     }
-    slog::log2(debug_, this_addr_, "@ before sending credit: msg:", std::get<2>(msg_state->req_id_), "pending_CR_data_queue size=", msg_state->pending_credit_req_data_queue_.size());
+    slog::log2(debug_, this_addr_, "@ before considering sending credit: msg:", std::get<2>(msg_state->req_id_), "pending_CR_data_queue size=", msg_state->pending_credit_req_data_queue_.size());
     int data_for_this_credit_pkt = msg_state->pending_credit_req_data_queue_.front();
 
     int credit_needed_data = std::min((int)MAX_R2P2_PAYLOAD, data_for_this_credit_pkt);
@@ -2124,13 +2124,13 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
     }
     else if (budget_bytes_ < credit_needed)
     {
-        slog::log2(debug_, this_addr_, "GOGO");
+        // slog::log2(debug_, this_addr_, "GOGO");
         return 3;
     }
-    else
-    {
-        slog::log2(debug_, this_addr_, "GEGE");
-    }
+    // else
+    // {
+    //     slog::log2(debug_, this_addr_, "GEGE");
+    // }
     assert(msg_state->data_bytes_granted_ <= msg_state->data_bytes_expected_);
     assert(sender_state->nw_marked_ratio_ >= -0.000001 && sender_state->nw_marked_ratio_ <= 1.000001);
     assert(sender_state->host_marked_ratio_ >= -0.000001 && sender_state->host_marked_ratio_ <= 1.000001);

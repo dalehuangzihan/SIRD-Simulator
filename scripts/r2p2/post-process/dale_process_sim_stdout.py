@@ -264,83 +264,6 @@ def get_credit_data_recv_rate_bps(filepath):
     return CreditPktStats(count_credit_pkts, total_credit_data_B, start_time_s, end_time_s, credit_data_recv_rate_bps, timestamps_s_list, credit_data_recv_cumu_B_list)
     # return count_credit_pkts, total_credit_data_B, start_time_s, end_time_s, credit_data_recv_rate_bps, timestamps_s_list, credit_data_recv_cumu_B_list
 
-# '''
-# ======== 1 FLO SUBPKT EXPERIMENTS ========
-# '''
-# def proc_1flo_4B_per_bload_sim_outputs(): 
-#     sim_output_4B_byteloads_path = PATH_TO_SIM_OUTPUTS + REL_PATH_TO_EXP_FAMILY + "ssird_1flo-10000#-4B-1us_subpkt_multiflow_stdout.out"
-#     sim_4B_bload_stats, _ = count_cr_r_d_pkts_in_sim_stdout(sim_output_4B_byteloads_path)
-#     print("4B per byteload:")
-#     sim_4B_bload_stats.pretty_print()
-
-# def proc_1flo_4KB_per_bload_sim_outputs():
-#     sim_output_4KB_byteloads_path = PATH_TO_SIM_OUTPUTS + REL_PATH_TO_EXP_FAMILY + "ssird_1flo-10#-4000B-1000us_subpkt_multiflow_stdout.out"
-#     sim_4KB_bload_stats, _ = count_cr_r_d_pkts_in_sim_stdout(sim_output_4KB_byteloads_path)
-#     print("4KB per byteload")
-#     sim_4KB_bload_stats.pretty_print()
-
-# def proc_1flo_subpkt_exp_sim_outputs():
-#     # 4B per byteload:
-#     # Num Credit Req Pkts: 10000
-#     # Num Credit Pkts: 10000
-#     # Num Data Pkts: 9994
-#     # Total Overheads (B): 2479520
-#     # -----
-#     # 4KB per byteload
-#     # Num Credit Req Pkts: 10
-#     # Num Credit Pkts: 30
-#     # Num Data Pkts: 30
-#     # Total Overheads (B): 5760
-
-#     proc_1flo_4B_per_bload_sim_outputs()
-#     print("-----")
-#     proc_1flo_4KB_per_bload_sim_outputs()
-
-# '''
-# ======== 10 FLO SUBPKT EXPERIMENTS ========
-# '''
-# def proc_10flo_4B_per_bload_sim_outputs(): 
-#     sim_output_4B_byteloads_path = PATH_TO_SIM_OUTPUTS + REL_PATH_TO_EXP_FAMILY + "ssird_10flo-10000#-4B-1us_subpkt_multiflow_stdout.out"
-#     sim_4B_bload_stats, _= count_cr_r_d_pkts_in_sim_stdout(sim_output_4B_byteloads_path)
-#     print("4B per byteload:")
-#     sim_4B_bload_stats.pretty_print()
-
-# def proc_10flo_4KB_per_bload_sim_outputs():
-#     sim_output_4KB_byteloads_path = PATH_TO_SIM_OUTPUTS + REL_PATH_TO_EXP_FAMILY + "ssird_10flo-10#-4000B-1000us_subpkt_multiflow_stdout.out"
-#     sim_4KB_bload_stats, _ = count_cr_r_d_pkts_in_sim_stdout(sim_output_4KB_byteloads_path)
-#     print("4KB per byteload")
-#     sim_4KB_bload_stats.pretty_print()
-
-# def proc_10flo_subpkt_exp_sim_outputs():
-#     # output:
-#     # 4B per byteload:
-#     # Num Credit Req Pkts: 100000
-#     # Num Credit Pkts: 100000
-#     # Num Data Pkts: 99947
-#     # Total Overheads (B): 24795760
-#     # -----
-#     # 4KB per byteload
-#     # Num Credit Req Pkts: 100
-#     # Num Credit Pkts: 300
-#     # Num Data Pkts: 300
-#     # Total Overheads (B): 57600
-
-#     proc_10flo_4B_per_bload_sim_outputs()
-#     print("-----")
-#     proc_10flo_4KB_per_bload_sim_outputs()
-
-# def proc_10flo_subpkt_exp_sim_outputs_slowpace():
-#     print("\n--- 10 FLO SLOWPACE: ---") 
-#     title_addendum = "_subpkt_multiflow_slowpace"
-#     num_byteloads_list = [10000, 1000, 100, 10]
-#     byteload_size_B_list = [4, 40, 400, 4000]
-#     inter_byteload_period_us_list = [1, 10, 100, 1000]
-#     nw_overheads_theoretical_15flo_B_list, _ = process_ssird_sim_outputs(10, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, REL_PATH_TO_EXP_FAMILY_SLOWPACE, title_addendum)
-#     nw_overheads_measured_15flo_B_list = [33335286.23, 3463891.25, 475893.74, 82826.25]
-#     measured_vs_theoretical_ratio = [round(m/t, 4) for m, t in zip(nw_overheads_measured_15flo_B_list, nw_overheads_theoretical_15flo_B_list)]
-#     print(measured_vs_theoretical_ratio)
-
-
 def process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family, title_addendum=""):
     assert(len(set([
         len(num_byteloads_list),
@@ -568,6 +491,29 @@ def proc_5flo_fullrange_exp_sim_outputs_1msRTT():
     title_addendum = "_fullrange_5flo_8gbps_total_1msRTT_credit_steal"
     rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_5flo_8gbps_total_1msRTT_credit_steal/"
     num_flows = 5
+    num_byteloads_list = [10000, 1000, 100, 10, 1]
+    byteload_size_B_list = [20, 200, 2000, 20000, 200000]
+    inter_byteload_period_us_list = [0.1, 1.0, 10.0, 100.0, 1000.0]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_3flo_fullrange_exp_sim_outputs_5usRTT():
+    print("\n--- 3 FLO FULLRANGE 4.Gbps RTT=5us: ---")
+    title_addendum = "_fullrange_3flo_4pt8gbps_total_credit_steal"
+    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_3flo_4pt8gbps_total_credit_steal/"
+    num_flows = 3
+    num_byteloads_list = [10000, 1000, 100, 10, 1]
+    byteload_size_B_list = [20, 200, 2000, 20000, 200000]
+    inter_byteload_period_us_list = [0.1, 1.0, 10.0, 100.0, 1000.0]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
+
+def proc_3flo_fullrange_exp_sim_outputs_1msRTT():
+
+    print("\n--- 3 FLO FULLRANGE 4.8Gbps RTT=1ms: ---")
+    title_addendum = "_fullrange_3flo_4pt8gbps_total_1msRTT_credit_steal"
+    rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_3flo_4pt8gbps_total_1msRTT_credit_steal/"
+    num_flows = 3
     num_byteloads_list = [10000, 1000, 100, 10, 1]
     byteload_size_B_list = [20, 200, 2000, 20000, 200000]
     inter_byteload_period_us_list = [0.1, 1.0, 10.0, 100.0, 1000.0]
@@ -825,16 +771,9 @@ if __name__ == "__main__":
 
     # 1RTT verification experiments ---
     ## proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT()
-    proc_31flow_fullrange_exp_sim_outputs_5usRTT()
-    proc_31flow_fullrange_exp_sim_outputs_1msRTT()
-    proc_5flo_fullrange_exp_sim_outputs_5usRTT()
-    proc_5flo_fullrange_exp_sim_outputs_1msRTT()
-    proc_1flo_fullrange_exp_sim_outputs_5usRTT()
-    proc_1flo_fullrange_exp_sim_outputs_1msRTT()
-
-    # proc_5flo_test_vary_bload_num_1msRTT()
-    # proc_5flo_test_vary_bload_size_1msRTT()
-    # proc_5flo_test_vary_interval_1msRTT()
+    ## proc_5flo_test_vary_bload_num_1msRTT()
+    ## proc_5flo_test_vary_bload_size_1msRTT()
+    ## proc_5flo_test_vary_interval_1msRTT()
 
     # ''' Normal Bload Size Experiments (RTT = 5us) --- '''
     # proc_normal_bloads_1458B_8flo_99pt312Gbps_5usRTT()
@@ -859,3 +798,16 @@ if __name__ == "__main__":
     # proc_credit_leak_investigation_1462B_5flo_1msRTT()
     # proc_1flo_fullrange_exp_sim_outputs_1msRTT()
     # proc_5flo_fullrange_exp_sim_outputs_1msRTT()
+
+    ''' --- Verify Credit Leak Fix (With Credit Stealing)  --- '''
+    proc_1flo_fullrange_exp_sim_outputs_5usRTT()
+    proc_1flo_fullrange_exp_sim_outputs_1msRTT()
+
+    proc_3flo_fullrange_exp_sim_outputs_5usRTT()
+    proc_3flo_fullrange_exp_sim_outputs_1msRTT()
+
+    proc_5flo_fullrange_exp_sim_outputs_5usRTT()
+    proc_5flo_fullrange_exp_sim_outputs_1msRTT()
+
+    proc_31flow_fullrange_exp_sim_outputs_5usRTT()
+    proc_31flow_fullrange_exp_sim_outputs_1msRTT()
