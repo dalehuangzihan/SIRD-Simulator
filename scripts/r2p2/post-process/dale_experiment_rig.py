@@ -703,6 +703,7 @@ class ExperimentGroup:
 
     def generate_overall_experiment_metrics(self):
         logger.info("\n##### GENERATE METRICS #####")
+        logger.info(f"Experiment family: {self.experiment_family}")
         ssird_fct_list = []
         dctcp_fct_list = []
         gdpt_gbps_measured_list_ssird = []
