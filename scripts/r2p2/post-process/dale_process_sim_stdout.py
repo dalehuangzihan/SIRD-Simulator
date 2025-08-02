@@ -452,7 +452,7 @@ def proc_31flow_largepkt_exp_sim_outputs_fastpace_extended():
 
 def proc_31flow_fullrange_exp_sim_outputs_5usRTT():
 
-    print("\n--- 31 FLO FULLRANGE 49.6Gbps: ---")
+    print("\n--- 31 FLO FULLRANGE 49.6Gbps RTT=5us: ---")
     title_addendum = "_fullrange_31flo_credit_steal"
     rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/"
     num_flows = 31
@@ -464,7 +464,7 @@ def proc_31flow_fullrange_exp_sim_outputs_5usRTT():
 
 def proc_31flow_fullrange_exp_sim_outputs_1msRTT():
 
-    print("\n--- 31 FLO FULLRANGE 49.6Gbps: ---")
+    print("\n--- 31 FLO FULLRANGE 49.6Gbps RTT=1ms: ---")
     title_addendum = "_fullrange_31flo_1msRTT_credit_steal"
     rel_path_to_exp_family_output_dir = "FCT_Fullrange_Byteloads_fullrange_31flo_1msRTT_credit_steal/"
     num_flows = 31
