@@ -11,7 +11,7 @@ def experiment_1458B_bloads_8flo_93pt312Gbps_gdpt(is_full_postproc=True, title_a
     src_dst_pairs_list = [(0,1)]
 
     minimum_interval_us = 1
-    total_flow_size_B = 145800 # 100 bloads
+    total_flow_size_B = 1458 * 10000 # 10000 bloads
 
     byteload_size_B_list = [1458] 
     num_of_experiments = len(byteload_size_B_list)
@@ -60,7 +60,7 @@ def experiment_1458B_bloads_8flo_93pt312Gbps_gdpt(is_full_postproc=True, title_a
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
-    ssird_sim_dur_list = [0.0005, 0.0005, 0.0005, 0.0005, 0.0005] # for RTT = 5us
+    ssird_sim_dur_list = [0.02, 0.02, 0.02, 0.02, 0.02] # for RTT = 5us
     dctcp_sim_dur_list = [0.001, 0.001, 0.001, 0.001, 0.001] # for RTT = 5us
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
@@ -113,7 +113,7 @@ def experiment_1458B_bloads_8flo_93pt312Gbps_gdpt(is_full_postproc=True, title_a
     assert num_of_experiments == len(exp_metrics.ssird_fct_list)
     assert num_of_experiments == len(exp_metrics.dctcp_fct_list)
 
-def experiment_1560B_bloads_9flo_112Gbps_gdpt(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
+def experiment_1560B_bloads_8flo_99pt84Gbps_gdpt(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"Normal_Byteloads{title_addendum}"
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
@@ -122,11 +122,11 @@ def experiment_1560B_bloads_9flo_112Gbps_gdpt(is_full_postproc=True, title_adden
     src_dst_pairs_list = [(0,1)]
 
     minimum_interval_us = 1
-    total_flow_size_B = 156000 # 100 bloads
+    total_flow_size_B = 1560 * 10000 # 10000 bloads
 
     byteload_size_B_list = [1560] 
     num_of_experiments = len(byteload_size_B_list)
-    num_flows = 9 # for 112Gbps total app goodput
+    num_flows = 8 # for 99.84Gbps total app goodput
     inter_flow_spacing_us = 0 # TODO: for testing
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
 
@@ -171,8 +171,8 @@ def experiment_1560B_bloads_9flo_112Gbps_gdpt(is_full_postproc=True, title_adden
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
-    ssird_sim_dur_list = [0.005, 0.005, 0.005, 0.005, 0.005]
-    # dctcp_sim_dur_list = [0.03, 0.03, 0.03, 0.03, 0.03] # for RTT = 5us
+    ssird_sim_dur_list = [0.02, 0.02, 0.02, 0.02, 0.02] # for RTT = 5us
+    # ssird_sim_dur_list = [0.01, 0.01, 0.01, 0.01, 0.01] # RTT = 1ms
     dctcp_sim_dur_list = [0.3, 0.3, 0.3, 0.3, 0.3] # for RTT = 1ms
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
@@ -234,7 +234,7 @@ def experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_
     src_dst_pairs_list = [(0,1)]
 
     minimum_interval_us = 10
-    total_flow_size_B = 145800 # 100 bloads
+    total_flow_size_B = 1458 * 10000 # 10000 bloads
 
     byteload_size_B_list = [1458] 
     num_of_experiments = len(byteload_size_B_list)
@@ -283,7 +283,7 @@ def experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
-    ssird_sim_dur_list = [0.003, 0.003, 0.003, 0.003, 0.003]
+    ssird_sim_dur_list = [0.012, 0.012, 0.012, 0.012, 0.012]
     # dctcp_sim_dur_list = [0.03, 0.03, 0.03, 0.03, 0.03] # for RTT = 5us
     dctcp_sim_dur_list = [0.3, 0.3, 0.3, 0.3, 0.3] # for RTT = 1ms
 
@@ -340,12 +340,12 @@ def experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_
 
 if __name__ == "__main__":
 
-    # RTT = 5us ----    
+    ''' --- RTT = 5us ---- '''
     # experiment_1458B_bloads_8flo_93pt312Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_8flo_93pt312Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_1560B_bloads_9flo_112Gbps_gdpt(is_full_postproc=True, title_addendum="_1560B_9flo_112Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_85flo_99pt144Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_1560B_bloads_8flo_99pt84Gbps_gdpt(is_full_postproc=True, title_addendum="_1560B_8flo_99pt84Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_85flo_99pt144Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
-    # RTT = 1ms ----
-    # experiment_1458B_bloads_8flo_93pt312Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_8flo_93pt312Gbps_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_1560B_bloads_8flo_99pt84Gbps_gdpt(is_full_postproc=True, title_addendum="_1560B_8flo_99pt84Gbps_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_85flo_99pt144Gbps_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # # RTT = 1ms ----
+    # # experiment_1458B_bloads_8flo_93pt312Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_8flo_93pt312Gbps_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # # experiment_1560B_bloads_8flo_99pt84Gbps_gdpt(is_full_postproc=True, title_addendum="_1560B_8flo_99pt84Gbps_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # # experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_85flo_99pt144Gbps_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)

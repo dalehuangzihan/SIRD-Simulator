@@ -1,0 +1,97 @@
+DEBUG:__main__:Protos tested: ['SSIRD']
+DEBUG:__main__:Total_flow_size_B: 14580000
+DEBUG:__main__:Byteload sizes list: [1458]
+DEBUG:__main__:Num Flows: 8
+DEBUG:__main__:Inter-flow spacing (us): 0
+DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0, 0, 0, 0]
+DEBUG:__main__:Num Byteloads list: [10000]
+DEBUG:__main__:Total injection period (us): 10000
+DEBUG:__main__:Inter-Byteload Periods list: [1.0]
+INFO:__main__:Total Flow Size (Bytes): 14580000
+INFO:__main__:Total Injection Period (us): 10000
+INFO:__main__:Byteload Size (Bytes): [1458]
+INFO:__main__:Num Byteloads: [10000]
+INFO:__main__:Intervals (us): [1.0]
+INFO:__main__:Num flows: 8
+INFO:__main__:Gdpt GBps theoretical: [93.312]
+INFO:__main__:* Sim duration (SSIRD): [0.02, 0.02, 0.02, 0.02, 0.02]
+INFO:__main__:* Sim duration (DCTCP): [0.001, 0.001, 0.001, 0.001, 0.001]
+INFO:dale_experiment_rig:Experiment started at: 2025-08-03 14:50:44.305139
+INFO:dale_experiment_rig:
+##### RUN GROUP #####
+INFO:dale_experiment_rig:
+=====
+Execute experiment 8flo-10000#-1458B-1000ns_1458B_8flo_93pt312Gbps
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.001000
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/Normal_Byteloads_1458B_8flo_93pt312Gbps/
+INFO:dale_experiment_rig:File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/Normal_Byteloads_1458B_8flo_93pt312Gbps/ aready exists.
+DEBUG:dale_experiment_rig:num flows: 8
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/Normal_Byteloads_1458B_8flo_93pt312Gbps/
+INFO:dale_experiment_rig:#### WARNING: File /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/Normal_Byteloads_1458B_8flo_93pt312Gbps/ aready exists.
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:### Script:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/Normal_Byteloads_1458B_8flo_93pt312Gbps/SSIRD-8flo-10000#-1458B-1000ns_1458B_8flo_93pt312Gbps.sh
+INFO:dale_experiment_rig:### Output path (stdout): /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/Normal_Byteloads_1458B_8flo_93pt312Gbps/ssird_8flo-10000#-1458B-1000ns_1458B_8flo_93pt312Gbps_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/outputs/Normal_Byteloads_1458B_8flo_93pt312Gbps/ssird_8flo-10000#-1458B-1000ns_1458B_8flo_93pt312Gbps_stderr.out
+INFO:dale_experiment_rig:-----
+Backing up app trace file paths
+DEBUG:dale_experiment_rig:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/Normal_Byteloads_1458B_8flo_93pt312Gbps/8flo/SSIRD_app_traces.txt
+INFO:dale_experiment_rig:-----
+Backing up app trace file paths
+DEBUG:dale_experiment_rig:/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/Normal_Byteloads_1458B_8flo_93pt312Gbps/8flo/DCTCP-50_app_traces.txt
+INFO:dale_experiment_rig:Simulations ended at: 2025-08-03 15:00:46.827252
+INFO:dale_experiment_rig:
+##### POST PROCESS RESULTS #####
+INFO:dale_experiment_rig:=====
+** Num Byteloads Per Flow: 10000, Byteload Size (B): 1458, Inter-Byteload Interval (us): 1.0, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.001
+INFO:dale_experiment_rig:Processing SIRD results exp_id 0:: 8flo-10000#-1458B
+INFO:dale_experiment_rig:Processing results from /home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-8flo-10000#-1458B-1000ns_1458B_8flo_93pt312Gbps/data/SSIRD/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9995
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14580000, recv_data_B: 14580000
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9994
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14580000, recv_data_B: 14580000
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9992
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14580000, recv_data_B: 14580000
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9990
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14580000, recv_data_B: 14580000
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9986
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14580000, recv_data_B: 14580000
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9978
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14580000, recv_data_B: 14580000
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9946
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14580000, recv_data_B: 14580000
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14580000, recv_data_B: 14580000
+INFO:dale_experiment_rig:SSIRD FCT: [0.010001855000000504, 0.010001978000000022, 0.010002101000001318, 0.010002224000000837, 0.010002347000000356, 0.010002469999999875, 0.01000259300000117, 0.01038820000000129] ms
+App Gdpt (overall): 93.32016561655666 Gbps
+App Gdpt (per flow): [11.663999999999376, 11.663999999999376, 11.663999999999376, 11.663999999999376, 11.663999999999376, 11.663999999999376, 11.663999999999376, 11.663999999999376]
+Network Gdpt (overall): 89.82499374288945
+Network Gdpt (per flow): [11.661836729286131, 11.661693317061859, 11.661549908362717, 11.661406503192715, 11.661263101549652, 11.6611197034334, 11.660976308841754, 11.22812421786118]
+ERROR:dale_experiment_rig:No results for DCTCP
+INFO:dale_experiment_rig:
+##### GENERATE METRICS #####
+INFO:__main__:Total Flow Size (Bytes): 14580000
+INFO:__main__:Total Injection Period (us): 10000
+INFO:__main__:Byteload Size (Bytes): [1458]
+INFO:__main__:Num Byteloads: [10000]
+INFO:__main__:Intervals (us): [1.0]
+INFO:__main__:Num flows: 8
+DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0, 0, 0, 0]
+INFO:__main__:Gdpt Gbps theoretical: [93.312]
+INFO:__main__:APP Gdpt Gbps measured (SSIRD): [93.32016561655666]
+INFO:__main__:APP Gdpt Gbps measured (DCTCP): [None]
+DEBUG:__main__:APP Gdpt Gbps measured per flow (SSIRD): [[11.663999999999376, 11.663999999999376, 11.663999999999376, 11.663999999999376, 11.663999999999376, 11.663999999999376, 11.663999999999376, 11.663999999999376]]
+DEBUG:__main__:APP Gdpt Gbps measured per flow (DCTCP): [None]
+INFO:__main__:NW Gdpt Gbps measured (SSIRD): [89.82499374288945]
+INFO:__main__:NW Gdpt Gbps measured (DCTCP): [None]
+DEBUG:__main__:NW Gdpt Gbps measured per flow (SSIRD): [[11.661836729286131, 11.661693317061859, 11.661549908362717, 11.661406503192715, 11.661263101549652, 11.6611197034334, 11.660976308841754, 11.22812421786118]]
+DEBUG:__main__:NW Gdpt Gbps measured per flow (DCTCP): [None]
+INFO:__main__:* Sim duration (SSIRD): [0.02, 0.02, 0.02, 0.02, 0.02]
+INFO:__main__:* Sim duration (DCTCP): [0.001, 0.001, 0.001, 0.001, 0.001]
+INFO:__main__:* SSIRD FCT: [[0.010001855000000504, 0.010001978000000022, 0.010002101000001318, 0.010002224000000837, 0.010002347000000356, 0.010002469999999875, 0.01000259300000117, 0.01038820000000129]]
+INFO:__main__:* DCTCP FCT: [None]

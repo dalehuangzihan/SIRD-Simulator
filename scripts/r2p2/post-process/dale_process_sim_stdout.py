@@ -611,7 +611,7 @@ def proc_normal_bloads_1458B_8flo_99pt312Gbps_5usRTT():
 
     num_flows = 8
     inter_byteload_period_us_list = [1]
-    num_byteloads_list = [100]
+    num_byteloads_list = [10000]
     byteload_size_B_list = [1458]
 
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
@@ -659,7 +659,7 @@ def proc_normal_bloads_1560B_8flo_99pt84Gbps_5usRTT():
 
     num_flows = 8
     inter_byteload_period_us_list = [1]
-    num_byteloads_list = [100]
+    num_byteloads_list = [10000]
     byteload_size_B_list = [1560]
 
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
@@ -765,21 +765,21 @@ if __name__ == "__main__":
     # proc_31flow_fullrange_exp_sim_outputs()
 
     ''' --- 1RTT verification experiments ---'''
-    proc_5flo_large_bload_8gbps_exp_sim_outputs_5usRTT()
+    # proc_5flo_large_bload_8gbps_exp_sim_outputs_5usRTT()
     # proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT()
     # proc_5flo_test_vary_bload_num_1msRTT()
     # proc_5flo_test_vary_bload_size_1msRTT()
     # proc_5flo_test_vary_interval_1msRTT()
 
-    # ''' Normal Bload Size Experiments (RTT = 5us) --- '''
-    # proc_normal_bloads_1458B_8flo_99pt312Gbps_5usRTT()
-    # proc_normal_bloads_1560B_8flo_99pt84Gbps_5usRTT()
+    ''' Normal Bload Size Experiments (RTT = 5us) --- '''
+    proc_normal_bloads_1458B_8flo_99pt312Gbps_5usRTT()
+    proc_normal_bloads_1560B_8flo_99pt84Gbps_5usRTT()
     # proc_normal_bloads_1458B_85flo_99pt144Gbps_5usRTT()
 
-    # ''' Normal Bload Size Experiments (RTT = 1ms) --- '''
-    # proc_normal_bloads_1458B_8flo_99pt312Gbps_1msRTT()
-    # proc_normal_bloads_1560B_8flo_99pt84Gbps_1msRTT()
-    # proc_normal_bloads_1458B_85flo_99pt144Gbps_1msRTT()
+    ## ''' Normal Bload Size Experiments (RTT = 1ms) --- '''
+    ## proc_normal_bloads_1458B_8flo_99pt312Gbps_1msRTT()
+    ## proc_normal_bloads_1560B_8flo_99pt84Gbps_1msRTT()
+    ## proc_normal_bloads_1458B_85flo_99pt144Gbps_1msRTT()
 
     # ''' --- CREDIT LEAK INVESTIGATION (RTT = 5us) ---'''
     # # proc_credit_leak_investigation_1458B_1flo_5usRTT()
