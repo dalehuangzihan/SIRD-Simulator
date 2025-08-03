@@ -321,12 +321,14 @@ void R2p2CCHybrid::send_to_transport(hdr_r2p2 &r2p2_hdr, int payload, int32_t da
     // Replies
     bool is_reply = (r2p2_hdr.msg_type() == hdr_r2p2::REPLY);
 
-    slog::log4(debug_, this_addr_, "R2p2CCHybrid::send_to_transport(). Msg type:", r2p2_hdr.msg_type(),
+    /* Dale: elevate from log4 to log 2 */
+    slog::log2(debug_, this_addr_, "R2p2CCHybrid::send_to_transport(). Msg type:", r2p2_hdr.msg_type(),
                "payload:", payload, "Destination", daddr, "App lvl id:",
                r2p2_hdr.app_level_id(), "req id", r2p2_hdr.req_id(), "pkt_id():", r2p2_hdr.pkt_id(),
                "is_single_pkt_request:", is_single_pkt_request,
                "first():", r2p2_hdr.first(),
                "is_final_req_of_conn:", r2p2_hdr.is_final_req_of_conn(),
+               "is_do_reply:", r2p2_hdr.is_do_reply(),
                "|", is_reqzero, is_reqzero_of_multipkt, is_multi_pkt_req_not_req0, is_reply, "|");
                
     if (is_reqzero_of_multipkt)
@@ -391,7 +393,9 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
         if (r2p2_hdr->msg_type() == hdr_r2p2::REQUEST)
         {
             assert(0);
-            slog::log5(debug_, this_addr_, "Received the pkt of a single-packet REQUEST");
+            /* Dale: elevate from log5 to log2 */
+            slog::log2(debug_, this_addr_, "Received the pkt of a single-packet REQUEST for msg", r2p2_hdr->req_id(), "is_do_reply=", r2p2_hdr->is_do_reply());
+
         }
         else if (r2p2_hdr->msg_type() == hdr_r2p2::REPLY)
         {
@@ -530,8 +534,22 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
         slog::log4(debug_, this_addr_, "received grant_req for app lvl id:", r2p2_hdr->app_level_id(),
                    "r2p2_hdr->unsol_credit()", r2p2_hdr->unsol_credit(),
                    "r2p2_hdr->unsol_credit_data()", r2p2_hdr->unsol_credit_data());
-        /* Dale: cumulate expected data credits with every msg extension */
-        msg_state->data_bytes_expected_ += expected;
+
+        /* Dale: 31/07/2025 assign data_bytes_expected with total_msg_data carried by header */
+        msg_state->data_bytes_expected_ = std::max(r2p2_hdr->total_msg_data(), msg_state->data_bytes_expected_);
+        /* Dale: make receiver packetise data requesed in CR the same way the sender packetised it when it made the CR (to keep C, D, packetisation consistent btw sender & recvr ) */
+        uint64_t data_to_credit = expected;
+        while (data_to_credit >= MAX_R2P2_PAYLOAD)
+        {
+            msg_state->pending_credit_req_data_queue_.push_back(MAX_R2P2_PAYLOAD);
+            data_to_credit -= MAX_R2P2_PAYLOAD;
+        }
+        if (data_to_credit > 0)
+        {
+            msg_state->pending_credit_req_data_queue_.push_back((uint16_t) data_to_credit); // type truncation shd be ok here cuz data to credit is < 1458 here.
+        }
+        slog::log2(debug_, this_addr_, "@ rcv credit req: msg (", std::get<2>(msg_state->req_id_), " ), pending_CR_data_queue size=", msg_state->pending_credit_req_data_queue_.size());
+
         msg_state->received_msg_info_ = true;
         slog::log5(debug_, this_addr_, "Set expected bytes to:",
                    msg_state->data_bytes_expected_, "req_id:", std::get<0>(msg_state->req_id_), std::get<1>(msg_state->req_id_),
@@ -666,6 +684,10 @@ void R2p2CCHybrid::prep_msg_send(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
     msg_state->unsent_bytes_ += payload;
     msg_state->total_bytes_ += payload;
     slog::log6(debug_, this_addr_, "R2p2CCHybrid::prep_msg_send() unsent_bytes_=", msg_state->unsent_bytes_, "total_bytes_=", msg_state->total_bytes_);
+
+    /* Dale: update the amt of data that sender needs to make a CR for */
+    msg_state->data_awaiting_credit_request_ += payload;
+
     msg_state->is_request_ = true;
     /** Dale: TODO:
      * 16/06/2025 Should we fix msg_creaiton_time_ to first ever msg, or update every msg extension?
@@ -745,6 +767,9 @@ void R2p2CCHybrid::sending_request(hdr_r2p2 &r2p2_hdr, int payload, int32_t dadd
         msg_state->unsent_bytes_ += payload;
         msg_state->total_bytes_ += payload;
         slog::log6(debug_, this_addr_, "Set missing msg_state info: unsent_bytes_=", msg_state->unsent_bytes_, "total_bytes_=", msg_state->total_bytes_);
+
+        /* Dale: update the amt of data that sender needs to make a CR for */
+        msg_state->data_awaiting_credit_request_ += payload;
     }
 
     /** Dale: TODO: BUG_01
@@ -831,8 +856,9 @@ void R2p2CCHybrid::sending_reply(hdr_r2p2 &r2p2_hdr, int payload, int32_t daddr)
      * is_msg_ext_serviced remains as default (true) to not trigger re-servicing by poller
      */
     msg_state->is_msg_extension_ = false;
-    outbound_inactive_->append(msg_state);
-    slog::log6(debug_, this_addr_, "@ appended reply msg state", std::get<0>(msg_state->req_id_), std::get<1>(msg_state->req_id_), std::get<2>(msg_state->req_id_), std::get<3>(msg_state->req_id_), std::get<4>(msg_state->req_id_), "to outbound_inactive_", &outbound_inactive_);
+
+    /* Dale: update the amt of data that sender needs to make a CR for */
+    msg_state->data_awaiting_credit_request_ += payload;
 }
 
 void R2p2CCHybrid::received_credit(Packet *pkt)
@@ -908,6 +934,7 @@ void R2p2CCHybrid::received_credit(Packet *pkt)
     // assert(rcvr_state->avail_credit_data_bytes_ >= 0); // I think this can happen because a chunk of cerdit for the last part of a larger message can be used by a smaller message etc (i.e., credit is not always "aligned")
     rcvr_state->avail_credit_data_bytes_ += credit_data_net;
     // outbound_->total_available_credit_ += credit_amount_bytes;
+
     stats->credit_received_ += credit_amount_bytes;
     slog::log5(debug_, this_addr_, "credit received:", stats->credit_received_, "credit used:", stats->credit_used_, "diff:", stats->credit_received_ - stats->credit_used_);
     assert(stats->credit_used_ <= stats->credit_received_);
@@ -1047,8 +1074,12 @@ void R2p2CCHybrid::send_data()
                     "is_msg_extension_:", msg_state->is_msg_extension_,
                     "is_msg_ext_serviced_by_sendr_:", msg_state->is_msg_ext_serviced_by_sendr_);
 
-        /* Dale: re-do announcement if this msg extension has not yet been serviced */
-        if (msg_state->is_msg_extension_ && !msg_state->is_msg_ext_serviced_by_sendr_) msg_state->sent_anouncement_ = false;
+        // /* Dale: re-do announcement if this msg extension has not yet been serviced;
+        //  * 31/07/2025: variable is_msg_ext_serviced_by_sendr_ is no longer used (double check needed)
+        //  */
+        // if (msg_state->is_msg_extension_ && !msg_state->is_msg_ext_serviced_by_sendr_) msg_state->sent_anouncement_ = false;
+        /* Dale: 31/07/2025: allow re-do announcement (send CR) if msg has pending not-yet-CRed data */
+        if (msg_state->data_awaiting_credit_request_ > 0) msg_state->sent_anouncement_ = false;
 
         if (!msg_state->sent_anouncement_)
         {
@@ -1065,8 +1096,31 @@ void R2p2CCHybrid::send_data()
                 hdr_r2p2 hdr = *msg_state->r2p2_hdr_;
                 hdr.msg_type() = hdr_r2p2::GRANT_REQ;
                 hdr.credit() = 0;
-                /* Dale: request only the current outstanding amount of credits needed */
-                hdr.credit_req() = msg_state->total_bytes_ - msg_state->credit_data_already_requested_;
+
+                // /* Dale: request only the current outstanding amount of credits needed */
+                // hdr.credit_req() = msg_state->total_bytes_ - msg_state->credit_data_already_requested_;
+
+                /* Dale: make sender use same packetisation mtd as rcvr when it sends credits for this CR, so we can keep C and D packetisation constent */
+                slog::log2(debug_, this_addr_, "@ before forwarding CR: msg (", std::get<2>(msg_state->req_id_), "), data_awaiting_CR=", msg_state->data_awaiting_credit_request_, " data pkt queue size=", msg_state->data_pkts_to_send_queue_.size());
+
+                hdr.credit_req() = msg_state->data_awaiting_credit_request_; 
+                msg_state->data_awaiting_credit_request_ = 0;
+
+                hdr.total_msg_data() = msg_state->total_bytes_;
+                assert(hdr.credit_req() > 0);
+                assert(hdr.total_msg_data() > 0);
+                uint64_t data_to_packetise_for_sending = hdr.credit_req();
+                while (data_to_packetise_for_sending >= MAX_R2P2_PAYLOAD)
+                {
+                    msg_state->data_pkts_to_send_queue_.push_back(MAX_R2P2_PAYLOAD);
+                    data_to_packetise_for_sending -= MAX_R2P2_PAYLOAD;
+                }
+                if (data_to_packetise_for_sending > 0)
+                {
+                    // truncating type shd be ok cuz here data_to_packetise_for_sending will be < 1458
+                    msg_state->data_pkts_to_send_queue_.push_back((uint16_t) data_to_packetise_for_sending); 
+                }
+
                 hdr.msg_creation_time() = msg_state->msg_creation_time_;
                 hdr.unsol_credit() = 0;
                 hdr.unsol_credit_data() = 0;
@@ -1098,23 +1152,9 @@ void R2p2CCHybrid::send_data()
                 msg_state->is_msg_ext_serviced_by_sendr_ = true;
                 /* Dale: update amount of credit already requested */
                 msg_state->credit_data_already_requested_ += hdr.credit_req(); 
-
-                /* Dale: use same packetisation mtd as rcvr when it sends credits for this CR, so we can keep C and D packetisation constent*/
-                uint64_t data_to_send = hdr.credit_req();
-                while (data_to_send >= MAX_R2P2_PAYLOAD)
-                {
-                    msg_state->data_pkts_to_send_queue_.push_back(MAX_R2P2_PAYLOAD);
-                    data_to_send -= MAX_R2P2_PAYLOAD;
-                }
-                if (data_to_send > 0)
-                {
-                    msg_state->data_pkts_to_send_queue_.push_back(data_to_send); 
-                }
-                /** Dale: pretty print for testing only; TODO: demote to log6 */
-                for (int i = 0; i < msg_state->data_pkts_to_send_queue_.size(); i++)
-                {
-                    slog::log2(debug_, this_addr_, "msg (", std::get<2>(msg_state->req_id_), ") data pkt queue [", i, "]: ", msg_state->data_pkts_to_send_queue_[i]);
-                }
+                
+                /* Dale: log for debug */
+                slog::log2(debug_, this_addr_, "@@ after forwarding CR: msg (", std::get<2>(msg_state->req_id_), "), data_awaiting_CR=", msg_state->data_awaiting_credit_request_, " data pkt queue size=", msg_state->data_pkts_to_send_queue_.size());
             }
 
             slog::log5(debug_, this_addr_, "Activating message:", std::get<2>(msg_state->req_id_),
@@ -1163,6 +1203,7 @@ void R2p2CCHybrid::send_data()
     uint64_t credit_avail = msg_state->rcvr_state_->avail_credit_bytes_;
     
     /* Dale: send bytes using the packetisation manner used when we sent CR pkts and recived C pkts */
+    slog::log2(debug_, this_addr_, "@ before sending pkt of msg (", std::get<2>(msg_state->req_id_), "), data_to_send queue size=", msg_state->data_pkts_to_send_queue_.size());
     assert(msg_state->data_pkts_to_send_queue_.size() > 0);
     uint16_t data_to_send_for_this_pkt = msg_state->data_pkts_to_send_queue_.front();
     msg_state->data_pkts_to_send_queue_.pop_front();
@@ -1399,7 +1440,8 @@ void R2p2CCHybrid::received_data(Packet *pkt, hysup::InboundMsgState *msg_state)
         slog::log1(debug_, this_addr_, "credit granted:", stats->credit_granted_, "credit replenished:", stats->credit_replenished_, "diff:", stats->credit_granted_ - stats->credit_replenished_);
     }
     assert(stats->credit_replenished_ <= stats->credit_granted_);
-    slog::log5(debug_, this_addr_, "R2p2CCHybrid::received_data() for msg:", r2p2_hdr->app_level_id(),
+    /* Dale: elevate from log5 to log2 */
+    slog::log2(debug_, this_addr_, "R2p2CCHybrid::received_data() for msg:", r2p2_hdr->app_level_id(),
                "From:", msg_state->remote_addr_, "payload_rec: ", payload_rec, "Budget:",
                budget_bytes_, "SRPB:", state->srpb_bytes_, "replenished:", bytes_replenished, "sndr:",
                state->sender_addr_, "So far: bytes expected:", msg_state->data_bytes_expected_,
@@ -1407,6 +1449,7 @@ void R2p2CCHybrid::received_data(Packet *pkt, hysup::InboundMsgState *msg_state)
                "received_msg_info_:", msg_state->received_msg_info_);
     assert(payload_rec > 0);
     assert(budget_bytes_ <= max_budget_bytes_);
+
     if (msg_state->received_msg_info_)
         assert(msg_state->data_bytes_received_ <= msg_state->data_bytes_expected_); // only if msg info has been received (else expected == 0)
 
@@ -1431,7 +1474,7 @@ void R2p2CCHybrid::received_data(Packet *pkt, hysup::InboundMsgState *msg_state)
         // (msg_state->data_bytes_granted_ == msg_state->data_bytes_expected_)) // w/o this, msg_state may get deleted before all the bytes it requested are granted (bcs of commong grant pool)
     if (msg_state->data_bytes_received_ == msg_state->data_bytes_expected_)
     {
-        slog::log4(debug_, this_addr_, "Received ", msg_state->data_bytes_received_, "bytes of msg out of ",
+        slog::log2(debug_, this_addr_, "Received ", msg_state->data_bytes_received_, "bytes of msg out of ",
             msg_state->data_bytes_expected_, " bytes expected using ", msg_state->data_bytes_granted_, "bytes of credit.");
         inbound_->print_all(this_addr_);
         assert(msg_state->received_msg_info_);
@@ -1448,7 +1491,7 @@ void R2p2CCHybrid::received_data(Packet *pkt, hysup::InboundMsgState *msg_state)
             && msg_state->data_bytes_granted_ == msg_state->data_bytes_expected_)
         {
             /* Dale: msg type is not msg extendable */ 
-            slog::log4(debug_, this_addr_, "Removing inbound message state of msg", std::get<2>(msg_state->req_id_));
+            slog::log2(debug_, this_addr_, "Removing inbound message state of msg", std::get<2>(msg_state->req_id_));
             inbound_->remove(msg_state);
         }
     }
@@ -1952,6 +1995,7 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
     if ((msg_state->data_bytes_received_ == msg_state->data_bytes_expected_) &&
         (msg_state->data_bytes_granted_ == msg_state->data_bytes_expected_)) // w/o this, msg_state may get deleted before all the bytes it requested are granted (bcs of commong grant pool)
     {
+        slog::log2(debug_, this_addr_, "msg=", std::get<2>(msg_state->req_id_), "data_bytes_received_=", msg_state->data_bytes_received_, "data_bytes_granted_=", msg_state->data_bytes_granted_);
         inbound_->print_all(this_addr_);
         assert(msg_state->received_msg_info_);
         // assert(msg_state->data_bytes_expected_ == msg_state->data_bytes_granted_); // not true because of fungible credit at sender
@@ -1968,6 +2012,7 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
             slog::log4(debug_, this_addr_, "Removing inbound message state of msg", std::get<2>(msg_state->req_id_));
             inbound_->remove(msg_state);
         }
+        // slog::log2(debug_, this_addr_, "GAGA");
         return 2;
     }
     // retrieve sender state
@@ -1986,11 +2031,24 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
 
     assert(msg_state->received_msg_info_);
     assert(msg_state->data_bytes_expected_ > 0);
+
     int uncreditd_data = msg_state->data_bytes_expected_ - msg_state->data_bytes_granted_;
     assert(uncreditd_data >= 0);
     if (uncreditd_data == 0)
+    {
+        // slog::log2(debug_, this_addr_, "msg=", std::get<2>(msg_state->req_id_), "KEKE: data_bytes_expected_=", msg_state->data_bytes_expected_, "data_bytes_granted_=", msg_state->data_bytes_granted_);
         return 1;
-    int credit_needed_data = std::min((int)MAX_R2P2_PAYLOAD, uncreditd_data);
+    }
+    /* Dale: send credits in same packetisation manner as how sender sent credit requests (to make C, D packetisation consistent) */
+    if (msg_state->pending_credit_req_data_queue_.size() == 0)
+    {
+        // slog::log2(debug_, this_addr_, "msg=", std::get<2>(msg_state->req_id_), "JEJE");
+        return 1;
+    }
+    slog::log2(debug_, this_addr_, "@ before considering sending credit: msg:", std::get<2>(msg_state->req_id_), "pending_CR_data_queue size=", msg_state->pending_credit_req_data_queue_.size());
+    int data_for_this_credit_pkt = msg_state->pending_credit_req_data_queue_.front();
+
+    int credit_needed_data = std::min((int)MAX_R2P2_PAYLOAD, data_for_this_credit_pkt);
     int credit_needed = std::max((int)(credit_needed_data + R2P2_ALL_HEADERS_SIZE + INTER_PKT_GAP_SIZE + ETHERNET_PREAMBLE_SIZE), (int)MIN_ETHERNET_FRAME_ON_WIRE);
     int credit_padding = std::max(0, MIN_ETHERNET_FRAME_ON_WIRE - ((int)credit_needed_data + R2P2_ALL_HEADERS_SIZE + INTER_PKT_GAP_SIZE + ETHERNET_PREAMBLE_SIZE));
     // if (max_srpb_ + MAX_ETHERNET_FRAME_ON_WIRE < sender_state->srpb_bytes_)
@@ -2033,11 +2091,18 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
         // inbound_->print_all(this_addr_);
         forward_grant(msg_state, credit_needed, credit_padding);
         slog::log5(debug_, this_addr_, "credit granted:", stats->credit_granted_, "credit replenished:", stats->credit_replenished_, "diff:", stats->credit_granted_ - stats->credit_replenished_);
+        /* Dale: only pop front when credit is actually sent */
+        msg_state->pending_credit_req_data_queue_.pop_front();
     }
     else if (budget_bytes_ < credit_needed)
     {
+        // slog::log2(debug_, this_addr_, "GOGO");
         return 3;
     }
+    // else
+    // {
+    //     slog::log2(debug_, this_addr_, "GEGE");
+    // }
     assert(msg_state->data_bytes_granted_ <= msg_state->data_bytes_expected_);
     assert(sender_state->nw_marked_ratio_ >= -0.000001 && sender_state->nw_marked_ratio_ <= 1.000001);
     assert(sender_state->host_marked_ratio_ >= -0.000001 && sender_state->host_marked_ratio_ <= 1.000001);

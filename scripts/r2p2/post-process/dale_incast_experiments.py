@@ -177,7 +177,7 @@ def experiment_incast_3to1_16GbpsFlo(is_full_postproc=True, title_addendum="", l
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
-    ssird_sim_dur_list = [0.01] * num_of_experiments # TODO: tweak
+    ssird_sim_dur_list = [0.02] * num_of_experiments # TODO: tweak
     dctcp_sim_dur_list = [0.05] * num_of_experiments # TODO: tweak
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows

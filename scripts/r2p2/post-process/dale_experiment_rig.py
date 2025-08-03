@@ -21,6 +21,7 @@ LINK_SPEED_BITS_PER_SEC = 100 * pow(10,9) * 8 # 100Gbps
 
 SSIRD_PROTO_NAME = "SSIRD"
 DCTCP_PROTO_NAME = f"DCTCP-{DCTCP_ECN_MARKING_THRESHOLD}"
+DCTCP_PROTO_FAMILY_NAME = "DCTCP"
 
 PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
 # PATH_TO_SIRD_SIM = "/data/dh1723/SIRD-Simulator/" # NOTE: use this for batch1 server
@@ -255,16 +256,86 @@ class SimSpecScript:
                 fout.write(line_out)
         return script_filepath
 
-class ExperimentResults:
-    def __init__(self, ssird_fct=None, dctcp_fct=None, gdpt_gbps_measured_ssird=None, gdpt_gbps_measured_dctcp=None, gdnpt_gbps_measured_per_flow_list_ssird=None, gdpt_gbps_measured_per_flow_list_dctcp=None):
-        self.ssird_fct = ssird_fct
-        self.dctcp_fct = dctcp_fct
+class ExperimentGroupResultsProcessed:
+    def __init__(self, processed_results_list):
+        self.processed_results_list = processed_results_list
 
-        self.gdpt_gbps_measured_ssird = gdpt_gbps_measured_ssird
-        self.gdpt_gbps_measured_dctcp = gdpt_gbps_measured_dctcp
+        self.ssird_fct_list = []
+        self.dctcp_fct_list = []
 
-        self.gdpt_gbps_measured_per_flow_list_ssird = gdnpt_gbps_measured_per_flow_list_ssird
-        self.gdpt_gbps_measured_per_flow_list_dctcp = gdpt_gbps_measured_per_flow_list_dctcp
+        self.total_app_gdpt_gbps_measured_list_ssird = []
+        self.total_app_gdpt_gbps_measured_list_dctcp = []
+        self.app_gdpt_gbps_measured_per_flow_list_list_ssird = []
+        self.app_gdpt_gbps_measured_per_flow_list_list_dctcp = []
+
+        self.total_nw_gdpt_gbps_measured_list_ssird = []
+        self.total_nw_gdpt_gbps_measured_list_dctcp = []
+        self.nw_gdpt_gbps_measured_per_flow_list_list_ssird = []
+        self.nw_gdpt_gbps_measured_per_flow_list_list_dctcp = []
+
+        for results in self.processed_results_list:
+            self.ssird_fct_list.append(results.ssird_fct)
+            self.dctcp_fct_list.append(results.dctcp_fct)
+
+            self.total_app_gdpt_gbps_measured_list_ssird.append(results.ssird_total_app_gdpt_gbps_measured)
+            self.total_app_gdpt_gbps_measured_list_dctcp.append(results.dctcp_total_app_gdpt_gbps_measured)
+            self.app_gdpt_gbps_measured_per_flow_list_list_ssird.append(results.ssird_app_gdpt_gbps_measured_per_flow_list)
+            self.app_gdpt_gbps_measured_per_flow_list_list_dctcp.append(results.dctcp_app_gdpt_gbps_measured_per_flow_list)
+
+            self.total_nw_gdpt_gbps_measured_list_ssird.append(results.ssird_total_nw_gdpt_gbps_measured)
+            self.total_nw_gdpt_gbps_measured_list_dctcp.append(results.dctcp_total_nw_gdpt_gbps_measured )
+            self.nw_gdpt_gbps_measured_per_flow_list_list_ssird.append(results.ssird_nw_gdpt_gbps_measured_per_flow_list )
+            self.nw_gdpt_gbps_measured_per_flow_list_list_dctcp.append(results.dctcp_nw_gdpt_gbps_measured_per_flow_list )
+
+class ExperimentResultsProcessed:
+    def __init__(self, ssird_experiment_metrics=None, dctcp_experiment_metrics=None):
+        self.ssird_experiment_metrics = ssird_experiment_metrics
+        self.dctcp_experiment_metrics = dctcp_experiment_metrics
+
+        self.ssird_fct = None
+        self.dctcp_fct = None
+
+        self.ssird_total_app_gdpt_gbps_measured = None
+        self.dctcp_total_app_gdpt_gbps_measured = None
+
+        self.ssird_app_gdpt_gbps_measured_per_flow_list = None
+        self.dctcp_app_gdpt_gbps_measured_per_flow_list = None
+
+        self.ssird_total_nw_gdpt_gbps_measured = None
+        self.dctcp_total_nw_gdpt_gbps_measured = None
+
+        self.ssird_nw_gdpt_gbps_measured_per_flow_list = None
+        self.dctcp_nw_gdpt_gbps_measured_per_flow_list = None
+
+        self.ingest_metrics()
+
+    def ingest_metrics(self):
+        if (self.ssird_experiment_metrics):
+            assert(SSIRD_PROTO_NAME in self.ssird_experiment_metrics.proto)
+            self.ssird_fct = self.ssird_experiment_metrics.fct_list
+            self.ssird_total_app_gdpt_gbps_measured = self.ssird_experiment_metrics.total_app_gdpt_gbps_measured
+            self.ssird_app_gdpt_gbps_measured_per_flow_list = self.ssird_experiment_metrics.app_gdpt_gbps_measured_per_flow_list
+            self.ssird_total_nw_gdpt_gbps_measured = self.ssird_experiment_metrics.total_nw_gdpt_gbps_measured
+            self.ssird_nw_gdpt_gbps_measured_per_flow_list = self.ssird_experiment_metrics.nw_gdpt_gbps_measured_per_flow_list
+
+        if (self.dctcp_experiment_metrics):
+            assert(DCTCP_PROTO_FAMILY_NAME in self.dctcp_experiment_metrics.proto)
+            self.dctcp_fct = self.dctcp_experiment_metrics.fct_list
+            self.dctcp_total_app_gdpt_gbps_measured = self.dctcp_experiment_metrics.total_app_gdpt_gbps_measured
+            self.dctcp_app_gdpt_gbps_measured_per_flow_list = self.dctcp_experiment_metrics.app_gdpt_gbps_measured_per_flow_list
+            self.dctcp_total_nw_gdpt_gbps_measured = self.dctcp_experiment_metrics.total_nw_gdpt_gbps_measured
+            self.dctcp_nw_gdpt_gbps_measured_per_flow_list = self.dctcp_experiment_metrics.nw_gdpt_gbps_measured_per_flow_list
+
+class ExperimentMetrics:
+    def __init__(self, proto, fct_list, total_app_gdpt_gbps_measured, app_gdpt_gbps_measured_per_flow_list, total_nw_gdpt_gbps_measured, nw_gdpt_gbps_measured_per_flow_list):
+        self.proto = proto
+        self.fct_list = fct_list
+
+        self.total_app_gdpt_gbps_measured = total_app_gdpt_gbps_measured 
+        self.app_gdpt_gbps_measured_per_flow_list = app_gdpt_gbps_measured_per_flow_list 
+
+        self.total_nw_gdpt_gbps_measured = total_nw_gdpt_gbps_measured 
+        self.nw_gdpt_gbps_measured_per_flow_list = nw_gdpt_gbps_measured_per_flow_list 
 
 class ExperimentOutputRaw:
     '''
@@ -299,6 +370,10 @@ class ExperimentOutputRaw:
         overall_srq_start_time_s = math.inf
         overall_final_srq_timestamp_s = None
 
+        overall_start_time_s = math.inf
+        overall_final_rrq_timestamp_s = None
+        total_bytes_rcvd_B = 0
+
         try:
             with open(self.app_trace_file_path, 'r') as file:
                 lines = file.readlines()
@@ -311,11 +386,16 @@ class ExperimentOutputRaw:
                     dict_key = (src_dst_pair[0], src_dst_pair[1], flow_id)
                     flow_stats_dict.get(dict_key).update_flow_stats(flow_trace_event)
 
+                    overall_start_time_s = min(flow_trace_event.get_timestamp(), overall_start_time_s)
+
                     if (flow_trace_event.get_event() == FlowTraceEvent.SRQ_EVENT):
                         overall_srq_start_time_s = min(flow_trace_event.get_timestamp(), overall_srq_start_time_s)
                         overall_final_srq_timestamp_s = flow_trace_event.get_timestamp()
                         total_bytes_sent_until_penultimate_srq_B = total_bytes_sent_B
                         total_bytes_sent_B += flow_trace_event.get_req_size() 
+
+                    elif (flow_trace_event.get_event() == FlowTraceEvent.RRQ_EVENT):
+                        overall_final_rrq_timestamp_s = flow_trace_event.get_timestamp()
 
                     del flow_id
                     del flow_trace_event
@@ -323,21 +403,32 @@ class ExperimentOutputRaw:
             logger.error("The file was not found")
         except IOError:
             logger.error("An error occurred while reading the file")
-    
-        # TODO: FIX ME! This total-thrpt calc seems a lil iffy... it overestimates gbps by 5%. Why??
-        if (overall_final_srq_timestamp_s - overall_srq_start_time_s > 0):
-            measured_total_gdpt_gbps = (total_bytes_sent_until_penultimate_srq_B * 8) / (overall_final_srq_timestamp_s - overall_srq_start_time_s) * pow(10,-9)
-        else:
-            measured_total_gdpt_gbps = -1
 
+        # Measure per-flow app & nw gdpt:
         fct_list = []
         measured_app_gdpt_gbps_per_flow_list = []
+        measured_nw_gdpt_gbps_per_flow_list = []
         for _, flow_stats_obj in flow_stats_dict.items():
             flow_stats_obj.check_flow_stats()
             fct_list.append(flow_stats_obj.get_fct_s())
             measured_app_gdpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_app_gdpt_for_flow_gbps())
+            measured_nw_gdpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_nw_gdpt_for_flow_gbps())
+            total_bytes_rcvd_B += flow_stats_obj.total_data_bytes_recv_B
 
-        return fct_list, measured_total_gdpt_gbps, measured_app_gdpt_gbps_per_flow_list
+        # TODO: FIX ME! This total-thrpt calc seems a lil iffy... it overestimates gbps by 5%. Why??
+        # Measure overal app gdpt:
+        if (overall_final_srq_timestamp_s - overall_srq_start_time_s > 0):
+            measured_total_app_gdpt_gbps = (total_bytes_sent_until_penultimate_srq_B * 8) / (overall_final_srq_timestamp_s - overall_srq_start_time_s) * pow(10,-9)
+        else:
+            measured_total_app_gdpt_gbps = -1
+
+        # Measure overall nw gdpt:
+        if (overall_final_rrq_timestamp_s is not None and overall_final_rrq_timestamp_s - overall_start_time_s > 0):
+            measured_total_nw_gdpt_gbps = (total_bytes_rcvd_B * 8) / (overall_final_rrq_timestamp_s - overall_start_time_s) * pow(10,-9)
+        else:
+            measured_total_nw_gdpt_gbps = -1 
+
+        return ExperimentMetrics(self.proto, fct_list, measured_total_app_gdpt_gbps, measured_app_gdpt_gbps_per_flow_list, measured_total_nw_gdpt_gbps, measured_nw_gdpt_gbps_per_flow_list)
 
 class FlowTraceEvent:
     SRQ_EVENT = "srq"
@@ -389,8 +480,8 @@ class FlowStats:
         self.num_rrq = 0
         self.start_time_s = math.inf
         self.end_time_s = -1
-        self.total_bytes_sent_B = 0
-        self.total_bytes_recv_B = 0
+        self.total_data_bytes_sent_B = 0
+        self.total_data_bytes_recv_B = 0
 
 		# store the stats accumulated up until the (n-1)th srq.
         self.final_srq_timestamp = None
@@ -411,17 +502,17 @@ class FlowStats:
 
         if (trace_event_name == FlowTraceEvent.SRQ_EVENT):
             self.num_srq += 1
-            self.total_bytes_sent_until_penultimate_srq_B = self.total_bytes_sent_B
-            self.total_bytes_sent_B += flow_trace_event.get_req_size()
+            self.total_bytes_sent_until_penultimate_srq_B = self.total_data_bytes_sent_B
+            self.total_data_bytes_sent_B += flow_trace_event.get_req_size()
             self.final_srq_timestamp = flow_trace_event.get_timestamp()
 
         elif (trace_event_name == FlowTraceEvent.RRQ_EVENT):
             self.num_rrq += 1
             if (self.proto == SSIRD_PROTO_NAME):
-                # ssird rrq shows cumulative recved-data size
-                self.total_bytes_recv_B = flow_trace_event.get_req_size()
+                # each ssird rrq shows cumulative recved-data size that progressively increases as data chunks reach the receiver-side app
+                self.total_data_bytes_recv_B = flow_trace_event.get_req_size()
             elif (self.proto == DCTCP_PROTO_NAME):
-                self.total_bytes_recv_B += flow_trace_event.get_req_size()
+                self.total_data_bytes_recv_B += flow_trace_event.get_req_size()
             else:
                 logger.error(f"Unrecognised proto name {self.proto}")
 
@@ -441,9 +532,9 @@ class FlowStats:
             logger.error(f"DCTCP: Missing rrq event(s)! diff: {self.num_srq - self.num_rrq}")
 
         expected_flow_size_B = self.num_byteloads * self.byteload_size_B 
-        logger.debug(f"Flow {self.flow_id}:: first_event_name: {self.first_event_name}, final_event_name: {self.final_event_name}, expected_data_B: {expected_flow_size_B}, recv_data_B: {self.total_bytes_recv_B}")
-        if (self.total_bytes_recv_B != expected_flow_size_B):
-            logger.error(f"Missing data! flow_id: {self.flow_id}: total bytes recv: {self.total_bytes_recv_B}, expected flow size = {expected_flow_size_B}, diff = {expected_flow_size_B - self.total_bytes_recv_B}")
+        logger.debug(f"Flow {self.flow_id}:: first_event_name: {self.first_event_name}, final_event_name: {self.final_event_name}, expected_data_B: {expected_flow_size_B}, recv_data_B: {self.total_data_bytes_recv_B}")
+        if (self.total_data_bytes_recv_B != expected_flow_size_B):
+            logger.error(f"Missing data! flow_id: {self.flow_id}: total bytes recv: {self.total_data_bytes_recv_B}, expected flow size = {expected_flow_size_B}, diff = {expected_flow_size_B - self.total_data_bytes_recv_B}")
 
     def get_fct_s(self):
         return self.end_time_s - self.start_time_s
@@ -457,6 +548,11 @@ class FlowStats:
             return (self.total_bytes_sent_until_penultimate_srq_B * 8) / send_duration_s * pow(10,-9)
         else:
             return -1 
+
+    def get_measured_nw_gdpt_for_flow_gbps(self):
+        # returns in Gbps
+        send_duration_s = self.end_time_s - self.start_time_s
+        return self.total_data_bytes_recv_B * 8 / send_duration_s * pow(10,-9)
 
 class Experiment():
 
@@ -680,47 +776,68 @@ class ExperimentGroup:
             ssird_result = self.ssird_raw_experiment_results_list[i]
             if ssird_result == None:
                 logger.error("No results for SSIRD")
-                ssird_fct = None
-                app_gdpt_gbps_measured_ssird = None
-                app_gdpt_gbps_measured_per_flow_list_ssird = None
+                ssird_exp_metrics = None
             else:
                 logger.info(f"Processing SIRD results exp_id {ssird_result.exp_id}:: {ssird_result.num_flows}flo-{ssird_result.num_byteloads}#-{ssird_result.byteload_size_B}B")
-                ssird_fct, app_gdpt_gbps_measured_ssird, app_gdpt_gbps_measured_per_flow_list_ssird = ssird_result.process_results_fct()
-            logger.info(f"SSIRD FCT: {ssird_fct} ms, App Gdpt (overall): {app_gdpt_gbps_measured_ssird} Gbps, App Gdpt (per flow): {app_gdpt_gbps_measured_per_flow_list_ssird}")
+                ssird_exp_metrics = ssird_result.process_results_fct()
+                logger.info(f"{ssird_exp_metrics.proto} FCT: {ssird_exp_metrics.fct_list} ms\nApp Gdpt (overall): {ssird_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {ssird_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {ssird_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {ssird_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
 
             dctcp_result = self.dctcp_raw_experiment_results_list[i]
             if dctcp_result == None:
                 logger.error("No results for DCTCP")
-                dctcp_fct = None
-                gdpt_gbps_measured_dctcp = None
-                gdpt_gbps_measured_per_flow_list_dctcp = None
+                dctcp_exp_metrics = None
             else:
                 logger.info(f"Processing DCTCP results exp_id {dctcp_result.exp_id}:: {dctcp_result.num_flows}flo-{dctcp_result.num_byteloads}#-{dctcp_result.byteload_size_B}B")
-                dctcp_fct, gdpt_gbps_measured_dctcp, gdpt_gbps_measured_per_flow_list_dctcp = dctcp_result.process_results_fct()
-            logger.info(f"DCTCP FCT: {dctcp_fct} ms, App Gtpt (overall): {gdpt_gbps_measured_dctcp} Gbps, App Gdpt (per flow): {gdpt_gbps_measured_per_flow_list_dctcp}")
+                dctcp_exp_metrics = dctcp_result.process_results_fct()
+                logger.info(f"{dctcp_exp_metrics.proto} FCT: {dctcp_exp_metrics.fct_list} ms\nApp Gdpt (overall): {dctcp_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {dctcp_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {dctcp_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {dctcp_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
 
-            processed_result = ExperimentResults(ssird_fct, dctcp_fct, app_gdpt_gbps_measured_ssird, gdpt_gbps_measured_dctcp, app_gdpt_gbps_measured_per_flow_list_ssird, gdpt_gbps_measured_per_flow_list_dctcp)
+            processed_result = ExperimentResultsProcessed(ssird_exp_metrics, dctcp_exp_metrics)
             self.processed_results_list.append(processed_result)
 
     def generate_overall_experiment_metrics(self):
         logger.info("\n##### GENERATE METRICS #####")
-        ssird_fct_list = []
-        dctcp_fct_list = []
-        gdpt_gbps_measured_list_ssird = []
-        gdpt_gbps_measured_list_dctcp = []
-        gdpt_gbps_measured_per_flow_list_list_ssird = []
-        gdpt_gbps_measured_per_flow_list_list_dctcp = []
+        return ExperimentGroupResultsProcessed(self.processed_results_list)
 
-        for results in self.processed_results_list:
-            ssird_fct_list.append(results.ssird_fct)
-            dctcp_fct_list.append(results.dctcp_fct)
-            gdpt_gbps_measured_list_ssird.append(results.gdpt_gbps_measured_ssird)
-            gdpt_gbps_measured_list_dctcp.append(results.gdpt_gbps_measured_dctcp)
-            gdpt_gbps_measured_per_flow_list_list_ssird.append(results.gdpt_gbps_measured_per_flow_list_ssird)
-            gdpt_gbps_measured_per_flow_list_list_dctcp.append(results.gdpt_gbps_measured_per_flow_list_dctcp)
+    @staticmethod
+    def process_side_loaded_results(proto, src_dst_pairs_list, num_flows, num_byteloads_list, byteload_size_B_list, app_trace_paths_list):
+        # NOTE: this mtd can only read results for 1 proto at a time
+        assert(len(set( [len(num_byteloads_list), len(byteload_size_B_list), len(app_trace_paths_list)] )) == 1)
+        processed_results_list = []
+        for i in range(0, len(app_trace_paths_list)):
+            exp_output_raw = ExperimentOutputRaw(exp_id=None,
+                                              experiment_family=None,
+                                              experiment_name=None,
+                                              app_trace_file_path=app_trace_paths_list[i],
+                                              proto=proto,
+                                              src_dst_pairs_list=src_dst_pairs_list,
+                                              num_flows=num_flows,
+                                              num_byteloads=num_byteloads_list[i],
+                                              byteload_size_B=byteload_size_B_list[i])
+            exp_metrics = exp_output_raw.process_results_fct() 
+            if (SSIRD_PROTO_NAME in proto):
+                processed_result = ExperimentResultsProcessed(ssird_experiment_metrics=exp_metrics)
+            elif (DCTCP_PROTO_FAMILY_NAME in proto):
+                processed_result = ExperimentResultsProcessed(dctcp_experiment_metrics=exp_metrics)
+            processed_results_list.append(processed_result)
+        exp_metrics = ExperimentGroupResultsProcessed(processed_results_list)
+        
+        print(f"Byteload Size (Bytes): {byteload_size_B_list}")
+        print(f"Num flows: {num_flows}")
 
-        return ssird_fct_list, dctcp_fct_list, gdpt_gbps_measured_list_ssird, gdpt_gbps_measured_list_dctcp, gdpt_gbps_measured_per_flow_list_list_ssird, gdpt_gbps_measured_per_flow_list_list_dctcp
+        print(f"APP Gdpt Gbps measured (SSIRD): {exp_metrics.total_app_gdpt_gbps_measured_list_ssird }")
+        print(f"APP Gdpt Gbps measured (DCTCP): {exp_metrics.total_app_gdpt_gbps_measured_list_dctcp}")
+        print(f"APP Gdpt Gbps measured per flow (SSIRD): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_ssird}")
+        print(f"APP Gdpt Gbps measured per flow (DCTCP): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_dctcp}")
 
+        print(f"NW Gdpt Gbps measured (SSIRD): {exp_metrics.total_nw_gdpt_gbps_measured_list_ssird}")
+        print(f"NW Gdpt Gbps measured (DCTCP): {exp_metrics.total_nw_gdpt_gbps_measured_list_dctcp}")
+        print(f"NW Gdpt Gbps measured per flow (SSIRD): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_ssird}")
+        print(f"NW Gdpt Gbps measured per flow (DCTCP): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_dctcp}")
+
+        print(f"* SSIRD FCT: {exp_metrics.ssird_fct_list}")
+        print(f"* DCTCP FCT: {exp_metrics.dctcp_fct_list}")
+
+        return exp_metrics
 
 def init_logs(experiment_family, logs_file_name, log_level=logging.DEBUG):
     full_rel_path = f"{LOGS_REL_PATH}{experiment_family}/"
@@ -831,3 +948,15 @@ if __name__ == "__main__":
     print("\nChunk details:")
     for i, (t, c) in enumerate(zip(flow['intervals'], flow['chunk_sizes'])):
         print(f"Chunk {i+1}: Interval = {t:.3f}s, Size = {c/8} bytes")
+
+if __name__ == "__main__":
+    proto = SSIRD_PROTO_NAME
+    src_dst_pairs_list = [(0,1)]
+    num_flows = 9
+    # num_flows = 8
+    num_byteloads_list = [100]
+    byteload_size_B_list = [1560]
+    app_trace_paths_list = ["/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-9flo-100#-1560B-1000ns_1560B_9flo_112Gbps/data/SSIRD/60/applications_trace.str"]
+    # app_trace_paths_list = ["/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-8flo-100#-1560B-1000ns_1560B_8flo_99pt84Gbps/data/SSIRD/60/applications_trace.str"]
+    exp_metrics = ExperimentGroup.process_side_loaded_results(proto, src_dst_pairs_list, num_flows, num_byteloads_list, byteload_size_B_list, app_trace_paths_list)
+

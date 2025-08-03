@@ -93,6 +93,8 @@ private:
      * TODO: Eventually, we could have SSIRD also use flow-id directly, instead of piggybacking on the app-level-id field.
      */
     long flow_id_=-1;
+    /* Dale: track total msg size in header */
+    uint64_t total_msg_data_ = 0;
 
 public:
     hdr_r2p2() : first_urpc_(false), credit_(0), credit_pad_(0), credit_req_(0),
@@ -204,6 +206,8 @@ public:
     bool &is_do_reply() { return is_do_reply_; }
     /* Dale: track flow-id in header */
     long &flow_id() { return flow_id_; }
+    /* Dale: track total msg size in header */
+    uint64_t &total_msg_data() {return total_msg_data_; }
 };
 
 struct RequestIdTuple
