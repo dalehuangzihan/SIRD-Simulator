@@ -8,8 +8,7 @@ def experiment_vary_byteload_number_200KBflo_5flo(is_full_postproc=True, title_a
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
-    src = 0
-    dst = 1
+    src_dst_pairs_list = [(0,1)]
 
     minimum_interval_us = 0.1 # 0.1us
     total_flow_size_B = 200000 # 200KB
@@ -88,7 +87,7 @@ def experiment_vary_byteload_number_200KBflo_5flo(is_full_postproc=True, title_a
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
     # return
 
-    exp_grp = dale_experiment_rig.ExperimentGroup(experiment_family, proto_names, src, dst, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc, log_level, title_addendum)
+    exp_grp = dale_experiment_rig.ExperimentGroup(experiment_family, proto_names, src_dst_pairs_list, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc, log_level, title_addendum)
 
     ssird_fct_list, dctcp_fct_list, gdpt_gbps_measured_list_ssird, gdpt_gbps_measured_list_dctcp, gdpt_gbps_measured_per_flow_list_list_ssird, gdpt_gbps_measured_per_flow_list_list_dctcp = exp_grp.perform_experiment()
 
@@ -118,8 +117,7 @@ def experiment_vary_byteload_size_5flo(is_full_postproc=True, title_addendum="",
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
-    src = 0
-    dst = 1
+    src_dst_pairs_list = [(0,1)]
 
     minimum_interval_us = 0.1 # 0.1us
     # total_flow_size_B = 200000 # 200KB
@@ -199,7 +197,7 @@ def experiment_vary_byteload_size_5flo(is_full_postproc=True, title_addendum="",
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
     # return
 
-    exp_grp = dale_experiment_rig.ExperimentGroup(experiment_family, proto_names, src, dst, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc, log_level, title_addendum)
+    exp_grp = dale_experiment_rig.ExperimentGroup(experiment_family, proto_names, src_dst_pairs_list, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc, log_level, title_addendum)
 
     ssird_fct_list, dctcp_fct_list, gdpt_gbps_measured_list_ssird, gdpt_gbps_measured_list_dctcp, gdpt_gbps_measured_per_flow_list_list_ssird, gdpt_gbps_measured_per_flow_list_list_dctcp = exp_grp.perform_experiment()
 
@@ -229,8 +227,7 @@ def experiment_vary_interval_5flo(is_full_postproc=True, title_addendum="", log_
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
-    src = 0
-    dst = 1
+    src_dst_pairs_list = [(0,1)]
 
     minimum_interval_us = 0.1 # 0.1us
     total_flow_size_B = 200000 # 200KB
@@ -285,7 +282,7 @@ def experiment_vary_interval_5flo(is_full_postproc=True, title_addendum="", log_
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
-    ssird_sim_dur_list = [0.0015, 0.002, 0.02, 0.12]
+    ssird_sim_dur_list = [0.02, 0.02, 0.02, 0.12]
     dctcp_sim_dur_list = [0.02, 0.02, 0.2, 0.3]
     assert(len(ssird_sim_dur_list) == num_of_experiments)
     assert(len(dctcp_sim_dur_list) == num_of_experiments)
@@ -309,7 +306,7 @@ def experiment_vary_interval_5flo(is_full_postproc=True, title_addendum="", log_
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
     # return
 
-    exp_grp = dale_experiment_rig.ExperimentGroup(experiment_family, proto_names, src, dst, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc, log_level, title_addendum)
+    exp_grp = dale_experiment_rig.ExperimentGroup(experiment_family, proto_names, src_dst_pairs_list, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_period_us_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc, log_level, title_addendum)
 
     ssird_fct_list, dctcp_fct_list, gdpt_gbps_measured_list_ssird, gdpt_gbps_measured_list_dctcp, gdpt_gbps_measured_per_flow_list_list_ssird, gdpt_gbps_measured_per_flow_list_list_dctcp = exp_grp.perform_experiment()
 
@@ -660,4 +657,4 @@ if __name__ == "__main__":
     # 1ms RTT ---
     # experiment_1458B_10us_1flo(is_full_postproc=True, title_addendum="_1458B_1flo_credit_leak_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_1462B_10us_xflo(num_flows=1, is_full_postproc=True, title_addendum="_1462B_1flo_3bload_credit_leak_1msRTT_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_1462B_10us_xflo(num_flows=5, is_full_postproc=True, title_addendum="_1462B_5flo_3bload_credit_leak_1msRTT_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_1462B_10us_xflo(num_flows=5, is_full_postproc=True, title_addendum="_1462B_5flo_3bload_credit_leak_1msRTT_test", log_level=dale_experiment_rig.LOG_LEVEL_2)

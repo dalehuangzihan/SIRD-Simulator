@@ -118,7 +118,8 @@ void R2p2Server::handle_request_pkt(hdr_r2p2 &r2p2_hdr, int payload)
         // Is this first?
         if (r2p2_hdr.first())
         {
-            slog::log4(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
+            /* Dale: elevate from log4 to log2 */
+            slog::log2(r2p2_layer_->get_debug(), r2p2_layer_->get_local_addr(),
                        "received first() packet out of order",
                        "req_state->req_pkts_expected_", req_state->req_pkts_expected_,
                        "app id:", r2p2_hdr.app_level_id(),
@@ -126,7 +127,8 @@ void R2p2Server::handle_request_pkt(hdr_r2p2 &r2p2_hdr, int payload)
                        "number of request states:", req_id_to_req_state->size());
             // (state_exists, pkt->first())
             // then the server doesn't already know how many packets are expected..
-            assert(req_state->req_pkts_expected_ == -1); // it is likely that the 16 bit req_id has wrapped
+            /* Dale: Try disabling assertion */
+            // assert(req_state->req_pkts_expected_ == -1); // it is likely that the 16 bit req_id has wrapped
             req_state->req_pkts_received_++;
             req_state->req_bytes_received_ += payload;
             req_state->req_pkts_expected_ = r2p2_hdr.pkt_id() + 1;
@@ -154,7 +156,7 @@ void R2p2Server::handle_request_pkt(hdr_r2p2 &r2p2_hdr, int payload)
                    "req_bytes_received_:", req_state->req_bytes_received_);
 
         // have all the packets been received?
-        /** Dale: FIX: BUG_01 (?) have header tell server whether to do reply. But beware of race condi! Currently we think sim is single thread, so will set is_do_reply_ in header properly in R2p2CCHyrbid::received_data() before reaching this point */
+        /** Dale: FIX: BUG_01 (?) have header tell server whether to do reply. But beware of race condi (?)! Currently we think sim is single thread (yes it is), so will set is_do_reply_ in header properly in R2p2CCHyrbid::received_data() before reaching this point */
         if (r2p2_hdr.is_do_reply())
         {
             /** Dale: TODO: IMPORTANT

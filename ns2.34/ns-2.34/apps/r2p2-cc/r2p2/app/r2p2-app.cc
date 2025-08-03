@@ -117,7 +117,7 @@ void R2p2Application::send_request(RequestIdTuple *, size_t)
     if (next_req_size < 4)
         next_req_size = 4;
     int32_t srvr_addr = dst_thread_gen_->get_next();
-    bool is_final_req_of_conn = reqs_sent_ == 3; /** Dale: TODO: actually calculate this */
+    bool is_final_req_of_conn = false; /** Dale: we don't need this for now; set to false to prevent sim from garbage-collecting server state too early */
     if (do_trace_)
     {
         slog::log6(debug_, local_addr_, "srq");
