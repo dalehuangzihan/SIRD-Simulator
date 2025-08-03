@@ -77,27 +77,28 @@ class Flow:
     '''
     RELATIVE_START_TIME_US = 0
 
-    def __init__(self, src, dst, flow_id, num_byteloads, byteload_size_B, byteload_interval_us, absolute_start_time_us):
+    def __init__(self, src, dst, flow_id, flow_spec, absolute_start_time_us):
         self.id = flow_id
         self.src = src
         self.dst = dst
-        self.num_byteloads = num_byteloads
-        self.byteload_size_B = byteload_size_B
-        self.byteload_interval_us = byteload_interval_us
+        self.flow_spec = flow_spec
         self.absolute_start_time_us = absolute_start_time_us
         self.byteloads_list = []
 
         # assert(byteload_interval_us >= 1)
         # assert(byteload_interval_us*10%10 == 0)
-        assert(byteload_interval_us >= 0.001) # must be at least 1ns
+        assert(min(flow_spec.interval_us_list) >= 0.001) # must be at least 1ns
 
         self.init_byteloads()
 
     def init_byteloads(self):
-        for i in range(0, self.num_byteloads):
-            rel_timestamp_us = self.RELATIVE_START_TIME_US + i * self.byteload_interval_us
+        byteload_size_B_list = self.flow_spec.byteload_size_B_list
+        byteload_rel_timestamp_us_list = self.flow_spec.byteload_timestamp_us_list
+        assert(len(byteload_size_B_list) == len(byteload_rel_timestamp_us_list)) 
+        for i in range(0, len(byteload_size_B_list)):
+            rel_timestamp_us = self.RELATIVE_START_TIME_US + byteload_rel_timestamp_us_list[i]
             absolute_timestamp_us = self.absolute_start_time_us + rel_timestamp_us
-            self.byteloads_list.append(Byteload(self.src, self.dst, self.id, self.byteload_size_B, rel_timestamp_us, absolute_timestamp_us))
+            self.byteloads_list.append(Byteload(self.src, self.dst, self.id, self.flow_spec.byteload_size_B_list[i], rel_timestamp_us, absolute_timestamp_us))
 
 class MultiFlow:
     '''
@@ -105,23 +106,23 @@ class MultiFlow:
     TODO: currently can only replicate the same flow multiple times
     ''' 
 
-    def __init__(self, src, dst, num_byteloads_per_flow, byteload_size_B, byteload_interval_us, flow_start_times_us_list):
+    def __init__(self, src, dst, flow_spec_list, flow_start_times_us_list):
         self.src = src
         self.dst = dst
-        self.num_byteloads_per_flow = num_byteloads_per_flow
-        self.byteload_size_B = byteload_size_B
-        self.byteload_interval_us = byteload_interval_us
+        self.flow_spec_list = flow_spec_list
         self.flow_start_times_us_list = flow_start_times_us_list # is the start times relative to the overall start timestamp of 0us
-        self.num_flows = len(flow_start_times_us_list)
+        self.num_flows = len(flow_spec_list)
         self.flows_list = []
 
         # assert(num_byteloads_per_flow > 1) # we want at least 2 byteloads per flow
         self.init_flows()
 
     def init_flows(self):
+        print("GAGA")
         for i in range(0, self.num_flows):
             flow_start_time_us = self.flow_start_times_us_list[i]
-            self.flows_list.append(Flow(self.src, self.dst, i, self.num_byteloads_per_flow, self.byteload_size_B, self.byteload_interval_us, flow_start_time_us))
+            self.flows_list.append(Flow(self.src, self.dst, i, self.flow_spec_list[i], flow_start_time_us))
+        print("GOGO")
         logger.debug(f"num flows: {len(self.flows_list)}")
     
     def serialise_flows_to_byteloads(self):
@@ -557,14 +558,12 @@ class FlowStats:
 
 class Experiment():
 
-    def __init__(self, experiment_family, experiment_name, proto, src_dst_pairs_list, flow_start_times_us_list, num_byteloads, byteload_size_B, inter_byteload_period_us, is_full_postproc=False):
+    def __init__(self, experiment_family, experiment_name, proto, src_dst_pairs_list, flow_start_times_us_list, flow_spec_list, is_full_postproc=False):
         self.experiment_family = experiment_family
         self.proto = proto
 
         self.src_dst_pairs_list = src_dst_pairs_list
-        self.num_byteloads = num_byteloads
-        self.byteload_size_B = byteload_size_B
-        self.inter_byteload_period_us = inter_byteload_period_us
+        self.flow_spec_list = flow_spec_list
         self.experiment_name = experiment_name 
 
         self.mri_input_dir = PATH_TO_EXPERIMENTS_INPUTS + experiment_family + "/"
@@ -585,7 +584,7 @@ class Experiment():
         logger.info(f'Flags: {self.run_simulations}, {self.run_post_proc}, {self.create_timeseires}, {self.create_plots}, {self.delete_current}')
         logger.info("ssird_sim_duration={:f}; dctcp_sim_duration={:f}".format(ssird_sim_dur_l, dctcp_sim_dur_l))
 
-        self.prep_experiment_input(self.src_dst_pairs_list, self.num_byteloads, self.byteload_size_B, self.inter_byteload_period_us, self.flow_start_times_us_list)
+        self.prep_experiment_input(self.src_dst_pairs_list, self.flow_spec_list, self.flow_start_times_us_list)
         ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(ssird_sim_duration=ssird_sim_dur_l, dctcp_sim_duration=dctcp_sim_dur_l, experiment_name=self.experiment_name, log_level=log_level)
 
         outputs_dir = f"{PATH_TO_SIM_COORD}outputs/{self.experiment_family}/"
@@ -603,7 +602,7 @@ class Experiment():
 
         return experiment_results_raw
 
-    def prep_experiment_input(self, src_dst_pairs_list, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, flow_start_times_list):
+    def prep_experiment_input(self, src_dst_pairs_list, flow_spec_list, flow_start_times_list):
         logger.info("-----\nPreparing experiment input MRIs")
         try:
             logger.info("### Creating MRI inputs parent dir: " + self.mri_input_dir)
@@ -614,7 +613,7 @@ class Experiment():
         mri = ManualReqInterval(self.mri_input_dir, self.experiment_name)
         multiflow_obj_list = []
         for src, dst in src_dst_pairs_list:
-            multiflow_obj = MultiFlow(src, dst, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, flow_start_times_list)  
+            multiflow_obj = MultiFlow(src, dst, flow_spec_list, flow_start_times_list)  
             multiflow_obj_list.append(multiflow_obj)
         mri_filepath = mri.create_p2p_mri(multiflow_obj_list)
         return mri_filepath
@@ -686,20 +685,18 @@ class Experiment():
         return overall_duration_s * multiplication_factor
 
     @staticmethod
-    def get_experiment_name(num_flows, num_byteloads, byteload_size_B, inter_byteload_period_us):
-        return "{}flo-{}#-{}B-{}ns".format(num_flows, num_byteloads, byteload_size_B, int(inter_byteload_period_us * 1000))
+    def get_experiment_name(num_flows, flow_spec_list):
+        flow_rate_gbps = round(sum([f.flow_rate_bps for f in flow_spec_list])*pow(10,-9) / num_flows)
+        return "{}flo-{}Gbps-{}".format(num_flows, flow_rate_gbps, datetime.datetime.now().strftime("%Y-%m-%dT_%H-%M-%SZ"))
 
 class ExperimentGroup:
 
-    def __init__(self, experiment_family, proto_names_list, src_dst_pairs_list, flow_start_times_us_list, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_periods_us_list_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc=False, log_level=LOG_LEVEL_2, title_addendum=""):
+    def __init__(self, experiment_family, proto_names_list, src_dst_pairs_list, flow_start_times_us_list_list, flow_spec_list_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc=False, log_level=LOG_LEVEL_2, title_addendum=""):
         self.experiment_family = experiment_family
         self.proto_names_l = proto_names_list
         self.src_dst_pairs_list = src_dst_pairs_list
-        self.num_flows = len(flow_start_times_us_list)
-        self.flow_start_times_us_list = flow_start_times_us_list
-        self.num_byteloads_per_flow_list = num_byteloads_per_flow_list
-        self.byteload_size_B_list = byteload_size_B_list
-        self.inter_byteload_period_us_list_list = inter_byteload_periods_us_list_list
+        self.flow_start_times_us_list_list = flow_start_times_us_list_list
+        self.flow_spec_list_list = flow_spec_list_list
         self.is_full_postproc = is_full_postproc
         self.ssird_sim_dur_list = ssird_sim_dur_list
         self.dctcp_sim_dur_list = dctcp_sim_dur_list
@@ -708,11 +705,10 @@ class ExperimentGroup:
 
         # check that all per-flow specification lists have same length
         assert(len(set([
-            len(num_byteloads_per_flow_list),
-            len(byteload_size_B_list),
-            len(inter_byteload_periods_us_list_list)
+            len(flow_start_times_us_list_list),
+            len(flow_spec_list_list),
             ])) == 1)
-        self.num_experiments = len(num_byteloads_per_flow_list)
+        self.num_experiments = len(flow_spec_list_list)
 
         self.ssird_raw_experiment_results_list = [None] * self.num_experiments
         self.dctcp_raw_experiment_results_list = [None] * self.num_experiments
@@ -731,9 +727,9 @@ class ExperimentGroup:
             futures_list = []
 
             for exp_id in range(0, self.num_experiments):
-                experiment_name = Experiment.get_experiment_name(self.num_flows, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list_list[exp_id]) + self.title_addendum
+                experiment_name = Experiment.get_experiment_name(len(self.flow_start_times_us_list_list[exp_id]), self.flow_spec_list_list[exp_id]) + self.title_addendum
                 for proto in self.proto_names_l:
-                    experiment = Experiment(self.experiment_family, experiment_name, proto, self.src_dst_pairs_list, self.flow_start_times_us_list, self.num_byteloads_per_flow_list[exp_id], self.byteload_size_B_list[exp_id], self.inter_byteload_period_us_list_list[exp_id], self.is_full_postproc) 
+                    experiment = Experiment(self.experiment_family, experiment_name, proto, self.src_dst_pairs_list, self.flow_start_times_us_list_list[exp_id], self.flow_spec_list_list[exp_id], self.is_full_postproc) 
 
                     # submit experiment to thread pool
                     future = executor.submit(
@@ -853,92 +849,32 @@ def init_logs(experiment_family, logs_file_name, log_level=logging.DEBUG):
     )
 
 ''' --- Poisson Process --- '''
-# Each flow must maintain have a given flow rate. Flow size must be close to a target value.
-# For each flow: inter-bload intervals are drawn from poisson process; bload sizes can vary; fixed num bloads per flow 
+# Each flow must have a given flow rate (approximately). Flow can vary.
+# For each flow: inter-bload intervals are drawn from poisson process; bload sizes can vary; variable num bloads per flow 
 # Bload sizes must > 4
 
-# class PoissonFlow:
-
-#     def __init__(self, flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_b, max_byteload_size_b, min_interval_us, max_interval_us):
-#         self.flow_rate_bps = flow_rate_bps
-#         self.min_num_byteloads = min_num_byteloads
-#         self.max_num_byteloads = max_num_byteloads
-#         self.min_byteload_size_b = min_byteload_size_b
-#         self.max_byteload_size_b = max_byteload_size_b
-#         self.min_interval_us = min_interval_us
-#         self.max_interval_us = max_interval_us
-
-#     def generate_truncated_exponential_intervals(self, num_intervals, min_interval_us, max_interval_us, total_flow_duration_s):
-#         """Generates intervals from a truncated exponential distribution, rescaled to sum to total_duration."""
-#         # We adjust λ such that the mean interval contributes to the desired flow rate
-#         # Since intervals are between chunks, λ is not directly flow_rate but must align with total_duration
-#         scale = total_flow_duration_s / num_intervals  # Approximate mean interval
-        
-#         # Truncation bounds in terms of scale
-#         interval_lower_bound_us = min_interval_us / scale
-#         interval_upper_bound_us = max_interval_us / scale
-        
-#         # Sample from truncated exponential
-#         intervals_us_list = truncexpon(interval_upper_bound_us - interval_lower_bound_us, scale=scale).rvs(size=num_intervals)
-        
-#         # Rescale to ensure sum is exactly total_duration
-#         total_flow_duration_us = total_flow_duration_s * pow(10,6)
-#         intervals_us_list = intervals_us_list * (total_flow_duration_us / intervals_us_list.sum())
-
-#         # Round each interval to the nearest nanosecond
-#         intervals_us_list = [round(i, 3) for i in intervals_us_list]
-        
-#         return intervals_us_list
-
-#     def generate_flow(self):
-#         """Generates a flow with exact flow rate in bits per second."""
-#         num_byteloads = np.random.randint(self.min_num_byteloads, self.max_num_byteloads + 1)
-        
-#         # Generate chunk sizes (in bits)
-#         byteload_size_b = np.rint(np.random.uniform(self.min_byteload_size_b, self.max_byteload_size_b, size=num_byteloads))
-#         total_bits = byteload_size_b.sum()
-        
-#         # Compute total duration needed to achieve flow_rate_bps
-#         total_flow_duration_s = total_bits / self.flow_rate_bps
-        
-#         # Generate intervals (rescaled to sum to total_duration)
-#         intervals_us_list = self.generate_truncated_exponential_intervals(num_byteloads-1, self.min_interval_us, self.max_interval_us, total_flow_duration_s)
-        
-#         # Compute timestamps (cumulative sum of intervals)
-#         byteload_timestamps_us = list(np.around(np.cumsum(np.concatenate([[0], intervals_us_list])), 3))
-        
-#         return {
-#             "num_chunks": num_byteloads,
-#             "chunk_sizes_bits": byteload_size_b,
-#             "total_bits": total_bits,
-#             "intervals": intervals_us_list,
-#             "timestamps": byteload_timestamps_us,
-#             "total_duration": byteload_timestamps_us[-1],
-#             "flow_rate_bps": total_bits / (byteload_timestamps_us[-1] * pow(10,-6)) if byteload_timestamps_us[-1] > 0 else float('inf'),
-#         }
-
-class PoissonFlow:
-    def __init__(self, flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_b, max_byteload_size_b, min_interval_us, max_interval_us):
+class PoissonFlowGenerator:
+    def __init__(self, flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_B, max_byteload_size_B, min_interval_us, max_interval_us):
         self.flow_rate_bps = flow_rate_bps
         self.min_num_byteloads = min_num_byteloads
         self.max_num_byteloads = max_num_byteloads
-        self.min_byteload_size_b = min_byteload_size_b
-        self.max_byteload_size_b = max_byteload_size_b
-        self.min_interval_us = min_interval_us
+        self.min_byteload_size_B = min_byteload_size_B
+        self.max_byteload_size_B = max_byteload_size_B
+        self.min_interval_us = min_interval_us  # NOTE: this limit doesn't actually do much, final intervals are still at ns granularity
         self.max_interval_us = max_interval_us
 
     def _generate_byteload_sizes(self, num_byteloads):
         """Generate random byteload sizes in bits."""
-        return np.rint(np.random.uniform(self.min_byteload_size_b, self.max_byteload_size_b, size=num_byteloads))
+        return np.rint(np.random.uniform(self.min_byteload_size_B, self.max_byteload_size_B, size=num_byteloads))
 
-    def _calculate_required_byteloads(self, total_bits):
+    def _calculate_required_byteloads(self, flow_size_B):
         """
         Calculate minimum byteloads needed to satisfy:
         1. Total duration = total_bits / flow_rate_bps
         2. Sum of intervals = total_duration
         3. Each interval in [min_interval_us, max_interval_us]
         """
-        total_duration_s = total_bits / self.flow_rate_bps
+        total_duration_s = flow_size_B * 8 / self.flow_rate_bps
         total_duration_us = total_duration_s * 1e6
         
         # Minimum byteloads needed to fit all intervals within bounds
@@ -961,18 +897,18 @@ class PoissonFlow:
         num_byteloads = np.random.randint(self.min_num_byteloads, self.max_num_byteloads + 1)
         
         # Generate byteload sizes and total bits
-        byteload_sizes_b = self._generate_byteload_sizes(num_byteloads)
-        total_bits = byteload_sizes_b.sum()
+        byteload_size_B_list = self._generate_byteload_sizes(num_byteloads)
+        flow_size_B = byteload_size_B_list.sum()
         
         # Calculate required byteloads based on interval constraints
-        num_byteloads = self._calculate_required_byteloads(total_bits)
+        num_byteloads = self._calculate_required_byteloads(flow_size_B)
         
         # Regenerate sizes if byteload count changed
-        if len(byteload_sizes_b) != num_byteloads:
-            byteload_sizes_b = self._generate_byteload_sizes(num_byteloads)
-            total_bits = byteload_sizes_b.sum()
+        if len(byteload_size_B_list) != num_byteloads:
+            byteload_size_B_list = self._generate_byteload_sizes(num_byteloads)
+            flow_size_B = byteload_size_B_list.sum()
 
-        total_duration_s = total_bits / self.flow_rate_bps
+        total_duration_s = flow_size_B * 8 / self.flow_rate_bps
         total_duration_us = total_duration_s * 1e6
         
         # Generate intervals with truncated exponential distribution
@@ -983,54 +919,78 @@ class PoissonFlow:
         # Choose λ to balance between min/max interval constraints
         scale_us = target_sum_us / num_intervals
         
-        # Truncated exponential sampling
+        # Truncated exponential sampling of interval sizes
         a = self.min_interval_us / scale_us
         b = self.max_interval_us / scale_us
-        intervals_us = truncexpon(b - a, scale=scale_us).rvs(size=num_intervals)
+        interval_us_list = truncexpon(b - a, scale=scale_us).rvs(size=num_intervals)
         
         # Rescale to exact total duration
-        intervals_us = intervals_us * (target_sum_us / intervals_us.sum())
-        intervals_us = np.round(intervals_us, 3)
+        interval_us_list = interval_us_list * (target_sum_us / interval_us_list.sum())
+        interval_us_list = np.round(interval_us_list, 3)
+        # Ensure minimum interval is at least 1ns
+        interval_us_list = np.array([i + 0.001 if i == 0 else i for i in interval_us_list])
         
-        # Calculate timestamps (microseconds)
-        timestamps_us = np.round(np.cumsum(np.concatenate([[0], intervals_us])), 3)
+        # Calculate timestamps in us, round to nearest ns
+        timestamp_us_list = np.round(np.cumsum(np.concatenate([[0], interval_us_list])), 3)
         
-        return {
-            "num_byteloads": num_byteloads,
-            "byteload_sizes_b": byteload_sizes_b,
-            "total_bits": total_bits,
-            "intervals_us": intervals_us.tolist(),
-            "timestamps_us": timestamps_us.tolist(),
-            "total_duration_us": float(timestamps_us[-1]),
-            "actual_flow_rate_bps": total_bits / (timestamps_us[-1] * 1e-6) if timestamps_us[-1] > 0 else float('inf')
-        }
+        actual_flow_rate_bps = flow_size_B * 8 / (timestamp_us_list[-1] * 1e-6) if timestamp_us_list[-1] > 0 else -1
+        return FlowSpec(
+            num_byteloads=num_byteloads,
+            byteload_size_B_list=byteload_size_B_list.astype(np.int64).tolist(),
+            flow_size_B=int(flow_size_B),
+            interval_us_list=interval_us_list.tolist(),
+            byteload_timestamp_us_list=timestamp_us_list.tolist(),
+            total_flow_send_duration_us=total_duration_us,
+            flow_rate_bps=actual_flow_rate_bps
+        )
+
+class FlowSpec:
+    def __init__(self, num_byteloads, byteload_size_B_list, flow_size_B, interval_us_list, byteload_timestamp_us_list, total_flow_send_duration_us, flow_rate_bps):
+        self.num_byteloads = num_byteloads
+        self.byteload_size_B_list = byteload_size_B_list
+        self.flow_size_B = flow_size_B
+        self.interval_us_list = interval_us_list
+        self.byteload_timestamp_us_list = byteload_timestamp_us_list
+        self.total_flow_send_duration_us = total_flow_send_duration_us
+        self.flow_rate_bps = flow_rate_bps
+        self.check_spec()
+
+    def check_spec(self):
+        assert(len(set([
+            self.num_byteloads,
+            len(self.byteload_size_B_list),
+            len(self.interval_us_list) + 1,
+            len(self.byteload_timestamp_us_list)
+        ])) == 1)
 
 if __name__ == "__main__":
 
     # Example Usage
-    num_flows = 10
+    num_flows = 1
     flow_rate_bps = 1 * pow(10,9)  # 10 bits per second
     min_num_byteloads = 5
     max_num_byteloads = 1000
-    min_byteload_size_b = 1458  # bits
-    max_byteload_size_b = 2000 # bits
-    min_interval_us = 0.01 # 10ns
+    min_byteload_size_B = 1458 # bits
+    max_byteload_size_B = 1458 # bits
+    min_interval_us = 1 # 1us
     max_interval_us = 100  # 100us
 
-    poisson_flow_generator = PoissonFlow(flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_b, max_byteload_size_b, min_interval_us, max_interval_us)
+    poisson_flow_generator = PoissonFlowGenerator(flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_B, max_byteload_size_B, min_interval_us, max_interval_us)
     # Generate multiple flows and verify flow rates
     flows = [poisson_flow_generator.generate_flow() for _ in range(num_flows)]
 
     for flow in flows:
         print(
-            f"Flow with {flow['num_byteloads']} byteloads | "
-            f"Total Bits: {flow['total_bits']:.2f} bits | "
-            f"Duration: {flow['total_duration_us']:.2f}us | "
-            f"Flow Rate: {flow['actual_flow_rate_bps']*pow(10,-9):.6f} Gbps"
-            f"\n    Max Interval (us): {max(flow['intervals_us'])}"
+            f"Flow with {flow.num_byteloads} byteloads | "
+            f"Flow Size B: {flow.flow_size_B} B | "
+            f"Duration: {flow.total_flow_send_duration_us:.4f}us | "
+            f"Flow Rate: {flow.flow_rate_bps*pow(10,-9):.6f} Gbps"
+            f"\n    Min Byteload Size (B): {min(flow.byteload_size_B_list)}"
+            f"\n    Max Byteload Size (B): {max(flow.byteload_size_B_list)}"
+            f"\n    Min Interval (us): {min(flow.interval_us_list)}"
+            f"\n    Max Interval (us): {max(flow.interval_us_list)}"
             f"\n"
         )
-
 
 
     ''' --- Side-load & analyse existing app trace file ---'''
