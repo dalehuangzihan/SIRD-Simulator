@@ -16,83 +16,80 @@ INFO:__main__:Num flows: 31
 INFO:__main__:Gdpt GBps theoretical: [49.6, 49.6, 49.6, 49.6, 49.6]
 INFO:__main__:* Sim duration (SSIRD): [0.03, 0.02, 0.01, 0.01, 0.01]
 INFO:__main__:* Sim duration (DCTCP): [0.3, 0.1, 0.05, 0.02, 0.01]
-INFO:dale_experiment_rig:Experiment started at: 2025-08-02 01:43:03.738168
+INFO:dale_experiment_rig:Experiment started at: 2025-08-03 15:16:14.111031
 INFO:dale_experiment_rig:
 ##### RUN GROUP #####
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-10000#-20B-100ns_fullrange_31flo_credit_steal
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-10000#-20B-100ns_fullrange_31flo_credit_steal
-INFO:dale_experiment_rig:ssird_sim_duration=0.030000; dctcp_sim_duration=0.300000
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
 INFO:dale_experiment_rig:ssird_sim_duration=0.030000; dctcp_sim_duration=0.300000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
+INFO:dale_experiment_rig:ssird_sim_duration=0.030000; dctcp_sim_duration=0.300000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-100#-2000B-10000ns_fullrange_31flo_credit_steal
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-100#-2000B-10000ns_fullrange_31flo_credit_steal
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.100000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-10#-20000B-100000ns_fullrange_31flo_credit_steal
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:
+=====
+Execute experiment 31flo-10#-20000B-100000ns_fullrange_31flo_credit_steal
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:
-=====
-Execute experiment 31flo-10#-20000B-100000ns_fullrange_31flo_credit_steal
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-1#-200000B-1000000ns_fullrange_31flo_credit_steal
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.100000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 31flo-1#-200000B-1000000ns_fullrange_31flo_credit_steal
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.020000
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
+INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.050000
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.050000
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
 INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.100000
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.050000
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.050000
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
 INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.020000
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
 INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.010000
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
 INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.010000
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
-INFO:dale_experiment_rig:ssird_sim_duration=0.010000; dctcp_sim_duration=0.020000
-DEBUG:dale_experiment_rig:num flows: 31
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
@@ -100,106 +97,100 @@ INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
-DEBUG:dale_experiment_rig:num flows: 31
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
 DEBUG:dale_experiment_rig:num flows: 31
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
-DEBUG:dale_experiment_rig:num flows: 31
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
 DEBUG:dale_experiment_rig:num flows: 31
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
+DEBUG:dale_experiment_rig:num flows: 31
 DEBUG:dale_experiment_rig:num flows: 31
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
+DEBUG:dale_experiment_rig:num flows: 31
+DEBUG:dale_experiment_rig:num flows: 31
 DEBUG:dale_experiment_rig:num flows: 31
 DEBUG:dale_experiment_rig:num flows: 31
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
 DEBUG:dale_experiment_rig:num flows: 31
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
 DEBUG:dale_experiment_rig:num flows: 31
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
 INFO:dale_experiment_rig:-----
-Running experiment for SSIRD
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/SSIRD-31flo-100#-2000B-10000ns_fullrange_31flo_credit_steal.sh
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
 INFO:dale_experiment_rig:-----
 Running experiment for SSIRD
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-100#-2000B-10000ns_fullrange_31flo_credit_steal_stdout.out
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/SSIRD-31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal.sh
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
-INFO:dale_experiment_rig:-----
-Running experiment for SSIRD
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-100#-2000B-10000ns_fullrange_31flo_credit_steal_stderr.out
-INFO:dale_experiment_rig:-----
-Running experiment for DCTCP-50
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal_stdout.out
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/SSIRD-31flo-10#-20000B-100000ns_fullrange_31flo_credit_steal.sh
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50-31flo-100#-2000B-10000ns_fullrange_31flo_credit_steal.sh
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal_stderr.out
 INFO:dale_experiment_rig:-----
-Running experiment for DCTCP-50
+Running experiment for SSIRD
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-10#-20000B-100000ns_fullrange_31flo_credit_steal_stdout.out
 INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/SSIRD-31flo-100#-2000B-10000ns_fullrange_31flo_credit_steal.sh
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-10#-20000B-100000ns_fullrange_31flo_credit_steal_stderr.out
+INFO:dale_experiment_rig:-----
 Running experiment for SSIRD
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50-31flo-100#-2000B-10000ns_fullrange_31flo_credit_steal.sh
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-100#-2000B-10000ns_fullrange_31flo_credit_steal_stdout.out
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/SSIRD-31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal.sh
 INFO:dale_experiment_rig:-----
 Running experiment for DCTCP-50
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-100#-2000B-10000ns_fullrange_31flo_credit_steal_stdout.out
-INFO:dale_experiment_rig:-----
-Running experiment for DCTCP-50
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50-31flo-1#-200000B-1000000ns_fullrange_31flo_credit_steal.sh
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-10#-20000B-100000ns_fullrange_31flo_credit_steal_stderr.out
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/SSIRD-31flo-1#-200000B-1000000ns_fullrange_31flo_credit_steal.sh
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-100#-2000B-10000ns_fullrange_31flo_credit_steal_stderr.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50-31flo-1#-200000B-1000000ns_fullrange_31flo_credit_steal.sh
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50-31flo-10#-20000B-100000ns_fullrange_31flo_credit_steal.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal_stdout.out
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50-31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal.sh
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-100#-2000B-10000ns_fullrange_31flo_credit_steal_stderr.out
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50-31flo-10#-20000B-100000ns_fullrange_31flo_credit_steal.sh
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-1#-200000B-1000000ns_fullrange_31flo_credit_steal_stdout.out
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-1#-200000B-1000000ns_fullrange_31flo_credit_steal_stdout.out
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal_stdout.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-1#-200000B-1000000ns_fullrange_31flo_credit_steal_stdout.out
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-10#-20000B-100000ns_fullrange_31flo_credit_steal_stdout.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-1#-200000B-1000000ns_fullrange_31flo_credit_steal_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal_stderr.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal_stdout.out
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-1#-200000B-1000000ns_fullrange_31flo_credit_steal_stderr.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-1#-200000B-1000000ns_fullrange_31flo_credit_steal_stderr.out
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-10#-20000B-100000ns_fullrange_31flo_credit_steal_stderr.out
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
-INFO:dale_experiment_rig:-----
-Running experiment for SSIRD
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/SSIRD-31flo-10000#-20B-100ns_fullrange_31flo_credit_steal.sh
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-10000#-20B-100ns_fullrange_31flo_credit_steal_stdout.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-10000#-20B-100ns_fullrange_31flo_credit_steal_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal_stderr.out
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
@@ -210,12 +201,21 @@ INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coo
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-10000#-20B-100ns_fullrange_31flo_credit_steal_stdout.out
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/DCTCP-50_31flo-10000#-20B-100ns_fullrange_31flo_credit_steal_stderr.out
 INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ aready exists.
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/SSIRD-31flo-10000#-20B-100ns_fullrange_31flo_credit_steal.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-10000#-20B-100ns_fullrange_31flo_credit_steal_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/ssird_31flo-10000#-20B-100ns_fullrange_31flo_credit_steal_stderr.out
+INFO:dale_experiment_rig:-----
 Backing up app trace file paths
 DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/31flo/SSIRD_app_traces.txt
 INFO:dale_experiment_rig:-----
 Backing up app trace file paths
 DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal/31flo/DCTCP-50_app_traces.txt
-INFO:dale_experiment_rig:Simulations ended at: 2025-08-02 04:58:58.045442
+INFO:dale_experiment_rig:Simulations ended at: 2025-08-03 18:30:48.039841
 INFO:dale_experiment_rig:
 ##### POST PROCESS RESULTS #####
 INFO:dale_experiment_rig:=====
@@ -942,6 +942,7 @@ DEBUG:dale_experiment_rig:Flow 30:: first_event_name: srq, final_event_name: rrq
 INFO:dale_experiment_rig:DCTCP FCT: [0.0005139760000005822, 0.0005225870000007404, 0.0005313210000004176, 0.0005400550000000948, 0.000548790000001631, 0.0005575240000013082, 0.0005662580000009854, 0.0005749920000006625, 0.0005837270000004224, 0.0005924610000000996, 0.0006011950000015531, 0.0006099290000012303, 0.0006186640000009902, 0.0006273980000006674, 0.0006361320000003445, 0.0006448660000000217, 0.0006534770000001799, 0.0006622119999999398, 0.0006708230000000981, 0.0006795570000015516, 0.0006882910000012288, 0.0006970260000009887, 0.0007058830000001848, 0.000714616999999862, 0.000799754000000874, 0.0008007430000009919, 0.0008017320000011097, 0.0008027210000012275, 0.0008037100000013453, 0.000804822000000982, 0.0008059340000006188] ms, App Gtpt (overall): -1 Gbps, App Gdpt (per flow): [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
 INFO:dale_experiment_rig:
 ##### GENERATE METRICS #####
+INFO:dale_experiment_rig:Experiment family: FCT_Fullrange_Byteloads_fullrange_31flo_credit_steal
 INFO:__main__:Total Flow Size (Bytes): 200000
 INFO:__main__:Total Injection Period (us): 1000.0
 INFO:__main__:Byteload Size (Bytes): [20, 200, 2000, 20000, 200000]
