@@ -12,162 +12,174 @@ INFO:__main__:Num Byteloads: [10000, 10000, 10000, 10000]
 INFO:__main__:Intervals (us): [0.01, 0.1, 1, 10]
 INFO:__main__:Num flows: 5
 INFO:__main__:Gdpt GBps theoretical: [80.0, 8.0, 0.8, 0.08]
-INFO:__main__:* Sim duration (SSIRD): [0.0015, 0.002, 0.02, 0.12]
+INFO:__main__:* Sim duration (SSIRD): [0.02, 0.02, 0.02, 0.12]
 INFO:__main__:* Sim duration (DCTCP): [0.02, 0.02, 0.2, 0.3]
+INFO:dale_experiment_rig:Experiment started at: 2025-08-03 09:18:47.538869
 INFO:dale_experiment_rig:
 ##### RUN GROUP #####
 INFO:dale_experiment_rig:
 =====
 Execute experiment 5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:
 =====
 Execute experiment 5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT
-INFO:dale_experiment_rig:ssird_sim_duration=0.001500; dctcp_sim_duration=0.020000
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:
+=====
+Execute experiment 5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
 INFO:dale_experiment_rig:
 =====
-Execute experiment 5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT
+Execute experiment 5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
 INFO:dale_experiment_rig:
 =====
 Execute experiment 5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:
-=====
-Execute experiment 5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT
-INFO:dale_experiment_rig:ssird_sim_duration=0.001500; dctcp_sim_duration=0.020000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 5flo-10000#-20B-10000ns_vary_interval_5flo_1msRTT
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
 INFO:dale_experiment_rig:
 =====
 Execute experiment 5flo-10000#-20B-10000ns_vary_interval_5flo_1msRTT
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:ssird_sim_duration=0.002000; dctcp_sim_duration=0.020000
 INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.020000
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:ssird_sim_duration=0.002000; dctcp_sim_duration=0.020000
-INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
-INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.200000
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
-INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.200000
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.200000
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.200000
 INFO:dale_experiment_rig:ssird_sim_duration=0.120000; dctcp_sim_duration=0.300000
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
+DEBUG:dale_experiment_rig:num flows: 5
+DEBUG:dale_experiment_rig:num flows: 5
 INFO:dale_experiment_rig:ssird_sim_duration=0.120000; dctcp_sim_duration=0.300000
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
 INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+DEBUG:dale_experiment_rig:num flows: 5
 INFO:dale_experiment_rig:-----
 Preparing experiment input MRIs
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
-INFO:dale_experiment_rig:-----
-Preparing experiment input MRIs
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
 INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
-INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
-INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+DEBUG:dale_experiment_rig:num flows: 5
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
+DEBUG:dale_experiment_rig:num flows: 5
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
+DEBUG:dale_experiment_rig:num flows: 5
+DEBUG:dale_experiment_rig:num flows: 5
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+DEBUG:dale_experiment_rig:num flows: 5
 INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
 INFO:dale_experiment_rig:-----
-Running experiment for SSIRD
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/SSIRD-5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT.sh
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT_stdout.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT_stderr.out
+Preparing experiment spec scripts
 INFO:dale_experiment_rig:-----
 Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
 INFO:dale_experiment_rig:-----
 Running experiment for DCTCP-50
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50-5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT.sh
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/SSIRD-5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT.sh
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50_5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT_stdout.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50_5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT_stderr.out
 INFO:dale_experiment_rig:-----
 Running experiment for SSIRD
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/SSIRD-5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT.sh
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT_stdout.out
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT_stderr.out
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
-INFO:dale_experiment_rig:-----
-Running experiment for DCTCP-50
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50-5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT.sh
-INFO:dale_experiment_rig:-----
-Preparing experiment spec scripts
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50_5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT_stdout.out
-INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50_5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT_stderr.out
-INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT_stdout.out
 INFO:dale_experiment_rig:-----
 Running experiment for SSIRD
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/SSIRD-5flo-10000#-20B-10000ns_vary_interval_5flo_1msRTT.sh
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50_5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT_stderr.out
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/SSIRD-5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT.sh
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT_stderr.out
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-10000ns_vary_interval_5flo_1msRTT_stdout.out
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50-5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT.sh
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT_stdout.out
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-10000ns_vary_interval_5flo_1msRTT_stderr.out
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50_5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT_stdout.out
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ aready exists.
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50_5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT_stderr.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/SSIRD-5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT_stderr.out
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
 INFO:dale_experiment_rig:-----
 Running experiment for DCTCP-50
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50-5flo-10000#-20B-10000ns_vary_interval_5flo_1msRTT.sh
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50_5flo-10000#-20B-10000ns_vary_interval_5flo_1msRTT_stdout.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50_5flo-10000#-20B-10000ns_vary_interval_5flo_1msRTT_stderr.out
-INFO:dale_experiment_rig:-----
-Running experiment for DCTCP-50
-INFO:dale_experiment_rig:-----
-Running experiment for SSIRD
 INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50-5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT.sh
-INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/SSIRD-5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50_5flo-10000#-20B-10000ns_vary_interval_5flo_1msRTT_stdout.out
 INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50_5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT_stdout.out
-INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50_5flo-10000#-20B-10000ns_vary_interval_5flo_1msRTT_stderr.out
 INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/DCTCP-50_5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT_stderr.out
-INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/ssird_5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT_stderr.out
 INFO:dale_experiment_rig:-----
 Backing up app trace file paths
 DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/5flo/SSIRD_app_traces.txt
 INFO:dale_experiment_rig:-----
 Backing up app trace file paths
 DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/5flo/DCTCP-50_app_traces.txt
+INFO:dale_experiment_rig:Simulations ended at: 2025-08-03 09:54:10.632756
 INFO:dale_experiment_rig:
 ##### POST PROCESS RESULTS #####
 INFO:dale_experiment_rig:=====
-** Num Byteloads Per Flow: 10000, Byteload Size (B): 20, Inter-Byteload Interval (us): 0.01, ssird_sim_dur (s): 0.0015, dctcp_sim_dur (s): 0.02
+** Num Byteloads Per Flow: 10000, Byteload Size (B): 20, Inter-Byteload Interval (us): 0.01, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.02
 INFO:dale_experiment_rig:Processing SIRD results exp_id 0:: 5flo-10000#-20B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT/data/SSIRD/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
@@ -180,7 +192,7 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:SSIRD FCT: [0.001517223000000456, 0.0015341060000011453, 0.0015509890000000581, 0.0015678720000007473, 0.0015847560000015193] ms, Gdpt (overall): 80.00640063949119 Gbps, Gdpt (per flow): [15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446]
+INFO:dale_experiment_rig:SSIRD FCT: [0.0016001160000005399, 0.0017001360000001853, 0.001800156000001607, 0.0019001760000012524, 0.002000196000000898] ms, App Gdpt (overall): 80.00640063949119 Gbps, App Gdpt (per flow): [15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446]
 INFO:dale_experiment_rig:Processing DCTCP results exp_id 0:: 5flo-10000#-20B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5flo-10000#-20B-10ns_vary_interval_5flo_1msRTT/data/DCTCP-50/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
@@ -193,9 +205,9 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:DCTCP FCT: [0.0008919770000002103, 0.0008919840000007895, 0.0008919920000014514, 0.000892000000000337, 0.0008920080000009989] ms, Gtpt (overall): 80.00640063949119 Gbps, Gdpt (per flow): [15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446]
+INFO:dale_experiment_rig:DCTCP FCT: [0.0008919770000002103, 0.0008919840000007895, 0.0008919920000014514, 0.000892000000000337, 0.0008920080000009989] ms, App Gtpt (overall): 80.00640063949119 Gbps, App Gdpt (per flow): [15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446]
 INFO:dale_experiment_rig:=====
-** Num Byteloads Per Flow: 10000, Byteload Size (B): 20, Inter-Byteload Interval (us): 0.1, ssird_sim_dur (s): 0.002, dctcp_sim_dur (s): 0.02
+** Num Byteloads Per Flow: 10000, Byteload Size (B): 20, Inter-Byteload Interval (us): 0.1, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.02
 INFO:dale_experiment_rig:Processing SIRD results exp_id 1:: 5flo-10000#-20B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT/data/SSIRD/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
@@ -208,7 +220,7 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:SSIRD FCT: [0.0015424730000006548, 0.0015846530000001025, 0.001626863000000256, 0.0016690730000004095, 0.0017112530000016335] ms, Gdpt (overall): 8.000640064005973 Gbps, Gdpt (per flow): [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146]
+INFO:dale_experiment_rig:SSIRD FCT: [0.0018000960000001953, 0.0021000960000012725, 0.0024000960000005733, 0.002700095999999874, 0.0030000960000009513] ms, App Gdpt (overall): 8.000640064005973 Gbps, App Gdpt (per flow): [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146]
 INFO:dale_experiment_rig:Processing DCTCP results exp_id 1:: 5flo-10000#-20B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5flo-10000#-20B-100ns_vary_interval_5flo_1msRTT/data/DCTCP-50/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
@@ -221,22 +233,22 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:DCTCP FCT: [0.001499916000000212, 0.001499924000000874, 0.0014999310000014532, 0.0014999390000003388, 0.0014999470000010007] ms, Gtpt (overall): 8.000640064005973 Gbps, Gdpt (per flow): [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146]
+INFO:dale_experiment_rig:DCTCP FCT: [0.001499916000000212, 0.001499924000000874, 0.0014999310000014532, 0.0014999390000003388, 0.0014999470000010007] ms, App Gtpt (overall): 8.000640064005973 Gbps, App Gdpt (per flow): [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146]
 INFO:dale_experiment_rig:=====
 ** Num Byteloads Per Flow: 10000, Byteload Size (B): 20, Inter-Byteload Interval (us): 1, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.2
 INFO:dale_experiment_rig:Processing SIRD results exp_id 2:: 5flo-10000#-20B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT/data/SSIRD/60/applications_trace.str
-INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 8956
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 8751
 DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10000, num srq events: 10000, num rrq events: 8898
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10000, num srq events: 10000, num rrq events: 8334
 DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:Flow 2:: num of byteloads: 10000, num srq events: 10000, num rrq events: 8815
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 10000, num srq events: 10000, num rrq events: 7501
 DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000, num rrq events: 8675
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000, num rrq events: 5001
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 8320
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:SSIRD FCT: [0.01049907600000033, 0.010499106000001035, 0.010499135999999964, 0.01049917300000125, 0.010499203000000179] ms, Gdpt (overall): 0.8000640064005973 Gbps, Gdpt (per flow): [0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145]
+INFO:dale_experiment_rig:SSIRD FCT: [0.01049907600000033, 0.010499106000001035, 0.010499135999999964, 0.01049916600000067, 0.011499185999999995] ms, App Gdpt (overall): 0.8000640064005973 Gbps, App Gdpt (per flow): [0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145]
 INFO:dale_experiment_rig:Processing DCTCP results exp_id 2:: 5flo-10000#-20B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5flo-10000#-20B-1000ns_vary_interval_5flo_1msRTT/data/DCTCP-50/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
@@ -249,22 +261,22 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:DCTCP FCT: [0.010499016000000694, 0.010499024000001356, 0.010499031000000159, 0.01049903900000082, 0.010499047000001482] ms, Gtpt (overall): 0.8000640064005973 Gbps, Gdpt (per flow): [0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145]
+INFO:dale_experiment_rig:DCTCP FCT: [0.010499016000000694, 0.010499024000001356, 0.010499031000000159, 0.01049903900000082, 0.010499047000001482] ms, App Gtpt (overall): 0.8000640064005973 Gbps, App Gdpt (per flow): [0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145]
 INFO:dale_experiment_rig:=====
 ** Num Byteloads Per Flow: 10000, Byteload Size (B): 20, Inter-Byteload Interval (us): 10, ssird_sim_dur (s): 0.12, dctcp_sim_dur (s): 0.3
 INFO:dale_experiment_rig:Processing SIRD results exp_id 3:: 5flo-10000#-20B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-5flo-10000#-20B-10000ns_vary_interval_5flo_1msRTT/data/SSIRD/60/applications_trace.str
-INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9896
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9876
 DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9890
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9834
 DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:Flow 2:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9882
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9751
 DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9868
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9501
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9833
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:SSIRD FCT: [0.10049007799999998, 0.10049010800000069, 0.1004901380000014, 0.1004901750000009, 0.10049020500000161] ms, Gdpt (overall): 0.080006400640064 Gbps, Gdpt (per flow): [0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997]
+INFO:dale_experiment_rig:SSIRD FCT: [0.10049007799999998, 0.10049010800000069, 0.1004901380000014, 0.10049016800000032, 0.10149018800000142] ms, App Gdpt (overall): 0.080006400640064 Gbps, App Gdpt (per flow): [0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997]
 INFO:dale_experiment_rig:Processing DCTCP results exp_id 3:: 5flo-10000#-20B
 INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-5flo-10000#-20B-10000ns_vary_interval_5flo_1msRTT/data/DCTCP-50/60/applications_trace.str
 INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
@@ -277,9 +289,10 @@ INFO:dale_experiment_rig:Flow 3:: num of byteloads: 10000, num srq events: 10000
 DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
 INFO:dale_experiment_rig:Flow 4:: num of byteloads: 10000, num srq events: 10000, num rrq events: 10000
 DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 200000, recv_data_B: 200000
-INFO:dale_experiment_rig:DCTCP FCT: [0.10049001600000018, 0.10049002400000084, 0.10049003100000142, 0.10049003900000031, 0.10049004700000097] ms, Gtpt (overall): 0.080006400640064 Gbps, Gdpt (per flow): [0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997]
+INFO:dale_experiment_rig:DCTCP FCT: [0.10049001600000018, 0.10049002400000084, 0.10049003100000142, 0.10049003900000031, 0.10049004700000097] ms, App Gtpt (overall): 0.080006400640064 Gbps, App Gdpt (per flow): [0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997]
 INFO:dale_experiment_rig:
 ##### GENERATE METRICS #####
+INFO:dale_experiment_rig:Experiment family: FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT
 INFO:__main__:Total Flow Size (Bytes): 200000
 INFO:__main__:Byteload Size (Bytes): [20, 20, 20, 20]
 INFO:__main__:Num Byteloads: [10000, 10000, 10000, 10000]
@@ -291,7 +304,7 @@ INFO:__main__:Gdpt Gbps measured (SSIRD): [80.00640063949119, 8.000640064005973,
 INFO:__main__:Gdpt Gbps measured (DCTCP): [80.00640063949119, 8.000640064005973, 0.8000640064005973, 0.080006400640064]
 DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446], [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146], [0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145], [0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997]]
 DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [[15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446], [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146], [0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145], [0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997]]
-INFO:__main__:* Sim duration (SSIRD): [0.0015, 0.002, 0.02, 0.12]
+INFO:__main__:* Sim duration (SSIRD): [0.02, 0.02, 0.02, 0.12]
 INFO:__main__:* Sim duration (DCTCP): [0.02, 0.02, 0.2, 0.3]
-INFO:__main__:* SSIRD FCT: [[0.001517223000000456, 0.0015341060000011453, 0.0015509890000000581, 0.0015678720000007473, 0.0015847560000015193], [0.0015424730000006548, 0.0015846530000001025, 0.001626863000000256, 0.0016690730000004095, 0.0017112530000016335], [0.01049907600000033, 0.010499106000001035, 0.010499135999999964, 0.01049917300000125, 0.010499203000000179], [0.10049007799999998, 0.10049010800000069, 0.1004901380000014, 0.1004901750000009, 0.10049020500000161]]
+INFO:__main__:* SSIRD FCT: [[0.0016001160000005399, 0.0017001360000001853, 0.001800156000001607, 0.0019001760000012524, 0.002000196000000898], [0.0018000960000001953, 0.0021000960000012725, 0.0024000960000005733, 0.002700095999999874, 0.0030000960000009513], [0.01049907600000033, 0.010499106000001035, 0.010499135999999964, 0.01049916600000067, 0.011499185999999995], [0.10049007799999998, 0.10049010800000069, 0.1004901380000014, 0.10049016800000032, 0.10149018800000142]]
 INFO:__main__:* DCTCP FCT: [[0.0008919770000002103, 0.0008919840000007895, 0.0008919920000014514, 0.000892000000000337, 0.0008920080000009989], [0.001499916000000212, 0.001499924000000874, 0.0014999310000014532, 0.0014999390000003388, 0.0014999470000010007], [0.010499016000000694, 0.010499024000001356, 0.010499031000000159, 0.01049903900000082, 0.010499047000001482], [0.10049001600000018, 0.10049002400000084, 0.10049003100000142, 0.10049003900000031, 0.10049004700000097]]
