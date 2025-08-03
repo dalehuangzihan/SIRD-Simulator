@@ -544,12 +544,23 @@ def proc_1flo_fullrange_exp_sim_outputs_1msRTT():
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
 ''' ----- OTHER EXPERIMENTS ----- '''
+def proc_5flo_large_bload_8gbps_exp_sim_outputs_5usRTT():
+
+    print("\n--- 5 FLO FULLRANGE 8Gbps RTT=5us CREDIT STEAL: ---")
+    title_addendum = "_large_bload_20MBflo_5flo_8gbps_total_credit_steal"
+    rel_path_to_exp_family_output_dir = "FCT_LARGE_Byteloads_SSIRD_ONLY_large_bload_20MBflo_5flo_8gbps_total_credit_steal/"
+    num_flows = 5
+    num_byteloads_list = [10000, 1000, 100, 10, 1]
+    byteload_size_B_list = [2000, 20000, 200000, 2000000, 20000000]
+    inter_byteload_period_us_list = [10.0, 100.0, 1000.0, 10000.0, 100000.0]
+
+    process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
 def proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT():
 
-    print("\n--- 5 FLO FULLRANGE 8Gbps RTT=1ms: ---")
-    title_addendum = "_large_bload_20MBflo_5flo_8gbps_total_1msRTT"
-    rel_path_to_exp_family_output_dir = "FCT_LARGE_Byteloads_SSIRD_ONLY_large_bload_20MBflo_5flo_8gbps_total_1msRTT/"
+    print("\n--- 5 FLO FULLRANGE 8Gbps RTT=1ms CREDIT STEAL: ---")
+    title_addendum = "_large_bload_20MBflo_5flo_8gbps_total_1msRTT_credit_steal"
+    rel_path_to_exp_family_output_dir = "FCT_LARGE_Byteloads_SSIRD_ONLY_large_bload_20MBflo_5flo_8gbps_total_1msRTT_credit_steal/"
     num_flows = 5
     num_byteloads_list = [10000, 1000, 100, 10, 1]
     byteload_size_B_list = [2000, 20000, 200000, 2000000, 20000000]
@@ -558,7 +569,7 @@ def proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT():
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
 def proc_5flo_test_vary_bload_num_1msRTT():
-    print("\nTESTING: 5FLO VARY BLOAD NUMBER (1ms RTT)")
+    print("\nTESTING: 5FLO VARY BLOAD NUMBER (1ms RTT) CREDIT STEAL")
     title_addendum = "_vary_num_bload_5flo_1msRTT"
     rel_path_to_exp_family_output_dir = "FCT_VARY_NUM_BLOAD_vary_num_bload_5flo_1msRTT/"
 
@@ -570,7 +581,7 @@ def proc_5flo_test_vary_bload_num_1msRTT():
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
 def proc_5flo_test_vary_bload_size_1msRTT():
-    print("\nTESTING: 5FLO VARY BLOAD SIZE (1ms RTT)")
+    print("\nTESTING: 5FLO VARY BLOAD SIZE (1ms RTT) CREDIT STEAL")
     title_addendum = "_vary_bload_size_5flo_1msRTT"
     rel_path_to_exp_family_output_dir = "FCT_VARY_BLOAD_SIZE_vary_bload_size_5flo_1msRTT/"
 
@@ -582,22 +593,7 @@ def proc_5flo_test_vary_bload_size_1msRTT():
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
 def proc_5flo_test_vary_interval_1msRTT():
-    # INFO:__main__:Total Flow Size (Bytes): 200000
-    # INFO:__main__:Byteload Size (Bytes): [20, 20, 20, 20]
-    # INFO:__main__:Num Byteloads: [10000, 10000, 10000, 10000]
-    # INFO:__main__:Intervals (us): [0.01, 0.1, 1, 10]
-    # INFO:__main__:Num flows: 5
-    # DEBUG:__main__:Flow start times (us): [0, 0, 0, 0, 0]
-    # INFO:__main__:Gdpt Gbps theoretical: [80.0, 8.0, 0.8, 0.08]
-    # INFO:__main__:Gdpt Gbps measured (SSIRD): [80.00640063949119, 8.000640064005973, 0.8000640064005973, 0.080006400640064]
-    # INFO:__main__:Gdpt Gbps measured (DCTCP): [80.00640063949119, 8.000640064005973, 0.8000640064005973, 0.080006400640064]
-    # DEBUG:__main__:Gdpt Gbps measured per flow (SSIRD): [[15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446], [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146], [0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145], [0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997]]
-    # DEBUG:__main__:Gdpt Gbps measured per flow (DCTCP): [[15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446, 15.999999999885446], [1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146, 1.5999999999999146], [0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145, 0.15999999999999145], [0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997, 0.015999999999999997]]
-    # INFO:__main__:* Sim duration (SSIRD): [0.0015, 0.002, 0.02, 0.12]
-    # INFO:__main__:* Sim duration (DCTCP): [0.02, 0.02, 0.2, 0.3]
-    # INFO:__main__:* SSIRD FCT: [[0.001517223000000456, 0.0015341060000011453, 0.0015509890000000581, 0.0015678720000007473, 0.0015847560000015193], [0.0015424730000006548, 0.0015846530000001025, 0.001626863000000256, 0.0016690730000004095, 0.0017112530000016335], [0.01049907600000033, 0.010499106000001035, 0.010499135999999964, 0.01049917300000125, 0.010499203000000179], [0.10049007799999998, 0.10049010800000069, 0.1004901380000014, 0.1004901750000009, 0.10049020500000161]]
-    # INFO:__main__:* DCTCP FCT: [[0.0008919770000002103, 0.0008919840000007895, 0.0008919920000014514, 0.000892000000000337, 0.0008920080000009989], [0.001499916000000212, 0.001499924000000874, 0.0014999310000014532, 0.0014999390000003388, 0.0014999470000010007], [0.010499016000000694, 0.010499024000001356, 0.010499031000000159, 0.01049903900000082, 0.010499047000001482], [0.10049001600000018, 0.10049002400000084, 0.10049003100000142, 0.10049003900000031, 0.10049004700000097]]
-    print("\nTESTING: 5FLO VARY BLOAD INTERVAL (1ms RTT)")
+    print("\nTESTING: 5FLO VARY BLOAD INTERVAL (1ms RTT) CREDIT STEAL")
     title_addendum = "_vary_interval_5flo_1msRTT"
     rel_path_to_exp_family_output_dir = "FCT_VARY_INTERVAL_vary_interval_5flo_1msRTT/"
 
@@ -728,7 +724,6 @@ def proc_credit_leak_investigation_1462B_5flo_5usRTT():
 
     process_ssird_sim_outputs(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rel_path_to_exp_family_output_dir, title_addendum)
 
-
 def proc_credit_leak_investigation_1462B_1flo_1msRTT():
     print("\nCredit leak Investigation: 1462B, 10us, 1Flo, 1msRTT")
     title_addendum = "_1462B_1flo_3bload_credit_leak_1msRTT_test"
@@ -769,11 +764,12 @@ if __name__ == "__main__":
     ## proc_31flow_largepkt_exp_sim_outputs_fastpace_extended()
     # proc_31flow_fullrange_exp_sim_outputs()
 
-    # 1RTT verification experiments ---
-    ## proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT()
-    ## proc_5flo_test_vary_bload_num_1msRTT()
-    ## proc_5flo_test_vary_bload_size_1msRTT()
-    ## proc_5flo_test_vary_interval_1msRTT()
+    ''' --- 1RTT verification experiments ---'''
+    proc_5flo_large_bload_8gbps_exp_sim_outputs_5usRTT()
+    # proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT()
+    # proc_5flo_test_vary_bload_num_1msRTT()
+    # proc_5flo_test_vary_bload_size_1msRTT()
+    # proc_5flo_test_vary_interval_1msRTT()
 
     # ''' Normal Bload Size Experiments (RTT = 5us) --- '''
     # proc_normal_bloads_1458B_8flo_99pt312Gbps_5usRTT()
@@ -799,15 +795,15 @@ if __name__ == "__main__":
     # proc_1flo_fullrange_exp_sim_outputs_1msRTT()
     # proc_5flo_fullrange_exp_sim_outputs_1msRTT()
 
-    ''' --- Verify Credit Leak Fix (With Credit Stealing)  --- '''
-    proc_1flo_fullrange_exp_sim_outputs_5usRTT()
-    proc_1flo_fullrange_exp_sim_outputs_1msRTT()
+    # ''' --- Verify Credit Leak Fix (With Credit Stealing)  --- '''
+    # proc_1flo_fullrange_exp_sim_outputs_5usRTT()
+    # proc_1flo_fullrange_exp_sim_outputs_1msRTT()
 
-    proc_3flo_fullrange_exp_sim_outputs_5usRTT()
-    proc_3flo_fullrange_exp_sim_outputs_1msRTT()
+    # proc_3flo_fullrange_exp_sim_outputs_5usRTT()
+    # proc_3flo_fullrange_exp_sim_outputs_1msRTT()
 
-    proc_5flo_fullrange_exp_sim_outputs_5usRTT()
-    proc_5flo_fullrange_exp_sim_outputs_1msRTT()
+    # proc_5flo_fullrange_exp_sim_outputs_5usRTT()
+    # proc_5flo_fullrange_exp_sim_outputs_1msRTT()
 
-    proc_31flow_fullrange_exp_sim_outputs_5usRTT()
-    proc_31flow_fullrange_exp_sim_outputs_1msRTT()
+    # proc_31flow_fullrange_exp_sim_outputs_5usRTT()
+    # proc_31flow_fullrange_exp_sim_outputs_1msRTT()

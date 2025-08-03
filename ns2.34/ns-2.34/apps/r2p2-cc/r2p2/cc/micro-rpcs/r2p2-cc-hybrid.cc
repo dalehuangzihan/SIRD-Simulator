@@ -328,6 +328,7 @@ void R2p2CCHybrid::send_to_transport(hdr_r2p2 &r2p2_hdr, int payload, int32_t da
                "is_single_pkt_request:", is_single_pkt_request,
                "first():", r2p2_hdr.first(),
                "is_final_req_of_conn:", r2p2_hdr.is_final_req_of_conn(),
+               "is_do_reply:", r2p2_hdr.is_do_reply(),
                "|", is_reqzero, is_reqzero_of_multipkt, is_multi_pkt_req_not_req0, is_reply, "|");
                
     if (is_reqzero_of_multipkt)
@@ -392,7 +393,9 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
         if (r2p2_hdr->msg_type() == hdr_r2p2::REQUEST)
         {
             assert(0);
-            slog::log5(debug_, this_addr_, "Received the pkt of a single-packet REQUEST");
+            /* Dale: elevate from log5 to log2 */
+            slog::log2(debug_, this_addr_, "Received the pkt of a single-packet REQUEST for msg", r2p2_hdr->req_id(), "is_do_reply=", r2p2_hdr->is_do_reply());
+
         }
         else if (r2p2_hdr->msg_type() == hdr_r2p2::REPLY)
         {
