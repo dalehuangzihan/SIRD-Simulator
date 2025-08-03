@@ -7,6 +7,7 @@ import logging
 import collections
 import math
 import numpy as np
+from scipy.stats import truncexpon
 
 # for thread pool
 MAX_WORKERS = 4 
@@ -856,107 +857,190 @@ def init_logs(experiment_family, logs_file_name, log_level=logging.DEBUG):
 # For each flow: inter-bload intervals are drawn from poisson process; bload sizes can vary; fixed num bloads per flow 
 # Bload sizes must > 4
 
+# class PoissonFlow:
+
+#     def __init__(self, flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_b, max_byteload_size_b, min_interval_us, max_interval_us):
+#         self.flow_rate_bps = flow_rate_bps
+#         self.min_num_byteloads = min_num_byteloads
+#         self.max_num_byteloads = max_num_byteloads
+#         self.min_byteload_size_b = min_byteload_size_b
+#         self.max_byteload_size_b = max_byteload_size_b
+#         self.min_interval_us = min_interval_us
+#         self.max_interval_us = max_interval_us
+
+#     def generate_truncated_exponential_intervals(self, num_intervals, min_interval_us, max_interval_us, total_flow_duration_s):
+#         """Generates intervals from a truncated exponential distribution, rescaled to sum to total_duration."""
+#         # We adjust λ such that the mean interval contributes to the desired flow rate
+#         # Since intervals are between chunks, λ is not directly flow_rate but must align with total_duration
+#         scale = total_flow_duration_s / num_intervals  # Approximate mean interval
+        
+#         # Truncation bounds in terms of scale
+#         interval_lower_bound_us = min_interval_us / scale
+#         interval_upper_bound_us = max_interval_us / scale
+        
+#         # Sample from truncated exponential
+#         intervals_us_list = truncexpon(interval_upper_bound_us - interval_lower_bound_us, scale=scale).rvs(size=num_intervals)
+        
+#         # Rescale to ensure sum is exactly total_duration
+#         total_flow_duration_us = total_flow_duration_s * pow(10,6)
+#         intervals_us_list = intervals_us_list * (total_flow_duration_us / intervals_us_list.sum())
+
+#         # Round each interval to the nearest nanosecond
+#         intervals_us_list = [round(i, 3) for i in intervals_us_list]
+        
+#         return intervals_us_list
+
+#     def generate_flow(self):
+#         """Generates a flow with exact flow rate in bits per second."""
+#         num_byteloads = np.random.randint(self.min_num_byteloads, self.max_num_byteloads + 1)
+        
+#         # Generate chunk sizes (in bits)
+#         byteload_size_b = np.rint(np.random.uniform(self.min_byteload_size_b, self.max_byteload_size_b, size=num_byteloads))
+#         total_bits = byteload_size_b.sum()
+        
+#         # Compute total duration needed to achieve flow_rate_bps
+#         total_flow_duration_s = total_bits / self.flow_rate_bps
+        
+#         # Generate intervals (rescaled to sum to total_duration)
+#         intervals_us_list = self.generate_truncated_exponential_intervals(num_byteloads-1, self.min_interval_us, self.max_interval_us, total_flow_duration_s)
+        
+#         # Compute timestamps (cumulative sum of intervals)
+#         byteload_timestamps_us = list(np.around(np.cumsum(np.concatenate([[0], intervals_us_list])), 3))
+        
+#         return {
+#             "num_chunks": num_byteloads,
+#             "chunk_sizes_bits": byteload_size_b,
+#             "total_bits": total_bits,
+#             "intervals": intervals_us_list,
+#             "timestamps": byteload_timestamps_us,
+#             "total_duration": byteload_timestamps_us[-1],
+#             "flow_rate_bps": total_bits / (byteload_timestamps_us[-1] * pow(10,-6)) if byteload_timestamps_us[-1] > 0 else float('inf'),
+#         }
+
 class PoissonFlow:
-
-    MAX_ATTEMPTS = int(pow(10,6))
-
-    def __init__(self, flow_rate_bps, target_flow_size_b, min_num_bloads, max_num_bloads, min_byteload_size_B=4, flow_size_error_threshold=0.3):
+    def __init__(self, flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_b, max_byteload_size_b, min_interval_us, max_interval_us):
         self.flow_rate_bps = flow_rate_bps
-        self.min_num_bloads = min_num_bloads
-        self.max_num_bloads = max_num_bloads
-        self.min_byteload_size_b = min_byteload_size_B
+        self.min_num_byteloads = min_num_byteloads
+        self.max_num_byteloads = max_num_byteloads
+        self.min_byteload_size_b = min_byteload_size_b
+        self.max_byteload_size_b = max_byteload_size_b
+        self.min_interval_us = min_interval_us
+        self.max_interval_us = max_interval_us
 
-        self.target_flow_size_b = target_flow_size_b
-        self.mean_interval_us = 1.0
+    def _generate_byteload_sizes(self, num_byteloads):
+        """Generate random byteload sizes in bits."""
+        return np.rint(np.random.uniform(self.min_byteload_size_b, self.max_byteload_size_b, size=num_byteloads))
 
-        self.flow_size_error_threshold = flow_size_error_threshold
-    
+    def _calculate_required_byteloads(self, total_bits):
+        """
+        Calculate minimum byteloads needed to satisfy:
+        1. Total duration = total_bits / flow_rate_bps
+        2. Sum of intervals = total_duration
+        3. Each interval in [min_interval_us, max_interval_us]
+        """
+        total_duration_s = total_bits / self.flow_rate_bps
+        total_duration_us = total_duration_s * 1e6
+        
+        # Minimum byteloads needed to fit all intervals within bounds
+        min_byteloads = max(self.min_num_byteloads, int(np.ceil(total_duration_us / self.max_interval_us)) + 1)
+        
+        # Maximum allowed byteloads (to prevent too many small packets)
+        max_byteloads = min(self.max_num_byteloads, int(np.floor(total_duration_us / self.min_interval_us)) + 1)
+        
+        if min_byteloads > max_byteloads:
+            raise ValueError(
+                f"Cannot satisfy constraints: need {min_byteloads} byteloads "
+                f"but max allowed is {max_byteloads}. Adjust parameters."
+            )
+        
+        return np.random.randint(min_byteloads, max_byteloads + 1)
+
     def generate_flow(self):
-        """
-        Generate a single flow with:
-        - Poisson process intervals
-        - Strictly fixed rate R
-        - Total size ≈ target_size
-        - Between min_chunks and max_chunks
-        - All chunk sizes ≥ min_chunk_size
-        """
-        best_flow = None
-        best_size_error_ratio = float('inf')
+        """Generate flow with dynamically adjusted byteload count."""
+        # Initial random byteload count
+        num_byteloads = np.random.randint(self.min_num_byteloads, self.max_num_byteloads + 1)
         
-        # Try multiple configurations to find best match
-        for _ in range(self.MAX_ATTEMPTS):
-            # Randomly select number of chunks within bounds
-            num_chunks = np.random.randint(self.min_num_bloads, self.max_num_bloads + 1)
-            
-            # Generate intervals
-            intervals_us = np.random.exponential(self.mean_interval_us, num_chunks)
-            
-            # Compute ideal chunk sizes
-            ideal_byteload_sizes_b = self.flow_rate_bps * intervals_us
-            
-            # Round to integers ≥ min_chunk_size
-            byteload_size_b_list = np.maximum(np.round(ideal_byteload_sizes_b), self.min_byteload_size_b).astype(int)
-            
-            # Calculate total size
-            total_size = np.sum(byteload_size_b_list)
-            size_error_ratio = abs(total_size - self.target_flow_size_b) / self.target_flow_size_b
-            
-            # Keep track of best match
-            if size_error_ratio < best_size_error_ratio:
-                best_size_error_ratio = size_error_ratio
-                best_flow = {
-                    'intervals': intervals_us,
-                    'chunk_sizes': byteload_size_b_list,
-                    'total_size': total_size,
-                    'total_time': np.sum(intervals_us),
-                    'num_chunks': num_chunks
-                }
-                
-                # Early exit if we find a good enough match
-                if best_size_error_ratio < self.flow_size_error_threshold:
-                    break
+        # Generate byteload sizes and total bits
+        byteload_sizes_b = self._generate_byteload_sizes(num_byteloads)
+        total_bits = byteload_sizes_b.sum()
         
-        # Redistribute any rounding error to maintain exact rate
-        ideal_total_size_b = self.flow_rate_bps * best_flow['total_time']
-        total_size_error_b = int(ideal_total_size_b - best_flow['total_size'])
-        if total_size_error_b != 0:
-            # Apply error to largest chunk (minimizes relative impact)
-            largest_idx = np.argmax(best_flow['chunk_sizes'])
-            best_flow['chunk_sizes'][largest_idx] += total_size_error_b
-            best_flow['total_size'] += total_size_error_b
+        # Calculate required byteloads based on interval constraints
+        num_byteloads = self._calculate_required_byteloads(total_bits)
         
-        # Verify final properties
-        best_flow['actual_rate'] = best_flow['total_size'] / best_flow['total_time']
+        # Regenerate sizes if byteload count changed
+        if len(byteload_sizes_b) != num_byteloads:
+            byteload_sizes_b = self._generate_byteload_sizes(num_byteloads)
+            total_bits = byteload_sizes_b.sum()
+
+        total_duration_s = total_bits / self.flow_rate_bps
+        total_duration_us = total_duration_s * 1e6
         
-        return best_flow
+        # Generate intervals with truncated exponential distribution
+        num_intervals = num_byteloads - 1
+        target_sum_us = total_duration_us
+        
+        # Scale parameter for exponential distribution
+        # Choose λ to balance between min/max interval constraints
+        scale_us = target_sum_us / num_intervals
+        
+        # Truncated exponential sampling
+        a = self.min_interval_us / scale_us
+        b = self.max_interval_us / scale_us
+        intervals_us = truncexpon(b - a, scale=scale_us).rvs(size=num_intervals)
+        
+        # Rescale to exact total duration
+        intervals_us = intervals_us * (target_sum_us / intervals_us.sum())
+        intervals_us = np.round(intervals_us, 3)
+        
+        # Calculate timestamps (microseconds)
+        timestamps_us = np.round(np.cumsum(np.concatenate([[0], intervals_us])), 3)
+        
+        return {
+            "num_byteloads": num_byteloads,
+            "byteload_sizes_b": byteload_sizes_b,
+            "total_bits": total_bits,
+            "intervals_us": intervals_us.tolist(),
+            "timestamps_us": timestamps_us.tolist(),
+            "total_duration_us": float(timestamps_us[-1]),
+            "actual_flow_rate_bps": total_bits / (timestamps_us[-1] * 1e-6) if timestamps_us[-1] > 0 else float('inf')
+        }
 
 if __name__ == "__main__":
 
-    target_flow_rate_bps = 8 * pow(10, 9)
-    target_flow_size_B = 100000
-    min_num_bloads = 5
-    max_num_bloads = 100
-    min_bload_size = 4
+    # Example Usage
+    num_flows = 10
+    flow_rate_bps = 1 * pow(10,9)  # 10 bits per second
+    min_num_byteloads = 5
+    max_num_byteloads = 1000
+    min_byteload_size_b = 1458  # bits
+    max_byteload_size_b = 2000 # bits
+    min_interval_us = 0.01 # 10ns
+    max_interval_us = 100  # 100us
 
-    poisson_flow_generator = PoissonFlow(target_flow_rate_bps, target_flow_size_B * 8, min_num_bloads, max_num_bloads, min_bload_size)
-    flow = poisson_flow_generator.generate_flow()
+    poisson_flow_generator = PoissonFlow(flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_b, max_byteload_size_b, min_interval_us, max_interval_us)
+    # Generate multiple flows and verify flow rates
+    flows = [poisson_flow_generator.generate_flow() for _ in range(num_flows)]
 
-    print(f"Generated flow with {flow['num_chunks']} chunks")
-    print(f"Total size: {flow['total_size']} bits (target: {target_flow_size_B*8})")
-    print(f"Total time: {flow['total_time']:.3f} sec")
-    print(f"Actual rate: {flow['actual_rate']/pow(10,9):.5f} Gbps (target: {target_flow_rate_bps/pow(10,9):.5f})")
-    print("\nChunk details:")
-    for i, (t, c) in enumerate(zip(flow['intervals'], flow['chunk_sizes'])):
-        print(f"Chunk {i+1}: Interval = {t:.3f}s, Size = {c/8} bytes")
+    for flow in flows:
+        print(
+            f"Flow with {flow['num_byteloads']} byteloads | "
+            f"Total Bits: {flow['total_bits']:.2f} bits | "
+            f"Duration: {flow['total_duration_us']:.2f}us | "
+            f"Flow Rate: {flow['actual_flow_rate_bps']*pow(10,-9):.6f} Gbps"
+            f"\n    Max Interval (us): {max(flow['intervals_us'])}"
+            f"\n"
+        )
 
-if __name__ == "__main__":
-    proto = SSIRD_PROTO_NAME
-    src_dst_pairs_list = [(0,1)]
-    num_flows = 9
-    # num_flows = 8
-    num_byteloads_list = [100]
-    byteload_size_B_list = [1560]
-    app_trace_paths_list = ["/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-9flo-100#-1560B-1000ns_1560B_9flo_112Gbps/data/SSIRD/60/applications_trace.str"]
-    # app_trace_paths_list = ["/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-8flo-100#-1560B-1000ns_1560B_8flo_99pt84Gbps/data/SSIRD/60/applications_trace.str"]
-    exp_metrics = ExperimentGroup.process_side_loaded_results(proto, src_dst_pairs_list, num_flows, num_byteloads_list, byteload_size_B_list, app_trace_paths_list)
+
+
+    ''' --- Side-load & analyse existing app trace file ---'''
+    # proto = SSIRD_PROTO_NAME
+    # src_dst_pairs_list = [(0,1)]
+    # num_flows = 9
+    # # num_flows = 8
+    # num_byteloads_list = [100]
+    # byteload_size_B_list = [1560]
+    # app_trace_paths_list = ["/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-9flo-100#-1560B-1000ns_1560B_9flo_112Gbps/data/SSIRD/60/applications_trace.str"]
+    # # app_trace_paths_list = ["/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-8flo-100#-1560B-1000ns_1560B_8flo_99pt84Gbps/data/SSIRD/60/applications_trace.str"]
+    # exp_metrics = ExperimentGroup.process_side_loaded_results(proto, src_dst_pairs_list, num_flows, num_byteloads_list, byteload_size_B_list, app_trace_paths_list)
 
