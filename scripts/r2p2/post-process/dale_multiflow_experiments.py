@@ -1232,12 +1232,13 @@ def experiment_vary_byteloadsize_fullrange_multiflow_31flo(is_full_postproc=True
     assert num_of_experiments == len(dctcp_fct_list)
 
 if __name__ == "__main__":
-    # # ---------- LARGE BYTELOADS ----------
+    ''' ---------- LARGE BYTELOADS ---------- '''
     # # experiment_vary_byteloadsize_largebload_multiflow(is_full_postproc=True, title_addendum="_largepkt_multiflow", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # # experiment_vary_byteloadsize_largebload_multiflow_150flo(is_full_postproc=True, title_addendum="_largepkt_multiflow_150flo", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # # experiment_vary_byteloadsize_largebload_multiflow_extended_31flo(is_full_postproc=True, title_addendum="_largepkt_multiflow_extended_31flo", log_level=dale_experiment_rig.LOG_LEVEL_2)
+
     # experiment_vary_byteloadsize_large_bload_20MBflo_5flo_8gbps_total(is_full_postproc=True, title_addendum="_large_bload_20MBflo_5flo_8gbps_total_credit_steal", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_vary_byteloadsize_large_bload_20MBflo_5flo_8gbps_total(is_full_postproc=True, title_addendum="_large_bload_20MBflo_5flo_8gbps_total_1msRTT_credit_steal", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_vary_byteloadsize_large_bload_20MBflo_5flo_8gbps_total(is_full_postproc=True, title_addendum="_large_bload_20MBflo_5flo_8gbps_total_1msRTT_credit_steal", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
     # # ---------- SUBPKT BYTELOADS ----------
     # # experiment_vary_byteloadsize_subpkt_multiflow(is_full_postproc=True, title_addendum="_subpkt_multiflow_fastpace", log_level=dale_experiment_rig.LOG_LEVEL_2)
@@ -1257,4 +1258,4 @@ if __name__ == "__main__":
     # experiment_vary_byteloadsize_fullrange_multiflow_31flo(is_full_postproc=True, title_addendum="_fullrange_31flo_1msRTT_credit_steal", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_vary_byteloadsize_fullrange_multiflow_5flo_8gbps_total(is_full_postproc=True, title_addendum="_fullrange_5flo_8gbps_total_1msRTT_credit_steal", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_vary_byteloadsize_fullrange_multiflow_3flo_4pt8gbps_total(is_full_postproc=True, title_addendum="_fullrange_3flo_4pt8gbps_total_1msRTT_credit_steal", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_vary_byteloadsize_fullrange_multiflow_1flo_1pt6gbps_total(is_full_postproc=True, title_addendum="_fullrange_1flo_1pt6gbps_total_1msRTT_credit_steal", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_vary_byteloadsize_fullrange_multiflow_1flo_1pt6gbps_total(is_full_postproc=True, title_addendum="_fullrange_1flo_1pt6gbps_total_1msRTT_credit_steal", log_level=dale_experiment_rig.LOG_LEVEL_2)

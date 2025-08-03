@@ -766,10 +766,10 @@ if __name__ == "__main__":
 
     ''' --- 1RTT verification experiments ---'''
     proc_5flo_large_bload_8gbps_exp_sim_outputs_5usRTT()
-    # proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT()
-    # proc_5flo_test_vary_bload_num_1msRTT()
-    # proc_5flo_test_vary_bload_size_1msRTT()
-    # proc_5flo_test_vary_interval_1msRTT()
+    proc_5flo_large_bload_8gbps_exp_sim_outputs_1msRTT()
+    proc_5flo_test_vary_bload_num_1msRTT()
+    proc_5flo_test_vary_bload_size_1msRTT()
+    proc_5flo_test_vary_interval_1msRTT()
 
     # ''' Normal Bload Size Experiments (RTT = 5us) --- '''
     # proc_normal_bloads_1458B_8flo_99pt312Gbps_5usRTT()
@@ -795,15 +795,15 @@ if __name__ == "__main__":
     # proc_1flo_fullrange_exp_sim_outputs_1msRTT()
     # proc_5flo_fullrange_exp_sim_outputs_1msRTT()
 
-    # ''' --- Verify Credit Leak Fix (With Credit Stealing)  --- '''
-    # proc_1flo_fullrange_exp_sim_outputs_5usRTT()
-    # proc_1flo_fullrange_exp_sim_outputs_1msRTT()
+    ''' --- Verify Credit Leak Fix (With Credit Stealing)  --- '''
+    proc_1flo_fullrange_exp_sim_outputs_5usRTT()
+    proc_1flo_fullrange_exp_sim_outputs_1msRTT()
 
-    # proc_3flo_fullrange_exp_sim_outputs_5usRTT()
-    # proc_3flo_fullrange_exp_sim_outputs_1msRTT()
+    proc_3flo_fullrange_exp_sim_outputs_5usRTT()
+    proc_3flo_fullrange_exp_sim_outputs_1msRTT()
 
-    # proc_5flo_fullrange_exp_sim_outputs_5usRTT()
-    # proc_5flo_fullrange_exp_sim_outputs_1msRTT()
+    proc_5flo_fullrange_exp_sim_outputs_5usRTT()
+    proc_5flo_fullrange_exp_sim_outputs_1msRTT()
 
-    # proc_31flow_fullrange_exp_sim_outputs_5usRTT()
-    # proc_31flow_fullrange_exp_sim_outputs_1msRTT()
+    proc_31flow_fullrange_exp_sim_outputs_5usRTT()
+    proc_31flow_fullrange_exp_sim_outputs_1msRTT()
