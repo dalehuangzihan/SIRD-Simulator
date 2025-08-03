@@ -388,7 +388,7 @@ def experiment_1458B_bloads_10flo_100Gbps_gdpt(is_full_postproc=True, title_adde
     logger.info(f"Flow Rate (Gbps): {flow_rate_gbps_list}")
     logger.info(f"Flow Size (B): {flow_size_B_list}")
     logger.info(f"Num Byteloads: {flow_num_byteloads_list}")
-    logger.info(f"Flow Send Durations (us): {flow_send_durations_us_list:.2f}")
+    logger.info(f"Flow Send Durations (us): {flow_send_durations_us_list}")
     logger.info(f"Flow Min Byteload Size (B): {flow_min_byteload_size_B_list}")
     logger.info(f"Flow Max Byteload Size (B): {flow_max_byteload_size_B_list}")
     logger.info(f"Flow Min Interval (us): {flow_min_interval_us}")
