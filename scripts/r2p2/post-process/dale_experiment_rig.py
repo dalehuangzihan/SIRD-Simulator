@@ -10,8 +10,8 @@ import numpy as np
 from scipy.stats import truncexpon
 
 # for thread pool
-MAX_WORKERS = 4 
-# MAX_WORKERS = 12 # NOTE: use this for batch1 server
+# MAX_WORKERS = 4 
+MAX_WORKERS = 12 # NOTE: use this for batch1 server
 
 MIN_BYTELOAD_INTERVAL_US = 0.001 # is 1ns
 
@@ -24,8 +24,8 @@ SSIRD_PROTO_NAME = "SSIRD"
 DCTCP_PROTO_NAME = f"DCTCP-{DCTCP_ECN_MARKING_THRESHOLD}"
 DCTCP_PROTO_FAMILY_NAME = "DCTCP"
 
-PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
-# PATH_TO_SIRD_SIM = "/data/dh1723/SIRD-Simulator/" # NOTE: use this for batch1 server
+# PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
+PATH_TO_SIRD_SIM = "/data/dh1723/SIRD-Simulator/" # NOTE: use this for batch1 server
 PATH_TO_SIM_COORD = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/"
 PATH_TO_POST_PROCESS = PATH_TO_SIRD_SIM + "scripts/r2p2/post-process/"
 PATH_TO_SIM_RESULTS = PATH_TO_SIM_COORD + "results/"
@@ -343,7 +343,7 @@ class ExperimentOutputRaw:
     '''
     Is the raw un-processed experiment outputs
     '''
-    def __init__(self, exp_id, experiment_family, experiment_name, app_trace_file_path, proto, src_dst_pairs_list, num_flows, num_byteloads, byteload_size_B):
+    def __init__(self, exp_id, experiment_family, experiment_name, app_trace_file_path, proto, src_dst_pairs_list, num_flows, flow_spec_list):
         self.exp_id = exp_id
         self.experiment_family = experiment_family
         self.experiment_name = experiment_name
@@ -352,8 +352,7 @@ class ExperimentOutputRaw:
         self.app_trace_file_path = app_trace_file_path
 
         self.num_flows = num_flows
-        self.num_byteloads = num_byteloads
-        self.byteload_size_B = byteload_size_B
+        self.flow_spec_list = flow_spec_list
 
     def process_results_fct(self):
         logger.info(f"Processing results from {self.app_trace_file_path}")
@@ -363,7 +362,7 @@ class ExperimentOutputRaw:
             for flow_id in range(0, self.num_flows):
                 src_dst_pair = sorted([src,dst]) # each src-dst pair is unique, so both h0->h1 and h1->h0 flows should be treated as under the same src-dst pair
                 dict_key = (src_dst_pair[0], src_dst_pair[1], flow_id)
-                d[dict_key] = FlowStats(self.proto, src, dst, flow_id, self.num_byteloads, self.byteload_size_B)
+                d[dict_key] = FlowStats(self.proto, src, dst, flow_id, self.flow_spec_list[flow_id].num_byteloads, self.flow_spec_list[flow_id].byteload_size_B)
         flow_stats_dict = collections.OrderedDict(sorted(d.items()))
         del d
 
@@ -598,7 +597,7 @@ class Experiment():
         else:
             logger.error(f"Unrecognised protocol name '{self.proto}'")
 
-        experiment_results_raw = ExperimentOutputRaw(exp_id, self.experiment_family, self.experiment_name, app_trace_file_path, self.proto, self.src_dst_pairs_list, self.num_flows, self.num_byteloads, self.byteload_size_B)
+        experiment_results_raw = ExperimentOutputRaw(exp_id, self.experiment_family, self.experiment_name, app_trace_file_path, self.proto, self.src_dst_pairs_list, self.num_flows, self.flow_spec_list)
 
         return experiment_results_raw
 
