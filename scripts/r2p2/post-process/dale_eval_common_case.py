@@ -283,7 +283,7 @@ def experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
-    ssird_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1]
+    ssird_sim_dur_list = [0.2, 0.2, 0.2, 0.2, 0.2]
     # dctcp_sim_dur_list = [0.03, 0.03, 0.03, 0.03, 0.03] # for RTT = 5us
     dctcp_sim_dur_list = [0.3, 0.3, 0.3, 0.3, 0.3] # for RTT = 1ms
 
