@@ -347,35 +347,32 @@ def experiment_1458B_bloads_10flo_100Gbps_gdpt(is_full_postproc=True, title_adde
     src_dst_pairs_list = [(0,1)]
 
     # NOTE: here we only do 1 experiment, but in the future we could do multiple experiments, each with their own set of flow constraints from which flows are generated
-    # num_flows = 10
-    # target_flow_rate_gbps = 1
-    # target_flow_rate_bps = target_flow_rate_gbps * pow(10,9)  # 10 bits per second
-    # min_num_byteloads = 5
-    # max_num_byteloads = 1000
-    # min_byteload_size_B = 1458 # bits
-    # max_byteload_size_B = 1458 # bits
-    # min_interval_us = 1 # 1us
-    # max_interval_us = 100  # 100us
+    num_flows = 50
+    target_flow_rate_gbps = 1
+    target_flow_rate_bps = target_flow_rate_gbps * pow(10,9)
+    min_num_byteloads = 1000
+    max_num_byteloads = 5000
+    min_byteload_size_B = 1458
+    max_byteload_size_B = 1458
+    min_interval_us = 10
+    max_interval_us = 100
+    poisson_flow_generator = dale_experiment_rig.PoissonFlowGenerator(target_flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_B, max_byteload_size_B, min_interval_us, max_interval_us)
+    # Generate multiple flows and verify flow rates
+    flow_spec_list = [poisson_flow_generator.generate_flow() for _ in range(num_flows)]
 
-    # poisson_flow_generator = dale_experiment_rig.PoissonFlowGenerator(target_flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_B, max_byteload_size_B, min_interval_us, max_interval_us)
-    # # Generate multiple flows and verify flow rates
-    # flow_spec_list = [poisson_flow_generator.generate_flow() for _ in range(num_flows)]
-
-
-    # TODO: for now generate flow spec by hand to debug experiment rig
-    num_flows = 1
-    target_flow_rate_gbps = 69 # TODO: is just placeholder
-    manual_flow_spec = dale_experiment_rig.FlowSpec(
-        num_byteloads=5,
-        byteload_size_B_list=[1458]*5,
-        flow_size_B=1458*5,
-        interval_us_list=[1]*(5-1),
-        byteload_timestamp_us_list=[0, 1, 2, 3, 4],
-        total_flow_send_duration_us=4,
-        flow_rate_bps=11.664*pow(10,9)
-    )
-
-    flow_spec_list = [manual_flow_spec]
+    # # TODO: for now generate flow spec by hand to debug experiment rig
+    # num_flows = 2
+    # target_flow_rate_gbps = 69 # TODO: is just placeholder
+    # manual_flow_spec = dale_experiment_rig.FlowSpec(
+    #     num_byteloads=5,
+    #     byteload_size_B_list=[1458]*5,
+    #     flow_size_B=1458*5,
+    #     interval_us_list=[1]*(5-1),
+    #     byteload_timestamp_us_list=[0, 1, 2, 3, 4],
+    #     total_flow_send_duration_us=4,
+    #     flow_rate_bps=11.664*pow(10,9)
+    # )
+    # flow_spec_list = [manual_flow_spec] * num_flows
 
     inter_flow_spacing_us = 0 # TODO: for testing
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
@@ -410,12 +407,12 @@ def experiment_1458B_bloads_10flo_100Gbps_gdpt(is_full_postproc=True, title_adde
     logger.info(f"Flow Min Interval (us): {flow_min_interval_us}")
     logger.info(f"Flow Max Interval (us): {flow_max_interval_us}")
 
-    ssird_sim_dur_list = [0.0001]
-    dctcp_sim_dur_list = [0.0001]
-    # ssird_sim_dur_list = [0.02, 0.02, 0.02, 0.02, 0.02]
-    # dctcp_sim_dur_list = [0.03, 0.03, 0.03, 0.03, 0.03] # for RTT = 5us
+    # ssird_sim_dur_list = [0.0001] * num_flows
+    # dctcp_sim_dur_list = [0.0001] * num_flows
+    ssird_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1]
+    dctcp_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1] # for RTT = 5us
     # TODO: modify assertion to work for spec that does specifies multiple experiments
-    assert(max(flow_send_durations_us_list) * pow(10,-6) < ssird_sim_dur_list[0] * 2)
+    assert(max(flow_send_durations_us_list) * pow(10,-6) * 1.5 < ssird_sim_dur_list[0])
 
     logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
@@ -483,4 +480,4 @@ if __name__ == "__main__":
 
 
     ''' --- Poisson Process Intervals, RTT = 5us --- '''
-    experiment_1458B_bloads_10flo_100Gbps_gdpt(is_full_postproc=False, title_addendum="_poisson_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_1458B_bloads_10flo_100Gbps_gdpt(is_full_postproc=False, title_addendum="_poisson_10GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)

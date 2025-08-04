@@ -794,7 +794,7 @@ class ExperimentGroup:
             else:
                 logger.info(f"Processing SIRD results exp_id {ssird_result.exp_id}:: {ssird_result.num_flows}flo-{ssird_result.target_flow_rate_gbps}Gbps_target")
                 ssird_exp_metrics = ssird_result.process_results_fct()
-                logger.info(f"{ssird_exp_metrics.proto} FCT: {ssird_exp_metrics.fct_list} ms\nApp Gdpt (overall): {ssird_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {ssird_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {ssird_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {ssird_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
+                logger.info(f"{ssird_exp_metrics.proto} FCT (ms): {ssird_exp_metrics.fct_list}\nApp Gdpt (overall): {ssird_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {ssird_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {ssird_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {ssird_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
 
             dctcp_result = self.dctcp_raw_experiment_results_list[i]
             if dctcp_result == None:
@@ -803,7 +803,7 @@ class ExperimentGroup:
             else:
                 logger.info(f"Processing DCTCP results exp_id {dctcp_result.exp_id}:: {dctcp_result.num_flows}flo-{dctcp_result.target_flow_rate_gbps}Gbps_target")
                 dctcp_exp_metrics = dctcp_result.process_results_fct()
-                logger.info(f"{dctcp_exp_metrics.proto} FCT: {dctcp_exp_metrics.fct_list} ms\nApp Gdpt (overall): {dctcp_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {dctcp_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {dctcp_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {dctcp_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
+                logger.info(f"{dctcp_exp_metrics.proto} FCT (ms): {dctcp_exp_metrics.fct_list}\nApp Gdpt (overall): {dctcp_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {dctcp_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {dctcp_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {dctcp_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
 
             processed_result = ExperimentResultsProcessed(ssird_exp_metrics, dctcp_exp_metrics)
             self.processed_results_list.append(processed_result)
@@ -895,18 +895,23 @@ class PoissonFlowGenerator:
         total_duration_us = total_duration_s * 1e6
         
         # Minimum byteloads needed to fit all intervals within bounds
-        min_byteloads = max(self.min_num_byteloads, int(np.ceil(total_duration_us / self.max_interval_us)) + 1)
+        min_byteloads_adjusted = max(self.min_num_byteloads, int(np.ceil(total_duration_us / self.max_interval_us)) + 1)
         
         # Maximum allowed byteloads (to prevent too many small packets)
-        max_byteloads = min(self.max_num_byteloads, int(np.floor(total_duration_us / self.min_interval_us)) + 1)
+        max_byteloads_adjusted = min(self.max_num_byteloads, int(np.floor(total_duration_us / self.min_interval_us)) + 1)
         
-        if min_byteloads > max_byteloads:
+        if min_byteloads_adjusted > self.max_num_byteloads:
             raise ValueError(
-                f"Cannot satisfy constraints: need {min_byteloads} byteloads "
-                f"but max allowed is {max_byteloads}. Adjust parameters."
+                f"Cannot satisfy constraints: need {min_byteloads_adjusted} byteloads "
+                f"but max allowed is {self.max_num_byteloads}. Adjust parameters."
+            )
+        if max_byteloads_adjusted < self.min_num_byteloads:
+            raise ValueError(
+                f"Cannot satisfy constraints: need {max_byteloads_adjusted} byteloads "
+                f"but min allowed is {self.min_num_byteloads}. Adjust parameters."
             )
         
-        return np.random.randint(min_byteloads, max_byteloads + 1)
+        return np.random.randint(min_byteloads_adjusted, max_byteloads_adjusted + 1)
 
     def generate_flow(self):
         """Generate flow with dynamically adjusted byteload count."""
@@ -957,8 +962,8 @@ class PoissonFlowGenerator:
             flow_size_B=int(flow_size_B),
             interval_us_list=interval_us_list.tolist(),
             byteload_timestamp_us_list=timestamp_us_list.tolist(),
-            total_flow_send_duration_us=total_duration_us,
-            flow_rate_bps=actual_flow_rate_bps
+            total_flow_send_duration_us=float(total_duration_us),
+            flow_rate_bps=float(actual_flow_rate_bps)
         )
 
 class FlowSpec:
@@ -982,15 +987,15 @@ class FlowSpec:
 
 if __name__ == "__main__":
 
-    # Example Usage
+    # Example Usage of Possion Flow Generator
     num_flows = 1
-    flow_rate_bps = 1 * pow(10,9)  # 1 Gbps
-    min_num_byteloads = 2
-    max_num_byteloads = 500
-    min_byteload_size_B = 1458 # bits
-    max_byteload_size_B = 1458 # bits
-    min_interval_us = 1 # 1us
-    max_interval_us = 10  # 100us
+    flow_rate_bps = 1 * pow(10,9)
+    min_num_byteloads = 1000
+    max_num_byteloads = 5000
+    min_byteload_size_B = 1458
+    max_byteload_size_B = 1458
+    min_interval_us = 10
+    max_interval_us = 100
 
     poisson_flow_generator = PoissonFlowGenerator(flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_B, max_byteload_size_B, min_interval_us, max_interval_us)
     # Generate multiple flows and verify flow rates
