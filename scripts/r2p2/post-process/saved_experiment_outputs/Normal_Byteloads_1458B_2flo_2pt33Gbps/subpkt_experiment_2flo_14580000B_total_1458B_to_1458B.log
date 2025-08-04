@@ -1,0 +1,83 @@
+DEBUG:__main__:Protos tested: ['SSIRD']
+DEBUG:__main__:Total_flow_size_B: 14580000
+DEBUG:__main__:Byteload sizes list: [1458]
+DEBUG:__main__:Num Flows: 2
+DEBUG:__main__:Inter-flow spacing (us): 0
+DEBUG:__main__:Flow start times (us): [0, 0]
+DEBUG:__main__:Num Byteloads list: [10000]
+DEBUG:__main__:Total injection period (us): 10000
+DEBUG:__main__:Inter-Byteload Periods list: [1.0]
+INFO:__main__:Total Flow Size (Bytes): 14580000
+INFO:__main__:Total Injection Period (us): 10000
+INFO:__main__:Byteload Size (Bytes): [1458]
+INFO:__main__:Num Byteloads: [10000]
+INFO:__main__:Intervals (us): [1.0]
+INFO:__main__:Num flows: 2
+INFO:__main__:Gdpt GBps theoretical: [23.328]
+INFO:__main__:* Sim duration (SSIRD): [0.02, 0.02, 0.02, 0.02, 0.02]
+INFO:__main__:* Sim duration (DCTCP): [0.001, 0.001, 0.001, 0.001, 0.001]
+INFO:dale_experiment_rig:Experiment started at: 2025-08-04 12:24:42.437701
+INFO:dale_experiment_rig:
+##### RUN GROUP #####
+INFO:dale_experiment_rig:
+=====
+Execute experiment 2flo-10000#-1458B-1000ns_1458B_2flo_2pt33Gbps
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.020000; dctcp_sim_duration=0.001000
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/Normal_Byteloads_1458B_2flo_2pt33Gbps/
+DEBUG:dale_experiment_rig:num flows: 2
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/Normal_Byteloads_1458B_2flo_2pt33Gbps/
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/Normal_Byteloads_1458B_2flo_2pt33Gbps/SSIRD-2flo-10000#-1458B-1000ns_1458B_2flo_2pt33Gbps.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/Normal_Byteloads_1458B_2flo_2pt33Gbps/ssird_2flo-10000#-1458B-1000ns_1458B_2flo_2pt33Gbps_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/Normal_Byteloads_1458B_2flo_2pt33Gbps/ssird_2flo-10000#-1458B-1000ns_1458B_2flo_2pt33Gbps_stderr.out
+INFO:dale_experiment_rig:-----
+Backing up app trace file paths
+DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/Normal_Byteloads_1458B_2flo_2pt33Gbps/2flo/SSIRD_app_traces.txt
+INFO:dale_experiment_rig:-----
+Backing up app trace file paths
+DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/Normal_Byteloads_1458B_2flo_2pt33Gbps/2flo/DCTCP-50_app_traces.txt
+INFO:dale_experiment_rig:Simulations ended at: 2025-08-04 12:28:44.703647
+INFO:dale_experiment_rig:
+##### POST PROCESS RESULTS #####
+INFO:dale_experiment_rig:=====
+** Num Byteloads Per Flow: 10000, Byteload Size (B): 1458, Inter-Byteload Interval (us): 1.0, ssird_sim_dur (s): 0.02, dctcp_sim_dur (s): 0.001
+INFO:dale_experiment_rig:Processing SIRD results exp_id 0:: 2flo-10000#-1458B
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-2flo-10000#-1458B-1000ns_1458B_2flo_2pt33Gbps/data/SSIRD/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 10000, num srq events: 10000, num rrq events: 9991
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14580000, recv_data_B: 14580000
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 10000, num srq events: 10000, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14580000, recv_data_B: 14580000
+INFO:dale_experiment_rig:SSIRD FCT: [0.010001806000000002, 0.01000690900000123] ms
+App Gdpt (overall): 23.329166516650417 Gbps
+App Gdpt (per flow): [11.663999999999376, 11.663999999999376]
+Network Gdpt (overall): 23.311893812562037
+Network Gdpt (per flow): [11.661893861968528, 11.655946906281018]
+ERROR:dale_experiment_rig:No results for DCTCP
+INFO:dale_experiment_rig:
+##### GENERATE METRICS #####
+INFO:__main__:Total Flow Size (Bytes): 14580000
+INFO:__main__:Total Injection Period (us): 10000
+INFO:__main__:Byteload Size (Bytes): [1458]
+INFO:__main__:Num Byteloads: [10000]
+INFO:__main__:Intervals (us): [1.0]
+INFO:__main__:Num flows: 2
+DEBUG:__main__:Flow start times (us): [0, 0]
+INFO:__main__:Gdpt Gbps theoretical: [23.328]
+INFO:__main__:APP Gdpt Gbps measured (SSIRD): [23.329166516650417]
+INFO:__main__:APP Gdpt Gbps measured (DCTCP): [None]
+DEBUG:__main__:APP Gdpt Gbps measured per flow (SSIRD): [[11.663999999999376, 11.663999999999376]]
+DEBUG:__main__:APP Gdpt Gbps measured per flow (DCTCP): [None]
+INFO:__main__:NW Gdpt Gbps measured (SSIRD): [23.311893812562037]
+INFO:__main__:NW Gdpt Gbps measured (DCTCP): [None]
+DEBUG:__main__:NW Gdpt Gbps measured per flow (SSIRD): [[11.661893861968528, 11.655946906281018]]
+DEBUG:__main__:NW Gdpt Gbps measured per flow (DCTCP): [None]
+INFO:__main__:* Sim duration (SSIRD): [0.02, 0.02, 0.02, 0.02, 0.02]
+INFO:__main__:* Sim duration (DCTCP): [0.001, 0.001, 0.001, 0.001, 0.001]
+INFO:__main__:* SSIRD FCT: [[0.010001806000000002, 0.01000690900000123]]
+INFO:__main__:* DCTCP FCT: [None]
