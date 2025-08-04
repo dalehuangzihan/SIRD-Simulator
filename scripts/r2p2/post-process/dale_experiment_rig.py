@@ -1082,7 +1082,7 @@ if __name__ == "__main__":
 
     # Example Usage of Possion Flow Generator
     num_flows = 2
-    flow_rate_bps = 10 * pow(10,9)
+    flow_rate_bps = 2 * pow(10,9)
     min_num_byteloads = 100
     max_num_byteloads = 5000
     min_byteload_size_B = 1458
