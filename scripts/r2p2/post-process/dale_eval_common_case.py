@@ -340,26 +340,42 @@ def experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_
 
 def experiment_1458B_bloads_10flo_100Gbps_gdpt(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"Poisson_Intervals{title_addendum}"
-    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
-    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
+    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
+    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
     src_dst_pairs_list = [(0,1)]
 
     # NOTE: here we only do 1 experiment, but in the future we could do multiple experiments, each with their own set of flow constraints from which flows are generated
-    num_flows = 10
-    target_flow_rate_gbps = 1
-    target_flow_rate_bps = target_flow_rate_gbps * pow(10,9)  # 10 bits per second
-    min_num_byteloads = 5
-    max_num_byteloads = 1000
-    min_byteload_size_B = 1458 # bits
-    max_byteload_size_B = 1458 # bits
-    min_interval_us = 1 # 1us
-    max_interval_us = 100  # 100us
+    # num_flows = 10
+    # target_flow_rate_gbps = 1
+    # target_flow_rate_bps = target_flow_rate_gbps * pow(10,9)  # 10 bits per second
+    # min_num_byteloads = 5
+    # max_num_byteloads = 1000
+    # min_byteload_size_B = 1458 # bits
+    # max_byteload_size_B = 1458 # bits
+    # min_interval_us = 1 # 1us
+    # max_interval_us = 100  # 100us
 
-    poisson_flow_generator = dale_experiment_rig.PoissonFlowGenerator(target_flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_B, max_byteload_size_B, min_interval_us, max_interval_us)
-    # Generate multiple flows and verify flow rates
-    flow_spec_list = [poisson_flow_generator.generate_flow() for _ in range(num_flows)]
+    # poisson_flow_generator = dale_experiment_rig.PoissonFlowGenerator(target_flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_B, max_byteload_size_B, min_interval_us, max_interval_us)
+    # # Generate multiple flows and verify flow rates
+    # flow_spec_list = [poisson_flow_generator.generate_flow() for _ in range(num_flows)]
+
+
+    # TODO: for now generate flow spec by hand to debug experiment rig
+    num_flows = 1
+    target_flow_rate_gbps = 69 # TODO: is just placeholder
+    manual_flow_spec = dale_experiment_rig.FlowSpec(
+        num_byteloads=5,
+        byteload_size_B_list=[1458]*5,
+        flow_size_B=1458*5,
+        interval_us_list=[1]*(5-1),
+        byteload_timestamp_us_list=[0, 1, 2, 3, 4],
+        total_flow_send_duration_us=4,
+        flow_rate_bps=11.664*pow(10,9)
+    )
+
+    flow_spec_list = [manual_flow_spec]
 
     inter_flow_spacing_us = 0 # TODO: for testing
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
@@ -370,7 +386,7 @@ def experiment_1458B_bloads_10flo_100Gbps_gdpt(is_full_postproc=True, title_adde
     num_of_experiments = len(flow_spec_list_list)
     assert(len(flow_start_times_us_list_list) == num_of_experiments)
 
-    dale_experiment_rig.init_logs(experiment_family, f"poisson_intervals_experiment_{num_flows}flo_{target_flow_rate_gbps}GbpsFlo_{datetime.datetime.now()}.log")
+    dale_experiment_rig.init_logs(experiment_family, f"poisson_intervals_experiment_{num_flows}flo_{target_flow_rate_gbps}GbpsFlo_{dale_experiment_rig.Experiment.get_date_now()}.log")
 
     flow_rate_gbps_list = [round(f.flow_rate_bps*pow(10,-9),6) for f in flow_spec_list]
     flow_size_B_list = [f.flow_size_B for f in flow_spec_list]
@@ -383,7 +399,7 @@ def experiment_1458B_bloads_10flo_100Gbps_gdpt(is_full_postproc=True, title_adde
 
     logger.info(f"Protos tested: {proto_names}")
     logger.info(f"Num Flows: {num_flows}")
-    logger.info(f"Target Flow Rate (Gbps): {target_flow_rate_bps}")
+    logger.info(f"Target Flow Rate (Gbps): {target_flow_rate_gbps}")
     logger.info(f"Flow Start Times (us): {flow_start_times_us_list}")
     logger.info(f"Flow Rate (Gbps): {flow_rate_gbps_list}")
     logger.info(f"Flow Size (B): {flow_size_B_list}")
@@ -394,22 +410,37 @@ def experiment_1458B_bloads_10flo_100Gbps_gdpt(is_full_postproc=True, title_adde
     logger.info(f"Flow Min Interval (us): {flow_min_interval_us}")
     logger.info(f"Flow Max Interval (us): {flow_max_interval_us}")
 
-    ssird_sim_dur_list = [0.02, 0.02, 0.02, 0.02, 0.02]
-    dctcp_sim_dur_list = [0.03, 0.03, 0.03, 0.03, 0.03] # for RTT = 5us
+    ssird_sim_dur_list = [0.0001]
+    dctcp_sim_dur_list = [0.0001]
+    # ssird_sim_dur_list = [0.02, 0.02, 0.02, 0.02, 0.02]
+    # dctcp_sim_dur_list = [0.03, 0.03, 0.03, 0.03, 0.03] # for RTT = 5us
     # TODO: modify assertion to work for spec that does specifies multiple experiments
-    assert(max(flow_send_durations_us_list) * pow(10,-6) < ssird_sim_dur_list[0])
+    assert(max(flow_send_durations_us_list) * pow(10,-6) < ssird_sim_dur_list[0] * 2)
 
     logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
     # return
 
-    exp_grp = dale_experiment_rig.ExperimentGroup(experiment_family, proto_names, src_dst_pairs_list, flow_start_times_us_list_list, flow_spec_list_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc, log_level, title_addendum)
+    exp_grp = dale_experiment_rig.ExperimentGroup(
+        experiment_family,
+        proto_names,
+        src_dst_pairs_list,
+        num_flows,
+        target_flow_rate_gbps,
+        flow_start_times_us_list_list,
+        flow_spec_list_list,
+        ssird_sim_dur_list,
+        dctcp_sim_dur_list,
+        is_full_postproc,
+        log_level,
+        title_addendum
+    )
 
     exp_metrics = exp_grp.perform_experiment()
 
     logger.info(f"Protos tested: {proto_names}")
     logger.info(f"Num Flows: {num_flows}")
-    logger.info(f"Target Flow Rate (Gbps): {target_flow_rate_bps}")
+    logger.info(f"Target Flow Rate (Gbps): {target_flow_rate_gbps}")
     logger.info(f"Flow Start Times (us): {flow_start_times_us_list}")
     logger.info(f"Flow Rate (Gbps): {flow_rate_gbps_list}")
     logger.info(f"Flow Size (B): {flow_size_B_list}")
