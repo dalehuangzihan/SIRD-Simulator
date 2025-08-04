@@ -223,7 +223,7 @@ def experiment_1560B_10Kbloads_1us(num_flows, is_full_postproc=True, title_adden
     assert num_of_experiments == len(exp_metrics.ssird_fct_list)
     assert num_of_experiments == len(exp_metrics.dctcp_fct_list)
 
-def experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
+def experiment_1458B_10Kbloads_10us(num_flows, is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"Normal_Byteloads{title_addendum}"
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
@@ -236,7 +236,6 @@ def experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_
 
     byteload_size_B_list = [1458] 
     num_of_experiments = len(byteload_size_B_list)
-    num_flows = 85 # for 99.144Gbps total app goodput
     inter_flow_spacing_us = 0 # TODO: for testing
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
 
@@ -340,13 +339,14 @@ if __name__ == "__main__":
 
     ''' --- RTT = 5us ---- '''
     # experiment_1458B_10Kbloads_1us(num_flows=2, is_full_postproc=True, title_addendum="_1458B_2flo_2pt33Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_1560B_10Kbloads_1us(num_flows=2, is_full_postproc=True, title_addendum="_1560B_2flo_2pt50Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_1560B_10Kbloads_1us(num_flows=2, is_full_postproc=True, title_addendum="_1560B_2flo_2pt50Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_1458B_10Kbloads_10us(num_flows=20, is_full_postproc=True, title_addendum="_1458B_20flo_1pt16Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
     # experiment_1458B_10Kbloads_1us(num_flows=8, is_full_postproc=True, title_addendum="_1458B_8flo_93pt312Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_1560B_10Kbloads_1us(num_flows=8, is_full_postproc=True, title_addendum="_1560B_8flo_99pt84Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_85flo_99pt144Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_1458B_10Kbloads_10us(num_flows=85, is_full_postproc=True, title_addendum="_1458B_85flo_99pt144Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
     # # RTT = 1ms ----
     # # experiment_1458B_bloads_8flo_93pt312Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_8flo_93pt312Gbps_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # # experiment_1560B_bloads_8flo_99pt84Gbps_gdpt(is_full_postproc=True, title_addendum="_1560B_8flo_99pt84Gbps_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # # experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_85flo_99pt144Gbps_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_1458B_10Kbloads_10us(num_flows=85, is_full_postproc=True, title_addendum="_1458B_85flo_99pt144Gbps_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
