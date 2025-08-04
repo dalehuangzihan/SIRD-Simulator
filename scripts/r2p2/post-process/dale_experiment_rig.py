@@ -8,6 +8,7 @@ import collections
 import math
 import numpy as np
 from scipy.stats import truncexpon
+import json
 
 # for thread pool
 # MAX_WORKERS = 4 
@@ -36,6 +37,7 @@ MRI_RELATIVE_PATH = "dale_experiments/"
 PATH_TO_EXPERIMENTS_INPUTS = PATH_TO_EXPERIMENTS + "manual-req-intervals/" + MRI_RELATIVE_PATH
 APP_TRACE_PATHS_BACKUP_PATH = PATH_TO_POST_PROCESS + "experiment_app_trace_paths/"
 LOGS_REL_PATH = "experiment_output/" # is relative to post-process/ dir
+FLOW_SPECS_JSON_PATH = PATH_TO_POST_PROCESS + "flow_specs_json/"
 
 LOG_LEVEL_1 = 1
 LOG_LEVEL_2 = 2
@@ -871,8 +873,12 @@ def init_logs(experiment_family, logs_file_name, log_level=logging.DEBUG):
 # Bload sizes must > 4
 
 class PoissonFlowGenerator:
-    def __init__(self, flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_B, max_byteload_size_B, min_interval_us, max_interval_us):
+
+    FLOW_GEN_RETRIES = 10
+
+    def __init__(self, flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_B, max_byteload_size_B, min_interval_us, max_interval_us, seed_num_byteloads=None):
         self.flow_rate_bps = flow_rate_bps
+        self.seed_num_byteloads = seed_num_byteloads
         self.min_num_byteloads = min_num_byteloads
         self.max_num_byteloads = max_num_byteloads
         self.min_byteload_size_B = min_byteload_size_B
@@ -915,8 +921,11 @@ class PoissonFlowGenerator:
 
     def generate_flow(self):
         """Generate flow with dynamically adjusted byteload count."""
-        # Initial random byteload count
-        num_byteloads = np.random.randint(self.min_num_byteloads, self.max_num_byteloads + 1)
+        if (self.seed_num_byteloads):
+            num_byteloads = self.seed_num_byteloads
+        else:
+            # Initial random byteload count
+            num_byteloads = np.random.randint(self.min_num_byteloads, self.max_num_byteloads + 1)
         
         # Generate byteload sizes and total bits
         byteload_size_B_list = self._generate_byteload_sizes(num_byteloads)
@@ -966,6 +975,37 @@ class PoissonFlowGenerator:
             flow_rate_bps=float(actual_flow_rate_bps)
         )
 
+    def generate_n_flows(self, num_flows):
+        flow_spec_list = []
+
+        # first pass
+        for _ in range(0, num_flows):
+            try:
+                flow_spec = self.generate_flow()
+                flow_spec_list.append(flow_spec)
+            except ValueError as e:
+                logger.warning(e)
+                continue
+        
+        if (len(flow_spec_list) == num_flows):
+            return flow_spec_list
+        else:
+            # retries
+            to_retry_count = num_flows - len(flow_spec_list)
+            for _ in range(0, to_retry_count):
+                for _ in range(0, self.FLOW_GEN_RETRIES):
+                    try:
+                        flow_spec = self.generate_flow()
+                        flow_spec_list.append(flow_spec)
+                        break
+                    except ValueError as e:
+                        logger.warning(e)
+                        continue
+            if (len(flow_spec_list) == num_flows):
+                return flow_spec_list
+            else:
+                raise ValueError(f"Could not generate sufficient flows. Change parameters!")
+
 class FlowSpec:
     def __init__(self, num_byteloads, byteload_size_B_list, flow_size_B, interval_us_list, byteload_timestamp_us_list, total_flow_send_duration_us, flow_rate_bps):
         self.num_byteloads = num_byteloads
@@ -985,21 +1025,86 @@ class FlowSpec:
             len(self.byteload_timestamp_us_list)
         ])) == 1)
 
+    def to_dict(self):
+        # Convert the FlowSpec object to a dictionary.
+        return {
+            'num_byteloads': self.num_byteloads,
+            'byteload_size_B_list': self.byteload_size_B_list,
+            'flow_size_B': self.flow_size_B,
+            'interval_us_list': self.interval_us_list,
+            'byteload_timestamp_us_list': self.byteload_timestamp_us_list,
+            'total_flow_send_duration_us': self.total_flow_send_duration_us,
+            'flow_rate_bps': self.flow_rate_bps
+        }
+
+    @staticmethod
+    def flow_spec_list_to_dict(flow_spec_list, flow_start_times_us_list):
+        assert(len(flow_spec_list) == len(flow_start_times_us_list))
+        full_dict = {
+            'flow_start_times_us_list': flow_start_times_us_list,
+            'flow_spec_dict_dict': {}
+        } 
+        for i in range(0, len(flow_spec_list)):
+            full_dict['flow_spec_dict_dict'][i] = flow_spec_list[i].to_dict()
+        return full_dict
+
+    @staticmethod
+    def flow_specs_dict_to_file(flow_spec_list_full_dict, parent_dir, file_name):
+        Path(parent_dir).mkdir(parents=True, exist_ok=True)
+        file_path = parent_dir + file_name
+        with open(file_path, 'w') as file:
+            json.dump(flow_spec_list_full_dict, file, indent=None)
+
+    @staticmethod
+    def parse_flow_specs_json_file(parent_dir, file_name):
+        file_path = parent_dir + file_name
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+        
+        flow_start_times_us_list = data['flow_start_times_us_list']
+        flow_spec_dict_dict = data['flow_spec_dict_dict']
+        flow_spec_list = []
+        for _, flow_spec_dict in flow_spec_dict_dict.items():
+            flow_spec = FlowSpec(
+                num_byteloads=flow_spec_dict['num_byteloads'],
+                byteload_size_B_list=flow_spec_dict['byteload_size_B_list'],
+                flow_size_B=flow_spec_dict['flow_size_B'],
+                interval_us_list=flow_spec_dict['interval_us_list'],
+                byteload_timestamp_us_list=flow_spec_dict['byteload_timestamp_us_list'],
+                total_flow_send_duration_us=flow_spec_dict['total_flow_send_duration_us'],
+                flow_rate_bps=flow_spec_dict['flow_rate_bps']
+            )
+            flow_spec_list.append(flow_spec)
+        
+        return flow_start_times_us_list, flow_spec_list
+
 if __name__ == "__main__":
 
     # Example Usage of Possion Flow Generator
-    num_flows = 1
-    flow_rate_bps = 1 * pow(10,9)
-    min_num_byteloads = 1000
+    num_flows = 2
+    flow_rate_bps = 10 * pow(10,9)
+    min_num_byteloads = 100
     max_num_byteloads = 5000
     min_byteload_size_B = 1458
     max_byteload_size_B = 1458
     min_interval_us = 10
     max_interval_us = 100
 
-    poisson_flow_generator = PoissonFlowGenerator(flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_B, max_byteload_size_B, min_interval_us, max_interval_us)
+    poisson_flow_generator = PoissonFlowGenerator(
+        flow_rate_bps,
+        min_num_byteloads,
+        max_num_byteloads,
+        min_byteload_size_B,
+        max_byteload_size_B,
+        min_interval_us,
+        max_interval_us
+    )
     # Generate multiple flows and verify flow rates
-    flows = [poisson_flow_generator.generate_flow() for _ in range(num_flows)]
+    flow_start_times_us_list = [0, 0]
+    flows = poisson_flow_generator.generate_n_flows(num_flows)
+
+    # flow_start_times_us_list, flows = FlowSpec.parse_flow_specs_json_file(FLOW_SPECS_JSON_PATH, "testing.json")
+    # print(flow_start_times_us_list)
 
     for flow in flows:
         print(
@@ -1014,6 +1119,8 @@ if __name__ == "__main__":
             f"\n"
         )
 
+    # flow_spec_dict = FlowSpec.flow_spec_list_to_dict(flows, flow_start_times_us_list)
+    # FlowSpec.flow_specs_dict_to_file(flow_spec_dict, FLOW_SPECS_JSON_PATH, "testing.json")
 
     ''' --- Side-load & analyse existing app trace file ---'''
     # proto = SSIRD_PROTO_NAME
