@@ -38,6 +38,7 @@ PATH_TO_EXPERIMENTS_INPUTS = PATH_TO_EXPERIMENTS + "manual-req-intervals/" + MRI
 APP_TRACE_PATHS_BACKUP_PATH = PATH_TO_POST_PROCESS + "experiment_app_trace_paths/"
 LOGS_REL_PATH = "experiment_output/" # is relative to post-process/ dir
 FLOW_SPECS_JSON_PATH = PATH_TO_POST_PROCESS + "flow_specs_json/"
+SAVED_FLOW_SPECS_JSON_PATH = PATH_TO_POST_PROCESS + "saved_flow_specs_json/"
 
 LOG_LEVEL_1 = 1
 LOG_LEVEL_2 = 2
@@ -1100,11 +1101,11 @@ if __name__ == "__main__":
         max_interval_us
     )
     # Generate multiple flows and verify flow rates
-    flow_start_times_us_list = [0, 0]
-    flows = poisson_flow_generator.generate_n_flows(num_flows)
+    # flow_start_times_us_list = [0, 0]
+    # flows = poisson_flow_generator.generate_n_flows(num_flows)
 
-    # flow_start_times_us_list, flows = FlowSpec.parse_flow_specs_json_file(FLOW_SPECS_JSON_PATH, "testing.json")
-    # print(flow_start_times_us_list)
+    flow_start_times_us_list, flows = FlowSpec.parse_flow_specs_json_file(SAVED_FLOW_SPECS_JSON_PATH, "poisson_intervals_experiment_50flo_2GbpsFlo_2025-08-04T_19-03-49Z.log")
+    print(flow_start_times_us_list)
 
     for flow in flows:
         print(

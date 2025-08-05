@@ -1,0 +1,306 @@
+INFO:__main__:Protos tested: ['SSIRD', 'DCTCP-50']
+INFO:__main__:Num Flows: 50
+INFO:__main__:Target Flow Rate (Gbps): 1
+INFO:__main__:Flow Start Times (us): [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+INFO:__main__:Flow Rate (Gbps): [1.0, 1.0, 1.0, 1.0, 1.000001, 1.0, 1.0, 1.0, 1.0, 1.0, 0.999999, 0.999999, 1.0, 1.000001, 1.0, 1.0, 1.0, 1.0, 0.999999, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.000001, 1.0, 1.000001, 0.999999, 1.0, 1.000001, 1.0, 0.999999, 0.999999, 1.000001, 0.999999, 0.999999, 1.0, 1.0, 1.0, 0.999999, 1.0, 1.000001, 1.0, 1.000001, 0.999999, 1.0, 1.0, 1.000001, 1.0]
+INFO:__main__:Flow Size (B): [3254256, 6361254, 3531276, 4576662, 4691844, 5913648, 1912896, 6499764, 2834352, 4556250, 2682720, 4101354, 2240946, 5756184, 6050700, 1835622, 4005126, 2456730, 2811024, 6909462, 3943890, 4903254, 2185542, 2239488, 2001834, 2497554, 1823958, 4085316, 3082212, 2792070, 2146176, 1740852, 4627692, 5222556, 2962656, 1603800, 4929498, 6718464, 5068008, 5664330, 1667952, 2211786, 1885194, 6036120, 1587762, 1832706, 3795174, 3888486, 4145094, 1876446]
+INFO:__main__:Num Byteloads: [2232, 4363, 2422, 3139, 3218, 4056, 1312, 4458, 1944, 3125, 1840, 2813, 1537, 3948, 4150, 1259, 2747, 1685, 1928, 4739, 2705, 3363, 1499, 1536, 1373, 1713, 1251, 2802, 2114, 1915, 1472, 1194, 3174, 3582, 2032, 1100, 3381, 4608, 3476, 3885, 1144, 1517, 1293, 4140, 1089, 1257, 2603, 2667, 2843, 1287]
+INFO:__main__:Flow Send Durations (us): [26034.048, 50890.032, 28250.208, 36613.295999999995, 37534.752, 47309.183999999994, 15303.168000000001, 51998.112, 22674.816, 36450.0, 21461.76, 32810.831999999995, 17927.568000000003, 46049.472, 48405.6, 14684.976, 32041.008, 19653.84, 22488.192, 55275.695999999996, 31551.120000000003, 39226.032, 17484.336, 17915.904, 16014.672, 19980.432, 14591.664, 32682.528000000002, 24657.696, 22336.559999999998, 17169.408, 13926.816, 37021.536, 41780.448, 23701.248, 12830.4, 39435.984, 53747.712, 40544.064, 45314.64000000001, 13343.616, 17694.288, 15081.552, 48288.96, 12702.096, 14661.648, 30361.392, 31107.888, 33160.752, 15011.568]
+INFO:__main__:Flow Min Byteload Size (B): [1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458]
+INFO:__main__:Flow Max Byteload Size (B): [1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458]
+INFO:__main__:Flow Min Interval (us): [0.018, 0.003, 0.005, 0.001, 0.008, 0.004, 0.013, 0.001, 0.002, 0.001, 0.001, 0.006, 0.005, 0.001, 0.001, 0.006, 0.008, 0.003, 0.001, 0.001, 0.003, 0.005, 0.001, 0.021, 0.021, 0.007, 0.002, 0.007, 0.009, 0.022, 0.004, 0.011, 0.003, 0.005, 0.005, 0.01, 0.006, 0.004, 0.004, 0.005, 0.002, 0.001, 0.01, 0.009, 0.009, 0.016, 0.007, 0.001, 0.001, 0.008]
+INFO:__main__:Flow Max Interval (us): [84.829, 82.551, 81.122, 82.18, 91.267, 85.416, 95.108, 82.209, 80.436, 85.994, 78.711, 87.079, 84.557, 82.866, 86.501, 91.102, 81.056, 81.238, 82.15, 81.682, 88.511, 90.026, 84.9, 87.875, 86.445, 82.894, 85.631, 83.039, 80.34, 81.383, 79.388, 87.255, 82.345, 82.145, 85.997, 74.976, 79.063, 89.105, 87.378, 81.493, 85.074, 76.093, 87.948, 84.042, 80.633, 79.151, 81.909, 90.992, 86.211, 78.097]
+INFO:__main__:* Sim duration (SSIRD): [0.1, 0.1, 0.1, 0.1, 0.1]
+INFO:__main__:* Sim duration (DCTCP): [0.1, 0.1, 0.1, 0.1, 0.1]
+INFO:dale_experiment_rig:Experiment started at: 2025-08-04 12:15:56.555192
+INFO:dale_experiment_rig:
+##### RUN GROUP #####
+INFO:dale_experiment_rig:
+=====
+Execute experiment 50flo-1Gbps-2025-08-04T_12-15-56Z_poisson_10GbpsFlo
+INFO:dale_experiment_rig:
+=====
+Execute experiment 50flo-1Gbps-2025-08-04T_12-15-56Z_poisson_10GbpsFlo
+INFO:dale_experiment_rig:Flags: 1, 0, 0, 0, 0
+INFO:dale_experiment_rig:Flags: 1, 0, 0, 0, 0
+INFO:dale_experiment_rig:ssird_sim_duration=0.100000; dctcp_sim_duration=0.100000
+INFO:dale_experiment_rig:ssird_sim_duration=0.100000; dctcp_sim_duration=0.100000
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/Poisson_Intervals_poisson_10GbpsFlo/
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/Poisson_Intervals_poisson_10GbpsFlo/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/Poisson_Intervals_poisson_10GbpsFlo/ aready exists.
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/Poisson_Intervals_poisson_10GbpsFlo/ aready exists.
+DEBUG:dale_experiment_rig:num flows: 50
+DEBUG:dale_experiment_rig:num flows: 50
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/Poisson_Intervals_poisson_10GbpsFlo/
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/Poisson_Intervals_poisson_10GbpsFlo/
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/Poisson_Intervals_poisson_10GbpsFlo/ aready exists.
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/Poisson_Intervals_poisson_10GbpsFlo/ aready exists.
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/Poisson_Intervals_poisson_10GbpsFlo/SSIRD-50flo-1Gbps-2025-08-04T_12-15-56Z_poisson_10GbpsFlo.sh
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/Poisson_Intervals_poisson_10GbpsFlo/DCTCP-50-50flo-1Gbps-2025-08-04T_12-15-56Z_poisson_10GbpsFlo.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/Poisson_Intervals_poisson_10GbpsFlo/ssird_50flo-1Gbps-2025-08-04T_12-15-56Z_poisson_10GbpsFlo_stdout.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/Poisson_Intervals_poisson_10GbpsFlo/DCTCP-50_50flo-1Gbps-2025-08-04T_12-15-56Z_poisson_10GbpsFlo_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/Poisson_Intervals_poisson_10GbpsFlo/ssird_50flo-1Gbps-2025-08-04T_12-15-56Z_poisson_10GbpsFlo_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/Poisson_Intervals_poisson_10GbpsFlo/DCTCP-50_50flo-1Gbps-2025-08-04T_12-15-56Z_poisson_10GbpsFlo_stderr.out
+INFO:dale_experiment_rig:-----
+Backing up app trace file paths
+DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/Poisson_Intervals_poisson_10GbpsFlo/50flo_1Gbps_2025-08-04T_23-33-18Z/SSIRD_app_traces.txt
+INFO:dale_experiment_rig:-----
+Backing up app trace file paths
+DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/Poisson_Intervals_poisson_10GbpsFlo/50flo_1Gbps_2025-08-04T_23-33-18Z/DCTCP-50_app_traces.txt
+INFO:dale_experiment_rig:Simulations ended at: 2025-08-04 23:33:18.711564
+INFO:dale_experiment_rig:
+##### POST PROCESS RESULTS #####
+INFO:dale_experiment_rig:=====
+** Num Flows: 50, Target Flow Rate (Gbps): 1, ssird_sim_dur (s): 0.1, dctcp_sim_dur (s): 0.1
+INFO:dale_experiment_rig:Processing SIRD results exp_id 0:: 50flo-1Gbps_target
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-50flo-1Gbps-2025-08-04T_12-15-56Z_poisson_10GbpsFlo/data/SSIRD/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 2232, num srq events: 2232, num rrq events: 1993
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3254256, recv_data_B: 3254256
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 4363, num srq events: 4363, num rrq events: 3623
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6361254, recv_data_B: 6361254
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 2422, num srq events: 2422, num rrq events: 2171
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3531276, recv_data_B: 3531276
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 3139, num srq events: 3139, num rrq events: 2741
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4576662, recv_data_B: 4576662
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 3218, num srq events: 3218, num rrq events: 2739
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4691844, recv_data_B: 4691844
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 4056, num srq events: 4056, num rrq events: 3511
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 5913648, recv_data_B: 5913648
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 1312, num srq events: 1312, num rrq events: 1184
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1912896, recv_data_B: 1912896
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 4458, num srq events: 4458, num rrq events: 3664
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6499764, recv_data_B: 6499764
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 1944, num srq events: 1944, num rrq events: 1701
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2834352, recv_data_B: 2834352
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 3125, num srq events: 3125, num rrq events: 2772
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4556250, recv_data_B: 4556250
+INFO:dale_experiment_rig:Flow 10:: num of byteloads: 1840, num srq events: 1840, num rrq events: 1506
+DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2682720, recv_data_B: 2682720
+INFO:dale_experiment_rig:Flow 11:: num of byteloads: 2813, num srq events: 2813, num rrq events: 2438
+DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4101354, recv_data_B: 4101354
+INFO:dale_experiment_rig:Flow 12:: num of byteloads: 1537, num srq events: 1537, num rrq events: 1351
+DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2240946, recv_data_B: 2240946
+INFO:dale_experiment_rig:Flow 13:: num of byteloads: 3948, num srq events: 3948, num rrq events: 3192
+DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 5756184, recv_data_B: 5756184
+INFO:dale_experiment_rig:Flow 14:: num of byteloads: 4150, num srq events: 4150, num rrq events: 3498
+DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6050700, recv_data_B: 6050700
+INFO:dale_experiment_rig:Flow 15:: num of byteloads: 1259, num srq events: 1259, num rrq events: 1118
+DEBUG:dale_experiment_rig:Flow 15:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1835622, recv_data_B: 1835622
+INFO:dale_experiment_rig:Flow 16:: num of byteloads: 2747, num srq events: 2747, num rrq events: 2365
+DEBUG:dale_experiment_rig:Flow 16:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4005126, recv_data_B: 4005126
+INFO:dale_experiment_rig:Flow 17:: num of byteloads: 1685, num srq events: 1685, num rrq events: 1463
+DEBUG:dale_experiment_rig:Flow 17:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2456730, recv_data_B: 2456730
+INFO:dale_experiment_rig:Flow 18:: num of byteloads: 1928, num srq events: 1928, num rrq events: 1737
+DEBUG:dale_experiment_rig:Flow 18:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2811024, recv_data_B: 2811024
+INFO:dale_experiment_rig:Flow 19:: num of byteloads: 4739, num srq events: 4739, num rrq events: 3901
+DEBUG:dale_experiment_rig:Flow 19:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6909462, recv_data_B: 6909462
+INFO:dale_experiment_rig:Flow 20:: num of byteloads: 2705, num srq events: 2705, num rrq events: 2317
+DEBUG:dale_experiment_rig:Flow 20:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3943890, recv_data_B: 3943890
+INFO:dale_experiment_rig:Flow 21:: num of byteloads: 3363, num srq events: 3363, num rrq events: 2945
+DEBUG:dale_experiment_rig:Flow 21:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4903254, recv_data_B: 4903254
+INFO:dale_experiment_rig:Flow 22:: num of byteloads: 1499, num srq events: 1499, num rrq events: 1360
+DEBUG:dale_experiment_rig:Flow 22:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2185542, recv_data_B: 2185542
+INFO:dale_experiment_rig:Flow 23:: num of byteloads: 1536, num srq events: 1536, num rrq events: 1337
+DEBUG:dale_experiment_rig:Flow 23:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2239488, recv_data_B: 2239488
+INFO:dale_experiment_rig:Flow 24:: num of byteloads: 1373, num srq events: 1373, num rrq events: 1205
+DEBUG:dale_experiment_rig:Flow 24:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2001834, recv_data_B: 2001834
+INFO:dale_experiment_rig:Flow 25:: num of byteloads: 1713, num srq events: 1713, num rrq events: 1518
+DEBUG:dale_experiment_rig:Flow 25:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2497554, recv_data_B: 2497554
+INFO:dale_experiment_rig:Flow 26:: num of byteloads: 1251, num srq events: 1251, num rrq events: 1131
+DEBUG:dale_experiment_rig:Flow 26:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1823958, recv_data_B: 1823958
+INFO:dale_experiment_rig:Flow 27:: num of byteloads: 2802, num srq events: 2802, num rrq events: 1096
+DEBUG:dale_experiment_rig:Flow 27:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4085316, recv_data_B: 4085316
+INFO:dale_experiment_rig:Flow 28:: num of byteloads: 2114, num srq events: 2114, num rrq events: 1819
+DEBUG:dale_experiment_rig:Flow 28:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3082212, recv_data_B: 3082212
+INFO:dale_experiment_rig:Flow 29:: num of byteloads: 1915, num srq events: 1915, num rrq events: 1699
+DEBUG:dale_experiment_rig:Flow 29:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2792070, recv_data_B: 2792070
+INFO:dale_experiment_rig:Flow 30:: num of byteloads: 1472, num srq events: 1472, num rrq events: 1327
+DEBUG:dale_experiment_rig:Flow 30:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2146176, recv_data_B: 2146176
+INFO:dale_experiment_rig:Flow 31:: num of byteloads: 1194, num srq events: 1194, num rrq events: 1077
+DEBUG:dale_experiment_rig:Flow 31:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1740852, recv_data_B: 1740852
+INFO:dale_experiment_rig:Flow 32:: num of byteloads: 3174, num srq events: 3174, num rrq events: 2751
+DEBUG:dale_experiment_rig:Flow 32:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4627692, recv_data_B: 4627692
+INFO:dale_experiment_rig:Flow 33:: num of byteloads: 3582, num srq events: 3582, num rrq events: 3044
+DEBUG:dale_experiment_rig:Flow 33:: first_event_name: srq, final_event_name: rrq, expected_data_B: 5222556, recv_data_B: 5222556
+INFO:dale_experiment_rig:Flow 34:: num of byteloads: 2032, num srq events: 2032, num rrq events: 1810
+DEBUG:dale_experiment_rig:Flow 34:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2962656, recv_data_B: 2962656
+INFO:dale_experiment_rig:Flow 35:: num of byteloads: 1100, num srq events: 1100, num rrq events: 1004
+DEBUG:dale_experiment_rig:Flow 35:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1603800, recv_data_B: 1603800
+INFO:dale_experiment_rig:Flow 36:: num of byteloads: 3381, num srq events: 3381, num rrq events: 2905
+DEBUG:dale_experiment_rig:Flow 36:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4929498, recv_data_B: 4929498
+INFO:dale_experiment_rig:Flow 37:: num of byteloads: 4608, num srq events: 4608, num rrq events: 3801
+DEBUG:dale_experiment_rig:Flow 37:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6718464, recv_data_B: 6718464
+INFO:dale_experiment_rig:Flow 38:: num of byteloads: 3476, num srq events: 3476, num rrq events: 2920
+DEBUG:dale_experiment_rig:Flow 38:: first_event_name: srq, final_event_name: rrq, expected_data_B: 5068008, recv_data_B: 5068008
+INFO:dale_experiment_rig:Flow 39:: num of byteloads: 3885, num srq events: 3885, num rrq events: 3227
+DEBUG:dale_experiment_rig:Flow 39:: first_event_name: srq, final_event_name: rrq, expected_data_B: 5664330, recv_data_B: 5664330
+INFO:dale_experiment_rig:Flow 40:: num of byteloads: 1144, num srq events: 1144, num rrq events: 1053
+DEBUG:dale_experiment_rig:Flow 40:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1667952, recv_data_B: 1667952
+INFO:dale_experiment_rig:Flow 41:: num of byteloads: 1517, num srq events: 1517, num rrq events: 1339
+DEBUG:dale_experiment_rig:Flow 41:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2211786, recv_data_B: 2211786
+INFO:dale_experiment_rig:Flow 42:: num of byteloads: 1293, num srq events: 1293, num rrq events: 1175
+DEBUG:dale_experiment_rig:Flow 42:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1885194, recv_data_B: 1885194
+INFO:dale_experiment_rig:Flow 43:: num of byteloads: 4140, num srq events: 4140, num rrq events: 3399
+DEBUG:dale_experiment_rig:Flow 43:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6036120, recv_data_B: 6036120
+INFO:dale_experiment_rig:Flow 44:: num of byteloads: 1089, num srq events: 1089, num rrq events: 998
+DEBUG:dale_experiment_rig:Flow 44:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1587762, recv_data_B: 1587762
+INFO:dale_experiment_rig:Flow 45:: num of byteloads: 1257, num srq events: 1257, num rrq events: 1156
+DEBUG:dale_experiment_rig:Flow 45:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1832706, recv_data_B: 1832706
+INFO:dale_experiment_rig:Flow 46:: num of byteloads: 2603, num srq events: 2603, num rrq events: 2258
+DEBUG:dale_experiment_rig:Flow 46:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3795174, recv_data_B: 3795174
+INFO:dale_experiment_rig:Flow 47:: num of byteloads: 2667, num srq events: 2667, num rrq events: 2281
+DEBUG:dale_experiment_rig:Flow 47:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3888486, recv_data_B: 3888486
+INFO:dale_experiment_rig:Flow 48:: num of byteloads: 2843, num srq events: 2843, num rrq events: 2414
+DEBUG:dale_experiment_rig:Flow 48:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4145094, recv_data_B: 4145094
+INFO:dale_experiment_rig:Flow 49:: num of byteloads: 1287, num srq events: 1287, num rrq events: 1159
+DEBUG:dale_experiment_rig:Flow 49:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1876446, recv_data_B: 1876446
+INFO:dale_experiment_rig:SSIRD FCT (ms): [0.026038997000000563, 0.05089297700000017, 0.028253750000001077, 0.03661715000000143, 0.0375380870000015, 0.047319947000000084, 0.01530694200000049, 0.05200136000000022, 0.022682750000001306, 0.03645352700000082, 0.021464807000000974, 0.03281515699999993, 0.017930687000001555, 0.04606393700000133, 0.048413387000000085, 0.014687806000001302, 0.0320447330000011, 0.01965664700000147, 0.022495763000000224, 0.0552835070000004, 0.03155422700000088, 0.039229097000001545, 0.017489249000000484, 0.01792252700000141, 0.016023032000001436, 0.019983527000000834, 0.014595139000000756, 0.03268537699999996, 0.02466715700000144, 0.02234017700000024, 0.017176370000001384, 0.01392985600000074, 0.037038737000001376, 0.041784257000001546, 0.0237040369999999, 0.01283350900000002, 0.039442617000000624, 0.05375212700000098, 0.04054798700000006, 0.04531828700000062, 0.0133464459999999, 0.01769722600000101, 0.015085849000000096, 0.04829236700000017, 0.012710259000000335, 0.01466441300000021, 0.030364217000000693, 0.031110707000001625, 0.033163547000000904, 0.015014356000000006]
+App Gdpt (overall): 26.361891648072042 Gbps
+App Gdpt (per flow): [0.9995520097201432, 0.9997708391997122, 0.9995872596176376, 0.99968150911746, 0.9996898871892537, 0.9997531346916116, 0.9992377395818508, 0.9997755303460901, 0.9994855085495953, 0.9996795611831868, 0.9994559629092918, 0.9996432585015114, 0.9993491589378981, 0.9997473367918667, 0.9997592220286777, 0.9992057188243533, 0.9996361225021088, 0.9994068332926074, 0.9994806611305066, 0.99978902119256, 0.999630282549978, 0.9997030032464471, 0.9993328314364538, 0.9993486236534437, 0.9992712934970517, 0.9994168290755986, 0.9992002971009406, 0.9996438767251029, 0.9995261929177126, 0.9994775830571271, 0.9993211760062108, 0.999162622549473, 0.9996841030526874, 0.9997203238670977, 0.9995084222404123, 0.9990903640078659, 0.9997035704169597, 0.9997829861110812, 0.9997123130034389, 0.9997421584979181, 0.9991249756062432, 0.9993408606969473, 0.9992271348344078, 0.9997587232539693, 0.9990828275238219, 0.9992039098447513, 0.9996156303474514, 0.9996251432715264, 0.9996492235391309, 0.9992226664054017]
+Network Gdpt (overall): 26.358377011067507
+Network Gdpt (per flow): [0.9998099389158284, 0.9999421334696108, 0.9998746361102129, 0.9998947487720528, 0.999911156900417, 0.9997725483504857, 0.9997534452014982, 0.999937540095101, 0.9996502187785297, 0.9999032466734751, 0.9998580467086906, 0.9998682011486361, 0.9998260523982403, 0.999685979945628, 0.9998391560582183, 0.9998073231630851, 0.9998837562478333, 0.9998571984325979, 0.9996634477345702, 0.9998587101212593, 0.9999015345867647, 0.9999218692186174, 0.9997190845644383, 0.9996304650565511, 0.9994782510575131, 0.999845122435052, 0.999761907029405, 0.9999128356390089, 0.9996164535701688, 0.9998380943893043, 0.9995946757084656, 0.9997817637166716, 0.9995355943157195, 0.9999088412652272, 0.9998823407169041, 0.9997577435758201, 0.9998318316454352, 0.9999178637154028, 0.9999032504375602, 0.9999195247604875, 0.999787958532189, 0.9998339852810261, 0.9997151635284104, 0.9999294505485687, 0.9993577628905648, 0.9998114483000303, 0.9999069628569479, 0.9999093881086784, 0.999915720715854, 0.9998143110500374]
+INFO:dale_experiment_rig:Processing DCTCP results exp_id 0:: 50flo-1Gbps_target
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-50flo-1Gbps-2025-08-04T_12-15-56Z_poisson_10GbpsFlo/data/DCTCP-50/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 2232, num srq events: 2232, num rrq events: 2232
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3254256, recv_data_B: 3254256
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 4363, num srq events: 4363, num rrq events: 4363
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6361254, recv_data_B: 6361254
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 2422, num srq events: 2422, num rrq events: 2422
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3531276, recv_data_B: 3531276
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 3139, num srq events: 3139, num rrq events: 3139
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4576662, recv_data_B: 4576662
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 3218, num srq events: 3218, num rrq events: 3218
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4691844, recv_data_B: 4691844
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 4056, num srq events: 4056, num rrq events: 4056
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 5913648, recv_data_B: 5913648
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 1312, num srq events: 1312, num rrq events: 1312
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1912896, recv_data_B: 1912896
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 4458, num srq events: 4458, num rrq events: 4458
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6499764, recv_data_B: 6499764
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 1944, num srq events: 1944, num rrq events: 1944
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2834352, recv_data_B: 2834352
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 3125, num srq events: 3125, num rrq events: 3125
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4556250, recv_data_B: 4556250
+INFO:dale_experiment_rig:Flow 10:: num of byteloads: 1840, num srq events: 1840, num rrq events: 1840
+DEBUG:dale_experiment_rig:Flow 10:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2682720, recv_data_B: 2682720
+INFO:dale_experiment_rig:Flow 11:: num of byteloads: 2813, num srq events: 2813, num rrq events: 2813
+DEBUG:dale_experiment_rig:Flow 11:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4101354, recv_data_B: 4101354
+INFO:dale_experiment_rig:Flow 12:: num of byteloads: 1537, num srq events: 1537, num rrq events: 1537
+DEBUG:dale_experiment_rig:Flow 12:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2240946, recv_data_B: 2240946
+INFO:dale_experiment_rig:Flow 13:: num of byteloads: 3948, num srq events: 3948, num rrq events: 3948
+DEBUG:dale_experiment_rig:Flow 13:: first_event_name: srq, final_event_name: rrq, expected_data_B: 5756184, recv_data_B: 5756184
+INFO:dale_experiment_rig:Flow 14:: num of byteloads: 4150, num srq events: 4150, num rrq events: 4150
+DEBUG:dale_experiment_rig:Flow 14:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6050700, recv_data_B: 6050700
+INFO:dale_experiment_rig:Flow 15:: num of byteloads: 1259, num srq events: 1259, num rrq events: 1259
+DEBUG:dale_experiment_rig:Flow 15:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1835622, recv_data_B: 1835622
+INFO:dale_experiment_rig:Flow 16:: num of byteloads: 2747, num srq events: 2747, num rrq events: 2747
+DEBUG:dale_experiment_rig:Flow 16:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4005126, recv_data_B: 4005126
+INFO:dale_experiment_rig:Flow 17:: num of byteloads: 1685, num srq events: 1685, num rrq events: 1685
+DEBUG:dale_experiment_rig:Flow 17:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2456730, recv_data_B: 2456730
+INFO:dale_experiment_rig:Flow 18:: num of byteloads: 1928, num srq events: 1928, num rrq events: 1928
+DEBUG:dale_experiment_rig:Flow 18:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2811024, recv_data_B: 2811024
+INFO:dale_experiment_rig:Flow 19:: num of byteloads: 4739, num srq events: 4739, num rrq events: 4739
+DEBUG:dale_experiment_rig:Flow 19:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6909462, recv_data_B: 6909462
+INFO:dale_experiment_rig:Flow 20:: num of byteloads: 2705, num srq events: 2705, num rrq events: 2705
+DEBUG:dale_experiment_rig:Flow 20:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3943890, recv_data_B: 3943890
+INFO:dale_experiment_rig:Flow 21:: num of byteloads: 3363, num srq events: 3363, num rrq events: 3363
+DEBUG:dale_experiment_rig:Flow 21:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4903254, recv_data_B: 4903254
+INFO:dale_experiment_rig:Flow 22:: num of byteloads: 1499, num srq events: 1499, num rrq events: 1499
+DEBUG:dale_experiment_rig:Flow 22:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2185542, recv_data_B: 2185542
+INFO:dale_experiment_rig:Flow 23:: num of byteloads: 1536, num srq events: 1536, num rrq events: 1536
+DEBUG:dale_experiment_rig:Flow 23:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2239488, recv_data_B: 2239488
+INFO:dale_experiment_rig:Flow 24:: num of byteloads: 1373, num srq events: 1373, num rrq events: 1373
+DEBUG:dale_experiment_rig:Flow 24:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2001834, recv_data_B: 2001834
+INFO:dale_experiment_rig:Flow 25:: num of byteloads: 1713, num srq events: 1713, num rrq events: 1713
+DEBUG:dale_experiment_rig:Flow 25:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2497554, recv_data_B: 2497554
+INFO:dale_experiment_rig:Flow 26:: num of byteloads: 1251, num srq events: 1251, num rrq events: 1251
+DEBUG:dale_experiment_rig:Flow 26:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1823958, recv_data_B: 1823958
+INFO:dale_experiment_rig:Flow 27:: num of byteloads: 2802, num srq events: 2802, num rrq events: 2802
+DEBUG:dale_experiment_rig:Flow 27:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4085316, recv_data_B: 4085316
+INFO:dale_experiment_rig:Flow 28:: num of byteloads: 2114, num srq events: 2114, num rrq events: 2114
+DEBUG:dale_experiment_rig:Flow 28:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3082212, recv_data_B: 3082212
+INFO:dale_experiment_rig:Flow 29:: num of byteloads: 1915, num srq events: 1915, num rrq events: 1915
+DEBUG:dale_experiment_rig:Flow 29:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2792070, recv_data_B: 2792070
+INFO:dale_experiment_rig:Flow 30:: num of byteloads: 1472, num srq events: 1472, num rrq events: 1472
+DEBUG:dale_experiment_rig:Flow 30:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2146176, recv_data_B: 2146176
+INFO:dale_experiment_rig:Flow 31:: num of byteloads: 1194, num srq events: 1194, num rrq events: 1194
+DEBUG:dale_experiment_rig:Flow 31:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1740852, recv_data_B: 1740852
+INFO:dale_experiment_rig:Flow 32:: num of byteloads: 3174, num srq events: 3174, num rrq events: 3174
+DEBUG:dale_experiment_rig:Flow 32:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4627692, recv_data_B: 4627692
+INFO:dale_experiment_rig:Flow 33:: num of byteloads: 3582, num srq events: 3582, num rrq events: 3582
+DEBUG:dale_experiment_rig:Flow 33:: first_event_name: srq, final_event_name: rrq, expected_data_B: 5222556, recv_data_B: 5222556
+INFO:dale_experiment_rig:Flow 34:: num of byteloads: 2032, num srq events: 2032, num rrq events: 2032
+DEBUG:dale_experiment_rig:Flow 34:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2962656, recv_data_B: 2962656
+INFO:dale_experiment_rig:Flow 35:: num of byteloads: 1100, num srq events: 1100, num rrq events: 1100
+DEBUG:dale_experiment_rig:Flow 35:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1603800, recv_data_B: 1603800
+INFO:dale_experiment_rig:Flow 36:: num of byteloads: 3381, num srq events: 3381, num rrq events: 3381
+DEBUG:dale_experiment_rig:Flow 36:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4929498, recv_data_B: 4929498
+INFO:dale_experiment_rig:Flow 37:: num of byteloads: 4608, num srq events: 4608, num rrq events: 4608
+DEBUG:dale_experiment_rig:Flow 37:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6718464, recv_data_B: 6718464
+INFO:dale_experiment_rig:Flow 38:: num of byteloads: 3476, num srq events: 3476, num rrq events: 3476
+DEBUG:dale_experiment_rig:Flow 38:: first_event_name: srq, final_event_name: rrq, expected_data_B: 5068008, recv_data_B: 5068008
+INFO:dale_experiment_rig:Flow 39:: num of byteloads: 3885, num srq events: 3885, num rrq events: 3885
+DEBUG:dale_experiment_rig:Flow 39:: first_event_name: srq, final_event_name: rrq, expected_data_B: 5664330, recv_data_B: 5664330
+INFO:dale_experiment_rig:Flow 40:: num of byteloads: 1144, num srq events: 1144, num rrq events: 1144
+DEBUG:dale_experiment_rig:Flow 40:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1667952, recv_data_B: 1667952
+INFO:dale_experiment_rig:Flow 41:: num of byteloads: 1517, num srq events: 1517, num rrq events: 1517
+DEBUG:dale_experiment_rig:Flow 41:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2211786, recv_data_B: 2211786
+INFO:dale_experiment_rig:Flow 42:: num of byteloads: 1293, num srq events: 1293, num rrq events: 1293
+DEBUG:dale_experiment_rig:Flow 42:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1885194, recv_data_B: 1885194
+INFO:dale_experiment_rig:Flow 43:: num of byteloads: 4140, num srq events: 4140, num rrq events: 4140
+DEBUG:dale_experiment_rig:Flow 43:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6036120, recv_data_B: 6036120
+INFO:dale_experiment_rig:Flow 44:: num of byteloads: 1089, num srq events: 1089, num rrq events: 1089
+DEBUG:dale_experiment_rig:Flow 44:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1587762, recv_data_B: 1587762
+INFO:dale_experiment_rig:Flow 45:: num of byteloads: 1257, num srq events: 1257, num rrq events: 1257
+DEBUG:dale_experiment_rig:Flow 45:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1832706, recv_data_B: 1832706
+INFO:dale_experiment_rig:Flow 46:: num of byteloads: 2603, num srq events: 2603, num rrq events: 2603
+DEBUG:dale_experiment_rig:Flow 46:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3795174, recv_data_B: 3795174
+INFO:dale_experiment_rig:Flow 47:: num of byteloads: 2667, num srq events: 2667, num rrq events: 2667
+DEBUG:dale_experiment_rig:Flow 47:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3888486, recv_data_B: 3888486
+INFO:dale_experiment_rig:Flow 48:: num of byteloads: 2843, num srq events: 2843, num rrq events: 2843
+DEBUG:dale_experiment_rig:Flow 48:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4145094, recv_data_B: 4145094
+INFO:dale_experiment_rig:Flow 49:: num of byteloads: 1287, num srq events: 1287, num rrq events: 1287
+DEBUG:dale_experiment_rig:Flow 49:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1876446, recv_data_B: 1876446
+INFO:dale_experiment_rig:DCTCP-50 FCT (ms): [0.02603702000000041, 0.050892776000001305, 0.02825295000000061, 0.0366160390000001, 0.037537474000000515, 0.04731194500000058, 0.01530591500000078, 0.0520008660000002, 0.022677564000000316, 0.03645276200000147, 0.021464518000000155, 0.03281361900000057, 0.017930365000001558, 0.046052189000000965, 0.04840833700000147, 0.014687836000000232, 0.0320437490000014, 0.019656580000001256, 0.022490953000000147, 0.05527844000000037, 0.03155386700000129, 0.03922886500000011, 0.017487191000000735, 0.01791869500000054, 0.016017537000001525, 0.019983372000000443, 0.014594415000001248, 0.03268524900000003, 0.024660461000001632, 0.022339341000000346, 0.017172212000000187, 0.013929885000001363, 0.037024312999999864, 0.041783215000000595, 0.023703981000000596, 0.012833260000000735, 0.03943875600000091, 0.053750458000001444, 0.04054681000000038, 0.04531740600000056, 0.013346458000000894, 0.017697033000001028, 0.015084527000000847, 0.048291693000001246, 0.01270482800000039, 0.014664402000001076, 0.030364176000000853, 0.031110631000000666, 0.03316346600000131, 0.015014319000000498]
+App Gdpt (overall): 26.361891648072042 Gbps
+App Gdpt (per flow): [0.9995520097201432, 0.9997708391997122, 0.9995872596176376, 0.99968150911746, 0.9996898871892537, 0.9997531346916116, 0.9992377395818508, 0.9997755303460901, 0.9994855085495953, 0.9996795611831868, 0.9994559629092918, 0.9996432585015114, 0.9993491589378981, 0.9997473367918667, 0.9997592220286777, 0.9992057188243533, 0.9996361225021088, 0.9994068332926074, 0.9994806611305066, 0.99978902119256, 0.999630282549978, 0.9997030032464471, 0.9993328314364538, 0.9993486236534437, 0.9992712934970517, 0.9994168290755986, 0.9992002971009406, 0.9996438767251029, 0.9995261929177126, 0.9994775830571271, 0.9993211760062108, 0.999162622549473, 0.9996841030526874, 0.9997203238670977, 0.9995084222404123, 0.9990903640078659, 0.9997035704169597, 0.9997829861110812, 0.9997123130034389, 0.9997421584979181, 0.9991249756062432, 0.9993408606969473, 0.9992271348344078, 0.9997587232539693, 0.9990828275238219, 0.9992039098447513, 0.9996156303474514, 0.9996251432715264, 0.9996492235391309, 0.9992226664054017]
+Network Gdpt (overall): 26.360793104870368
+Network Gdpt (per flow): [0.9998858548328339, 0.9999460827210269, 0.9999029481876899, 0.9999250874732765, 0.9999274857972459, 0.9999416426443559, 0.9998205269008237, 0.9999470393435334, 0.9998788229635108, 0.999924230707087, 0.9998715088780399, 0.999915065753626, 0.9998440076372368, 0.9999410017187031, 0.9999434601522985, 0.9998052810502357, 0.9999144606955511, 0.9998606064736971, 0.9998772395282608, 0.9999503603936657, 0.9999129425245633, 0.9999277827691392, 0.9998367376441, 0.9998442408891641, 0.9998211335487146, 0.9998528776824831, 0.9998115032359127, 0.999916751437322, 0.9998878771973634, 0.9998755110994391, 0.99983671294064, 0.9997796823160161, 0.9999249952321908, 0.9999337772356534, 0.9998847029112706, 0.9997771415836091, 0.9999297138073802, 0.9999489120631969, 0.9999322758066449, 0.999938963849772, 0.999787059607808, 0.9998448892534118, 0.9998027780386587, 0.9999434064156492, 0.9997849636374149, 0.9998121982743603, 0.9999083130067205, 0.9999118307821959, 0.9999181629567517, 0.999816774906641]
+INFO:dale_experiment_rig:
+##### GENERATE METRICS #####
+INFO:__main__:Protos tested: ['SSIRD', 'DCTCP-50']
+INFO:__main__:Num Flows: 50
+INFO:__main__:Target Flow Rate (Gbps): 1
+INFO:__main__:Flow Start Times (us): [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+INFO:__main__:Flow Rate (Gbps): [1.0, 1.0, 1.0, 1.0, 1.000001, 1.0, 1.0, 1.0, 1.0, 1.0, 0.999999, 0.999999, 1.0, 1.000001, 1.0, 1.0, 1.0, 1.0, 0.999999, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.000001, 1.0, 1.000001, 0.999999, 1.0, 1.000001, 1.0, 0.999999, 0.999999, 1.000001, 0.999999, 0.999999, 1.0, 1.0, 1.0, 0.999999, 1.0, 1.000001, 1.0, 1.000001, 0.999999, 1.0, 1.0, 1.000001, 1.0]
+INFO:__main__:Flow Size (B): [3254256, 6361254, 3531276, 4576662, 4691844, 5913648, 1912896, 6499764, 2834352, 4556250, 2682720, 4101354, 2240946, 5756184, 6050700, 1835622, 4005126, 2456730, 2811024, 6909462, 3943890, 4903254, 2185542, 2239488, 2001834, 2497554, 1823958, 4085316, 3082212, 2792070, 2146176, 1740852, 4627692, 5222556, 2962656, 1603800, 4929498, 6718464, 5068008, 5664330, 1667952, 2211786, 1885194, 6036120, 1587762, 1832706, 3795174, 3888486, 4145094, 1876446]
+INFO:__main__:Num Byteloads: [2232, 4363, 2422, 3139, 3218, 4056, 1312, 4458, 1944, 3125, 1840, 2813, 1537, 3948, 4150, 1259, 2747, 1685, 1928, 4739, 2705, 3363, 1499, 1536, 1373, 1713, 1251, 2802, 2114, 1915, 1472, 1194, 3174, 3582, 2032, 1100, 3381, 4608, 3476, 3885, 1144, 1517, 1293, 4140, 1089, 1257, 2603, 2667, 2843, 1287]
+INFO:__main__:Flow Send Durations (us): [26034.048, 50890.032, 28250.208, 36613.295999999995, 37534.752, 47309.183999999994, 15303.168000000001, 51998.112, 22674.816, 36450.0, 21461.76, 32810.831999999995, 17927.568000000003, 46049.472, 48405.6, 14684.976, 32041.008, 19653.84, 22488.192, 55275.695999999996, 31551.120000000003, 39226.032, 17484.336, 17915.904, 16014.672, 19980.432, 14591.664, 32682.528000000002, 24657.696, 22336.559999999998, 17169.408, 13926.816, 37021.536, 41780.448, 23701.248, 12830.4, 39435.984, 53747.712, 40544.064, 45314.64000000001, 13343.616, 17694.288, 15081.552, 48288.96, 12702.096, 14661.648, 30361.392, 31107.888, 33160.752, 15011.568]
+INFO:__main__:Flow Min Byteload Size (B): [1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458]
+INFO:__main__:Flow Max Byteload Size (B): [1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458]
+INFO:__main__:Flow Min Interval (us): [0.018, 0.003, 0.005, 0.001, 0.008, 0.004, 0.013, 0.001, 0.002, 0.001, 0.001, 0.006, 0.005, 0.001, 0.001, 0.006, 0.008, 0.003, 0.001, 0.001, 0.003, 0.005, 0.001, 0.021, 0.021, 0.007, 0.002, 0.007, 0.009, 0.022, 0.004, 0.011, 0.003, 0.005, 0.005, 0.01, 0.006, 0.004, 0.004, 0.005, 0.002, 0.001, 0.01, 0.009, 0.009, 0.016, 0.007, 0.001, 0.001, 0.008]
+INFO:__main__:Flow Max Interval (us): [84.829, 82.551, 81.122, 82.18, 91.267, 85.416, 95.108, 82.209, 80.436, 85.994, 78.711, 87.079, 84.557, 82.866, 86.501, 91.102, 81.056, 81.238, 82.15, 81.682, 88.511, 90.026, 84.9, 87.875, 86.445, 82.894, 85.631, 83.039, 80.34, 81.383, 79.388, 87.255, 82.345, 82.145, 85.997, 74.976, 79.063, 89.105, 87.378, 81.493, 85.074, 76.093, 87.948, 84.042, 80.633, 79.151, 81.909, 90.992, 86.211, 78.097]
+INFO:__main__:APP Gdpt Gbps measured (SSIRD): [26.361891648072042]
+INFO:__main__:APP Gdpt Gbps measured (DCTCP): [26.361891648072042]
+DEBUG:__main__:APP Gdpt Gbps measured per flow (SSIRD): [[0.9995520097201432, 0.9997708391997122, 0.9995872596176376, 0.99968150911746, 0.9996898871892537, 0.9997531346916116, 0.9992377395818508, 0.9997755303460901, 0.9994855085495953, 0.9996795611831868, 0.9994559629092918, 0.9996432585015114, 0.9993491589378981, 0.9997473367918667, 0.9997592220286777, 0.9992057188243533, 0.9996361225021088, 0.9994068332926074, 0.9994806611305066, 0.99978902119256, 0.999630282549978, 0.9997030032464471, 0.9993328314364538, 0.9993486236534437, 0.9992712934970517, 0.9994168290755986, 0.9992002971009406, 0.9996438767251029, 0.9995261929177126, 0.9994775830571271, 0.9993211760062108, 0.999162622549473, 0.9996841030526874, 0.9997203238670977, 0.9995084222404123, 0.9990903640078659, 0.9997035704169597, 0.9997829861110812, 0.9997123130034389, 0.9997421584979181, 0.9991249756062432, 0.9993408606969473, 0.9992271348344078, 0.9997587232539693, 0.9990828275238219, 0.9992039098447513, 0.9996156303474514, 0.9996251432715264, 0.9996492235391309, 0.9992226664054017]]
+DEBUG:__main__:APP Gdpt Gbps measured per flow (DCTCP): [[0.9995520097201432, 0.9997708391997122, 0.9995872596176376, 0.99968150911746, 0.9996898871892537, 0.9997531346916116, 0.9992377395818508, 0.9997755303460901, 0.9994855085495953, 0.9996795611831868, 0.9994559629092918, 0.9996432585015114, 0.9993491589378981, 0.9997473367918667, 0.9997592220286777, 0.9992057188243533, 0.9996361225021088, 0.9994068332926074, 0.9994806611305066, 0.99978902119256, 0.999630282549978, 0.9997030032464471, 0.9993328314364538, 0.9993486236534437, 0.9992712934970517, 0.9994168290755986, 0.9992002971009406, 0.9996438767251029, 0.9995261929177126, 0.9994775830571271, 0.9993211760062108, 0.999162622549473, 0.9996841030526874, 0.9997203238670977, 0.9995084222404123, 0.9990903640078659, 0.9997035704169597, 0.9997829861110812, 0.9997123130034389, 0.9997421584979181, 0.9991249756062432, 0.9993408606969473, 0.9992271348344078, 0.9997587232539693, 0.9990828275238219, 0.9992039098447513, 0.9996156303474514, 0.9996251432715264, 0.9996492235391309, 0.9992226664054017]]
+INFO:__main__:NW Gdpt Gbps measured (SSIRD): [26.358377011067507]
+INFO:__main__:NW Gdpt Gbps measured (DCTCP): [26.360793104870368]
+DEBUG:__main__:NW Gdpt Gbps measured per flow (SSIRD): [[0.9998099389158284, 0.9999421334696108, 0.9998746361102129, 0.9998947487720528, 0.999911156900417, 0.9997725483504857, 0.9997534452014982, 0.999937540095101, 0.9996502187785297, 0.9999032466734751, 0.9998580467086906, 0.9998682011486361, 0.9998260523982403, 0.999685979945628, 0.9998391560582183, 0.9998073231630851, 0.9998837562478333, 0.9998571984325979, 0.9996634477345702, 0.9998587101212593, 0.9999015345867647, 0.9999218692186174, 0.9997190845644383, 0.9996304650565511, 0.9994782510575131, 0.999845122435052, 0.999761907029405, 0.9999128356390089, 0.9996164535701688, 0.9998380943893043, 0.9995946757084656, 0.9997817637166716, 0.9995355943157195, 0.9999088412652272, 0.9998823407169041, 0.9997577435758201, 0.9998318316454352, 0.9999178637154028, 0.9999032504375602, 0.9999195247604875, 0.999787958532189, 0.9998339852810261, 0.9997151635284104, 0.9999294505485687, 0.9993577628905648, 0.9998114483000303, 0.9999069628569479, 0.9999093881086784, 0.999915720715854, 0.9998143110500374]]
+DEBUG:__main__:NW Gdpt Gbps measured per flow (DCTCP): [[0.9998858548328339, 0.9999460827210269, 0.9999029481876899, 0.9999250874732765, 0.9999274857972459, 0.9999416426443559, 0.9998205269008237, 0.9999470393435334, 0.9998788229635108, 0.999924230707087, 0.9998715088780399, 0.999915065753626, 0.9998440076372368, 0.9999410017187031, 0.9999434601522985, 0.9998052810502357, 0.9999144606955511, 0.9998606064736971, 0.9998772395282608, 0.9999503603936657, 0.9999129425245633, 0.9999277827691392, 0.9998367376441, 0.9998442408891641, 0.9998211335487146, 0.9998528776824831, 0.9998115032359127, 0.999916751437322, 0.9998878771973634, 0.9998755110994391, 0.99983671294064, 0.9997796823160161, 0.9999249952321908, 0.9999337772356534, 0.9998847029112706, 0.9997771415836091, 0.9999297138073802, 0.9999489120631969, 0.9999322758066449, 0.999938963849772, 0.999787059607808, 0.9998448892534118, 0.9998027780386587, 0.9999434064156492, 0.9997849636374149, 0.9998121982743603, 0.9999083130067205, 0.9999118307821959, 0.9999181629567517, 0.999816774906641]]
+INFO:__main__:* Sim duration (SSIRD): [0.1, 0.1, 0.1, 0.1, 0.1]
+INFO:__main__:* Sim duration (DCTCP): [0.1, 0.1, 0.1, 0.1, 0.1]
+INFO:__main__:* SSIRD FCT: [[0.026038997000000563, 0.05089297700000017, 0.028253750000001077, 0.03661715000000143, 0.0375380870000015, 0.047319947000000084, 0.01530694200000049, 0.05200136000000022, 0.022682750000001306, 0.03645352700000082, 0.021464807000000974, 0.03281515699999993, 0.017930687000001555, 0.04606393700000133, 0.048413387000000085, 0.014687806000001302, 0.0320447330000011, 0.01965664700000147, 0.022495763000000224, 0.0552835070000004, 0.03155422700000088, 0.039229097000001545, 0.017489249000000484, 0.01792252700000141, 0.016023032000001436, 0.019983527000000834, 0.014595139000000756, 0.03268537699999996, 0.02466715700000144, 0.02234017700000024, 0.017176370000001384, 0.01392985600000074, 0.037038737000001376, 0.041784257000001546, 0.0237040369999999, 0.01283350900000002, 0.039442617000000624, 0.05375212700000098, 0.04054798700000006, 0.04531828700000062, 0.0133464459999999, 0.01769722600000101, 0.015085849000000096, 0.04829236700000017, 0.012710259000000335, 0.01466441300000021, 0.030364217000000693, 0.031110707000001625, 0.033163547000000904, 0.015014356000000006]]
+INFO:__main__:* DCTCP FCT: [[0.02603702000000041, 0.050892776000001305, 0.02825295000000061, 0.0366160390000001, 0.037537474000000515, 0.04731194500000058, 0.01530591500000078, 0.0520008660000002, 0.022677564000000316, 0.03645276200000147, 0.021464518000000155, 0.03281361900000057, 0.017930365000001558, 0.046052189000000965, 0.04840833700000147, 0.014687836000000232, 0.0320437490000014, 0.019656580000001256, 0.022490953000000147, 0.05527844000000037, 0.03155386700000129, 0.03922886500000011, 0.017487191000000735, 0.01791869500000054, 0.016017537000001525, 0.019983372000000443, 0.014594415000001248, 0.03268524900000003, 0.024660461000001632, 0.022339341000000346, 0.017172212000000187, 0.013929885000001363, 0.037024312999999864, 0.041783215000000595, 0.023703981000000596, 0.012833260000000735, 0.03943875600000091, 0.053750458000001444, 0.04054681000000038, 0.04531740600000056, 0.013346458000000894, 0.017697033000001028, 0.015084527000000847, 0.048291693000001246, 0.01270482800000039, 0.014664402000001076, 0.030364176000000853, 0.031110631000000666, 0.03316346600000131, 0.015014319000000498]]

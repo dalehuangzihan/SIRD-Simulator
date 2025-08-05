@@ -338,7 +338,7 @@ def experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_
     assert num_of_experiments == len(exp_metrics.ssird_fct_list)
     assert num_of_experiments == len(exp_metrics.dctcp_fct_list)
 
-def experiment_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
+def experiment_poissoninterval_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"Poisson_Intervals{title_addendum}"
     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
@@ -416,7 +416,9 @@ def experiment_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=True, title_addendu
     ssird_sim_dur_list = [0.001, 0.001, 0.001, 0.001, 0.001]
     dctcp_sim_dur_list = [0.001, 0.001, 0.001, 0.001, 0.001] # for RTT = 5us
     # TODO: modify assertion to work for spec that does specifies multiple experiments
+    logger.debug(f"Max flow send durations (us): {max(flow_send_durations_us_list)}")
     assert(max(flow_send_durations_us_list) * pow(10,-6) * 1.5 < ssird_sim_dur_list[0])
+    assert(max(flow_send_durations_us_list) * pow(10,-6) * 1.5 < dctcp_sim_dur_list[0])
 
     logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
@@ -470,7 +472,7 @@ def experiment_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=True, title_addendu
     assert num_of_experiments == len(exp_metrics.ssird_fct_list)
     assert num_of_experiments == len(exp_metrics.dctcp_fct_list)
 
-def experiment_1458B_bloads_50flo_1GbpsFlo(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
+def experiment_poissoninterval_1458B_bloads_50flo_1GbpsFlo(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"Poisson_Intervals{title_addendum}"
     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
@@ -534,7 +536,9 @@ def experiment_1458B_bloads_50flo_1GbpsFlo(is_full_postproc=True, title_addendum
     ssird_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1]
     dctcp_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1] # for RTT = 5us
     # TODO: modify assertion to work for spec that does specifies multiple experiments
+    logger.debug(f"Max flow send durations (us): {max(flow_send_durations_us_list)}")
     assert(max(flow_send_durations_us_list) * pow(10,-6) * 1.5 < ssird_sim_dur_list[0])
+    assert(max(flow_send_durations_us_list) * pow(10,-6) * 1.5 < dctcp_sim_dur_list[0])
 
     logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
@@ -588,29 +592,31 @@ def experiment_1458B_bloads_50flo_1GbpsFlo(is_full_postproc=True, title_addendum
     assert num_of_experiments == len(exp_metrics.ssird_fct_list)
     assert num_of_experiments == len(exp_metrics.dctcp_fct_list)
 
-def experiment_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
+def experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"Poisson_Intervals{title_addendum}"
-    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
+    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
-    # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
+    proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
     src_dst_pairs_list = [(0,1)]
 
     # NOTE: here we only do 1 experiment, but in the future we could do multiple experiments, each with their own set of flow constraints from which flows are generated
     num_flows = 50
     target_flow_rate_gbps = 2
-    target_flow_rate_bps = target_flow_rate_gbps * pow(10,9)
-    min_num_byteloads = 1000
-    max_num_byteloads = 5000
-    min_byteload_size_B = 1458
-    max_byteload_size_B = 1458
-    min_interval_us = 10
-    max_interval_us = 100
-    poisson_flow_generator = dale_experiment_rig.PoissonFlowGenerator(target_flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_B, max_byteload_size_B, min_interval_us, max_interval_us)
-    flow_spec_list = poisson_flow_generator.generate_n_flows(num_flows)
+    # target_flow_rate_bps = target_flow_rate_gbps * pow(10,9)
+    # min_num_byteloads = 1000
+    # max_num_byteloads = 5000
+    # min_byteload_size_B = 1458
+    # max_byteload_size_B = 1458
+    # min_interval_us = 10
+    # max_interval_us = 100
+    # poisson_flow_generator = dale_experiment_rig.PoissonFlowGenerator(target_flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_B, max_byteload_size_B, min_interval_us, max_interval_us)
+    # flow_spec_list = poisson_flow_generator.generate_n_flows(num_flows)
+    # inter_flow_spacing_us = 0 # TODO: for testing
+    # flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
 
-    inter_flow_spacing_us = 0 # TODO: for testing
-    flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
+    flow_start_times_us_list, flow_spec_list = dale_experiment_rig.FlowSpec.parse_flow_specs_json_file(dale_experiment_rig.SAVED_FLOW_SPECS_JSON_PATH, "poisson_intervals_experiment_50flo_2GbpsFlo_2025-08-04T_19-03-49Z.log")
+    assert(len(flow_start_times_us_list) == len(flow_spec_list) and len(flow_spec_list) == num_flows)
 
     flow_spec_list_list = [flow_spec_list]
     flow_start_times_us_list_list = [flow_start_times_us_list]
@@ -647,12 +653,14 @@ def experiment_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum
     logger.info(f"Flow Min Interval (us): {flow_min_interval_us}")
     logger.info(f"Flow Max Interval (us): {flow_max_interval_us}")
 
-    # ssird_sim_dur_list = [0.0001] * num_flows
-    # dctcp_sim_dur_list = [0.0001] * num_flows
-    ssird_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1]
-    dctcp_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1] # for RTT = 5us
+    ssird_sim_dur_list = [1]
+    dctcp_sim_dur_list = [0.04] # NOTE: for dctcp test
+    # ssird_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1]
+    # dctcp_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1] # for RTT = 5us
     # TODO: modify assertion to work for spec that does specifies multiple experiments
+    logger.debug(f"Max flow send durations (us): {max(flow_send_durations_us_list)}")
     assert(max(flow_send_durations_us_list) * pow(10,-6) * 1.5 < ssird_sim_dur_list[0])
+    assert(max(flow_send_durations_us_list) * pow(10,-6) * 1.5 < dctcp_sim_dur_list[0])
 
     logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
     logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
@@ -719,6 +727,7 @@ if __name__ == "__main__":
 
 
     ''' --- Poisson Process Intervals, RTT = 5us --- '''
-    # experiment_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=False, title_addendum="_poisson_10flo_10GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_1458B_bloads_50flo_1GbpsFlo(is_full_postproc=False, title_addendum="_poisson_50flo_1GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=False, title_addendum="_poisson_50flo_2GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_poissoninterval_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=False, title_addendum="_poisson_10flo_10GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_poissoninterval_1458B_bloads_50flo_1GbpsFlo(is_full_postproc=False, title_addendum="_poisson_50flo_1GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=False, title_addendum="_poisson_50flo_2GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=False, title_addendum="_poisson_50flo_2GbpsFlo_dctcp_test", log_level=dale_experiment_rig.LOG_LEVEL_6)
