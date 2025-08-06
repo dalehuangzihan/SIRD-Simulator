@@ -332,7 +332,9 @@ class ExperimentOutputRaw:
         fct_list = []
         measured_app_gdpt_gbps_per_flow_list = []
         for _, flow_stats_obj in flow_stats_dict.items():
-            flow_stats_obj.check_flow_stats()
+            expected_data_B, rcvd_data_B = flow_stats_obj.check_flow_stats()
+            total_data_expected_B += expected_data_B
+            total_data_rcved_B += rcvd_data_B
             fct_list.append(flow_stats_obj.get_fct_s())
             measured_app_gdpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_app_gdpt_for_flow_gbps())
 
@@ -443,6 +445,8 @@ class FlowStats:
         logger.debug(f"Flow {self.flow_id}:: first_event_name: {self.first_event_name}, final_event_name: {self.final_event_name}, expected_data_B: {expected_flow_size_B}, recv_data_B: {self.total_bytes_recv_B}")
         if (self.total_bytes_recv_B != expected_flow_size_B):
             logger.error(f"Missing data! flow_id: {self.flow_id}: total bytes recv: {self.total_bytes_recv_B}, expected flow size = {expected_flow_size_B}, diff = {expected_flow_size_B - self.total_bytes_recv_B}")
+
+        return expected_flow_size_B, self.total_data_bytes_recv_B
 
     def get_fct_s(self):
         return self.end_time_s - self.start_time_s

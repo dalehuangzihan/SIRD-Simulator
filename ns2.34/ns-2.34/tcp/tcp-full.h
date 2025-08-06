@@ -2,6 +2,9 @@
 #ifndef ns_tcp_full_h
 #define ns_tcp_full_h
 
+#include <tuple>
+#include <deque>
+
 #include "tcp.h"
 #include "rq.h"
 #include "r2p2-hdr.h"
@@ -109,6 +112,9 @@ public:
 	virtual void advance_bytes(int, RequestIdTuple &&); // unique to full-tcp
 	RequestIdTuple *cur_req_id_tup_ = nullptr;
 	int conctd_to_pfabric_app_;
+
+	/* Dale: Try: track which req_id_tup wanted to send how much data */
+	std::deque<std::tuple<RequestIdTuple, int>> data_to_send_queue_; 
 
 	virtual void sendmsg(int nbytes, const char *flags = 0);
 	virtual int &size() { return maxseg_; } // FullTcp uses maxseg_ for size_
@@ -235,12 +241,14 @@ protected:
 			cwnd_++;
 	}
 
-	virtual void sendpacket(int seq, int ack, int flags, int dlen, int why, Packet *p = 0);
+	/* Dale: use req_id passed explictly from caller, instead of global curr_req_id_tup cuz latter may not be in sync with the one we're sending data for here */
+	virtual void sendpacket(int seq, int ack, int flags, int dlen, int why, RequestIdTuple *req_id_tup=nullptr, Packet *p = 0);
 	void connect();									// do active open
 	void listen();									// do passive open
 	void usrclosed();								// user requested a close
 	virtual int need_send();						// send ACK/win-update now?
-	virtual int foutput(int seqno, int reason = 0); // output 1 packet
+	/* Dale: use datalen_limit to restrict amt of bytes sent s.t. we send only the data corresponding to this req_id; pass req_id through to sendpacket() */
+	virtual std::tuple<int, int> foutput(int seqno, int reason = 0, RequestIdTuple * req_id_tup=nullptr, int datalen_limit=-1); // output 1 packet
 	void newack(Packet *pkt);						// process an ACK
 	int pack(Packet *pkt);							// is this a partial ack?
 	void dooptions(Packet *);						// process option(s)
@@ -357,7 +365,7 @@ class DDTcpAgent : public SackFullTcpAgent
 
 	virtual void slowdown(int how); /* reduce cwnd/ssthresh */
 	virtual int byterm();
-	virtual int foutput(int seqno, int reason = 0); // output 1 packet
+	virtual std::tuple<int, int> foutput(int seqno, int reason = 0); // output 1 packet
 	virtual int need_send();						// send ACK/win-update now?
 };
 

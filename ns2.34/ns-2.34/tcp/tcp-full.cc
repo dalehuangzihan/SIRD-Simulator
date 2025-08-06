@@ -456,6 +456,8 @@ void FullTcpAgent::advance_bytes(int nb, RequestIdTuple &&req_id)
 	}
 	*cur_req_id_tup_ = req_id;
 	assert(cur_req_id_tup_->ts_ > 0);
+	/* Dale: track the amount of data bytes to be advanced for which flow */
+	data_to_send_queue_.push_back(std::make_tuple(std::move(req_id), nb));
 	//
 	// state-specific operations:
 	//	if CLOSED or LISTEN, reset and try a new active open/connect
@@ -536,7 +538,8 @@ void FullTcpAgent::sendmsg(int nbytes, const char *flags)
 void FullTcpAgent::connect()
 {
 	newstate(TCPS_SYN_SENT); // sending a SYN now
-	sent(iss_, foutput(iss_, REASON_NORMAL));
+	/* Dale: update foutput() mtd call following change to mtd signature */
+	sent(iss_, std::get<0>(foutput(iss_, REASON_NORMAL)));
 	return;
 }
 
@@ -986,7 +989,8 @@ int FullTcpAgent::calPrio(int prio)
  *
  * Also, set the size of the tcp header.
  */
-void FullTcpAgent::sendpacket(int seqno, int ackno, int pflags, int datalen, int reason, Packet *p)
+ /* Dale: use req_id passed explictly from caller, instead of global curr_req_id_tup cuz latter may not be in sync with the one we're sending data for here */
+void FullTcpAgent::sendpacket(int seqno, int ackno, int pflags, int datalen, int reason, RequestIdTuple* req_id, Packet *p)
 {
 	if (!p)
 		p = allocpkt();
@@ -997,14 +1001,15 @@ void FullTcpAgent::sendpacket(int seqno, int ackno, int pflags, int datalen, int
 			   "addr():", addr(), "daddr():", daddr());
 
 	// hack for pfabric app (using the r2p2 hdr bcs it is convenient)
-	if (conctd_to_pfabric_app_ && cur_req_id_tup_ != nullptr)
+	/* Dale: use req_id passed from caller, instead of global curr_req_id_tup cuz latter may not be the one we're looking for */
+	if (conctd_to_pfabric_app_ && req_id != nullptr)
 	{
 		hdr_r2p2 *r2p2_hdr = hdr_r2p2::access(p);
-		r2p2_hdr->app_level_id() = cur_req_id_tup_->app_level_id_;
+		r2p2_hdr->app_level_id() = req_id->app_level_id_;
 		// put the total number of bytes in the packet id field so that
 		// the receiver knows when it has received a full message.
-		r2p2_hdr->msg_bytes() = cur_req_id_tup_->msg_bytes_;
-		if (cur_req_id_tup_->is_request_)
+		r2p2_hdr->msg_bytes() = req_id->msg_bytes_;
+		if (req_id->is_request_)
 		{
 			r2p2_hdr->msg_type() = hdr_r2p2::REQUEST;
 		}
@@ -1012,14 +1017,15 @@ void FullTcpAgent::sendpacket(int seqno, int ackno, int pflags, int datalen, int
 		{
 			r2p2_hdr->msg_type() = hdr_r2p2::REPLY;
 		}
-		r2p2_hdr->cl_thread_id() = cur_req_id_tup_->cl_thread_id_;
-		r2p2_hdr->cl_addr() = cur_req_id_tup_->cl_addr_;
-		r2p2_hdr->sr_addr() = cur_req_id_tup_->sr_addr_;
-		r2p2_hdr->msg_creation_time() = cur_req_id_tup_->ts_;
+		r2p2_hdr->cl_thread_id() = req_id->cl_thread_id_;
+		r2p2_hdr->cl_addr() = req_id->cl_addr_;
+		r2p2_hdr->sr_addr() = req_id->sr_addr_;
+		r2p2_hdr->msg_creation_time() = req_id->ts_;
 		r2p2_hdr->is_pfabric_app_msg() = true;
 		/* Dale: set flow_id in header */
-		r2p2_hdr->flow_id() = cur_req_id_tup_->flow_id_;
-		assert(cur_req_id_tup_->ts_ > 0);
+		r2p2_hdr->flow_id() = req_id->flow_id_;
+		assert(req_id->ts_ > 0);
+		slog::log5(debug_, addr(), "@ flow_id=", r2p2_hdr->flow_id());
 	}
 	/* build basic header w/options */
 
@@ -1213,7 +1219,8 @@ void FullTcpAgent::reset_rtx_timer(int /* mild */)
  * highest_ack_, the highest ACK we've seen for our data (snd_una-1)
  * seqno, the next seq# we're going to send (snd_nxt)
  */
-int FullTcpAgent::foutput(int seqno, int reason)
+/* Dale: use datalen_limit to restrict amt of bytes sent s.t. we send only the data corresponding to this req_id; pass req_id through to sendpacket() */
+std::tuple<int, int> FullTcpAgent::foutput(int seqno, int reason, RequestIdTuple* req_id, int datalen_limit)
 {
 	// if maxseg_ not set, set it appropriately
 	// Q: how can this happen?
@@ -1237,6 +1244,9 @@ int FullTcpAgent::foutput(int seqno, int reason)
 	if (prob_mode_ && win > 1)
 		win = 1;
 
+	/* Dale: for debug */
+	slog::log6(debug_, addr(), "a: foutput(): buffered_bytes=", buffered_bytes, "datalen_limit=", datalen_limit, "win=", win, "syn=", syn, "data_on_syn_=", data_on_syn_);
+
 	int off = seqno - highest_ack_; // offset of seg in window
 	int datalen;
 	// int amtsent = 0;
@@ -1250,12 +1260,23 @@ int FullTcpAgent::foutput(int seqno, int reason)
 		off = seqno - iss_;
 	}
 
+	/* Dale: default datalen_limit is -1, for backwards compatibility for other mtds that call foutput(). */
+	if (datalen_limit < 0) datalen_limit = buffered_bytes;
+
 	if (syn && !data_on_syn_)
+	{
 		datalen = 0;
+	}
 	else if (pipectrl_)
-		datalen = buffered_bytes - off;
+	{
+		/* Dale: only send up to datalen_limit worth of bytes at a time */
+		datalen = min(buffered_bytes, datalen_limit) - off;
+	}
 	else
-		datalen = min(buffered_bytes, win) - off;
+	{
+		/* Dale: only send up to datalen_limit worth of bytes at a time */
+		datalen = min(min(buffered_bytes, datalen_limit), win) - off;
+	}
 
 	//	if (fid_ == 13 || fid_ == 14) {
 	//		int tmp = 0;
@@ -1293,6 +1314,8 @@ int FullTcpAgent::foutput(int seqno, int reason)
 		datalen = maxseg_;
 	}
 
+	/* Dale: for debug */
+	slog::log6(debug_, addr(), "b: foutput(): datalen=", datalen);
 	//
 	// this is an option that causes us to slow-start if we've
 	// been idle for a "long" time, where long means a rto or longer
@@ -1365,6 +1388,9 @@ int FullTcpAgent::foutput(int seqno, int reason)
 		// Shuang
 		if (datalen == 1 && prob_mode_)
 			goto send;
+		/* Dale: add case here to allow data sends when we restrict datalen to datalen_limit */
+		if (datalen == datalen_limit)
+			goto send;
 	}
 
 	if (need_send())
@@ -1388,7 +1414,8 @@ int FullTcpAgent::foutput(int seqno, int reason)
 	/*
 	 * No reason to send a segment, just return.
 	 */
-	return 0;
+	/* Dale: changed mtd signature from int to tuple, so change return value here too */
+	return std::make_tuple(0, 0);
 
 send:
 
@@ -1463,7 +1490,10 @@ send:
 			newstate(TCPS_FIN_WAIT_1);
 		}
 	}
-	sendpacket(seqno, rcv_nxt_, pflags, datalen, reason);
+	/* Dale: for debug */
+	slog::log6(debug_, addr(), "c: foutput(): datalen=", datalen);
+	/* Dale: pass req_id to into sendpacket(), so it can construct the packet header using the correct flow_id that corresponds to the data being sent */
+	sendpacket(seqno, rcv_nxt_, pflags, datalen, reason, req_id);
 
 	/*
 	 * Data sent (as far as we can tell).
@@ -1529,7 +1559,8 @@ send:
 		set_rtx_timer(); // no timer pending, schedule one
 	}
 
-	return (reliable);
+	/* Dale: return both reliable and datalen; use datalen (amt of data bytes sent) to update data_to_send_queue_ state */
+	return std::make_tuple(reliable, datalen);
 }
 
 /*
@@ -1564,27 +1595,94 @@ void FullTcpAgent::send_much(int force, int reason, int maxburst)
 		 * of this loop, we can loop forever at the same
 		 * simulated time instant
 		 */
-		int amt;
-		int seq = nxt_tseq();
 
-		if (!force && !send_allowed(seq))
-			break;
-		// Q: does this need to be here too?
-		if (!force && overhead_ != 0 &&
-			(delsnd_timer_.status() != TIMER_PENDING))
+		/* Dale: send queued data (forwarded by pfabric app) eagerly as much as possible, whilst ensuring that each sent packet has the correct corresponding flow_id */
+		if (!data_to_send_queue_.empty())
 		{
-			delsnd_timer_.resched(Random::uniform(overhead_));
-			return;
+			bool do_break_outer = false;
+			while(!data_to_send_queue_.empty())
+			{
+				/* Dale: queue tracks which data corresponds to which flow; allows us to set the correct flow_id value in the sent data pkt header */
+				std::tuple<RequestIdTuple, int> &data_to_send = data_to_send_queue_.front();
+				RequestIdTuple *req_id = &std::get<0>(data_to_send);;	
+				int remaining_data_to_send = std::get<1>(data_to_send);
+
+				slog::log5(debug_, addr(), "A: FullTcpAgent::send_much(): flow_id=", req_id->flow_id_, "remaining_data_to_send=", remaining_data_to_send, "data_to_send_queue_.size()=", data_to_send_queue_.size());
+				if (remaining_data_to_send <= 0)
+				{
+					slog::error(debug_, addr(), "Err: FullTcpAgent::send_much(): remaining_data_to_send=", remaining_data_to_send);
+				}
+
+				int amt;
+				int seq = nxt_tseq();
+
+				if (!force && !send_allowed(seq))
+				{
+					do_break_outer = true;
+					break;
+				}
+				// Q: does this need to be here too?
+				if (!force && overhead_ != 0 && (delsnd_timer_.status() != TIMER_PENDING))
+				{
+					delsnd_timer_.resched(Random::uniform(overhead_));
+					return;
+				}
+				
+				std::tuple<int, int> amt_tuple = foutput(seq, reason, req_id, remaining_data_to_send);
+				amt = std::get<0>(amt_tuple);
+				int sent_data = std::get<1>(amt_tuple);
+				slog::log5(debug_, addr(), "B+: FullTcpAgent:send_much(): flow_id=", req_id->flow_id_, "sent_amt=", amt, "sent_amt_data=", sent_data);
+
+				if (amt <= 0)
+				{
+					// printf("made call to foutput: returned %d\n", amt);
+					do_break_outer = true;
+					break;
+				}
+
+				/* Dale: update data_to_send_queue_ state only if something was sent */
+				remaining_data_to_send -= sent_data;
+				std::get<1>(data_to_send_queue_.front()) = remaining_data_to_send;
+				slog::log5(debug_, addr(), "C: FullTcpAgent::send_much(): flow_id=", req_id->flow_id_, "remaining_data_to_send=", remaining_data_to_send);
+
+				if (remaining_data_to_send == 0)
+				{
+					data_to_send_queue_.pop_front();
+					slog::log5(debug_, addr(), "D: FullTcpAgent::send_much(): popped front, new data_to_send_queue_.size()=", data_to_send_queue_.size());
+				}
+
+				if ((outflags() & TH_FIN))
+					--amt; // don't count FINs
+				sent(seq, amt);
+				force = 0;
+			}
+			if (do_break_outer) break;
 		}
-		if ((amt = foutput(seq, reason)) <= 0)
+		else
 		{
-			// printf("made call to foutput: returned %d\n", amt);
-			break;
+			/* Dale: otherwise, use FullTcpAgent::send_much()'s original functionality */
+			int amt;
+			int seq = nxt_tseq();
+
+			if (!force && !send_allowed(seq))
+				break;
+			// Q: does this need to be here too?
+			if (!force && overhead_ != 0 &&
+				(delsnd_timer_.status() != TIMER_PENDING))
+			{
+				delsnd_timer_.resched(Random::uniform(overhead_));
+				return;
+			}
+			if ((amt = std::get<0>(foutput(seq, reason))) <= 0)
+			{
+				// printf("made call to foutput: returned %d\n", amt);
+				break;
+			}
+			if ((outflags() & TH_FIN))
+				--amt; // don't count FINs
+			sent(seq, amt);
+			force = 0;
 		}
-		if ((outflags() & TH_FIN))
-			--amt; // don't count FINs
-		sent(seq, amt);
-		force = 0;
 
 		if ((outflags() & (TH_SYN | TH_FIN)) ||
 			(maxburst && ++npackets >= maxburst))
@@ -1769,7 +1867,8 @@ int FullTcpAgent::fast_retransmit(int seq)
 	// printf("%f: fid %d did a fast retransmit - dupacks = %d\n", now(), fid_, (int)dupacks_);
 	recover_ = maxseq_; // recovery target
 	last_cwnd_action_ = CWND_ACTION_DUPACK;
-	return (foutput(seq, REASON_DUPACK)); // send one pkt
+	/* Dale: update foutput() mtd call following change to mtd signature */
+	return (std::get<0>(foutput(seq, REASON_DUPACK))); // send one pkt
 }
 
 /*
@@ -4195,7 +4294,7 @@ int DDTcpAgent::byterm()
 	return curseq_ - int(highest_ack_) - sq_.total();
 }
 
-int DDTcpAgent::foutput(int seqno, int reason)
+std::tuple<int, int> DDTcpAgent::foutput(int seqno, int reason)
 {
 	if (deadline != 0)
 	{
@@ -4207,11 +4306,11 @@ int DDTcpAgent::foutput(int seqno, int reason)
 			bufferempty();
 			printf("early termination V2 now %.8lf start %.8lf deadline %d byterm %d tleft %.8f\n", now(), start_time, deadline, curseq_ - int(maxseq_), tleft);
 			fflush(stdout);
-			return 0;
+			return std::make_tuple(0, 0);
 		}
 		else if (tleft < 0)
 		{
-			return 0;
+			return std::make_tuple(0, 0);
 		}
 		// printf("test foutput\n");
 	}
