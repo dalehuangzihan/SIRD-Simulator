@@ -405,6 +405,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
             int32_t srvr_addr = std::get<0>(srvr_info);
             int srvr_thrd = std::get<1>(srvr_info);
             T *agent = std::get<2>(srvr_info);
+            /* Dale: Try: */
             req_id_to_busy_agent_.erase(app_lvl_req_id);
             int pool_size;
             try

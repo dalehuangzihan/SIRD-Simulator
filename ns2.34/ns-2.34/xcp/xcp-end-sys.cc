@@ -253,8 +253,9 @@ XcpNewRenoFullTcpAgent::sendpacket(int seqno, int ackno, int pflags,
 	// xcp must be done before tcp because tcp will consume the packet
 	if (!p) p = allocpkt();
 	XcpEndsys::send(p, datalen);
+	/* Dale: update sendpacket mtd call following change to mtd signature */
 	NewRenoFullTcpAgent::sendpacket(seqno, ackno, pflags, 
-					datalen, reason, p);
+					datalen, reason, nullptr, p);
 }
 
 
