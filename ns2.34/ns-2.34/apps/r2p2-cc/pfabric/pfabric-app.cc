@@ -105,12 +105,12 @@ void PfabricApplication<T>::attach_agent(int argc, const char *const *argv)
     }
     try
     {
-        // /** Dale: Intermittent Connections FCT Experiment: restrict pool size to 1 */
-        // if (dstid_to_free_agent_pool_.at(agent->daddr())->size() == 0)
-        // {
-        slog::log4(debug_, local_addr_, "Adding new agent to pool for daddr=", agent->daddr());
-        dstid_to_free_agent_pool_.at(agent->daddr())->push_back(agent);
-        // }
+        /** Dale: Intermittent Connections FCT Experiment: restrict pool size to 1 */
+        if (dstid_to_free_agent_pool_.at(agent->daddr())->size() == 0)
+        {
+            slog::log4(debug_, local_addr_, "Adding new agent to pool for daddr=", agent->daddr());
+            dstid_to_free_agent_pool_.at(agent->daddr())->push_back(agent);
+        }
     }
     catch (const std::out_of_range &e)
     {
@@ -187,8 +187,8 @@ void PfabricApplication<T>::send_request(RequestIdTuple *arg_req, size_t arg_siz
     try
     {
         pool = dstid_to_free_agent_pool_.at(srvr_addr);
-        // /** Dale: restrict conn pool size to 1 */
-        // assert(pool->size() < 2);
+        /** Dale: restrict conn pool size to 1 */
+        assert(pool->size() < 2);
     }
     catch (const std::out_of_range &e)
     {
@@ -266,8 +266,6 @@ void PfabricApplication<T>::forward_request(RequestIdTuple &req_id, free_connect
     // remove agent from free pool
     T *agent = pool->back();
     pool->pop_back();
-    /* Dale: don't remove agent from conn pool (to bypass conn pool contention) */
-    pool->push_front(agent);
 
     // also pass this client's address
     req_id.cl_addr_ = local_addr_;
@@ -409,8 +407,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
             int pool_size;
             try
             {
-                /* Dale: don't need to add agent back to queue, cuz we never removed it (for bypassing conn-pool contention) */
-                // dstid_to_free_agent_pool_.at(srvr_addr)->push_back(agent);
+                dstid_to_free_agent_pool_.at(srvr_addr)->push_back(agent);
                 // check for queued requests waiting for connections in this pool
                 queued_requests_t *req_queue = nullptr;
                 if (dstid_to_queued_requests_.find(srvr_addr) != dstid_to_queued_requests_.end())
@@ -426,8 +423,8 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
                     forward_request(req_id, dstid_to_free_agent_pool_.at(srvr_addr), srvr_addr);
                 }
                 pool_size = dstid_to_free_agent_pool_.at(srvr_addr)->size();
-                // /** Dale: restrict conn pool size to 1 */
-                // assert(pool_size < 2);
+                /** Dale: restrict conn pool size to 1 */
+                assert(pool_size < 2);
             }
             catch (const std::out_of_range &e)
             {
@@ -464,8 +461,8 @@ void PfabricApplication<T>::send_response()
         send_resp_timer_.resched(proc_time_->get_next());
     }
     free_connections_pool_t *pool = dstid_to_free_agent_pool_.at(req_id.cl_addr_);
-    // /** Dale: restrict conn pool size to 1 */
-    // assert(pool->size() < 2);
+    /** Dale: restrict conn pool size to 1 */
+    assert(pool->size() < 2);
 
     // now to find the connection that the client used...
     // the addr and port must match the client's daddr and dport
