@@ -4,6 +4,7 @@
 
 #include <tuple>
 #include <deque>
+#include <map>
 
 #include "tcp.h"
 #include "rq.h"
@@ -115,6 +116,9 @@ public:
 
 	/* Dale: Try: track which req_id_tup wanted to send how much data */
 	std::deque<std::tuple<RequestIdTuple, int>> data_to_send_queue_; 
+	std::deque<RequestIdTuple> req_id_finished_sending_;
+	bool is_do_app_data_send_ = false;
+	std::map<int, std::tuple<RequestIdTuple*, int>> seqno_to_sent_data_map_;
 
 	virtual void sendmsg(int nbytes, const char *flags = 0);
 	virtual int &size() { return maxseg_; } // FullTcp uses maxseg_ for size_

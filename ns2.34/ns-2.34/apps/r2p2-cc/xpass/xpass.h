@@ -159,6 +159,7 @@ public:
     virtual void recv(Packet *, Handler *);
     void advance_bytes(seq_t nb);
     void advance_bytes(int nb, RequestIdTuple &&req_id);
+	bool is_do_app_data_send_ = false;
 
 protected:
     virtual void delay_bind_init_all();

@@ -563,6 +563,7 @@ class FlowStats:
     def get_measured_nw_gdpt_for_flow_gbps(self):
         # returns in Gbps
         send_duration_s = self.end_time_s - self.start_time_s
+        if (self.end_time_s == -1 or send_duration_s <= 0): return -1
         return self.total_data_bytes_recv_B * 8 / send_duration_s * pow(10,-9)
 
 class Experiment():
@@ -1140,5 +1141,19 @@ if __name__ == "__main__":
     # byteload_size_B_list = [1560]
     # app_trace_paths_list = ["/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-9flo-100#-1560B-1000ns_1560B_9flo_112Gbps/data/SSIRD/60/applications_trace.str"]
     # # app_trace_paths_list = ["/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-8flo-100#-1560B-1000ns_1560B_8flo_99pt84Gbps/data/SSIRD/60/applications_trace.str"]
+    # exp_metrics = ExperimentGroup.process_side_loaded_results(proto, src_dst_pairs_list, num_flows, num_byteloads_list, byteload_size_B_list, app_trace_paths_list)
+
+    # # /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-31flo-10000#-20B-100ns_fullrange_31flo_credit_steal/data/DCTCP-50/60/applications_trace.str
+    # # /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-31flo-1000#-200B-1000ns_fullrange_31flo_credit_steal/data/DCTCP-50/60/applications_trace.str
+    # # /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-31flo-100#-2000B-10000ns_fullrange_31flo_credit_steal/data/DCTCP-50/60/applications_trace.str
+    # # /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-31flo-10#-20000B-100000ns_fullrange_31flo_credit_steal/data/DCTCP-50/60/applications_trace.str
+    # # /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-31flo-1#-200000B-1000000ns_fullrange_31flo_credit_steal/data/DCTCP-50/60/applications_trace.str
+
+    # proto = DCTCP_PROTO_FAMILY_NAME
+    # src_dst_pairs_list = [(0,1)]
+    # num_flows = 8
+    # num_byteloads_list = [1]
+    # byteload_size_B_list = [200000]
+    # app_trace_paths_list = ["/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-31flo-1#-200000B-1000000ns_fullrange_31flo_credit_steal/data/DCTCP-50/60/applications_trace.str"]
     # exp_metrics = ExperimentGroup.process_side_loaded_results(proto, src_dst_pairs_list, num_flows, num_byteloads_list, byteload_size_B_list, app_trace_paths_list)
 

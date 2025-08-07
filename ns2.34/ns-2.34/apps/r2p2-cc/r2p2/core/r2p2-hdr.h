@@ -276,6 +276,7 @@ struct RequestIdTuple
      * TODO: Eventually, we could have SSIRD also use flow-id directly, instead of piggybacking on the app-level-id field.
      */
     long flow_id_=-1;
+    bool is_empty_ = false;
 };
 
 #endif

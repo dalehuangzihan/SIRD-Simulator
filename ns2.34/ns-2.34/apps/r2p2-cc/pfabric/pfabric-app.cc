@@ -229,7 +229,7 @@ void PfabricApplication<T>::send_request(RequestIdTuple *arg_req, size_t arg_siz
         req_queue->pop();
     }
 
-    slog::log4(debug_, local_addr_, "PfabricApplication::send_request(). Pool size:", pool->size(), "| is incast:", is_incast);
+    slog::log1(debug_, local_addr_, "PfabricApplication::send_request(). Pool size:", pool->size(), "| is incast:", is_incast);
 
     forward_request(req_id, pool, srvr_addr);
 }
@@ -276,11 +276,12 @@ void PfabricApplication<T>::forward_request(RequestIdTuple &req_id, free_connect
     req_id_to_busy_agent_[req_id.app_level_id_] = std::make_tuple(srvr_addr, 0, agent);
 
     /* Dale: elevate from log5 to log2 */
-    slog::log2(debug_, local_addr_, "PfabricApplication::forward_request() of size", req_id.msg_bytes_, req_id.is_request_, "flow_id_:", req_id.flow_id_);
+    slog::log2(debug_, local_addr_, "PfabricApplication::forward_request() of size", req_id.msg_bytes_, req_id.is_request_, "flow_id_:", req_id.flow_id_, "ts_:", req_id.ts_);
     // send msg
     assert(agent != nullptr);
     assert(req_id.is_request_);
     agent->reset(-1);
+    agent->is_do_app_data_send_ = true;
     agent->advance_bytes(req_id.msg_bytes_, std::move(req_id));
 }
 
@@ -291,10 +292,11 @@ void PfabricApplication<T>::forward_request(RequestIdTuple &req_id, free_connect
 template <typename T>
 void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
 {
-    slog::log5(debug_, local_addr_, "PfabricApplication::recv_msg() received bytes:", payload);
+    slog::log5(debug_, local_addr_, "PfabricApplication::recv_msg() received bytes:", payload, "From:", req_id_tup.cl_addr_, "flow_id:", req_id_tup.flow_id_);
     if (warmup_phase_ == 1)
         return;
     else
+        slog::log6(debug_, local_addr_, "&& req_id_tup.ts_=", req_id_tup.ts_);
         assert(req_id_tup.ts_ > 0);
     long app_lvl_req_id = req_id_tup.app_level_id_;
     int total_msg_sz = req_id_tup.msg_bytes_;
@@ -338,7 +340,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
             double msg_created_at = req_id_tup.ts_;
             /* Dale: elevate from lo4 to log2 */
             slog::log2(debug_, local_addr_, "PfabricApplication - whole request received. size", req_state->bytes_recvd_,
-                       "From:", req_id_tup.cl_addr_, "that was created on:", msg_created_at);
+                       "From:", req_id_tup.cl_addr_, "flow_id:", req_id_tup.flow_id_, "that was created on:", msg_created_at);
             assert(msg_created_at > 9.9); // assumes sim starts at 10.0
             if (do_trace_)
             {
@@ -405,7 +407,6 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
             int32_t srvr_addr = std::get<0>(srvr_info);
             int srvr_thrd = std::get<1>(srvr_info);
             T *agent = std::get<2>(srvr_info);
-            /* Dale: Try: */
             req_id_to_busy_agent_.erase(app_lvl_req_id);
             int pool_size;
             try
@@ -497,6 +498,7 @@ void PfabricApplication<T>::send_response()
     // if (do_trace_)
     //     trace_state("srs", req_id.cl_addr_, -1, req_id.app_level_id_, -1, -1, -1, -1);
     agent->reset(-1);
+    agent->is_do_app_data_send_ = true;
     agent->advance_bytes(next_resp_size, std::move(req_id));
 }
 
@@ -518,6 +520,7 @@ void PfabricApplication<T>::warmup()
             for (auto it = pool->begin(); it != pool->end(); it++)
             {
                 (*it)->advance_bytes(2);
+                (*it)->is_do_app_data_send_ = false;
             }
             warmup_timer_.resched(100.0 / 1000.0 / 1000.0);
             break;
