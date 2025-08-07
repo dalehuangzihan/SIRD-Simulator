@@ -152,6 +152,9 @@ void PfabricApplication<T>::send_request(RequestIdTuple *arg_req, size_t arg_siz
     if (next_req_size < 4)
         next_req_size = 4;
 
+    /* Dale: store flow-id information in req_id */
+    long flow_id = (long) req_flow_id_->get_next();
+
     RequestIdTuple req_id;
     int32_t srvr_addr;
     if (is_incast)
@@ -163,15 +166,13 @@ void PfabricApplication<T>::send_request(RequestIdTuple *arg_req, size_t arg_siz
     {
         srvr_addr = dst_thread_gen_->get_next();
         req_id = RequestIdTuple();
-        req_id.app_level_id_ = reqs_sent_;
+        req_id.app_level_id_ = flow_id;
         req_id.msg_bytes_ = next_req_size;
         req_id.is_request_ = true;
         req_id.cl_thread_id_ = thread_id_;
         req_id.sr_thread_id_ = SERVER_THREAD_BASE;
         req_id.ts_ = Scheduler::instance().clock();
     }
-    /* Dale: store flow-id information in req_id */
-    long flow_id = (long) req_flow_id_->get_next();
     req_id.flow_id_ = flow_id;
 
     // take the first available connection for the randomly selected target and send the request
