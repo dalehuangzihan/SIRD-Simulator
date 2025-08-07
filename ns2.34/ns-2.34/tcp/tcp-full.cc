@@ -456,8 +456,10 @@ void FullTcpAgent::advance_bytes(int nb, RequestIdTuple &&req_id)
 	}
 	*cur_req_id_tup_ = req_id;
 	assert(cur_req_id_tup_->ts_ > 0);
+
 	/* Dale: track the amount of data bytes to be advanced for which flow */
 	data_to_send_queue_.push_back(std::make_tuple(std::move(req_id), nb));
+
 	//
 	// state-specific operations:
 	//	if CLOSED or LISTEN, reset and try a new active open/connect
@@ -494,6 +496,7 @@ void FullTcpAgent::advance_bytes(int nb, RequestIdTuple &&req_id)
 			fprintf(stderr, "%f: FullTcpAgent::advance(%s): cannot advance while in state %s\n",
 					now(), name(), statestr(state_));
 	}
+	slog::log6(debug_, addr(), "FullTcpAgent::advance_bytes(): state_==TCPS_ESTABLISHED:", state_==TCPS_ESTABLISHED, "state_=", statestr(state_));
 	if (state_ == TCPS_ESTABLISHED)
 		send_much(0, REASON_NORMAL, maxburst_);
 
@@ -539,7 +542,10 @@ void FullTcpAgent::connect()
 {
 	newstate(TCPS_SYN_SENT); // sending a SYN now
 	/* Dale: update foutput() mtd call following change to mtd signature */
-	sent(iss_, std::get<0>(foutput(iss_, REASON_NORMAL)));
+	slog::log6(debug_, addr(), "bf FullTcpAgent::connect(): calling foutput");
+	std::tuple<int, int> tup = foutput(iss_, REASON_NORMAL);
+	int amt = std::get<0>(tup);
+	sent(iss_, amt);
 	return;
 }
 
@@ -1000,9 +1006,18 @@ void FullTcpAgent::sendpacket(int seqno, int ackno, int pflags, int datalen, int
 	slog::log5(debug_, addr(), "FullTcpAgent::sendpacket(). cwnd_=", cwnd_, "datalen:", datalen,
 			   "addr():", addr(), "daddr():", daddr());
 
+	if (req_id != nullptr && !req_id->is_empty_)
+	{
+		slog::log5(debug_, addr(), "++ req_id->ts_", req_id->ts_);
+	}
+	else
+	{
+		slog::log5(debug_, addr(), "++ req_id is nullptr");
+	}
+	
 	// hack for pfabric app (using the r2p2 hdr bcs it is convenient)
 	/* Dale: use req_id passed from caller, instead of global curr_req_id_tup cuz latter may not be the one we're looking for */
-	if (conctd_to_pfabric_app_ && req_id != nullptr)
+	if (conctd_to_pfabric_app_ && req_id != nullptr && !req_id->is_empty_)
 	{
 		hdr_r2p2 *r2p2_hdr = hdr_r2p2::access(p);
 		r2p2_hdr->app_level_id() = req_id->app_level_id_;
@@ -1027,6 +1042,31 @@ void FullTcpAgent::sendpacket(int seqno, int ackno, int pflags, int datalen, int
 		assert(req_id->ts_ > 0);
 		slog::log5(debug_, addr(), "@ flow_id=", r2p2_hdr->flow_id());
 	}
+	// if (conctd_to_pfabric_app_ && req_id != nullptr && !req_id->is_empty_ && cur_req_id_tup_ != nullptr)
+	// {
+	// 	bool same_app_id = (req_id->app_level_id_ == cur_req_id_tup_->app_level_id_);
+	// 	bool same_msg_bytes = (req_id->msg_bytes_ == cur_req_id_tup_->msg_bytes_);
+	// 	bool same_req_id = (req_id->app_level_id_ == cur_req_id_tup_->app_level_id_);
+	// 	bool same_is_request = (req_id->is_request_ == cur_req_id_tup_->is_request_);
+	// 	bool same_cl_thread_id = (req_id->cl_thread_id_ == cur_req_id_tup_->cl_thread_id_);
+	// 	bool same_cl_addr = (req_id->cl_addr_ == cur_req_id_tup_->cl_addr_);
+	// 	bool same_sr_addr = (req_id->sr_addr_ == cur_req_id_tup_->sr_addr_);
+	// 	bool same_ts = (req_id->ts_ == cur_req_id_tup_->ts_);
+	// 	bool same_flow_id = (req_id->flow_id_ == cur_req_id_tup_->flow_id_);
+	// 	bool is_all_same = (same_app_id && same_msg_bytes && same_req_id &&
+	// 							same_is_request && same_cl_thread_id &&
+	// 							same_cl_addr && same_sr_addr && same_ts &&
+	// 							same_flow_id);
+	// 	slog::log5(debug_, addr(), "== is req_id same as cur_req_id_tup =", is_all_same);
+	// 	slog::log6(debug_, addr(), "== req_id:", req_id->app_level_id_, "msg_bytes:", req_id->msg_bytes_,
+	// 			   "is_request:", req_id->is_request_, "cl_thread_id:", req_id->cl_thread_id_,
+	// 			   "cl_addr:", req_id->cl_addr_, "sr_addr:", req_id->sr_addr_, "ts:", req_id->ts_,
+	// 			   "flow_id:", req_id->flow_id_);
+	// 	slog::log6(debug_, addr(), "== cur_req_id_tup:", cur_req_id_tup_->app_level_id_, "msg_bytes:", cur_req_id_tup_->msg_bytes_,
+	// 			   "is_request:", cur_req_id_tup_->is_request_, "cl_thread_id:", cur_req_id_tup_->cl_thread_id_,
+	// 			   "cl_addr:", cur_req_id_tup_->cl_addr_, "sr_addr:", cur_req_id_tup_->sr_addr_,
+	// 			   " ts:", cur_req_id_tup_->ts_, "flow_id:", cur_req_id_tup_->flow_id_);
+	// }
 	/* build basic header w/options */
 
 	tcph->seqno() = seqno;
@@ -1183,6 +1223,7 @@ void FullTcpAgent::sendpacket(int seqno, int ackno, int pflags, int datalen, int
 	assert(Scheduler::instance().clock() <= 10.0 || hdr_cmn::access(p)->size() <= MAX_ETHERNET_FRAME_ON_WIRE);
 	send(p, 0);
 
+	seqno_to_sent_data_map_[seqno] = std::make_tuple(req_id, datalen);
 	return;
 }
 
@@ -1577,6 +1618,7 @@ send:
 
 void FullTcpAgent::send_much(int force, int reason, int maxburst)
 {
+	slog::log5(debug_, addr(), "X: FullTcpAgent::send_much(): enter func");
 	int npackets = 0; // sent so far
 
 	// if ((int(t_seqno_)) > 1)
@@ -1597,9 +1639,8 @@ void FullTcpAgent::send_much(int force, int reason, int maxburst)
 		 */
 
 		/* Dale: send queued data (forwarded by pfabric app) eagerly as much as possible, whilst ensuring that each sent packet has the correct corresponding flow_id */
-		if (!data_to_send_queue_.empty())
+		if (!data_to_send_queue_.empty() && is_do_app_data_send_)
 		{
-			bool do_break_outer = false;
 			while(!data_to_send_queue_.empty())
 			{
 				/* Dale: queue tracks which data corresponds to which flow; allows us to set the correct flow_id value in the sent data pkt header */
@@ -1607,7 +1648,7 @@ void FullTcpAgent::send_much(int force, int reason, int maxburst)
 				RequestIdTuple *req_id = &std::get<0>(data_to_send);;	
 				int remaining_data_to_send = std::get<1>(data_to_send);
 
-				slog::log5(debug_, addr(), "A: FullTcpAgent::send_much(): flow_id=", req_id->flow_id_, "remaining_data_to_send=", remaining_data_to_send, "data_to_send_queue_.size()=", data_to_send_queue_.size());
+				slog::log5(debug_, addr(), "A: FullTcpAgent::send_much(): flow_id=", req_id->flow_id_, "ts=", req_id->ts_, "remaining_data_to_send=", remaining_data_to_send, "data_to_send_queue_.size()=", data_to_send_queue_.size());
 				if (remaining_data_to_send <= 0)
 				{
 					slog::error(debug_, addr(), "Err: FullTcpAgent::send_much(): remaining_data_to_send=", remaining_data_to_send);
@@ -1618,8 +1659,9 @@ void FullTcpAgent::send_much(int force, int reason, int maxburst)
 
 				if (!force && !send_allowed(seq))
 				{
-					do_break_outer = true;
-					break;
+					// do_break_outer = true;
+					// break;
+					return;
 				}
 				// Q: does this need to be here too?
 				if (!force && overhead_ != 0 && (delsnd_timer_.status() != TIMER_PENDING))
@@ -1628,17 +1670,24 @@ void FullTcpAgent::send_much(int force, int reason, int maxburst)
 					return;
 				}
 				
+				slog::log6(debug_, addr(), "cf FullTcpAgent::recv(): calling foutput");
 				std::tuple<int, int> amt_tuple = foutput(seq, reason, req_id, remaining_data_to_send);
 				amt = std::get<0>(amt_tuple);
 				int sent_data = std::get<1>(amt_tuple);
-				slog::log5(debug_, addr(), "B+: FullTcpAgent:send_much(): flow_id=", req_id->flow_id_, "sent_amt=", amt, "sent_amt_data=", sent_data);
+				slog::log5(debug_, addr(), "B: FullTcpAgent:send_much(): flow_id=", req_id->flow_id_, "ts=", req_id->ts_, "sent_amt=", amt, "sent_amt_data=", sent_data);
 
 				if (amt <= 0)
 				{
 					// printf("made call to foutput: returned %d\n", amt);
-					do_break_outer = true;
-					break;
+					// do_break_outer = true;
+					// break;
+					return;
 				}
+
+				if ((outflags() & TH_FIN))
+					--amt; // don't count FINs
+				sent(seq, amt);
+				force = 0;
 
 				/* Dale: update data_to_send_queue_ state only if something was sent */
 				remaining_data_to_send -= sent_data;
@@ -1647,20 +1696,21 @@ void FullTcpAgent::send_much(int force, int reason, int maxburst)
 
 				if (remaining_data_to_send == 0)
 				{
+					req_id_finished_sending_.push_back(std::move(*req_id));
 					data_to_send_queue_.pop_front();
-					slog::log5(debug_, addr(), "D: FullTcpAgent::send_much(): popped front, new data_to_send_queue_.size()=", data_to_send_queue_.size());
+					slog::log5(debug_, addr(), "D: FullTcpAgent::send_much(): popped front, new data_to_send_queue_.size()=", data_to_send_queue_.size(), "req_id_finished_sending_.size()=", req_id_finished_sending_.size());
+					if (data_to_send_queue_.empty())
+					{
+						slog::log5(debug_, addr(), "Y: FullTcpAgent::send_much(): queue empty; exit func");
+						return; // no more app data left to send	
+					}
 				}
-
-				if ((outflags() & TH_FIN))
-					--amt; // don't count FINs
-				sent(seq, amt);
-				force = 0;
 			}
-			if (do_break_outer) break;
 		}
-		else
+		else if (!is_do_app_data_send_)
 		{
 			/* Dale: otherwise, use FullTcpAgent::send_much()'s original functionality */
+			slog::log5(debug_, addr(), "E: FullTcpAgent:send_much(): not app data send");
 			int amt;
 			int seq = nxt_tseq();
 
@@ -1673,7 +1723,12 @@ void FullTcpAgent::send_much(int force, int reason, int maxburst)
 				delsnd_timer_.resched(Random::uniform(overhead_));
 				return;
 			}
-			if ((amt = std::get<0>(foutput(seq, reason))) <= 0)
+			slog::log6(debug_, addr(), "ef FullTcpAgent::recv(): calling foutput");
+			std::tuple<int, int> tup = foutput(seq, reason);
+			amt = std::get<0>(tup);
+			int sent_data = std::get<1>(tup);
+			slog::log5(debug_, addr(), "E: FullTcpAgent:send_much(): not app data send; sent amt=", amt);
+			if (amt <= 0)
 			{
 				// printf("made call to foutput: returned %d\n", amt);
 				break;
@@ -1683,11 +1738,17 @@ void FullTcpAgent::send_much(int force, int reason, int maxburst)
 			sent(seq, amt);
 			force = 0;
 		}
+		else
+		{
+			slog::log6(debug_, addr(), "G: FullTcpAgent::send_much(): do nothing, data_to_send_queue_.size()=", data_to_send_queue_.size(), "is_do_app_data_send_=", is_do_app_data_send_);
+			break;
+		}
 
 		if ((outflags() & (TH_SYN | TH_FIN)) ||
 			(maxburst && ++npackets >= maxburst))
 			break;
 	}
+	slog::log5(debug_, addr(), "Z: FullTcpAgent::send_much(): exit func");
 	return;
 }
 
@@ -1867,8 +1928,24 @@ int FullTcpAgent::fast_retransmit(int seq)
 	// printf("%f: fid %d did a fast retransmit - dupacks = %d\n", now(), fid_, (int)dupacks_);
 	recover_ = maxseq_; // recovery target
 	last_cwnd_action_ = CWND_ACTION_DUPACK;
-	/* Dale: update foutput() mtd call following change to mtd signature */
-	return (std::get<0>(foutput(seq, REASON_DUPACK))); // send one pkt
+	// /* Dale: update foutput() mtd call following change to mtd signature */
+	// return (std::get<0>(foutput(seq, REASON_DUPACK))); // send one pkt
+
+	slog::log6(debug_, addr(), "ff FullTcpAgent::fast_retransmit(): calling foutput");
+	auto it = seqno_to_sent_data_map_.find(seq);
+	assert(it != seqno_to_sent_data_map_.end());
+	std::tuple<RequestIdTuple*, int> data_to_send = seqno_to_sent_data_map_[seq];
+	RequestIdTuple *req_id = std::get<0>(data_to_send);
+	int datalen_limit = std::get<1>(data_to_send);
+	std::tuple<int, int> tup = foutput(seq, REASON_DUPACK, req_id, datalen_limit); // send one pkt
+	int amt = std::get<0>(tup);
+	return amt;
+	// else
+	// {
+	// 	slog::log6(debug_, addr(), "ff5 FullTcpAgent::fast_retransmit(): do nothing, data_to_send_queue_.size()=", data_to_send_queue_.size(), "is_do_app_data_send_=", is_do_app_data_send_);
+	// 	return 0;
+	// }
+	// slog::log6(debug_, addr(), "ff6 FullTcpAgent::fast_retransmit(): exit func");
 }
 
 /*
@@ -2216,6 +2293,7 @@ void FullTcpAgent::recv(Packet *pkt, Handler *)
 				/* Dale: add flow_id_ to header */
 				req_id.flow_id_ = r2p2_hdr->flow_id();
 				app_->recv_msg(datalen, std::move(req_id));
+				slog::log6(debug_, addr(), "&&0 TCP recv(): from cl_addr_:", req_id.cl_addr_, " flow_id:", req_id.flow_id_);
 			}
 			else
 			{
@@ -2697,7 +2775,47 @@ void FullTcpAgent::recv(Packet *pkt, Handler *)
 			// Do not move to TCPS_ESTB state or update TCP variables.
 			cancel_rtx_timer();
 			ecn_syn_next_ = 0;
-			foutput(iss_, REASON_NORMAL);
+
+			// foutput(iss_, REASON_NORMAL);
+			slog::log6(debug_, addr(), "af FullTcpAgent::recv(): calling foutput");
+			
+			if (!data_to_send_queue_.empty() && is_do_app_data_send_)
+			{
+				/* Dale: send one data pkt */
+				std::tuple<RequestIdTuple, int> &data_to_send = data_to_send_queue_.front();
+				RequestIdTuple *req_id = &std::get<0>(data_to_send);;	
+				int remaining_data_to_send = std::get<1>(data_to_send);
+
+				std::tuple<int, int> amt_tuple = foutput(iss_, REASON_NORMAL, req_id, remaining_data_to_send);
+				int amt = std::get<0>(amt_tuple);
+				int sent_data = std::get<1>(amt_tuple);
+				slog::log6(debug_, addr(), "af1 FullTcpAgent:recv(): flow_id=", req_id->flow_id_, "ts=", req_id->ts_, "sent_amt=", amt, "sent_amt_data=", sent_data);
+
+				if (amt > 0)
+				{
+					remaining_data_to_send -= sent_data;
+					std::get<1>(data_to_send_queue_.front()) = remaining_data_to_send;
+					slog::log6(debug_, addr(), "af2 FullTcpAgent::recv(): flow_id=", req_id->flow_id_, "remaining_data_to_send=", remaining_data_to_send);
+
+					if (remaining_data_to_send == 0)
+					{
+						req_id_finished_sending_.push_back(std::move(*req_id));
+						data_to_send_queue_.pop_front();
+						slog::log6(debug_, addr(), "af3 FullTcpAgent::recv(): popped front, new data_to_send_queue_.size()=", data_to_send_queue_.size(), "req_id_finished_sending_.size()=", req_id_finished_sending_.size());
+					}
+				}
+			}
+			else if (!is_do_app_data_send_)
+			{
+				slog::log6(debug_, addr(), "af4 FullTcpAgent::recv(): not do app data send, data_to_send_queue_.size()=", data_to_send_queue_.size());
+				std::tuple<int, int> tup = foutput(iss_, REASON_NORMAL);
+				int amt = std::get<0>(tup);
+			}
+			else
+			{
+				slog::log6(debug_, addr(), "af5 FullTcpAgent::recv(): do nothing, data_to_send_queue_.size()=", data_to_send_queue_.size());	
+			}
+
 			wnd_init_option_ = 1;
 			wnd_init_ = 1;
 			goto drop;
@@ -3177,6 +3295,7 @@ step6:
 					/* Dale: set flow-id in header */
 					req_id.flow_id_ = r2p2_hdr->flow_id();
 					app_->recv_msg(datalen, std::move(req_id));
+					slog::log6(debug_, addr(), "&&2 TCP recv(): from cl_addr_:", req_id.cl_addr_, " flow_id:", req_id.flow_id_);
 				}
 				else
 				{
@@ -3231,6 +3350,7 @@ step6:
 					/* Dale: set flow-id in header */
 					req_id.flow_id_ = r2p2_hdr->flow_id();
 					app_->recv_msg(rcv_nxt_ - rcv_nxt_old_, std::move(req_id));
+					slog::log6(debug_, addr(), "&&2 TCP recv(): from cl_addr_:", req_id.cl_addr_, " flow_id:", req_id.flow_id_);
 				}
 				else
 				{
@@ -3399,6 +3519,7 @@ void FullTcpAgent::dupack_action()
 		cancel_rtx_timer();
 		rtt_active_ = FALSE;
 		(void)fast_retransmit(highest_ack_);
+		slog::log6(debug_, addr(), "XX FullTcpAgent::dupack_action()");
 		return;
 	}
 
@@ -3416,6 +3537,7 @@ full_reno_action:
 	rtt_active_ = FALSE;
 	recover_ = maxseq_;
 	(void)fast_retransmit(highest_ack_);
+	slog::log6(debug_, addr(), "XX FullTcpAgent::dupack_action() full_reno_action");
 	// we measure cwnd in packets,
 	// so don't scale by maxseg_
 	// as real TCP does
@@ -3659,6 +3781,7 @@ NewRenoFullTcpAgent::NewRenoFullTcpAgent() : save_maxburst_(-1)
 void NewRenoFullTcpAgent::pack_action(Packet *)
 {
 	(void)fast_retransmit(highest_ack_);
+	slog::log6(debug_, addr(), "XX FullTcpAgent::pack_action()");
 	cwnd_ = double(ssthresh_);
 	if (save_maxburst_ < 0)
 	{
@@ -3789,6 +3912,7 @@ void SackFullTcpAgent::dupack_action()
 		cancel_rtx_timer();
 		rtt_active_ = FALSE;
 		int amt = fast_retransmit(highest_ack_);
+		slog::log6(debug_, addr(), "XX SackFullTcpAgent::dupack_action()");
 		pipectrl_ = TRUE;
 		h_seqno_ = highest_ack_ + amt;
 		send_much(0, REASON_DUPACK, maxburst_);
@@ -3819,6 +3943,7 @@ full_sack_action:
 	recover_ = maxseq_; // where I am when recovery starts
 
 	int amt = fast_retransmit(highest_ack_);
+	slog::log6(debug_, addr(), "XX SackFullTcpAgent::dupack_action() full_sack_action");
 	h_seqno_ = highest_ack_ + amt;
 
 	// printf("%f: FAST-RTX seq:%d, h_seqno_ is now:%d, pipe:%d, cwnd:%d, recover:%d\n",
@@ -4314,6 +4439,7 @@ std::tuple<int, int> DDTcpAgent::foutput(int seqno, int reason)
 		}
 		// printf("test foutput\n");
 	}
+	slog::log6(debug_, addr(), "if DDTcpAgent::foutput");
 	return SackFullTcpAgent::foutput(seqno, reason);
 }
 
