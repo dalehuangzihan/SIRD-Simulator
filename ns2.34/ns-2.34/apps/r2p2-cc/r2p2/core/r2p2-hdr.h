@@ -226,7 +226,8 @@ struct RequestIdTuple
                                 cl_thread_id_(cl_thread_id),
                                 sr_thread_id_(sr_thread_id),
                                 is_final_req_of_conn_(is_final_req_of_conn),
-                                ts_(ts) {}
+                                ts_(ts),
+                                is_empty_(false){}
     RequestIdTuple(long app_level_id,
                    int32_t cl_addr,
                    int32_t sr_addr,
@@ -237,7 +238,8 @@ struct RequestIdTuple
                                 sr_addr_(sr_addr),
                                 cl_thread_id_(cl_thread_id),
                                 sr_thread_id_(sr_thread_id),
-                                ts_(ts) {}
+                                ts_(ts),
+                                is_empty_(false){}
     /* Dale: track whether msg is a msg extension */
     RequestIdTuple(long app_level_id,
                    int32_t cl_addr,
@@ -251,11 +253,14 @@ struct RequestIdTuple
                                 cl_thread_id_(cl_thread_id),
                                 sr_thread_id_(sr_thread_id),
                                 is_final_req_of_conn_(is_final_req_of_conn),
-                                ts_(ts) {}
+                                ts_(ts),
+                                is_empty_(false){}
     RequestIdTuple(long app_level_id, int cl_thread_id) : app_level_id_(app_level_id),
-                                                          cl_thread_id_(cl_thread_id) {}
+                                                          cl_thread_id_(cl_thread_id),
+                                                          is_empty_(false){}
     RequestIdTuple(request_id req_id, int app_level_id) : req_id_(req_id),
-                                                          app_level_id_(app_level_id) {}
+                                                          app_level_id_(app_level_id),
+                                                          is_empty_(false){}
     RequestIdTuple(){};
     request_id req_id_;
     long app_level_id_;
@@ -276,6 +281,9 @@ struct RequestIdTuple
      * TODO: Eventually, we could have SSIRD also use flow-id directly, instead of piggybacking on the app-level-id field.
      */
     long flow_id_=-1;
+    /* Dale: track total msg size */
+    long total_msg_data_ = 0;
+    bool is_empty_ = true;
 };
 
 #endif

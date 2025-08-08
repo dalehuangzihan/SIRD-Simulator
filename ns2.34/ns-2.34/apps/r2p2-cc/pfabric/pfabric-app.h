@@ -16,6 +16,7 @@
 #include <map>
 #include <unordered_map>
 #include <vector>
+#include <algorithm>
 
 template <typename T>
 class PfabricApplication;
@@ -50,13 +51,24 @@ protected:
     /* Dale: use dequeue for conn pool to allow cycling through of conns */
     typedef std::deque<T *> free_connections_pool_t;
     // typedef std::vector<T *> free_connections_pool_t;
-    typedef std::queue<RequestIdTuple> queued_requests_t;
+    typedef std::deque<RequestIdTuple> queued_requests_t;
+    /* Dale: track queued requests for each flow */
+    typedef std::map<long, queued_requests_t *> flow_id_to_queued_requests_t;
+
+    /* Dale: track which flow id has been assigned which agent */
+    std::map<long, T *> flow_id_to_agent_map_;
+    /* Dale: keep track of the request state of each flow id */
+    std::map<long, RequestIdTuple> flow_id_to_req_state_map_;
+    /* Dale: track the order of flows waiting for a connection to be freed */
+    std::deque<long> waiting_flows_;
+
     int command(int argc, const char *const *argv);
     void start_app() override;
     void stop_app() override;
     void attach_agent(int argc, const char *const *argv) override;
     void warmup();
-    void forward_request(RequestIdTuple &req_id, free_connections_pool_t *pool, int32_t srvr_addr);
+    /* Dale: forward request to specific agent assigned to this flow, instead of to the general pool */
+    void forward_request(RequestIdTuple &req_id, T *agent, int32_t srvr_addr);
 
     WarmupGapTimer<T> warmup_timer_;
     int warmup_phase_;
@@ -65,8 +77,10 @@ protected:
     // to queue requests when the connection pool is empty
 
     std::map<int32_t, free_connections_pool_t *> dstid_to_free_agent_pool_;
-    std::map<int32_t, queued_requests_t *> dstid_to_queued_requests_;
+    // std::map<int32_t, queued_requests_t *> dstid_to_queued_requests_;
+    std::map<int32_t, flow_id_to_queued_requests_t *> dstid_to_flow_queued_requests_;
     uint32_t queued_requests_;
+    std::map<long, uint32_t> flow_id_to_num_queued_requests_; /** Dale: TODO: */
 
     // (for client) to identify which connection needs to be freed (srvr_addr, srvr_thread)
     std::unordered_map<long, std::tuple<int32_t, int, T *>> req_id_to_busy_agent_;
@@ -93,6 +107,8 @@ protected:
                      int req_size,
                      int resp_size,
                      int pool_size);
+
+    int MAX_POOL_SIZE = 40;
 };
 
 #endif

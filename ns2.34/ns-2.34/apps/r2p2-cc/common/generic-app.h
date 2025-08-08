@@ -193,6 +193,8 @@ protected:
     RndDistr *req_size_;
     /* Dale: add flow id to help identify multiple requests as being part of the same flow */
     RndDistr *req_flow_id_;
+    /* Dale: add req_is_final_byteload_ to help identify which byteload is the final byteload of the connection */
+    RndDistr *req_is_final_byteload_;
     RndDistr *resp_size_;
     LoadPattern *load_pattern_;
 
