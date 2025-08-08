@@ -71,13 +71,16 @@ ManualDistr::ManualDistr(const char *intervals_file, int machine_id, size_t tupl
                 std::istringstream ssw(word);
                 for (size_t idx = 0; idx <= tuple_idx; idx++)
                     std::getline(ssw, value, '|');
-                /* Dale: for debugging */
+                // /* Dale: for debugging */
                 // if (tuple_idx == 2)
                 // {
                 //     std::cout << "========== req_size: " << value << std::endl; 
                 // } else if (tuple_idx == 3)
                 // {
                 //     std::cout << "========== req_flow_id: " << value << std::endl; 
+                // } else if (tuple_idx == 4)
+                // {
+                //     std::cout << "========== is_final_byteload_of_conn: " << value << std::endl; 
                 // }
                 events_.push_back(stod(value));
             }
