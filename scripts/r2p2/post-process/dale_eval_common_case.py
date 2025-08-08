@@ -866,9 +866,9 @@ if __name__ == "__main__":
     # experiment_poissoninterval_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=False, title_addendum="_poisson_10flo_10GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_poissoninterval_1458B_bloads_50flo_1GbpsFlo(is_full_postproc=False, title_addendum="_poisson_50flo_1GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=False, title_addendum="_poisson_50flo_2GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum="_poisson_50flo_2GbpsFlo_dctcp_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
     ''' --- DCTCP Connection Pool Experiment, RTT = 5us --- '''
     # simple_experiment(is_full_postproc=True, title_addendum="_dctcp_conn_pool", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # simple_experiment(is_full_postproc=True, title_addendum="_dctcp_conn_pool_stress_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_poissoninterval_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=False, title_addendum="_poisson_10flo_10GbpsFlo_dctcp_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_poissoninterval_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=False, title_addendum="_poisson_10flo_10GbpsFlo_dctcp_test_5conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum="_poisson_50flo_2GbpsFlo_dctcp_test_25conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
