@@ -280,13 +280,13 @@ def experiment_1458B_10Kbloads_10us(num_flows, is_full_postproc=True, title_adde
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
-    # For 20 flo experiment
-    # ssird_sim_dur_list = [0.05, 0.05, 0.05, 0.05, 0.05]
-    # dctcp_sim_dur_list = [0.05, 0.05, 0.05, 0.05, 0.05]
+    # # For 20 flo experiment
+    # ssird_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1]
+    # dctcp_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1]
 
     # For 85 flo experiment
-    ssird_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1]
-    dctcp_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1]
+    ssird_sim_dur_list = [0.2, 0.2, 0.2, 0.2, 0.2]
+    dctcp_sim_dur_list = [0.2, 0.2, 0.2, 0.2, 0.2]
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
     gdpt_gbps_theoretical_list = []
