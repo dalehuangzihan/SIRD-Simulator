@@ -422,7 +422,7 @@ class FlowStats:
                 # each ssird rrq shows cumulative recved-data size that progressively increases as data chunks reach the receiver-side app
                 self.total_bytes_recv_B = flow_trace_event.get_req_size()
             elif (self.proto == DCTCP_PROTO_NAME):
-                self.total_data_bytes_recv_B = flow_trace_event.get_req_size()
+                self.total_bytes_recv_B = flow_trace_event.get_req_size()
             else:
                 logger.error(f"Unrecognised proto name {self.proto}")
 
