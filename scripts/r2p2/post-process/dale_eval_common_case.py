@@ -4,8 +4,8 @@ logger = dale_experiment_rig.logging.getLogger(__name__)
 
 def experiment_1458B_10Kbloads_1us(num_flows, is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"Normal_Byteloads{title_addendum}"
-    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
-    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
+    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
+    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
     src_dst_pairs_list = [(0,1)]
@@ -60,7 +60,7 @@ def experiment_1458B_10Kbloads_1us(num_flows, is_full_postproc=True, title_adden
     # dctcp_sim_dur_list = sim_dur_list
 
     ssird_sim_dur_list = [0.02, 0.02, 0.02, 0.02, 0.02] # for RTT = 5us
-    dctcp_sim_dur_list = [0.001, 0.001, 0.001, 0.001, 0.001] # for RTT = 5us
+    dctcp_sim_dur_list = [0.02, 0.02, 0.02, 0.02, 0.02] # for RTT = 5us
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
     gdpt_gbps_theoretical_list = []
@@ -114,8 +114,8 @@ def experiment_1458B_10Kbloads_1us(num_flows, is_full_postproc=True, title_adden
 
 def experiment_1560B_10Kbloads_1us(num_flows, is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"Normal_Byteloads{title_addendum}"
-    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
-    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
+    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
+    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
     src_dst_pairs_list = [(0,1)]
@@ -171,7 +171,7 @@ def experiment_1560B_10Kbloads_1us(num_flows, is_full_postproc=True, title_adden
 
     ssird_sim_dur_list = [0.02, 0.02, 0.02, 0.02, 0.02] # for RTT = 5us
     # ssird_sim_dur_list = [0.01, 0.01, 0.01, 0.01, 0.01] # RTT = 1ms
-    dctcp_sim_dur_list = [0.3, 0.3, 0.3, 0.3, 0.3] # for RTT = 1ms
+    dctcp_sim_dur_list = [0.02, 0.02, 0.02, 0.02, 0.02] # for RTT = 1ms
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
     gdpt_gbps_theoretical_list = []
@@ -225,8 +225,8 @@ def experiment_1560B_10Kbloads_1us(num_flows, is_full_postproc=True, title_adden
 
 def experiment_1458B_10Kbloads_10us(num_flows, is_full_postproc=True, title_addendum="", log_level=dale_experiment_rig.LOG_LEVEL_2):
     experiment_family = f"Normal_Byteloads{title_addendum}"
-    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
-    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
+    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
+    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
     src_dst_pairs_list = [(0,1)]
@@ -280,9 +280,13 @@ def experiment_1458B_10Kbloads_10us(num_flows, is_full_postproc=True, title_adde
     # ssird_sim_dur_list = sim_dur_list
     # dctcp_sim_dur_list = sim_dur_list
 
-    ssird_sim_dur_list = [0.2, 0.2, 0.2, 0.2, 0.2]
-    # dctcp_sim_dur_list = [0.03, 0.03, 0.03, 0.03, 0.03] # for RTT = 5us
-    dctcp_sim_dur_list = [0.3, 0.3, 0.3, 0.3, 0.3] # for RTT = 1ms
+    # For 20 flo experiment
+    # ssird_sim_dur_list = [0.05, 0.05, 0.05, 0.05, 0.05]
+    # dctcp_sim_dur_list = [0.05, 0.05, 0.05, 0.05, 0.05]
+
+    # For 85 flo experiment
+    ssird_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1]
+    dctcp_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1]
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
     gdpt_gbps_theoretical_list = []
@@ -338,13 +342,13 @@ def experiment_1458B_10Kbloads_10us(num_flows, is_full_postproc=True, title_adde
 if __name__ == "__main__":
 
     ''' --- RTT = 5us ---- '''
-    # experiment_1458B_10Kbloads_1us(num_flows=2, is_full_postproc=True, title_addendum="_1458B_2flo_2pt33Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_1560B_10Kbloads_1us(num_flows=2, is_full_postproc=True, title_addendum="_1560B_2flo_2pt50Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_1458B_10Kbloads_10us(num_flows=20, is_full_postproc=True, title_addendum="_1458B_20flo_1pt16Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_1458B_10Kbloads_1us(num_flows=2, is_full_postproc=True, title_addendum="_1458B_2flo_2pt33Gbps_1conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_1560B_10Kbloads_1us(num_flows=2, is_full_postproc=True, title_addendum="_1560B_2flo_2pt50Gbps_1conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_1458B_10Kbloads_10us(num_flows=20, is_full_postproc=True, title_addendum="_1458B_20flo_1pt16Gbps_15conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
-    # experiment_1458B_10Kbloads_1us(num_flows=8, is_full_postproc=True, title_addendum="_1458B_8flo_93pt312Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_1560B_10Kbloads_1us(num_flows=8, is_full_postproc=True, title_addendum="_1560B_8flo_99pt84Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_1458B_10Kbloads_10us(num_flows=85, is_full_postproc=True, title_addendum="_1458B_85flo_99pt144Gbps", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_1458B_10Kbloads_1us(num_flows=8, is_full_postproc=True, title_addendum="_1458B_8flo_93pt312Gbps_5conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_1560B_10Kbloads_1us(num_flows=8, is_full_postproc=True, title_addendum="_1560B_8flo_99pt84Gbps_5conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_1458B_10Kbloads_10us(num_flows=85, is_full_postproc=True, title_addendum="_1458B_85flo_99pt144Gbps_40conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
     # # RTT = 1ms ----
     # # experiment_1458B_bloads_8flo_93pt312Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_8flo_93pt312Gbps_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
