@@ -51,7 +51,7 @@ class Byteload:
     relative_timestamp_us is the timestamp since the start of the flow, measured in us; flow always starts at a relative timestamp of 0us 
     relative_interval_us is the time gap between this byteload and the previous one in the serialised multiflow
     '''
-    def __init__(self, src, dst, flow_id, size_B, relative_timestamp_us, absolute_timestamp_us):
+    def __init__(self, src, dst, flow_id, size_B, relative_timestamp_us, absolute_timestamp_us, is_final_byteload):
         self.src = src
         self.dst = dst
         self.flow_id = flow_id
@@ -59,6 +59,7 @@ class Byteload:
         self.relative_timestamp_us = relative_timestamp_us
         self.absolute_timestamp_us = absolute_timestamp_us
         self.relative_interval_us = None
+        self.is_final_byteload = is_final_byteload
     
     # custom comparators
     def __lt__(self, other):
@@ -90,7 +91,8 @@ class Flow:
 
         # assert(byteload_interval_us >= 1)
         # assert(byteload_interval_us*10%10 == 0)
-        assert(min(flow_spec.interval_us_list) >= 0.001) # must be at least 1ns
+        if (len(flow_spec.interval_us_list) > 0):
+            assert(min(flow_spec.interval_us_list) >= 0.001) # must be at least 1ns
 
         self.init_byteloads()
 
@@ -101,7 +103,8 @@ class Flow:
         for i in range(0, len(byteload_size_B_list)):
             rel_timestamp_us = self.RELATIVE_START_TIME_US + byteload_rel_timestamp_us_list[i]
             absolute_timestamp_us = self.absolute_start_time_us + rel_timestamp_us
-            self.byteloads_list.append(Byteload(self.src, self.dst, self.id, self.flow_spec.byteload_size_B_list[i], rel_timestamp_us, absolute_timestamp_us))
+            is_final_byteload = (i == len(byteload_size_B_list)-1) # is the last byteload in the flow
+            self.byteloads_list.append(Byteload(self.src, self.dst, self.id, self.flow_spec.byteload_size_B_list[i], rel_timestamp_us, absolute_timestamp_us, is_final_byteload))
 
 class MultiFlow:
     '''
@@ -193,7 +196,7 @@ class ManualReqInterval():
                 bl = serialised_byteloads_list[i]
                 time_spec = bl.relative_interval_us * self.MICROSECOND_S
                 if i == 0: time_spec += self.MRI_START_TIME_S 
-                byteload_str = "{:.10f}|{}|{}|{}".format(time_spec, str(dst), bl.size_B, bl.flow_id)
+                byteload_str = "{:.10f}|{}|{}|{}|{}".format(time_spec, str(dst), bl.size_B, bl.flow_id, int(bl.is_final_byteload))
                 mri_byteloads_spec.append(byteload_str)
             mri_byteloads_spec_list.append(mri_byteloads_spec)
 
@@ -515,7 +518,7 @@ class FlowStats:
                 # each ssird rrq shows cumulative recved-data size that progressively increases as data chunks reach the receiver-side app
                 self.total_data_bytes_recv_B = flow_trace_event.get_req_size()
             elif (self.proto == DCTCP_PROTO_NAME):
-                self.total_data_bytes_recv_B += flow_trace_event.get_req_size()
+                self.total_data_bytes_recv_B = flow_trace_event.get_req_size()
             else:
                 logger.error(f"Unrecognised proto name {self.proto}")
 
@@ -531,10 +534,8 @@ class FlowStats:
         if (self.final_event_name != FlowTraceEvent.RRQ_EVENT):
             logger.error(f"Flow {self.flow_id}: Final event was {self.final_event_name} instead of {FlowTraceEvent.RRQ_EVENT}!")        
 
-        if (self.proto == DCTCP_PROTO_NAME and self.num_srq != self.num_rrq):
-            logger.error(f"DCTCP: Missing rrq event(s)! diff: {self.num_srq - self.num_rrq}")
-
         expected_flow_size_B = sum(self.byteload_size_B_list)
+        assert(self.total_data_bytes_sent_B == expected_flow_size_B)
         logger.debug(f"Flow {self.flow_id}:: first_event_name: {self.first_event_name}, final_event_name: {self.final_event_name}, expected_data_B: {expected_flow_size_B}, recv_data_B: {self.total_data_bytes_recv_B}")
         if (self.total_data_bytes_recv_B != expected_flow_size_B):
             logger.error(f"Missing data! flow_id: {self.flow_id}: total bytes recv: {self.total_data_bytes_recv_B}, expected flow size = {expected_flow_size_B}, diff = {expected_flow_size_B - self.total_data_bytes_recv_B}")

@@ -1019,6 +1019,10 @@ void FullTcpAgent::sendpacket(int seqno, int ackno, int pflags, int datalen, int
 		r2p2_hdr->is_pfabric_app_msg() = true;
 		/* Dale: set flow_id in header */
 		r2p2_hdr->flow_id() = cur_req_id_tup_->flow_id_;
+		/* Dale: set total msg data size in  header */
+		r2p2_hdr->total_msg_data() = cur_req_id_tup_->total_msg_data_;
+		/* Dale: set is_final_req_of_conn flag in header*/
+		r2p2_hdr->is_final_req_of_conn() = cur_req_id_tup_->is_final_req_of_conn_;
 		assert(cur_req_id_tup_->ts_ > 0);
 	}
 	/* build basic header w/options */
@@ -2116,7 +2120,12 @@ void FullTcpAgent::recv(Packet *pkt, Handler *)
 				req_id.ts_ = r2p2_hdr->msg_creation_time();
 				/* Dale: add flow_id_ to header */
 				req_id.flow_id_ = r2p2_hdr->flow_id();
+				/* Dale: set total msg data size in header */
+				req_id.total_msg_data_ = r2p2_hdr->total_msg_data();
+				/* Dale: set is_final_req_of_conn flag in header */
+				req_id.is_final_req_of_conn_ = r2p2_hdr->is_final_req_of_conn();
 				app_->recv_msg(datalen, std::move(req_id));
+				slog::log6(debug_, addr(), "a FullTcpAgent::recv(): ackno == highest_ack_");
 			}
 			else
 			{
@@ -3077,7 +3086,12 @@ step6:
 					req_id.ts_ = r2p2_hdr->msg_creation_time();
 					/* Dale: set flow-id in header */
 					req_id.flow_id_ = r2p2_hdr->flow_id();
+					/* Dale: set total msg data size field in header */
+					req_id.total_msg_data_ = r2p2_hdr->total_msg_data();
+					/* Dale: set is_final_req_of_conn flag in header */
+					req_id.is_final_req_of_conn_ = r2p2_hdr->is_final_req_of_conn();
 					app_->recv_msg(datalen, std::move(req_id));
+					slog::log6(debug_, addr(), "b FullTcpAgent::recv(): tcph->seqno() == rcv_nxt_");
 				}
 				else
 				{
@@ -3131,7 +3145,12 @@ step6:
 					req_id.ts_ = r2p2_hdr->msg_creation_time();
 					/* Dale: set flow-id in header */
 					req_id.flow_id_ = r2p2_hdr->flow_id();
+					/* Dale: set total msg data size field in header */
+					req_id.total_msg_data_ = r2p2_hdr->total_msg_data();
+					/* Dale: set is_final_req_of_conn flag in header */
+					req_id.is_final_req_of_conn_ = r2p2_hdr->is_final_req_of_conn();
 					app_->recv_msg(rcv_nxt_ - rcv_nxt_old_, std::move(req_id));
+					slog::log6(debug_, addr(),"c FullTcpAgent::recv(): rcv_nxt_ > rcv_nxt_old_");
 				}
 				else
 				{
