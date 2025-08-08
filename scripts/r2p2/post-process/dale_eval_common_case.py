@@ -724,17 +724,30 @@ def simple_experiment(is_full_postproc=True, title_addendum="", log_level=dale_e
     src_dst_pairs_list = [(0,1)]
 
     # TODO: for now generate flow spec by hand to debug experiment rig
-    num_flows = 1
-    target_flow_rate_gbps = -1 # TODO: is just placeholder
+    # num_flows = 5
+    # target_flow_rate_gbps = -1 # TODO: is just placeholder
+    # manual_flow_spec = dale_experiment_rig.FlowSpec(
+    #     num_byteloads=5,
+    #     byteload_size_B_list=[2000]*5,
+    #     flow_size_B=2000*5,
+    #     interval_us_list=[1]*(5-1),
+    #     byteload_timestamp_us_list=[0, 1, 2, 3, 4],
+    #     total_flow_send_duration_us=4,
+    #     flow_rate_bps=16*pow(10,9)
+    # )
+
+    num_flows = 31
+    target_flow_rate_gbps = 1.6 # TODO: is just placeholder
     manual_flow_spec = dale_experiment_rig.FlowSpec(
-        num_byteloads=5,
-        byteload_size_B_list=[1458]*5,
-        flow_size_B=1458*5,
-        interval_us_list=[1]*(5-1),
-        byteload_timestamp_us_list=[0, 1, 2, 3, 4],
-        total_flow_send_duration_us=4,
-        flow_rate_bps=11.664*pow(10,9)
+        num_byteloads=1,
+        byteload_size_B_list=[200000]*1,
+        flow_size_B=200000*1,
+        interval_us_list=[],
+        byteload_timestamp_us_list=[0.1],
+        total_flow_send_duration_us=0.1,
+        flow_rate_bps=1.6*pow(10,9)
     )
+
     flow_spec_list = [manual_flow_spec] * num_flows
 
     inter_flow_spacing_us = 0 # TODO: for testing
@@ -759,8 +772,8 @@ def simple_experiment(is_full_postproc=True, title_addendum="", log_level=dale_e
     flow_send_durations_us_list = [f.total_flow_send_duration_us for f in flow_spec_list]
     flow_min_byteload_size_B_list = [min(f.byteload_size_B_list) for f in flow_spec_list]
     flow_max_byteload_size_B_list = [max(f.byteload_size_B_list) for f in flow_spec_list]
-    flow_min_interval_us = [min(f.interval_us_list) for f in flow_spec_list]
-    flow_max_interval_us = [max(f.interval_us_list) for f in flow_spec_list]
+    flow_min_interval_us = [min(f.interval_us_list) if len(f.interval_us_list) > 0 else -1 for f in flow_spec_list]
+    flow_max_interval_us = [min(f.interval_us_list) if len(f.interval_us_list) > 0 else -1 for f in flow_spec_list]
 
     logger.info(f"Protos tested: {proto_names}")
     logger.info(f"Num Flows: {num_flows}")
@@ -775,8 +788,10 @@ def simple_experiment(is_full_postproc=True, title_addendum="", log_level=dale_e
     logger.info(f"Flow Min Interval (us): {flow_min_interval_us}")
     logger.info(f"Flow Max Interval (us): {flow_max_interval_us}")
 
-    ssird_sim_dur_list = [0.0001] * num_flows
-    dctcp_sim_dur_list = [0.0001] * num_flows
+    ssird_sim_dur_list = [0.01]
+    dctcp_sim_dur_list = [0.01]
+    # ssird_sim_dur_list = [0.0002]
+    # dctcp_sim_dur_list = [0.0002]
     # TODO: modify assertion to work for spec that does specifies multiple experiments
     logger.debug(f"Max flow send durations (us): {max(flow_send_durations_us_list)}")
     assert(max(flow_send_durations_us_list) * pow(10,-6) * 1.5 < ssird_sim_dur_list[0])
@@ -851,7 +866,9 @@ if __name__ == "__main__":
     # experiment_poissoninterval_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=False, title_addendum="_poisson_10flo_10GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_poissoninterval_1458B_bloads_50flo_1GbpsFlo(is_full_postproc=False, title_addendum="_poisson_50flo_1GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=False, title_addendum="_poisson_50flo_2GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    # experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum="_poisson_50flo_2GbpsFlo_dctcp_test", log_level=dale_experiment_rig.LOG_LEVEL_6)
+    # experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum="_poisson_50flo_2GbpsFlo_dctcp_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
     ''' --- DCTCP Connection Pool Experiment, RTT = 5us --- '''
-    simple_experiment(is_full_postproc=True, title_addendum="_dctcp_conn_pool", log_level=dale_experiment_rig.LOG_LEVEL_6)
+    # simple_experiment(is_full_postproc=True, title_addendum="_dctcp_conn_pool", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # simple_experiment(is_full_postproc=True, title_addendum="_dctcp_conn_pool_stress_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_poissoninterval_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=False, title_addendum="_poisson_10flo_10GbpsFlo_dctcp_test", log_level=dale_experiment_rig.LOG_LEVEL_2)

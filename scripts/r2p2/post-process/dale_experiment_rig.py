@@ -91,7 +91,8 @@ class Flow:
 
         # assert(byteload_interval_us >= 1)
         # assert(byteload_interval_us*10%10 == 0)
-        assert(min(flow_spec.interval_us_list) >= 0.001) # must be at least 1ns
+        if (len(flow_spec.interval_us_list) > 0):
+            assert(min(flow_spec.interval_us_list) >= 0.001) # must be at least 1ns
 
         self.init_byteloads()
 
@@ -517,7 +518,7 @@ class FlowStats:
                 # each ssird rrq shows cumulative recved-data size that progressively increases as data chunks reach the receiver-side app
                 self.total_data_bytes_recv_B = flow_trace_event.get_req_size()
             elif (self.proto == DCTCP_PROTO_NAME):
-                self.total_data_bytes_recv_B += flow_trace_event.get_req_size()
+                self.total_data_bytes_recv_B = flow_trace_event.get_req_size()
             else:
                 logger.error(f"Unrecognised proto name {self.proto}")
 
@@ -533,10 +534,8 @@ class FlowStats:
         if (self.final_event_name != FlowTraceEvent.RRQ_EVENT):
             logger.error(f"Flow {self.flow_id}: Final event was {self.final_event_name} instead of {FlowTraceEvent.RRQ_EVENT}!")        
 
-        # if (self.proto == DCTCP_PROTO_NAME and self.num_srq != self.num_rrq):
-        #     logger.error(f"DCTCP: Missing rrq event(s)! diff: {self.num_srq - self.num_rrq}")
-
         expected_flow_size_B = sum(self.byteload_size_B_list)
+        assert(self.total_data_bytes_sent_B == expected_flow_size_B)
         logger.debug(f"Flow {self.flow_id}:: first_event_name: {self.first_event_name}, final_event_name: {self.final_event_name}, expected_data_B: {expected_flow_size_B}, recv_data_B: {self.total_data_bytes_recv_B}")
         if (self.total_data_bytes_recv_B != expected_flow_size_B):
             logger.error(f"Missing data! flow_id: {self.flow_id}: total bytes recv: {self.total_data_bytes_recv_B}, expected flow size = {expected_flow_size_B}, diff = {expected_flow_size_B - self.total_data_bytes_recv_B}")

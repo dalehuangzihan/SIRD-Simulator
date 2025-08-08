@@ -208,16 +208,42 @@ void PfabricApplication<T>::send_request(RequestIdTuple *arg_req, size_t arg_siz
         trace_state("srq", srvr_addr, -1, req_id.app_level_id_, -1, next_req_size, -1, pool->size());
     reqs_sent_++;
 
-    queued_requests_t *req_queue = nullptr;
-    if (dstid_to_queued_requests_.find(srvr_addr) != dstid_to_queued_requests_.end())
+    /* Dale: retrieve queued requests for the current flow */
+    flow_id_to_queued_requests_t *flow_id_to_req_queue = nullptr;
+    queued_requests_t *flow_req_queue = nullptr;
+    if (dstid_to_flow_queued_requests_.find(srvr_addr) != dstid_to_flow_queued_requests_.end())
     {
-        req_queue = dstid_to_queued_requests_.at(srvr_addr);
+        flow_id_to_req_queue = dstid_to_flow_queued_requests_.at(srvr_addr);
+        // check if there is already a queue for this flow_id
+        auto it = flow_id_to_req_queue->find(req_id.app_level_id_);
+        if (it != flow_id_to_req_queue->end())
+        {
+            flow_req_queue = it->second;
+        }
+        else
+        {
+            flow_req_queue = new queued_requests_t();
+            (*flow_id_to_req_queue)[req_id.app_level_id_] = flow_req_queue;
+        }
     }
     else
     {
-        req_queue = new queued_requests_t();
-        dstid_to_queued_requests_[srvr_addr] = req_queue;
+        flow_id_to_req_queue = new flow_id_to_queued_requests_t();
+        dstid_to_flow_queued_requests_[srvr_addr] = flow_id_to_req_queue;
+        flow_req_queue = new queued_requests_t();
+        (*flow_id_to_req_queue)[req_id.app_level_id_] = flow_req_queue;
     }
+
+    // if (dstid_to_queued_requests_.find(srvr_addr) != dstid_to_queued_requests_.end())
+    // {
+
+    //     req_queue = dstid_to_queued_requests_.at(srvr_addr);
+    // }
+    // else
+    // {
+    //     req_queue = new queued_requests_t();
+    //     dstid_to_queued_requests_[srvr_addr] = req_queue;
+    // }
 
     /* Dale: check if there is already a conn assigned to this flow_id */
     T *agent = nullptr;
@@ -225,35 +251,44 @@ void PfabricApplication<T>::send_request(RequestIdTuple *arg_req, size_t arg_siz
     if (it != flow_id_to_agent_map_.end())
     {
         agent = it->second;
-        slog::log4(debug_, local_addr_, "PfabricApplication::send_request() using existing agent for flow_id:", req_id.app_level_id_);
+        slog::log1(debug_, local_addr_, "PfabricApplication::send_request() for flow_id:", req_id.app_level_id_, "using EXISTING agent (daddr=", agent->daddr(), "dport=", agent->dport(), ") pool size:", pool->size());
     }
     else
     {
         if (pool->empty())
         {
             // see if for this connection pool, there is a queue of queued messages
-            req_queue->push(req_id);
+            /* Dale: push req_id into request queue corresponding to this flow_id */
+            flow_req_queue->push_back(req_id);
+            bool is_flow_already_waiting = std::find(waiting_flows_.begin(), waiting_flows_.end(), req_id.app_level_id_) != waiting_flows_.end();
+            if (!is_flow_already_waiting)
+            {
+                waiting_flows_.push_back(req_id.app_level_id_);
+            }
             queued_requests_++;
+            slog::log1(debug_, local_addr_, "PfabricApplication::send_request(): Pool empty. Flow_id:", req_id.app_level_id_, "new flow_req_queue size:", flow_req_queue->size(), "is flow already waiting:", is_flow_already_waiting, "new waiting_flows_ size:", waiting_flows_.size());
             return;
         }
 
         /* Dale: get new agent from pool and assign it to this flow_id */
-        agent = pool->back();
-        pool->pop_back();
+        agent = pool->front();
+        pool->pop_front();
         flow_id_to_agent_map_[req_id.app_level_id_] = agent;
 
-        slog::log4(debug_, local_addr_, "PfabricApplication::send_request() using agent (daddr=", agent->daddr(), ", dport=", agent->dport(), ") for flow_id:", req_id.app_level_id_,
-                   "pool size:", pool->size());
+        slog::log1(debug_, local_addr_, "PfabricApplication::send_request() for flow_id:", req_id.app_level_id_, "using NEW agent (daddr=", agent->daddr(), ", dport=", agent->dport(), ") pool size:", pool->size());
 
-        if (!req_queue->empty())
-        {
-            req_queue->push(req_id);
-            req_id = req_queue->front();
-            req_queue->pop();
-        }
+        /* Dale: Since each flow hogs a connection until it finishes sending, a flow that gets a new conn the moment it tries to send should never have any existing queued requests */
+        assert(flow_req_queue->empty());
+        // if (!flow_req_queue->empty())
+        // {
+        //     slog::log6(debug_, local_addr_, "WARN: PfabricApplication::send_request(): there are ", flow_req_queue->size(), "queued requests for flow_id:", req_id.app_level_id_);
+        //     flow_req_queue->push_back(req_id);
+        //     req_id = flow_req_queue->front();
+        //     flow_req_queue->pop_front();
+        // }
     }
 
-    slog::log4(debug_, local_addr_, "PfabricApplication::send_request(). Pool size:", pool->size(), "| is incast:", is_incast);
+    // slog::log4(debug_, local_addr_, "PfabricApplication::send_request(). Pool size:", pool->size(), "| is incast:", is_incast);
 
     forward_request(req_id, agent, srvr_addr);
 }
@@ -308,7 +343,7 @@ void PfabricApplication<T>::forward_request(RequestIdTuple &req_id, T *agent, in
         flow_request_state.ts_ = msg_creation_time;
         req_id.ts_ = msg_creation_time;
         
-        slog::log5(debug_, local_addr_, "PfabricApplication::forward_request() : updating request state for flow_id:", req_id.app_level_id_, "total_msg_data_:", req_id.total_msg_data_, "ts:", req_id.ts_);
+        slog::log2(debug_, local_addr_, "* PfabricApplication::forward_request(): updating request state for flow_id:", req_id.app_level_id_, "total_msg_data_:", req_id.total_msg_data_, "ts:", req_id.ts_);
     }
     else
     {
@@ -334,7 +369,7 @@ void PfabricApplication<T>::forward_request(RequestIdTuple &req_id, T *agent, in
 template <typename T>
 void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
 {
-    slog::log5(debug_, local_addr_, "PfabricApplication::recv_msg() received bytes:", payload, "total_msg_data_", req_id_tup.total_msg_data_ ,"app_level_id_:", req_id_tup.app_level_id_, "ts_:", req_id_tup.ts_, "is_final_req_of_conn_:", req_id_tup.is_final_req_of_conn_);
+    slog::log2(debug_, local_addr_, "PfabricApplication::recv_msg() received bytes:", payload, "total_msg_data_", req_id_tup.total_msg_data_ ,"app_level_id_:", req_id_tup.app_level_id_, "ts_:", req_id_tup.ts_, "is_final_req_of_conn_:", req_id_tup.is_final_req_of_conn_);
     if (warmup_phase_ == 1)
         return;
     else
@@ -385,7 +420,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
             {
                 double msg_created_at = req_id_tup.ts_;
                 /* Dale: elevate from lo4 to log2 */
-                slog::log2(debug_, local_addr_, "PfabricApplication - whole request received. size", req_state->bytes_recvd_,
+                slog::log1(debug_, local_addr_, "PfabricApplication - whole request received for flow ", app_lvl_req_id, ". size", req_state->bytes_recvd_,
                         "From:", req_id_tup.cl_addr_, "that was created on:", msg_created_at);
                 assert(msg_created_at > 9.9); // assumes sim starts at 10.0
                 if (do_trace_)
@@ -413,7 +448,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
             }
             else
             {
-                slog::log2(debug_, local_addr_, "++ PfabricApplication - received all outstanding bytes, but is not final request of connection. bytes_recvd_:", req_state->bytes_recvd_, "total_size_B_:", req_state->total_size_B_);
+                slog::log1(debug_, local_addr_, "++ PfabricApplication - received all outstanding bytes for flow_id ", app_lvl_req_id, ", but is not final request of connection. bytes_recvd_:", req_state->bytes_recvd_, "total_size_B_:", req_state->total_size_B_);
             }
         }
         else if (req_state->bytes_recvd_ > req_state->total_size_B_)
@@ -461,32 +496,75 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
             int32_t srvr_addr = std::get<0>(srvr_info);
             int srvr_thrd = std::get<1>(srvr_info);
             T *agent = std::get<2>(srvr_info);
+
+            slog::log1(debug_, local_addr_, "PfabricApplication - whole reply received from srvr_addr", srvr_addr, ". Pool size:", dstid_to_free_agent_pool_.at(srvr_addr)->size(), "| flow_id:", app_lvl_req_id);
+
             req_id_to_busy_agent_.erase(app_lvl_req_id);
             int pool_size;
             try
             {
+                /* Dale: flow has finished sending, un-assign agent from flow */
+                assert(std::find(waiting_flows_.begin(), waiting_flows_.end(), app_lvl_req_id) == waiting_flows_.end());
                 flow_id_to_agent_map_.erase(app_lvl_req_id);
                 dstid_to_free_agent_pool_.at(srvr_addr)->push_back(agent);
+
                 // check for queued requests waiting for connections in this pool
-                queued_requests_t *req_queue = nullptr;
-                if (dstid_to_queued_requests_.find(srvr_addr) != dstid_to_queued_requests_.end())
+                /* Dale: check if there are other waiting flows with queued requests */
+                flow_id_to_queued_requests_t *flow_id_to_req_queue = nullptr;
+                queued_requests_t *flow_req_queue = nullptr;
+                /* Dale: choose next flow to service (FCFS) */
+                long next_flow_id = waiting_flows_.front(); 
+                waiting_flows_.pop_front();
+                if (dstid_to_flow_queued_requests_.find(srvr_addr) != dstid_to_flow_queued_requests_.end())
                 {
-                    req_queue = dstid_to_queued_requests_.at(srvr_addr);
+                    flow_id_to_req_queue = dstid_to_flow_queued_requests_.at(srvr_addr);
+                    if (flow_id_to_req_queue->find(next_flow_id) != flow_id_to_req_queue->end())
+                    {
+                        flow_req_queue = flow_id_to_req_queue->at(next_flow_id);
+                    }
                 }
-                if (req_queue && !req_queue->empty())
+                if (flow_req_queue && !flow_req_queue->empty())
                 {
-                    // there are queued requests and a connection has just been freed. Use it
-                    RequestIdTuple req_id = req_queue->front();
-                    req_queue->pop();
-                    queued_requests_--;
-
-                    /* Retrieve an agent from the pool to forward_request via */
+                    /* Dale: Retrieve an agent from the pool to forward_requests through */
                     free_connections_pool_t *pool = dstid_to_free_agent_pool_.at(srvr_addr);
-                    T* agent = pool->back();
-                    pool->pop_back();
+                    T* agent = pool->front();
+                    pool->pop_front();
+                    flow_id_to_agent_map_[next_flow_id] = agent; // update the agent for this flow_id
 
-                    forward_request(req_id, agent, srvr_addr);
+                    // there are queued requests and a connection has just been freed. Use it
+                    slog::log2(debug_, local_addr_, "PfabricApplication::recv_msg() servicing queued requests for flow_id:", next_flow_id, "using agent (daddr=", agent->daddr(), ", dport=", agent->dport(), "), flow_req_queue size:", flow_req_queue->size(), "waiting_flows_ size:", waiting_flows_.size());
+                    while (!flow_req_queue->empty())
+                    {
+                        /* Dale: process all queued requests for this flow_id */
+                        RequestIdTuple req_id = flow_req_queue->front();
+                        flow_req_queue->pop_front();
+                        queued_requests_--;
+                        forward_request(req_id, agent, srvr_addr);
+                        if (req_id.is_final_req_of_conn_)
+                        {
+                            assert(flow_req_queue->empty());
+                        }
+                    } 
                 }
+                
+                // if (dstid_to_queued_requests_.find(srvr_addr) != dstid_to_queued_requests_.end())
+                // {
+                //     req_queue = dstid_to_queued_requests_.at(srvr_addr);
+                // }
+                // if (req_queue && !req_queue->empty())
+                // {
+                //     // there are queued requests and a connection has just been freed. Use it
+                //     RequestIdTuple req_id = req_queue->front();
+                //     req_queue->pop();
+                //     queued_requests_--;
+
+                //     /* Dale: Retrieve an agent from the pool to forward_request via */
+                //     free_connections_pool_t *pool = dstid_to_free_agent_pool_.at(srvr_addr);
+                //     T* agent = pool->back();
+                //     pool->pop_back();
+
+                //     forward_request(req_id, agent, srvr_addr);
+                // }
                 pool_size = dstid_to_free_agent_pool_.at(srvr_addr)->size();
                 /** Dale: restrict conn pool size to 1 */
                 assert(pool_size <= MAX_POOL_SIZE);
@@ -496,7 +574,6 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
                 slog::error(debug_, local_addr_, "Did not find pool for server addr:", srvr_addr, "while inserting agent");
                 throw;
             }
-            slog::log4(debug_, local_addr_, "PfabricApplication - whole reply received. Pool size:", pool_size, "|");
 
             // if (do_trace_)
             //     trace_state("suc", req_id_tup.sr_addr_, -1, app_lvl_req_id, req_dur, req_sz, reply_state->total_size_B_,
