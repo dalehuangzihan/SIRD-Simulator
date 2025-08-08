@@ -854,4 +854,4 @@ if __name__ == "__main__":
     # experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum="_poisson_50flo_2GbpsFlo_dctcp_test", log_level=dale_experiment_rig.LOG_LEVEL_6)
 
     ''' --- DCTCP Connection Pool Experiment, RTT = 5us --- '''
-    simple_experiment(is_full_postproc=True, title_addendum="_dctcp_conn_pool", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    simple_experiment(is_full_postproc=True, title_addendum="_dctcp_conn_pool", log_level=dale_experiment_rig.LOG_LEVEL_6)

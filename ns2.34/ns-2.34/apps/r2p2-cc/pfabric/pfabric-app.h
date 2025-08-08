@@ -51,12 +51,19 @@ protected:
     typedef std::deque<T *> free_connections_pool_t;
     // typedef std::vector<T *> free_connections_pool_t;
     typedef std::queue<RequestIdTuple> queued_requests_t;
+
+    /* Dale: track which flow id has been assigned which agent */
+    std::map<long, T *> flow_id_to_agent_map_;
+    /* Dale: keep track of the request state of each flow id */
+    std::map<long, RequestIdTuple> flow_id_to_req_state_map_;
+
     int command(int argc, const char *const *argv);
     void start_app() override;
     void stop_app() override;
     void attach_agent(int argc, const char *const *argv) override;
     void warmup();
-    void forward_request(RequestIdTuple &req_id, free_connections_pool_t *pool, int32_t srvr_addr);
+    /* Dale: forward request to specific agent assigned to this flow, instead of to the general pool */
+    void forward_request(RequestIdTuple &req_id, T *agent, int32_t srvr_addr);
 
     WarmupGapTimer<T> warmup_timer_;
     int warmup_phase_;
@@ -93,6 +100,8 @@ protected:
                      int req_size,
                      int resp_size,
                      int pool_size);
+
+    int MAX_POOL_SIZE = 1;
 };
 
 #endif

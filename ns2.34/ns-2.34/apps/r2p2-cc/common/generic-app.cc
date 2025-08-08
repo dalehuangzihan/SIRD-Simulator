@@ -353,6 +353,8 @@ int GenericApp::command(int argc, const char *const *argv)
                 req_size_ = new ManualDistr(events_file, machine_id, 2);
                 /* Dale: add flow id to help identify multiple requests as being part of the same flow */
                 req_flow_id_ = new ManualDistr(events_file, machine_id, 3);
+                /* Dale: add req_is_final_byteload_ to help identify which byteload is the final byteload of the connection */
+                req_is_final_byteload_ = new ManualDistr(events_file, machine_id, 4);
             }
             else
             {
