@@ -653,7 +653,7 @@ def experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True
     logger.info(f"Flow Min Interval (us): {flow_min_interval_us}")
     logger.info(f"Flow Max Interval (us): {flow_max_interval_us}")
 
-    ssird_sim_dur_list = [1]
+    ssird_sim_dur_list = [0.04]
     dctcp_sim_dur_list = [0.04] # NOTE: for dctcp test
     # ssird_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1]
     # dctcp_sim_dur_list = [0.1, 0.1, 0.1, 0.1, 0.1] # for RTT = 5us
@@ -871,4 +871,6 @@ if __name__ == "__main__":
     # simple_experiment(is_full_postproc=True, title_addendum="_dctcp_conn_pool", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # simple_experiment(is_full_postproc=True, title_addendum="_dctcp_conn_pool_stress_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_poissoninterval_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=False, title_addendum="_poisson_10flo_10GbpsFlo_dctcp_test_5conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum="_poisson_50flo_2GbpsFlo_dctcp_test_25conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_poissoninterval_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=False, title_addendum="_poisson_10flo_10GbpsFlo_dctcp_test_40conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum="_poisson_50flo_2GbpsFlo_40conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum="_poisson_50flo_2GbpsFlo_dctcp_test_40conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
