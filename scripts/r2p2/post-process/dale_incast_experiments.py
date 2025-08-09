@@ -238,6 +238,7 @@ def experiment_incast_3to1_16GbpsFlo(is_full_postproc=True, title_addendum="", l
     assert num_of_experiments == len(exp_metrics.dctcp_fct_list)
 
 if __name__ == "__main__":
-    experiment_incast_3_to_1_test(is_full_postproc=True, title_addendum="_3to1_incast_test_2flo_1conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_incast_3_to_1_test(is_full_postproc=True, title_addendum="_3to1_incast_test_2flo_1conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_incast_3_to_1_test(is_full_postproc=True, title_addendum="_3to1_incast_31flo_1pt6GbpsFlo_25conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    experiment_incast_3_to_1_test(is_full_postproc=True, title_addendum="_3to1_incast_31flo_1pt6GbpsFlo_40conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_incast_3to1_16GbpsFlo(is_full_postproc=True, title_addendum="_incast_3to1_5flo_16GbpsFlo_200KBflo_3conn", log_level=dale_experiment_rig.LOG_LEVEL_2)

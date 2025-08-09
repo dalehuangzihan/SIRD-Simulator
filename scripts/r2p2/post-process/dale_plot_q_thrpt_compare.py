@@ -265,3 +265,7 @@ if __name__ == "__main__":
 
     do_comparison_graph_trimmed(TOR, "tor_4", "host_0", 5, 100, 2000, 1, title_addendum="_incast_3to1_5flo_16GbpsFlo_200KBflo")
     do_comparison_graph_trimmed(TOR, "tor_4", "host_0", 31, 10, 2000, 10, title_addendum="_3to1_incast_test_31flo")
+
+    do_comparison_graph_trimmed(TOR, "tor_4", "host_0", 5, 100, 2000, 1, title_addendum="_incast_3to1_5flo_16GbpsFlo_200KBflo_3conn")
+    do_comparison_graph_trimmed(TOR, "tor_4", "host_0", 31, 10, 2000, 10, title_addendum="_3to1_incast_31flo_1pt6GbpsFlo_25conn")
+    # do_comparison_graph_trimmed(TOR, "tor_4", "host_0", 31, 10, 2000, 10, title_addendum="_3to1_incast_31flo_1pt6GbpsFlo_40conn") # TODO
