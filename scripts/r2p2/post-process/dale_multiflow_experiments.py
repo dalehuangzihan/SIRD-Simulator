@@ -740,7 +740,7 @@ def experiment_vary_byteloadsize_large_bload_20MBflo_5flo_8gbps_total(is_full_po
     # dctcp_sim_dur_list = sim_dur_list
 
     ssird_sim_dur_list = [0.2, 0.2, 0.2, 0.2, 0.2]
-    dctcp_sim_dur_list = [0, 0, 0, 0, 0]
+    dctcp_sim_dur_list = [0.2, 0.2, 0.2, 0.2, 0.2]
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows
     gdpt_gbps_theoretical_list = []
