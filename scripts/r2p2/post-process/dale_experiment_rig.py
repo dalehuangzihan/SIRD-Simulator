@@ -870,12 +870,12 @@ def init_logs(experiment_family, logs_file_name, log_level=logging.DEBUG):
     )
 
 class FlowSpec:
-    def __init__(self, num_byteloads, byteload_size_B_list, flow_size_B, interval_us_list, byteload_timestamp_us_list, total_flow_send_duration_us, flow_rate_bps):
+    def __init__(self, num_byteloads, byteload_size_B_list, flow_size_B, interval_us_list, byteload_rel_timestamp_us_list, total_flow_send_duration_us, flow_rate_bps):
         self.num_byteloads = num_byteloads
         self.byteload_size_B_list = byteload_size_B_list
         self.flow_size_B = flow_size_B
         self.interval_us_list = interval_us_list
-        self.byteload_timestamp_us_list = byteload_timestamp_us_list
+        self.byteload_rel_timestamp_us_list = byteload_rel_timestamp_us_list
         self.total_flow_send_duration_us = total_flow_send_duration_us
         self.flow_rate_bps = flow_rate_bps
         self.check_spec()
@@ -885,7 +885,7 @@ class FlowSpec:
             self.num_byteloads,
             len(self.byteload_size_B_list),
             len(self.interval_us_list) + 1,
-            len(self.byteload_timestamp_us_list)
+            len(self.byteload_rel_timestamp_us_list)
         ])) == 1)
 
     def to_dict(self):
@@ -895,7 +895,7 @@ class FlowSpec:
             'byteload_size_B_list': self.byteload_size_B_list,
             'flow_size_B': self.flow_size_B,
             'interval_us_list': self.interval_us_list,
-            'byteload_timestamp_us_list': self.byteload_timestamp_us_list,
+            'byteload_timestamp_us_list': self.byteload_rel_timestamp_us_list,
             'total_flow_send_duration_us': self.total_flow_send_duration_us,
             'flow_rate_bps': self.flow_rate_bps
         }
@@ -933,7 +933,7 @@ class FlowSpec:
                 byteload_size_B_list=flow_spec_dict['byteload_size_B_list'],
                 flow_size_B=flow_spec_dict['flow_size_B'],
                 interval_us_list=flow_spec_dict['interval_us_list'],
-                byteload_timestamp_us_list=flow_spec_dict['byteload_timestamp_us_list'],
+                byteload_rel_timestamp_us_list=flow_spec_dict['byteload_timestamp_us_list'],
                 total_flow_send_duration_us=flow_spec_dict['total_flow_send_duration_us'],
                 flow_rate_bps=flow_spec_dict['flow_rate_bps']
             )
@@ -1074,19 +1074,175 @@ class PoissonIntervalGenerator:
         
         return np.array(samples)
 
+class DiscTuncExpDistr:
+    ''' A discrete truncated exponential distribution '''
+
+    @staticmethod
+    def sample_discrete_trunc_exp(num_samples, lam, lower_bound, upper_bound):
+        support = np.arange(lower_bound, upper_bound+1)
+        weights = np.exp(-lam * support)
+        pmf = weights / weights.sum()
+        samples = np.random.choice(support, size=num_samples, p=pmf)
+        return samples
+
+class FlowGenerator:
+
+    '''
+    Generates a specified number of flows.
+        - Flow Inter-arrival times are drawn from an exponential distr.
+        - For each flow:
+            - Flow rate is fixed to a pre-specified value.
+            - Inter-byteload intervals are drawn from an exponential distr.
+            - Num of byteloads is drawn from an exponential distr.
+            - Each byteload is the same size.
+    '''
+
+    def __init__(self,
+                 num_flows,
+                 byteload_size_B,
+                 target_mean_byteload_interval_ns=1000,
+                 min_interval_ns=1,
+                 max_interval_ns=10000,
+                 target_mean_num_byteloads=500,
+                 min_num_byteloads=2,
+                 max_num_byteloads=1000,
+                 target_mean_flow_interarr_ns=1000,
+                 min_flow_interarr_ns=0,
+                 max_flow_interarr_ns=100000):
+        self.num_flows = num_flows
+
+        self.byteload_size_B = byteload_size_B
+
+        self.target_mean_byteload_interval_ns = target_mean_byteload_interval_ns
+        self.min_interval_ns = min_interval_ns
+        self.max_interval_ns = max_interval_ns
+
+        self.target_mean_num_byteloads = target_mean_num_byteloads
+        self.min_num_byteloads = min_num_byteloads
+        assert(self.min_num_byteloads > 1)
+        self.max_num_byteloads = max_num_byteloads
+
+        self.target_mean_flow_interarr_ns = target_mean_flow_interarr_ns
+        self.min_flow_interarr_ns = min_flow_interarr_ns
+        self.max_flow_interarr_ns = max_flow_interarr_ns
+
+        self.flow_rate_bps = (byteload_size_B * 8) / (self.target_mean_flow_interarr_ns * pow(10,-9))
+
+    def generate_poisson_flows(self):
+        num_byteloads_list = self.generate_num_byteloads_for_all_flows()
+        flow_start_times_ns_list = self.generate_flow_start_times_ns_for_all_flows()
+        flow_start_times_us_list = [start_ns/1000 for start_ns in flow_start_times_ns_list]
+        assert(len(set([
+            self.num_flows,
+            len(num_byteloads_list),
+            len(flow_start_times_us_list)
+            ])) == 1)
+
+        byteload_intervals_us_list_list = []
+        for i in range(0, self.num_flows):
+            num_intervals = num_byteloads_list[i] - 1
+            pig = PoissonIntervalGenerator(self.target_mean_byteload_interval_ns, self.max_interval_ns, self.min_interval_ns, num_intervals, num_samples_needed=1)
+            flow_byteload_interval_ns_list = pig.generate_interval_samples_ns_list()[0]
+            assert(len(flow_byteload_interval_ns_list) == num_intervals)
+            flow_byteload_interval_us_list = [intv_ns/1000 for intv_ns in flow_byteload_interval_ns_list]
+            byteload_intervals_us_list_list.append(flow_byteload_interval_us_list)
+
+        flow_spec_list = []
+        for j in range(0, self.num_flows):
+            num_byteloads = num_byteloads_list[j]
+            byteload_size_B_list=[self.byteload_size_B]*num_byteloads
+            flow_size_B=self.byteload_size_B*num_byteloads
+            interval_us_list = byteload_intervals_us_list_list[j]
+            byteload_rel_timestamp_us_list=np.round(np.cumsum(np.concatenate([[0], interval_us_list])), 3).tolist() 
+
+            flow_spec = FlowSpec(
+                num_byteloads=num_byteloads,
+                byteload_size_B_list=byteload_size_B_list,
+                flow_size_B=flow_size_B,
+                interval_us_list=interval_us_list,
+                byteload_rel_timestamp_us_list=byteload_rel_timestamp_us_list,
+                total_flow_send_duration_us=byteload_rel_timestamp_us_list[-1],
+                flow_rate_bps = self.flow_rate_bps
+            )
+
+            flow_spec_list.append(flow_spec)
+        
+        return flow_spec_list, flow_start_times_us_list
+
+    def generate_num_byteloads_for_all_flows(self):
+        lam_num_byteloads = 1/self.target_mean_num_byteloads
+        sampled_num_byteloads = DiscTuncExpDistr.sample_discrete_trunc_exp(
+            num_samples=self.num_flows,
+            lam=lam_num_byteloads,
+            lower_bound=self.min_num_byteloads,
+            upper_bound=self.max_num_byteloads
+        )
+        return sampled_num_byteloads.tolist()
+
+    def generate_flow_start_times_ns_for_all_flows(self):
+        lam_flow_interarr = 1/self.target_mean_flow_interarr_ns
+        sampled_flow_interarr_ns = DiscTuncExpDistr.sample_discrete_trunc_exp(
+            num_samples=self.num_flows,
+            lam=lam_flow_interarr,
+            lower_bound=self.min_flow_interarr_ns, 
+            upper_bound=self.max_flow_interarr_ns
+        )
+        flow_start_times_ns = np.cumsum(sampled_flow_interarr_ns)
+        return flow_start_times_ns.tolist()
+
 if __name__ == "__main__":
 
-    num_intervals = 10
-    max_interval_ns = 10000
-    min_interval_ns = 1
-    target_mean_interval_ns = 100
-    num_samples_needed = 3
+    num_flows = 2
+    byteload_size_B = 1000
+    target_mean_byteload_interval_ns = 1000
+    flow_generator = FlowGenerator(num_flows, byteload_size_B, target_mean_byteload_interval_ns)
 
-    pig = PoissonIntervalGenerator(target_mean_interval_ns, max_interval_ns, min_interval_ns, num_intervals, num_samples_needed)
-    samples = pig.generate_interval_samples_ns_list()
+    flow_spec_list, flow_start_times_us_list = flow_generator.generate_poisson_flows()
+
+    print(flow_start_times_us_list)
+
+    for flow in flow_spec_list:
+        print(
+            f"Flow with {flow.num_byteloads} byteloads | "
+            f"Flow Size B: {flow.flow_size_B} B | "
+            f"Duration: {flow.total_flow_send_duration_us:.4f}us | "
+            f"Flow Rate: {flow.flow_rate_bps*pow(10,-9):.6f} Gbps"
+            f"\n    Min Byteload Size (B): {min(flow.byteload_size_B_list)}"
+            f"\n    Max Byteload Size (B): {max(flow.byteload_size_B_list)}"
+            f"\n    Min Interval (us): {min(flow.interval_us_list)}"
+            f"\n    Max Interval (us): {max(flow.interval_us_list)}"
+            f"\n"
+        )
+
+    # num_intervals = 10
+    # max_interval_ns = 10000
+    # min_interval_ns = 1
+    # target_mean_interval_ns = 100
+    # num_samples_needed = 3
+
+    # pig = PoissonIntervalGenerator(target_mean_interval_ns, max_interval_ns, min_interval_ns, num_intervals, num_samples_needed)
+    # samples = pig.generate_interval_samples_ns_list()
     
-    print("Samples shape:", samples.shape)
-    print("First 3 samples:\n", samples[:3])
+    # print("Samples shape:", samples.shape)
+    # print("First 3 samples:\n", samples[:3])
+
+    # num_flows = 5
+    # target_mean_num_byteloads = 500
+    # min_num_byteloads = 2
+    # max_num_byteloads = 1000
+    # lam_num_byteloads = 1/target_mean_num_byteloads
+    # sampled_num_byteloads = DiscTuncExpDistr.sample_discrete_trunc_exp(num_samples=num_flows, lam=lam_num_byteloads, lower_bound=min_num_byteloads, upper_bound=max_num_byteloads)
+    # print(sampled_num_byteloads)
+
+
+    # target_mean_flow_interarr_gap_ns = 1000
+    # min_flow_interarr_gap_ns = 0
+    # max_flow_interarr_gap_ns = 100000
+    # lam_flow_interarr = 1/target_mean_flow_interarr_gap_ns
+    # sampled_flow_interarr_ns = DiscTuncExpDistr.sample_discrete_trunc_exp(num_samples=num_flows, lam=lam_flow_interarr, lower_bound=min_flow_interarr_gap_ns, upper_bound=max_flow_interarr_gap_ns)
+    # print(sampled_flow_interarr_ns)
+    # flow_start_times_ns = np.cumsum(sampled_flow_interarr_ns)
+    # print(flow_start_times_ns)
 
 # if __name__ == "__main__":
 

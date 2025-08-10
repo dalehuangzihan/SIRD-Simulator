@@ -743,7 +743,7 @@ def simple_experiment(is_full_postproc=True, title_addendum="", log_level=dale_e
         byteload_size_B_list=[200000]*1,
         flow_size_B=200000*1,
         interval_us_list=[],
-        byteload_timestamp_us_list=[0.1],
+        byteload_rel_timestamp_us_list=[0.1],
         total_flow_send_duration_us=0.1,
         flow_rate_bps=1.6*pow(10,9)
     )
