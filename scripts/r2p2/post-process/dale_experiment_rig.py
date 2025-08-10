@@ -869,145 +869,6 @@ def init_logs(experiment_family, logs_file_name, log_level=logging.DEBUG):
         ]
     )
 
-''' --- Poisson Process --- '''
-# Each flow must have a given flow rate (approximately). Flow can vary.
-# For each flow: inter-bload intervals are drawn from poisson process; bload sizes can vary; variable num bloads per flow 
-# Bload sizes must > 4
-
-class PoissonFlowGenerator:
-
-    FLOW_GEN_RETRIES = 10
-
-    def __init__(self, flow_rate_bps, min_num_byteloads, max_num_byteloads, min_byteload_size_B, max_byteload_size_B, min_interval_us, max_interval_us, seed_num_byteloads=None):
-        self.flow_rate_bps = flow_rate_bps
-        self.seed_num_byteloads = seed_num_byteloads
-        self.min_num_byteloads = min_num_byteloads
-        self.max_num_byteloads = max_num_byteloads
-        self.min_byteload_size_B = min_byteload_size_B
-        self.max_byteload_size_B = max_byteload_size_B
-        self.min_interval_us = min_interval_us  # NOTE: this limit doesn't actually do much, final intervals are still at ns granularity
-        self.max_interval_us = max_interval_us
-
-    def _generate_byteload_sizes(self, num_byteloads):
-        """Generate random byteload sizes in bits."""
-        return np.rint(np.random.uniform(self.min_byteload_size_B, self.max_byteload_size_B, size=num_byteloads))
-
-    def _calculate_required_byteloads(self, flow_size_B):
-        """
-        Calculate minimum byteloads needed to satisfy:
-        1. Total duration = total_bits / flow_rate_bps
-        2. Sum of intervals = total_duration
-        3. Each interval in [min_interval_us, max_interval_us]
-        """
-        total_duration_s = flow_size_B * 8 / self.flow_rate_bps
-        total_duration_us = total_duration_s * 1e6
-        
-        # Minimum byteloads needed to fit all intervals within bounds
-        min_byteloads_adjusted = max(self.min_num_byteloads, int(np.ceil(total_duration_us / self.max_interval_us)) + 1)
-        
-        # Maximum allowed byteloads (to prevent too many small packets)
-        max_byteloads_adjusted = min(self.max_num_byteloads, int(np.floor(total_duration_us / self.min_interval_us)) + 1)
-        
-        if min_byteloads_adjusted > self.max_num_byteloads:
-            raise ValueError(
-                f"Cannot satisfy constraints: need {min_byteloads_adjusted} byteloads "
-                f"but max allowed is {self.max_num_byteloads}. Adjust parameters."
-            )
-        if max_byteloads_adjusted < self.min_num_byteloads:
-            raise ValueError(
-                f"Cannot satisfy constraints: need {max_byteloads_adjusted} byteloads "
-                f"but min allowed is {self.min_num_byteloads}. Adjust parameters."
-            )
-        
-        return np.random.randint(min_byteloads_adjusted, max_byteloads_adjusted + 1)
-
-    def generate_flow(self):
-        """Generate flow with dynamically adjusted byteload count."""
-        if (self.seed_num_byteloads):
-            num_byteloads = self.seed_num_byteloads
-        else:
-            # Initial random byteload count
-            num_byteloads = np.random.randint(self.min_num_byteloads, self.max_num_byteloads + 1)
-        
-        # Generate byteload sizes and total bits
-        byteload_size_B_list = self._generate_byteload_sizes(num_byteloads)
-        flow_size_B = byteload_size_B_list.sum()
-        
-        # Calculate required byteloads based on interval constraints
-        num_byteloads = self._calculate_required_byteloads(flow_size_B)
-        
-        # Regenerate sizes if byteload count changed
-        if len(byteload_size_B_list) != num_byteloads:
-            byteload_size_B_list = self._generate_byteload_sizes(num_byteloads)
-            flow_size_B = byteload_size_B_list.sum()
-
-        total_duration_s = flow_size_B * 8 / self.flow_rate_bps
-        total_duration_us = total_duration_s * 1e6
-        
-        # Generate intervals with truncated exponential distribution
-        num_intervals = num_byteloads - 1
-        target_sum_us = total_duration_us
-        
-        # Scale parameter for exponential distribution
-        # Choose λ to balance between min/max interval constraints
-        scale_us = target_sum_us / num_intervals
-        
-        # Truncated exponential sampling of interval sizes
-        a = self.min_interval_us / scale_us
-        b = self.max_interval_us / scale_us
-        interval_us_list = truncexpon(b - a, scale=scale_us).rvs(size=num_intervals)
-        
-        # Rescale to exact total duration
-        interval_us_list = interval_us_list * (target_sum_us / interval_us_list.sum())
-        interval_us_list = np.round(interval_us_list, 3)
-        # Ensure minimum interval is at least 1ns
-        interval_us_list = np.array([i + 0.001 if i == 0 else i for i in interval_us_list])
-        
-        # Calculate timestamps in us, round to nearest ns
-        timestamp_us_list = np.round(np.cumsum(np.concatenate([[0], interval_us_list])), 3)
-        
-        actual_flow_rate_bps = flow_size_B * 8 / (timestamp_us_list[-1] * 1e-6) if timestamp_us_list[-1] > 0 else -1
-        return FlowSpec(
-            num_byteloads=num_byteloads,
-            byteload_size_B_list=byteload_size_B_list.astype(np.int64).tolist(),
-            flow_size_B=int(flow_size_B),
-            interval_us_list=interval_us_list.tolist(),
-            byteload_timestamp_us_list=timestamp_us_list.tolist(),
-            total_flow_send_duration_us=float(total_duration_us),
-            flow_rate_bps=float(actual_flow_rate_bps)
-        )
-
-    def generate_n_flows(self, num_flows):
-        flow_spec_list = []
-
-        # first pass
-        for _ in range(0, num_flows):
-            try:
-                flow_spec = self.generate_flow()
-                flow_spec_list.append(flow_spec)
-            except ValueError as e:
-                logger.warning(e)
-                continue
-        
-        if (len(flow_spec_list) == num_flows):
-            return flow_spec_list
-        else:
-            # retries
-            to_retry_count = num_flows - len(flow_spec_list)
-            for _ in range(0, to_retry_count):
-                for _ in range(0, self.FLOW_GEN_RETRIES):
-                    try:
-                        flow_spec = self.generate_flow()
-                        flow_spec_list.append(flow_spec)
-                        break
-                    except ValueError as e:
-                        logger.warning(e)
-                        continue
-            if (len(flow_spec_list) == num_flows):
-                return flow_spec_list
-            else:
-                raise ValueError(f"Could not generate sufficient flows. Change parameters!")
-
 class FlowSpec:
     def __init__(self, num_byteloads, byteload_size_B_list, flow_size_B, interval_us_list, byteload_timestamp_us_list, total_flow_send_duration_us, flow_rate_bps):
         self.num_byteloads = num_byteloads
@@ -1080,46 +941,193 @@ class FlowSpec:
         
         return flow_start_times_us_list, flow_spec_list
 
+class PoissonIntervalGenerator:
+    ''' Generate byteload intervals (in NANO-SEC) where for each sample, '''
+
+    def __init__(self, target_mean_interval_ns, max_interval_ns, min_interval_ns, num_intervals, num_samples_needed):
+        self.target_mean_interval_ns = target_mean_interval_ns
+        self.max_interval_ns = max_interval_ns
+        self.min_interval_ns = min_interval_ns
+        self.num_intervals = num_intervals
+        self.num_samples_needed = num_samples_needed
+
+        self.solve_lambda_max_iter=200
+        self.solve_lambda_tolerance=1e-12
+
+        # number of samples generated = (mcmc_iters - burn_in) / mcmc_thinning
+        # => num_mcmc_iters = burn_in + num_samples * mcmc_thinning
+        self.mcmc_thinning=10
+        self.mcmc_burn_in=self.mcmc_thinning*500 #5000
+        self.num_mcmc_iters=(self.num_samples_needed*self.mcmc_thinning)+self.mcmc_burn_in #80000
+        self.mcmc_random_state=42 # can also be None (?)
+
+        self.check_generator_params()
+
+    def generate_interval_samples_ns_list(self):
+        # logger.info(f"PoissonIntervalGenerator: Genreate Byteload Intervals:\ntarget_mean_ns={self.target_mean_interval_ns}\nmin_interval_ns={self.min_interval_ns}\nmax_interval_ns={self.max_interval_ns}\nnum_intervals={self.num_intervals}\nnum_samples_needed={self.num_samples_needed}")
+        print(f"PoissonIntervalGenerator: Genereate Byteload Intervals:\ntarget_mean_ns={self.target_mean_interval_ns}\nmin_interval_ns={self.min_interval_ns}\nmax_interval_ns={self.max_interval_ns}\nnum_intervals={self.num_intervals}\nnum_samples_needed={self.num_samples_needed}")
+        lam = self.solve_lambda_for_mean_discrete(mu=self.target_mean_interval_ns, L=self.min_interval_ns, U=self.max_interval_ns)
+        # logger.info(f"Step 1) λ solving for mean={self.target_mean_interval_ns} is {lam:.6f}")
+        print(f"Step 1) λ solving for mean={self.target_mean_interval_ns} is {lam:.6f}")
+    
+        samples = self.mcmc_trunc_exp_cond_mean_discrete(lam, L=self.min_interval_ns, U=self.max_interval_ns, n=self.num_intervals, mu_target=self.target_mean_interval_ns)
+        print(f"Generated samples: shape={samples.shape}")
+
+        num_samples_generated, num_intervals_per_sample = samples.shape
+        assert(num_samples_generated >= self.num_samples_needed)
+        assert(num_intervals_per_sample == self.num_intervals)
+        # logger.info(f"Step 2) Generated {num_samples_generated} samples, taking first {self.num_samples_needed} samples needed"); 
+        print(f"Step 2) Generated {num_samples_generated} samples, taking first {self.num_samples_needed} samples needed"); 
+
+        unique_means = np.unique(np.array(samples).mean(axis=1))
+        print(f"sample unique means (ns): {unique_means}")
+        assert(len(unique_means == 1))
+        assert(unique_means == float(self.target_mean_interval_ns))
+
+        return samples[:self.num_samples_needed]
+
+    def check_generator_params(self):
+        assert(isinstance(self.max_interval_ns, int))
+        assert(isinstance(self.min_interval_ns, int))
+        assert(isinstance(self.target_mean_interval_ns, int))
+        assert(self.min_interval_ns <= self.target_mean_interval_ns)
+        assert(self.target_mean_interval_ns <= self.max_interval_ns)
+        assert(self.num_samples_needed * 100 <= self.num_mcmc_iters)
+
+    def solve_lambda_for_mean_discrete(self, mu, L, U):
+        """Solve for λ so that the mean of discrete truncated exponential = mu."""
+        if not (L <= mu <= U):
+            raise ValueError("mu must be between L and U")
+        def mean_given_lambda(lam):
+            vals = np.arange(L, U+1)
+            probs = np.exp(-lam * (vals - L))
+            probs /= probs.sum()
+            return np.sum(vals * probs)
+        # bracket λ
+        low, high = -10.0, 10.0  # allow negative λ if mu > mid
+        for _ in range(self.solve_lambda_max_iter):
+            mid = 0.5*(low + high)
+            m_mid = mean_given_lambda(mid)
+            if abs(m_mid - mu) < self.solve_lambda_tolerance:
+                return mid
+            if m_mid > mu:
+                low = mid
+            else:
+                high = mid
+        return 0.5*(low + high)
+
+    def discrete_trunc_exp_pmf(self, x, lam, L, U):
+        """PMF value for integer x in [L,U]."""
+        vals = np.arange(L, U+1)
+        probs = np.exp(-lam * (vals - L))
+        probs /= probs.sum()
+        return probs[int(x - L)]
+
+    def make_feasible_initial_int(self, n, L, U, S):
+        """Construct an integer vector with sum S."""
+        if not (n * L <= S <= n * U):
+            raise ValueError("Target sum outside feasible range.")
+        x = np.full(n, S // n, dtype=int)
+        total = x.sum()
+        diff = S - total
+        # Adjust elements to match sum exactly
+        idx = 0
+        while diff != 0:
+            if diff > 0 and x[idx] < U:
+                x[idx] += 1
+                diff -= 1
+            elif diff < 0 and x[idx] > L:
+                x[idx] -= 1
+                diff += 1
+            idx = (idx + 1) % n
+        return x
+
+    def mcmc_trunc_exp_cond_mean_discrete(self, lam, L, U, n, mu_target):
+        """MCMC sampler for integer truncated exponential conditional on exact mean."""
+        rng = np.random.default_rng(self.mcmc_random_state)
+        S = int(round(n * mu_target))
+        x = self.make_feasible_initial_int(n, L, U, S)
+        samples = []
+
+        for step in range(self.num_mcmc_iters):
+            i, j = rng.choice(n, size=2, replace=False)
+            s_pair = x[i] + x[j]
+            # feasible integer range for x[i]
+            lower = max(L, s_pair - U)
+            upper = min(U, s_pair - L)
+            if lower > upper:
+                continue
+            # propose uniformly among feasible integers
+            x_i_new = rng.integers(lower, upper+1)
+            x_j_new = s_pair - x_i_new
+            
+            # MH acceptance ratio
+            old_p = self.discrete_trunc_exp_pmf(x[i], lam, L, U) * self.discrete_trunc_exp_pmf(x[j], lam, L, U)
+            new_p = self.discrete_trunc_exp_pmf(x_i_new, lam, L, U) * self.discrete_trunc_exp_pmf(x_j_new, lam, L, U)
+            accept_ratio = new_p / old_p
+            
+            if rng.random() < accept_ratio:
+                x[i], x[j] = x_i_new, x_j_new
+            
+            if step >= self.mcmc_burn_in and (step - self.mcmc_burn_in) % self.mcmc_thinning == 0:
+                samples.append(x.copy())
+        
+        return np.array(samples)
+
 if __name__ == "__main__":
 
-    # Example Usage of Possion Flow Generator
-    num_flows = 2
-    flow_rate_bps = 2 * pow(10,9)
-    min_num_byteloads = 100
-    max_num_byteloads = 5000
-    min_byteload_size_B = 1458
-    max_byteload_size_B = 1458
-    min_interval_us = 10
-    max_interval_us = 100
+    num_intervals = 10
+    max_interval_ns = 10000
+    min_interval_ns = 1
+    target_mean_interval_ns = 100
+    num_samples_needed = 3
 
-    poisson_flow_generator = PoissonFlowGenerator(
-        flow_rate_bps,
-        min_num_byteloads,
-        max_num_byteloads,
-        min_byteload_size_B,
-        max_byteload_size_B,
-        min_interval_us,
-        max_interval_us
-    )
-    # Generate multiple flows and verify flow rates
-    # flow_start_times_us_list = [0, 0]
-    # flows = poisson_flow_generator.generate_n_flows(num_flows)
+    pig = PoissonIntervalGenerator(target_mean_interval_ns, max_interval_ns, min_interval_ns, num_intervals, num_samples_needed)
+    samples = pig.generate_interval_samples_ns_list()
+    
+    print("Samples shape:", samples.shape)
+    print("First 3 samples:\n", samples[:3])
 
-    flow_start_times_us_list, flows = FlowSpec.parse_flow_specs_json_file(SAVED_FLOW_SPECS_JSON_PATH, "poisson_intervals_experiment_50flo_2GbpsFlo_2025-08-04T_19-03-49Z.log")
-    print(flow_start_times_us_list)
+# if __name__ == "__main__":
 
-    for flow in flows:
-        print(
-            f"Flow with {flow.num_byteloads} byteloads | "
-            f"Flow Size B: {flow.flow_size_B} B | "
-            f"Duration: {flow.total_flow_send_duration_us:.4f}us | "
-            f"Flow Rate: {flow.flow_rate_bps*pow(10,-9):.6f} Gbps"
-            f"\n    Min Byteload Size (B): {min(flow.byteload_size_B_list)}"
-            f"\n    Max Byteload Size (B): {max(flow.byteload_size_B_list)}"
-            f"\n    Min Interval (us): {min(flow.interval_us_list)}"
-            f"\n    Max Interval (us): {max(flow.interval_us_list)}"
-            f"\n"
-        )
+#     # Example Usage of Possion Flow Generator
+#     num_flows = 2
+#     flow_rate_bps = 2 * pow(10,9)
+#     min_num_byteloads = 100
+#     max_num_byteloads = 5000
+#     min_byteload_size_B = 1458
+#     max_byteload_size_B = 1458
+#     min_interval_us = 10
+#     max_interval_us = 100
+
+#     poisson_flow_generator = PoissonFlowGenerator(
+#         flow_rate_bps,
+#         min_num_byteloads,
+#         max_num_byteloads,
+#         min_byteload_size_B,
+#         max_byteload_size_B,
+#         min_interval_us,
+#         max_interval_us
+#     )
+#     # Generate multiple flows and verify flow rates
+#     # flow_start_times_us_list = [0, 0]
+#     # flows = poisson_flow_generator.generate_n_flows(num_flows)
+
+#     flow_start_times_us_list, flows = FlowSpec.parse_flow_specs_json_file(SAVED_FLOW_SPECS_JSON_PATH, "poisson_intervals_experiment_50flo_2GbpsFlo_2025-08-04T_19-03-49Z.log")
+#     print(flow_start_times_us_list)
+
+#     for flow in flows:
+#         print(
+#             f"Flow with {flow.num_byteloads} byteloads | "
+#             f"Flow Size B: {flow.flow_size_B} B | "
+#             f"Duration: {flow.total_flow_send_duration_us:.4f}us | "
+#             f"Flow Rate: {flow.flow_rate_bps*pow(10,-9):.6f} Gbps"
+#             f"\n    Min Byteload Size (B): {min(flow.byteload_size_B_list)}"
+#             f"\n    Max Byteload Size (B): {max(flow.byteload_size_B_list)}"
+#             f"\n    Min Interval (us): {min(flow.interval_us_list)}"
+#             f"\n    Max Interval (us): {max(flow.interval_us_list)}"
+#             f"\n"
+#         )
 
     # flow_spec_dict = FlowSpec.flow_spec_list_to_dict(flows, flow_start_times_us_list)
     # FlowSpec.flow_specs_dict_to_file(flow_spec_dict, FLOW_SPECS_JSON_PATH, "testing.json")
