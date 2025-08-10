@@ -507,7 +507,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
             try
             {
                 /* Dale: flow has finished sending, un-assign agent from flow */
-                slog::log2(debug_, local_addr_, "$$ pt1");
+                slog::log3(debug_, local_addr_, "$$ pt1");
                 assert(std::find(waiting_flows_.begin(), waiting_flows_.end(), app_lvl_req_id) == waiting_flows_.end());
                 flow_id_to_agent_map_.erase(app_lvl_req_id);
                 dstid_to_free_agent_pool_.at(srvr_addr)->push_back(agent);
@@ -515,7 +515,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
                 /** Dale: restrict conn pool size to 1 */
                 assert(pool_size <= MAX_POOL_SIZE);
 
-                slog::log2(debug_, local_addr_, "$$ pt2");
+                slog::log3(debug_, local_addr_, "$$ pt2");
                 // check for queued requests waiting for connections in this pool
                 /* Dale: check if there are other waiting flows with queued requests */
                 flow_id_to_queued_requests_t *flow_id_to_req_queue = nullptr;
@@ -525,7 +525,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
                 {
                     return;
                 }
-                slog::log2(debug_, local_addr_, "$$ pt3");
+                slog::log3(debug_, local_addr_, "$$ pt3");
                 long next_flow_id = waiting_flows_.front(); 
                 waiting_flows_.pop_front();
                 if (dstid_to_flow_queued_requests_.find(srvr_addr) != dstid_to_flow_queued_requests_.end())
@@ -536,7 +536,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
                         flow_req_queue = flow_id_to_req_queue->at(next_flow_id);
                     }
                 }
-                slog::log2(debug_, local_addr_, "$$ pt4");
+                slog::log3(debug_, local_addr_, "$$ pt4");
                 if (flow_req_queue && !flow_req_queue->empty())
                 {
                     /* Dale: Retrieve an agent from the pool to forward_requests through */
@@ -544,14 +544,14 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
                     T* agent = pool->front();
                     pool->pop_front();
                     flow_id_to_agent_map_[next_flow_id] = agent; // update the agent for this flow_id
-                    slog::log2(debug_, local_addr_, "$$ pt5");
+                    slog::log3(debug_, local_addr_, "$$ pt5");
 
                     // there are queued requests and a connection has just been freed. Use it
-                    slog::log2(debug_, local_addr_, "PfabricApplication::recv_msg() servicing queued requests for flow_id:", next_flow_id, "using agent (daddr=", agent->daddr(), ", dport=", agent->dport(), "), flow_req_queue size:", flow_req_queue->size(), "waiting_flows_ size:", waiting_flows_.size());
+                    slog::log3(debug_, local_addr_, "PfabricApplication::recv_msg() servicing queued requests for flow_id:", next_flow_id, "using agent (daddr=", agent->daddr(), ", dport=", agent->dport(), "), flow_req_queue size:", flow_req_queue->size(), "waiting_flows_ size:", waiting_flows_.size());
                     slog::log2(debug_, local_addr_, "$$ pt6");
                     while (!flow_req_queue->empty())
                     {
-                        slog::log2(debug_, local_addr_, "$$ pt7");
+                        slog::log3(debug_, local_addr_, "$$ pt7");
                         /* Dale: process all queued requests for this flow_id */
                         RequestIdTuple req_id = flow_req_queue->front();
                         flow_req_queue->pop_front();
@@ -561,7 +561,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
                         {
                             assert(flow_req_queue->empty());
                         }
-                        slog::log2(debug_, local_addr_, "$$ pt8");
+                        slog::log3(debug_, local_addr_, "$$ pt8");
                     } 
                 }
                 
