@@ -732,34 +732,36 @@ def simple_experiment(is_full_postproc=True, title_addendum="", log_level=dale_e
     src_dst_pairs_list = [(0,1)]
 
     # TODO: for now generate flow spec by hand to debug experiment rig
-    # num_flows = 5
-    # target_flow_rate_gbps = -1 # TODO: is just placeholder
-    # manual_flow_spec = dale_experiment_rig.FlowSpec(
-    #     num_byteloads=5,
-    #     byteload_size_B_list=[2000]*5,
-    #     flow_size_B=2000*5,
-    #     interval_us_list=[1]*(5-1),
-    #     byteload_timestamp_us_list=[0, 1, 2, 3, 4],
-    #     total_flow_send_duration_us=4,
-    #     flow_rate_bps=16*pow(10,9)
-    # )
-
-    num_flows = 31
-    target_flow_rate_gbps = 1.6 # TODO: is just placeholder
+    num_flows = 5
+    target_flow_rate_gbps = -1 # TODO: is just placeholder
     manual_flow_spec = dale_experiment_rig.FlowSpec(
-        num_byteloads=1,
-        byteload_size_B_list=[200000]*1,
-        flow_size_B=200000*1,
-        interval_us_list=[],
-        byteload_rel_timestamp_us_list=[0.1],
-        total_flow_send_duration_us=0.1,
-        flow_rate_bps=1.6*pow(10,9)
+        num_byteloads=5,
+        byteload_size_B_list=[2000]*5,
+        flow_size_B=2000*5,
+        interval_us_list=[1]*(5-1),
+        byteload_timestamp_us_list=[0, 1, 2, 3, 4],
+        total_flow_send_duration_us=4,
+        flow_rate_bps=16*pow(10,9)
     )
+
+    # Test byteload interleaving
+    # num_flows = 4
+    # target_flow_rate_gbps = 1.6 # TODO: is just placeholder
+    # manual_flow_spec = dale_experiment_rig.FlowSpec(
+    #     num_byteloads=3,
+    #     byteload_size_B_list=[2000]*3,
+    #     flow_size_B=2000*3,
+    #     interval_us_list=[1, 1],
+    #     byteload_rel_timestamp_us_list=[0, 1, 2],
+    #     total_flow_send_duration_us=2,
+    #     flow_rate_bps=1.6*pow(10,9)
+    # )
 
     flow_spec_list = [manual_flow_spec] * num_flows
 
-    inter_flow_spacing_us = 0 # TODO: for testing
+    inter_flow_spacing_us = 0.5 # TODO: for testing
     flow_start_times_us_list = [i * inter_flow_spacing_us for i in range(0, num_flows)]
+    # flow_start_times_us_list = [0, 0.5, 0.75, 1]
 
     flow_spec_list_list = [flow_spec_list]
     flow_start_times_us_list_list = [flow_start_times_us_list]
@@ -796,10 +798,10 @@ def simple_experiment(is_full_postproc=True, title_addendum="", log_level=dale_e
     logger.info(f"Flow Min Interval (us): {flow_min_interval_us}")
     logger.info(f"Flow Max Interval (us): {flow_max_interval_us}")
 
-    ssird_sim_dur_list = [0.01]
-    dctcp_sim_dur_list = [0.01]
-    # ssird_sim_dur_list = [0.0002]
-    # dctcp_sim_dur_list = [0.0002]
+    # ssird_sim_dur_list = [0.01]
+    # dctcp_sim_dur_list = [0.00001]
+    ssird_sim_dur_list = [0.0002]
+    dctcp_sim_dur_list = [0.0002]
     # TODO: modify assertion to work for spec that does specifies multiple experiments
     logger.debug(f"Max flow send durations (us): {max(flow_send_durations_us_list)}")
     assert(max(flow_send_durations_us_list) * pow(10,-6) * 1.5 < ssird_sim_dur_list[0])
@@ -857,6 +859,145 @@ def simple_experiment(is_full_postproc=True, title_addendum="", log_level=dale_e
     assert num_of_experiments == len(exp_metrics.ssird_fct_list)
     assert num_of_experiments == len(exp_metrics.dctcp_fct_list)
 
+def experiment_p2p_poisson_flows(
+        num_flows,
+        byteload_size_B,
+        target_mean_byteload_interval_nanosec,
+        target_mean_num_byteloads,
+        target_mean_flow_interarr_ns,
+        is_use_poisson_num_byteloads,
+        is_use_poisson_flow_interarr,
+        is_full_postproc=True,
+        title_addendum="",
+        log_level=dale_experiment_rig.LOG_LEVEL_2
+    ):
+
+    experiment_family = f"Poisson_Flows{title_addendum}"
+    proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
+    # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
+    # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
+
+    src_dst_pairs_list = [(0,1)]
+
+    flow_generator = dale_experiment_rig.FlowSpecGenerator(
+        num_flows=num_flows,
+        byteload_size_B=byteload_size_B,
+        target_mean_byteload_interval_ns=target_mean_byteload_interval_nanosec,
+        target_mean_num_byteloads=target_mean_num_byteloads,
+        target_mean_flow_interarr_ns=target_mean_flow_interarr_ns,
+        is_use_poisson_num_byteloads=is_use_poisson_num_byteloads,
+        is_use_poisson_flow_interarr=is_use_poisson_flow_interarr
+    )
+    flow_spec_list, flow_start_times_us_list = flow_generator.generate_poisson_flows()
+
+    flow_spec_list_list = [flow_spec_list]
+    flow_start_times_us_list_list = [flow_start_times_us_list]
+
+    num_of_experiments = len(flow_spec_list_list)
+    assert(len(flow_start_times_us_list_list) == num_of_experiments)
+
+    target_flow_rate_gbps = (byteload_size_B * 8) / (target_mean_byteload_interval_nanosec * pow(10,-9)) * pow(10, -9)
+
+    logs_file_name = f"poisson_intervals_experiment_{num_flows}flo_{target_flow_rate_gbps}GbpsFlo_{dale_experiment_rig.Experiment.get_date_now()}.log"
+    dale_experiment_rig.init_logs(experiment_family, logs_file_name)
+
+    # # Back up flow spec list # TODO: make infra to back up flow spec list list
+    # flow_spec_dict = dale_experiment_rig.FlowSpec.flow_spec_list_to_dict(flow_spec_list, flow_start_times_us_list)
+    # dale_experiment_rig.FlowSpec.flow_specs_dict_to_file(flow_spec_dict, dale_experiment_rig.FLOW_SPECS_JSON_PATH, logs_file_name)
+
+    flow_rate_gbps_list = [round(f.flow_rate_bps*pow(10,-9),6) for f in flow_spec_list]
+    flow_size_B_list = [f.flow_size_B for f in flow_spec_list]
+    flow_num_byteloads_list = [f.num_byteloads for f in flow_spec_list]
+    flow_send_durations_us_list = [f.total_flow_send_duration_us for f in flow_spec_list]
+    flow_min_byteload_size_B_list = [min(f.byteload_size_B_list) for f in flow_spec_list]
+    flow_max_byteload_size_B_list = [max(f.byteload_size_B_list) for f in flow_spec_list]
+    flow_min_interval_us = [min(f.interval_us_list) for f in flow_spec_list]
+    flow_max_interval_us = [max(f.interval_us_list) for f in flow_spec_list]
+
+    logger.info(f"Protos tested: {proto_names}")
+    logger.info(f"Num Flows: {num_flows}")
+    logger.info(f"Byteload Size (B): {byteload_size_B}")
+    logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec}")
+    logger.info(f"  is_use_poisson_num_byteloads={is_use_poisson_num_byteloads}")
+    logger.info(f"Target Mean Flow Interarrival (ns): {target_mean_flow_interarr_ns}")
+    logger.info(f"  is_use_poisson_flow_interarr={is_use_poisson_flow_interarr}")
+    logger.info(f"Target Flow Rate (Gbps): {target_flow_rate_gbps}")
+    logger.info(f"Flow Start Times (us): {flow_start_times_us_list}")
+    logger.info(f"Flow Rate (Gbps): {flow_rate_gbps_list}")
+    logger.info(f"Flow Size (B): {flow_size_B_list}")
+    logger.info(f"Num Byteloads: {flow_num_byteloads_list}")
+    logger.info(f"Flow Send Durations (us): {flow_send_durations_us_list}")
+    logger.info(f"Flow Min Byteload Size (B): {flow_min_byteload_size_B_list}")
+    logger.info(f"Flow Max Byteload Size (B): {flow_max_byteload_size_B_list}")
+    logger.info(f"Flow Min Interval (us): {flow_min_interval_us}")
+    logger.info(f"Flow Max Interval (us): {flow_max_interval_us}")
+
+    # For RTT = 5us
+    ssird_sim_dur_list = [0.04]
+    dctcp_sim_dur_list = [0.04]
+
+    # TODO: modify assertion to work for spec that does specifies multiple experiments
+    logger.debug(f"Max flow send durations (us): {max(flow_send_durations_us_list)}")
+    assert(max(flow_send_durations_us_list) * pow(10,-6) * 1.5 < ssird_sim_dur_list[0])
+    assert(max(flow_send_durations_us_list) * pow(10,-6) * 1.5 < dctcp_sim_dur_list[0])
+
+    logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
+    logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
+    # return
+
+    exp_grp = dale_experiment_rig.ExperimentGroup(
+        experiment_family,
+        proto_names,
+        src_dst_pairs_list,
+        num_flows,
+        target_flow_rate_gbps,
+        flow_start_times_us_list_list,
+        flow_spec_list_list,
+        ssird_sim_dur_list,
+        dctcp_sim_dur_list,
+        is_full_postproc,
+        log_level,
+        title_addendum
+    )
+
+    exp_metrics = exp_grp.perform_experiment()
+
+    logger.info(f"Protos tested: {proto_names}")
+    logger.info(f"Num Flows: {num_flows}")
+    logger.info(f"Byteload Size (B): {byteload_size_B}")
+    logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec}")
+    logger.info(f"  is_use_poisson_num_byteloads={is_use_poisson_num_byteloads}")
+    logger.info(f"Target Mean Flow Interarrival (ns): {target_mean_flow_interarr_ns}")
+    logger.info(f"  is_use_poisson_flow_interarr={is_use_poisson_flow_interarr}")
+    logger.info(f"Target Flow Rate (Gbps): {target_flow_rate_gbps}")
+    logger.info(f"Flow Start Times (us): {flow_start_times_us_list}")
+    logger.info(f"Flow Rate (Gbps): {flow_rate_gbps_list}")
+    logger.info(f"Flow Size (B): {flow_size_B_list}")
+    logger.info(f"Num Byteloads: {flow_num_byteloads_list}")
+    logger.info(f"Flow Send Durations (us): {flow_send_durations_us_list}")
+    logger.info(f"Flow Min Byteload Size (B): {flow_min_byteload_size_B_list}")
+    logger.info(f"Flow Max Byteload Size (B): {flow_max_byteload_size_B_list}")
+    logger.info(f"Flow Min Interval (us): {flow_min_interval_us}")
+    logger.info(f"Flow Max Interval (us): {flow_max_interval_us}")
+
+    logger.info(f"APP Gdpt Gbps measured (SSIRD): {exp_metrics.total_app_gdpt_gbps_measured_list_ssird }")
+    logger.info(f"APP Gdpt Gbps measured (DCTCP): {exp_metrics.total_app_gdpt_gbps_measured_list_dctcp}")
+    logger.debug(f"APP Gdpt Gbps measured per flow (SSIRD): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_ssird}")
+    logger.debug(f"APP Gdpt Gbps measured per flow (DCTCP): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_dctcp}")
+
+    logger.info(f"NW Gdpt Gbps measured (SSIRD): {exp_metrics.total_nw_gdpt_gbps_measured_list_ssird}")
+    logger.info(f"NW Gdpt Gbps measured (DCTCP): {exp_metrics.total_nw_gdpt_gbps_measured_list_dctcp}")
+    logger.debug(f"NW Gdpt Gbps measured per flow (SSIRD): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_ssird}")
+    logger.debug(f"NW Gdpt Gbps measured per flow (DCTCP): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_dctcp}")
+
+    logger.info(f"* Sim duration (SSIRD): {ssird_sim_dur_list}")
+    logger.info(f"* Sim duration (DCTCP): {dctcp_sim_dur_list}")
+    logger.info(f"* SSIRD FCT: {exp_metrics.ssird_fct_list}")
+    logger.info(f"* DCTCP FCT: {exp_metrics.dctcp_fct_list}")
+
+    assert num_of_experiments == len(exp_metrics.ssird_fct_list)
+    assert num_of_experiments == len(exp_metrics.dctcp_fct_list)
+
 if __name__ == "__main__":
 
     ''' --- RTT = 5us ---- '''
@@ -876,7 +1017,7 @@ if __name__ == "__main__":
     # # experiment_1458B_bloads_85flo_99pt144Gbps_gdpt(is_full_postproc=True, title_addendum="_1458B_85flo_99pt144Gbps_1msRTT", log_level=dale_experiment_rig.LOG_LEVEL_2)
 
 
-    ''' --- Poisson Process Intervals, RTT = 5us --- '''
+    ''' --- Poisson Process Intervals (OLD), RTT = 5us --- '''
     # experiment_poissoninterval_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=False, title_addendum="_poisson_10flo_10GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_poissoninterval_1458B_bloads_50flo_1GbpsFlo(is_full_postproc=False, title_addendum="_poisson_50flo_1GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=False, title_addendum="_poisson_50flo_2GbpsFlo", log_level=dale_experiment_rig.LOG_LEVEL_2)
@@ -884,7 +1025,23 @@ if __name__ == "__main__":
     ''' --- DCTCP Connection Pool Experiment, RTT = 5us --- '''
     # simple_experiment(is_full_postproc=True, title_addendum="_dctcp_conn_pool", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # simple_experiment(is_full_postproc=True, title_addendum="_dctcp_conn_pool_stress_test", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # simple_experiment(is_full_postproc=False, title_addendum="_TEST_MRI_CSV_CREATION", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_poissoninterval_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=False, title_addendum="_poisson_10flo_10GbpsFlo_dctcp_test_5conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_poissoninterval_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=False, title_addendum="_poisson_10flo_10GbpsFlo_dctcp_test_40conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
     # experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum="_poisson_50flo_2GbpsFlo_40conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
-    experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum="_poisson_50flo_2GbpsFlo_dctcp_test_40conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
+    # experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True, title_addendum="_poisson_50flo_2GbpsFlo_dctcp_test_40conn", log_level=dale_experiment_rig.LOG_LEVEL_2)
+
+
+    ''' --- Poisson Process Flows (NEW), RTT = 5us --- '''
+    experiment_p2p_poisson_flows(
+        num_flows=3,
+        byteload_size_B=1458,
+        target_mean_byteload_interval_nanosec=1000,
+        target_mean_num_byteloads=500,
+        target_mean_flow_interarr_ns=1000,
+        is_use_poisson_num_byteloads=True,
+        is_use_poisson_flow_interarr=True,
+        is_full_postproc=False,
+        title_addendum="_p2p_poisson_flows_TEST_3flo",
+        log_level=dale_experiment_rig.LOG_LEVEL_2
+    )
