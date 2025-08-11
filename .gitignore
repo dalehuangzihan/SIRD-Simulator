@@ -119,3 +119,5 @@ scripts/r2p2/post-process/experiment_output/
 scripts/r2p2/post-process/experiment_app_trace_paths/
 # Python venv
 scripts/r2p2/post-process/ssird_venv/
+# Generated FlowSpec .json files
+scripts/r2p2/post-process/flow_specs_json/

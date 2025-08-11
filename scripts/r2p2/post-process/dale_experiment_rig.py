@@ -678,7 +678,7 @@ class Experiment():
     @staticmethod
     def write_app_trace_paths_to_file(proto, experiment_family, num_flows, target_flow_rate_gbps, experiment_date, app_trace_file_paths_list):
         logger.info("-----\nBacking up app trace file paths")
-        parent_dir = f"{APP_TRACE_PATHS_BACKUP_PATH}{experiment_family}/{num_flows}flo_{target_flow_rate_gbps}Gbps_{experiment_date}/"
+        parent_dir = f"{APP_TRACE_PATHS_BACKUP_PATH}{experiment_family}/{num_flows}flo_{round(target_flow_rate_gbps)}Gbps_{experiment_date}/"
         Path(parent_dir).mkdir(parents=True, exist_ok=True)
         backup_filepath = parent_dir + f"{proto}_app_traces.txt"
         logger.debug(backup_filepath)
@@ -699,8 +699,10 @@ class Experiment():
         return overall_duration_s * multiplication_factor
 
     @staticmethod
-    def get_experiment_name(num_flows, target_flow_rate_gbps):
-        return "{}flo-{}Gbps-{}".format(num_flows, target_flow_rate_gbps, Experiment.get_date_now())
+    def get_experiment_name(num_flows, target_flow_rate_gbps, byteload_size_B, byteload_interval_ns, experiment_date=None):
+        if experiment_date is None:
+            experiment_date = Experiment.get_date_now()
+        return "{}flo-{}Gbps-{}B-{}ns-{}".format(num_flows, round(target_flow_rate_gbps), byteload_size_B, byteload_interval_ns, experiment_date)
     
     @staticmethod
     def get_date_now():
@@ -708,11 +710,29 @@ class Experiment():
 
 class ExperimentGroup:
 
-    def __init__(self, experiment_family, proto_names_list, src_dst_pairs_list, num_flows, target_flow_rate_gbps, flow_start_times_us_list_list, flow_spec_list_list, ssird_sim_dur_list, dctcp_sim_dur_list, is_full_postproc=False, log_level=LOG_LEVEL_2, title_addendum=""):
+    def __init__(self,
+                    experiment_family,
+                    proto_names_list,
+                    src_dst_pairs_list,
+                    num_flows,
+                    byteload_size_B_list,
+                    target_mean_byteload_interval_nanosec_list,
+                    target_flow_rate_gbps,
+                    flow_start_times_us_list_list,
+                    flow_spec_list_list,
+                    ssird_sim_dur_list,
+                    dctcp_sim_dur_list,
+                    is_full_postproc=False,
+                    log_level=LOG_LEVEL_2,
+                    title_addendum=""
+                ):
+
         self.experiment_family = experiment_family
         self.proto_names_l = proto_names_list
         self.src_dst_pairs_list = src_dst_pairs_list
         self.num_flows = num_flows
+        self.byteload_size_B_list = byteload_size_B_list
+        self.target_mean_byteload_interval_nanosec_list = target_mean_byteload_interval_nanosec_list
         self.target_flow_rate_gbps = target_flow_rate_gbps
         self.flow_start_times_us_list_list = flow_start_times_us_list_list
         self.flow_spec_list_list = flow_spec_list_list
@@ -724,6 +744,8 @@ class ExperimentGroup:
 
         # check inputs
         assert(len(set([
+            len(byteload_size_B_list),
+            len(target_mean_byteload_interval_nanosec_list),
             len(flow_start_times_us_list_list),
             len(flow_spec_list_list),
             ])) == 1)
@@ -748,8 +770,11 @@ class ExperimentGroup:
             futures_list = []
 
             for exp_id in range(0, self.num_experiments):
-                experiment_name = Experiment.get_experiment_name(self.num_flows, self.target_flow_rate_gbps) + self.title_addendum
                 for proto in self.proto_names_l:
+                    # NOTE: 11/08/2025: currently all byteloads have the same size.
+                    byteload_size_B = self.byteload_size_B_list[exp_id]
+                    byteload_interval_ns = self.target_mean_byteload_interval_nanosec_list[exp_id]
+                    experiment_name = Experiment.get_experiment_name(self.num_flows, self.target_flow_rate_gbps, byteload_size_B, byteload_interval_ns) + self.title_addendum
                     experiment = Experiment(self.experiment_family, experiment_name, proto, self.src_dst_pairs_list, self.num_flows, self.target_flow_rate_gbps, self.flow_start_times_us_list_list[exp_id], self.flow_spec_list_list[exp_id], self.is_full_postproc) 
 
                     # submit experiment to thread pool
@@ -872,7 +897,8 @@ def init_logs(experiment_family, logs_file_name, log_level=logging.DEBUG):
 class FlowSpec:
     def __init__(self, num_byteloads, byteload_size_B_list, flow_size_B, interval_us_list, byteload_rel_timestamp_us_list, total_flow_send_duration_us, flow_rate_bps):
         self.num_byteloads = num_byteloads
-        self.byteload_size_B_list = byteload_size_B_list
+        # NOTE: 11/08/2025: currently all byteloads in each FlowSpec list have the same size.
+        self.byteload_size_B_list = byteload_size_B_list 
         self.flow_size_B = flow_size_B
         self.interval_us_list = interval_us_list
         self.byteload_rel_timestamp_us_list = byteload_rel_timestamp_us_list
@@ -912,6 +938,18 @@ class FlowSpec:
         return full_dict
 
     @staticmethod
+    def flow_spec_list_list_to_dict(flow_spec_list_list, flow_start_times_us_list_list):
+        assert(len(flow_spec_list_list) == len(flow_start_times_us_list_list))
+        num_experiments = len(flow_spec_list_list)
+        exp_flows_dict_dict = {}
+        for i in range(0, num_experiments):
+            flow_spec_list = flow_spec_list_list[i]
+            flow_start_times_us_list = flow_start_times_us_list_list[i]
+            exp_flows_dict = FlowSpec.flow_spec_list_to_dict(flow_spec_list, flow_start_times_us_list)
+            exp_flows_dict_dict[i] = exp_flows_dict
+        return exp_flows_dict_dict
+
+    @staticmethod
     def flow_specs_dict_to_file(flow_spec_list_full_dict, parent_dir, file_name):
         Path(parent_dir).mkdir(parents=True, exist_ok=True)
         file_path = parent_dir + file_name
@@ -941,6 +979,36 @@ class FlowSpec:
         
         return flow_start_times_us_list, flow_spec_list
 
+    @staticmethod
+    def parse_multi_exp_flow_specs_json_file(parent_dir, file_name):
+        file_path = parent_dir + file_name
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+        
+        flow_spec_list_list = []
+        flow_start_times_us_list_list = []
+        for _, exp_flows_dict_dict in data.items():
+            flow_start_times_us_list = exp_flows_dict_dict['flow_start_times_us_list']
+            flow_spec_dict_dict = exp_flows_dict_dict['flow_spec_dict_dict']
+            flow_spec_list = []
+
+            for _, flow_spec_dict in flow_spec_dict_dict.items():
+                flow_spec = FlowSpec(
+                    num_byteloads=flow_spec_dict['num_byteloads'],
+                    byteload_size_B_list=flow_spec_dict['byteload_size_B_list'],
+                    flow_size_B=flow_spec_dict['flow_size_B'],
+                    interval_us_list=flow_spec_dict['interval_us_list'],
+                    byteload_rel_timestamp_us_list=flow_spec_dict['byteload_timestamp_us_list'],
+                    total_flow_send_duration_us=flow_spec_dict['total_flow_send_duration_us'],
+                    flow_rate_bps=flow_spec_dict['flow_rate_bps']
+                )
+                flow_spec_list.append(flow_spec)
+
+            flow_spec_list_list.append(flow_spec_list)
+            flow_start_times_us_list_list.append(flow_start_times_us_list)
+        
+        return flow_start_times_us_list_list, flow_spec_list_list 
+
 class PoissonIntervalGenerator:
     ''' Generate byteload intervals (in NANO-SEC) where for each sample, '''
 
@@ -964,24 +1032,31 @@ class PoissonIntervalGenerator:
         self.check_generator_params()
 
     def generate_interval_samples_ns_list(self):
-        logger.info(f"PoissonIntervalGenerator: Genreate Byteload Intervals:\ntarget_mean_ns={self.target_mean_interval_ns}\nmin_interval_ns={self.min_interval_ns}\nmax_interval_ns={self.max_interval_ns}\nnum_intervals={self.num_intervals}\nnum_samples_needed={self.num_samples_needed}")
-        print(f"PoissonIntervalGenerator: Genereate Byteload Intervals:\ntarget_mean_ns={self.target_mean_interval_ns}\nmin_interval_ns={self.min_interval_ns}\nmax_interval_ns={self.max_interval_ns}\nnum_intervals={self.num_intervals}\nnum_samples_needed={self.num_samples_needed}")
+        logging.info(f"PoissonIntervalGenerator: Genrate Byteload Intervals:\ntarget_mean_ns={self.target_mean_interval_ns}\nmin_interval_ns={self.min_interval_ns}\nmax_interval_ns={self.max_interval_ns}\nnum_intervals={self.num_intervals}\nnum_samples_needed={self.num_samples_needed}")
+        # print(f"PoissonIntervalGenerator: Generate Byteload Intervals:\ntarget_mean_ns={self.target_mean_interval_ns}\nmin_interval_ns={self.min_interval_ns}\nmax_interval_ns={self.max_interval_ns}\nnum_intervals={self.num_intervals}\nnum_samples_needed={self.num_samples_needed}")
+
         lam = self.solve_lambda_for_mean_discrete(mu=self.target_mean_interval_ns, L=self.min_interval_ns, U=self.max_interval_ns)
-        logger.debug(f"Step 1) λ solving for mean={self.target_mean_interval_ns} is {lam:.6f}")
-        print(f"Step 1) λ solving for mean={self.target_mean_interval_ns} is {lam:.6f}")
+
+        logging.debug(f"Step 1) λ solving for mean={self.target_mean_interval_ns} is {lam:.6f}")
+        # print(f"Step 1) λ solving for mean={self.target_mean_interval_ns} is {lam:.6f}")
     
         samples = self.mcmc_trunc_exp_cond_mean_discrete(lam, L=self.min_interval_ns, U=self.max_interval_ns, n=self.num_intervals, mu_target=self.target_mean_interval_ns)
-        print(f"Generated samples: shape={samples.shape}")
+        
+        logging.debug(f"Generated samples: shape={samples.shape}")
+        # print(f"Generated samples: shape={samples.shape}")
 
         num_samples_generated, num_intervals_per_sample = samples.shape
         assert(num_samples_generated >= self.num_samples_needed)
         assert(num_intervals_per_sample == self.num_intervals)
-        logger.debug(f"Step 2) Generated {num_samples_generated} samples, taking first {self.num_samples_needed} samples needed"); 
-        print(f"Step 2) Generated {num_samples_generated} samples, taking first {self.num_samples_needed} samples needed"); 
+
+        logging.debug(f"Step 2) Generated {num_samples_generated} samples, taking first {self.num_samples_needed} samples needed"); 
+        # print(f"Step 2) Generated {num_samples_generated} samples, taking first {self.num_samples_needed} samples needed"); 
 
         unique_means = np.unique(np.array(samples).mean(axis=1))
-        logger.debug(f"sample unique means (ns): {unique_means}")
-        print(f"sample unique means (ns): {unique_means}")
+
+        logging.debug(f"sample unique means (ns): {unique_means}")
+        # print(f"sample unique means (ns): {unique_means}")
+
         assert(len(unique_means == 1))
         assert(unique_means == float(self.target_mean_interval_ns))
 
@@ -1106,10 +1181,11 @@ class FlowSpecGenerator:
                     max_interval_ns=10000,
                     target_mean_num_byteloads=500,
                     min_num_byteloads=2,
-                    max_num_byteloads=1000,
+                    max_num_byteloads=2000,
                     target_mean_flow_interarr_ns=1000,
                     min_flow_interarr_ns=0,
                     max_flow_interarr_ns=100000,
+                    is_use_poisson_byteload_intervals=True,
                     is_use_poisson_num_byteloads=True,
                     is_use_poisson_flow_interarr=True
                 ):
@@ -1120,6 +1196,7 @@ class FlowSpecGenerator:
         self.target_mean_byteload_interval_ns = target_mean_byteload_interval_ns
         self.min_interval_ns = min_interval_ns
         self.max_interval_ns = max_interval_ns
+        self.is_use_poisson_byteload_intervals = is_use_poisson_byteload_intervals
 
         self.target_mean_num_byteloads = target_mean_num_byteloads
         self.min_num_byteloads = min_num_byteloads
@@ -1156,9 +1233,12 @@ class FlowSpecGenerator:
         for i in range(0, self.num_flows):
             num_intervals = num_byteloads_list[i] - 1
             pig = PoissonIntervalGenerator(self.target_mean_byteload_interval_ns, self.max_interval_ns, self.min_interval_ns, num_intervals, num_samples_needed=1)
-            flow_byteload_interval_ns_list = pig.generate_interval_samples_ns_list()[0]
+            if (self.is_use_poisson_byteload_intervals):
+                flow_byteload_interval_ns_list = pig.generate_interval_samples_ns_list()[0]
+            else:
+                flow_byteload_interval_ns_list = [self.target_mean_byteload_interval_ns] * num_intervals
             assert(len(flow_byteload_interval_ns_list) == num_intervals)
-            flow_byteload_interval_us_list = [intv_ns/1000 for intv_ns in flow_byteload_interval_ns_list]
+            flow_byteload_interval_us_list = [float(intv_ns/1000) for intv_ns in flow_byteload_interval_ns_list]
             byteload_intervals_us_list_list.append(flow_byteload_interval_us_list)
 
         flow_spec_list = []
@@ -1168,7 +1248,7 @@ class FlowSpecGenerator:
             flow_size_B = self.byteload_size_B*num_byteloads
             interval_us_list = byteload_intervals_us_list_list[j]
             byteload_rel_timestamp_us_list = np.round(np.cumsum(np.concatenate([[0], interval_us_list])), 3).tolist() 
-            total_flow_send_duration_us = byteload_rel_timestamp_us_list[-1] + flow_start_times_us_list[j]
+            total_flow_send_duration_us = round(byteload_rel_timestamp_us_list[-1] + flow_start_times_us_list[j], 3)
             print(f">DEBUG: Flow={j} Final byteload_rel_timestamp_us={byteload_rel_timestamp_us_list[-1]} flow_start_time_us={flow_start_times_us_list[j]} total_flow_send_duration_us={total_flow_send_duration_us}")    
 
             flow_spec = FlowSpec(
@@ -1206,124 +1286,71 @@ class FlowSpecGenerator:
         flow_start_times_ns = np.cumsum(sampled_flow_interarr_ns)
         return flow_start_times_ns.tolist()
 
-if __name__ == "__main__":
-
-    num_flows = 3
-    byteload_size_B = 1458
-    target_mean_byteload_interval_ns = 3000
-    target_mean_num_byteloads = 100
-    target_mean_flow_interarr_ns = 2000
-    is_use_poisson_num_byteloads = False
-    is_use_poisson_flow_interarr = False
-    flow_generator = FlowSpecGenerator(
-        num_flows=num_flows,
-        byteload_size_B=byteload_size_B,
-        target_mean_byteload_interval_ns=target_mean_byteload_interval_ns,
-        target_mean_num_byteloads=target_mean_num_byteloads,
-        target_mean_flow_interarr_ns=target_mean_flow_interarr_ns,
-        is_use_poisson_num_byteloads=is_use_poisson_num_byteloads,
-        is_use_poisson_flow_interarr=is_use_poisson_flow_interarr
-    )
-
-    flow_spec_list, flow_start_times_us_list = flow_generator.generate_poisson_flows()
-
-    print(flow_start_times_us_list)
-
-    for flow in flow_spec_list:
-        print(
-            f"Flow with {flow.num_byteloads} byteloads | "
-            f"Flow Size B: {flow.flow_size_B} B | "
-            f"Duration: {flow.total_flow_send_duration_us:.4f}us | "
-            f"Flow Rate: {flow.flow_rate_bps*pow(10,-9):.6f} Gbps"
-            f"\n    Min Byteload Size (B): {min(flow.byteload_size_B_list)}"
-            f"\n    Max Byteload Size (B): {max(flow.byteload_size_B_list)}"
-            f"\n    Min Interval (us): {min(flow.interval_us_list)}"
-            f"\n    Max Interval (us): {max(flow.interval_us_list)}"
-            f"\n"
-        )
-
-    # num_intervals = 10
-    # max_interval_ns = 10000
-    # min_interval_ns = 1
-    # target_mean_interval_ns = 100
-    # num_samples_needed = 3
-
-    # pig = PoissonIntervalGenerator(target_mean_interval_ns, max_interval_ns, min_interval_ns, num_intervals, num_samples_needed)
-    # samples = pig.generate_interval_samples_ns_list()
-    
-    # print("Samples shape:", samples.shape)
-    # print("First 3 samples:\n", samples[:3])
-
-    # num_flows = 5
-    # target_mean_num_byteloads = 500
-    # min_num_byteloads = 2
-    # max_num_byteloads = 1000
-    # lam_num_byteloads = 1/target_mean_num_byteloads
-    # sampled_num_byteloads = DiscTuncExpDistr.sample_discrete_trunc_exp(num_samples=num_flows, lam=lam_num_byteloads, lower_bound=min_num_byteloads, upper_bound=max_num_byteloads)
-    # print(sampled_num_byteloads)
-
-
-    # target_mean_flow_interarr_gap_ns = 1000
-    # min_flow_interarr_gap_ns = 0
-    # max_flow_interarr_gap_ns = 100000
-    # lam_flow_interarr = 1/target_mean_flow_interarr_gap_ns
-    # sampled_flow_interarr_ns = DiscTuncExpDistr.sample_discrete_trunc_exp(num_samples=num_flows, lam=lam_flow_interarr, lower_bound=min_flow_interarr_gap_ns, upper_bound=max_flow_interarr_gap_ns)
-    # print(sampled_flow_interarr_ns)
-    # flow_start_times_ns = np.cumsum(sampled_flow_interarr_ns)
-    # print(flow_start_times_ns)
-
 # if __name__ == "__main__":
 
-#     # Example Usage of Possion Flow Generator
-#     num_flows = 2
-#     flow_rate_bps = 2 * pow(10,9)
-#     min_num_byteloads = 100
-#     max_num_byteloads = 5000
-#     min_byteload_size_B = 1458
-#     max_byteload_size_B = 1458
-#     min_interval_us = 10
-#     max_interval_us = 100
+    # num_flows = 3
+    # byteload_size_B = 1458
+    # target_mean_byteload_interval_ns = 3000
+    # target_mean_num_byteloads = 100
+    # target_mean_flow_interarr_ns = 2000
+    # is_use_poisson_byteload_intervals = True
+    # is_use_poisson_num_byteloads = False
+    # is_use_poisson_flow_interarr = False
+    # flow_generator = FlowSpecGenerator(
+    #     num_flows=num_flows,
+    #     byteload_size_B=byteload_size_B,
+    #     target_mean_byteload_interval_ns=target_mean_byteload_interval_ns,
+    #     target_mean_num_byteloads=target_mean_num_byteloads,
+    #     target_mean_flow_interarr_ns=target_mean_flow_interarr_ns,
+    #     is_use_poisson_byteload_intervals=is_use_poisson_byteload_intervals,
+    #     is_use_poisson_num_byteloads=is_use_poisson_num_byteloads,
+    #     is_use_poisson_flow_interarr=is_use_poisson_flow_interarr
+    # )
 
-#     poisson_flow_generator = PoissonFlowGenerator(
-#         flow_rate_bps,
-#         min_num_byteloads,
-#         max_num_byteloads,
-#         min_byteload_size_B,
-#         max_byteload_size_B,
-#         min_interval_us,
-#         max_interval_us
-#     )
-#     # Generate multiple flows and verify flow rates
-#     # flow_start_times_us_list = [0, 0]
-#     # flows = poisson_flow_generator.generate_n_flows(num_flows)
+    # flow_spec_list, flow_start_times_us_list = flow_generator.generate_poisson_flows()
 
-#     flow_start_times_us_list, flows = FlowSpec.parse_flow_specs_json_file(SAVED_FLOW_SPECS_JSON_PATH, "poisson_intervals_experiment_50flo_2GbpsFlo_2025-08-04T_19-03-49Z.log")
-#     print(flow_start_times_us_list)
+    # print(flow_start_times_us_list)
 
-#     for flow in flows:
-#         print(
-#             f"Flow with {flow.num_byteloads} byteloads | "
-#             f"Flow Size B: {flow.flow_size_B} B | "
-#             f"Duration: {flow.total_flow_send_duration_us:.4f}us | "
-#             f"Flow Rate: {flow.flow_rate_bps*pow(10,-9):.6f} Gbps"
-#             f"\n    Min Byteload Size (B): {min(flow.byteload_size_B_list)}"
-#             f"\n    Max Byteload Size (B): {max(flow.byteload_size_B_list)}"
-#             f"\n    Min Interval (us): {min(flow.interval_us_list)}"
-#             f"\n    Max Interval (us): {max(flow.interval_us_list)}"
-#             f"\n"
-#         )
+    # for flow in flow_spec_list:
+    #     print(
+    #         f"Flow with {flow.num_byteloads} byteloads | "
+    #         f"Flow Size B: {flow.flow_size_B} B | "
+    #         f"Duration: {flow.total_flow_send_duration_us:.4f}us | "
+    #         f"Flow Rate: {flow.flow_rate_bps*pow(10,-9):.6f} Gbps"
+    #         f"\n    Min Byteload Size (B): {min(flow.byteload_size_B_list)}"
+    #         f"\n    Max Byteload Size (B): {max(flow.byteload_size_B_list)}"
+    #         f"\n    Min Interval (us): {min(flow.interval_us_list)}"
+    #         f"\n    Max Interval (us): {max(flow.interval_us_list)}"
+    #         f"\n"
+    #     )
 
-    # flow_spec_dict = FlowSpec.flow_spec_list_to_dict(flows, flow_start_times_us_list)
-    # FlowSpec.flow_specs_dict_to_file(flow_spec_dict, FLOW_SPECS_JSON_PATH, "testing.json")
+
+if __name__ == "__main__":
 
     ''' --- Side-load & analyse existing app trace file ---'''
-    # proto = SSIRD_PROTO_NAME
-    # src_dst_pairs_list = [(0,1)]
-    # num_flows = 9
-    # # num_flows = 8
-    # num_byteloads_list = [100]
-    # byteload_size_B_list = [1560]
-    # app_trace_paths_list = ["/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-9flo-100#-1560B-1000ns_1560B_9flo_112Gbps/data/SSIRD/60/applications_trace.str"]
-    # # app_trace_paths_list = ["/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-8flo-100#-1560B-1000ns_1560B_8flo_99pt84Gbps/data/SSIRD/60/applications_trace.str"]
-    # exp_metrics = ExperimentGroup.process_side_loaded_results(proto, src_dst_pairs_list, num_flows, num_byteloads_list, byteload_size_B_list, app_trace_paths_list)
+    proto = SSIRD_PROTO_NAME
+
+    num_of_experiments = 2
+
+    src_dst_pairs_list = [(0,1)]
+    num_flows = 2
+    num_byteloads_list = [1000]
+    byteload_size_B_list = [4000]
+    target_mean_byteload_interval_nanosec_list = [2000]
+
+    target_flow_rate_gbps = (byteload_size_B_list[0] * 8) / (target_mean_byteload_interval_nanosec_list[0] * pow(10,-9)) * pow(10, -9)
+
+    app_trace_paths_list = [
+        "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-2flo-16Gbps-2025-08-11T_16-36-33Z_p2p_poisson_fullrange_test/data/SSIRD/60/applications_trace.str",
+    ]
+
+    # Load flow spec for each experiment from saved json: 
+    flow_start_times_us_list_list, flow_spec_list_list = FlowSpec.parse_multi_exp_flow_specs_json_file(SAVED_FLOW_SPECS_JSON_PATH, "multi_exp_poisson_p2p_2flo-16Gbps-2025-08-11T_16-36-33Z.log")
+    assert(len(flow_spec_list_list) == num_of_experiments)
+    assert(len(flow_start_times_us_list_list) == num_of_experiments)
+    for i in range(0, num_of_experiments):
+        assert(len(flow_start_times_us_list_list[i]) == len(flow_spec_list_list[i]) and len(flow_spec_list_list[i]) == num_flows)
+
+    flow_spec_list_list_2 = [flow_spec_list_list[-1]]
+    exp_metrics = ExperimentGroup.process_side_loaded_results(proto, src_dst_pairs_list, num_flows, flow_spec_list_list_2, target_flow_rate_gbps, app_trace_paths_list)
 

@@ -1075,7 +1075,7 @@ def experiment_vary_byteloadsize_fullrange_multiflow_5flo_8gbps_total(is_full_po
     # ssird_sim_dur_list = [0.006] # for 1ms RTT
 
     # ssird_sim_dur_list = [0.01, 0.01, 0.01, 0.01, 0.01]
-    ssird_sim_dur_list = [0.005, 0.005, 0.05, 0.005, 0.005]
+    ssird_sim_dur_list = [0.005, 0.005, 0.005, 0.005, 0.005]
     dctcp_sim_dur_list = [0.01, 0.01, 0.005, 0.003, 0.003]
 
     # TODO: currently only calculates theoretical gbps for in-parallel flows

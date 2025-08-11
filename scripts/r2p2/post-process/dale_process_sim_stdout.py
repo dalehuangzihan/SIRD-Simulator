@@ -370,7 +370,7 @@ def plot_c_d_timeseries_cumu(plot_name, c_sent_timestamps_s_list, c_sent_cumu_B_
 '''
 
 def proc_15flo_4B_per_bload_sim_outputs(): 
-    experiment_name = dale_experiment_rig.Experiment.get_experiment_name(num_flows=15, num_byteloads=10000, byteload_size_B=4, inter_byteload_period_us=0.01)
+    experiment_name = dale_experiment_rig.Experiment.get_experiment_name(num_flows=15, byteload_size_B=10000, byteload_size_B=4, inter_byteload_period_us=0.01)
     sim_output_path = PATH_TO_SIM_OUTPUTS + REL_PATH_TO_EXP_FAMILY_FASTPACE + f"ssird_{experiment_name}_subpkt_multiflow_fastpace_stdout.out" #"ssird_15flo-10000#-4B-10ns_subpkt_multiflow_fastpace_stdout.out"
     sim_stats, _ = count_cr_r_d_pkts_in_sim_stdout(sim_output_path)
     print("4B per byteload:")
