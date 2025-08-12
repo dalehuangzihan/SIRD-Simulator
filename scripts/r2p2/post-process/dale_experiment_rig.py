@@ -223,18 +223,21 @@ class SimSpecScript:
     GLOBAL_DEBUG = "global_debug"
     DCTCP_K_L = "dctcp_k_l"
     SIMULATION_NAME_L = "simulation_name_l"
+    TOPOLOGY_FILE_L = "topology_file_l"
 
     def __init__(self, parent_dir, experiment_name):
         self.parent_dir = parent_dir
         self.experiment_name = experiment_name
     
-    def create_ssird_noburst_params_script(self, mri_relative_path, sim_duration, log_level):
+    def create_ssird_noburst_params_script(self, mri_relative_path, sim_duration, topo_yaml_file, log_level):
         script_filepath = self.parent_dir + f"{SSIRD_PROTO_NAME}-" + self.experiment_name + ".sh"
         with open(self.PATH_TO_SSIRD_TEMPLATE_NOBURST) as template, open(script_filepath, 'w') as fout:
             lines_in = template.readlines()
             for i in range(len(lines_in)):
                 line_out = lines_in[i]
-                if self.MANUAL_REQ_INTERVAL_FILE_L in line_out:
+                if self.TOPOLOGY_FILE_L in line_out:
+                    line_out = "{}='{}'\n".format(self.TOPOLOGY_FILE_L, topo_yaml_file)
+                elif self.MANUAL_REQ_INTERVAL_FILE_L in line_out:
                     line_out = "{}='{}'\n".format(self.MANUAL_REQ_INTERVAL_FILE_L, mri_relative_path)
                 elif self.DURATION_MODIFIER_L in line_out:
                     line_out = "{}='{:f}'\n".format(self.DURATION_MODIFIER_L, sim_duration)
@@ -243,13 +246,15 @@ class SimSpecScript:
                 fout.write(line_out)
         return script_filepath
 
-    def create_dctcp_noburst_params_script(self, mri_relative_path, sim_duration, log_level):
+    def create_dctcp_noburst_params_script(self, mri_relative_path, sim_duration, topo_yaml_file, log_level):
         script_filepath = self.parent_dir + f"{DCTCP_PROTO_NAME}-" + self.experiment_name + ".sh"
         with open(self.PATH_TO_DCTCP_TEMPLATE_NOBURST) as template, open(script_filepath, 'w') as fout:
             lines_in = template.readlines()
             for i in range(len(lines_in)):
                 line_out = lines_in[i]
-                if self.MANUAL_REQ_INTERVAL_FILE_L in line_out:
+                if self.TOPOLOGY_FILE_L in line_out:
+                    line_out = "{}='{}'\n".format(self.TOPOLOGY_FILE_L, topo_yaml_file)
+                elif self.MANUAL_REQ_INTERVAL_FILE_L in line_out:
                     line_out = "{}='{}'\n".format(self.MANUAL_REQ_INTERVAL_FILE_L, mri_relative_path)
                 elif self.DURATION_MODIFIER_L in line_out:
                     line_out = "{}='{:f}'\n".format(self.DURATION_MODIFIER_L, sim_duration)
@@ -560,9 +565,10 @@ class FlowStats:
 
 class Experiment():
 
-    def __init__(self, experiment_family, experiment_name, proto, src_dst_pairs_list, num_flows, target_flow_rate_gbps, flow_start_times_us_list, flow_spec_list, is_full_postproc=False):
+    def __init__(self, experiment_family, experiment_name, proto, topo_yaml_file, src_dst_pairs_list, num_flows, target_flow_rate_gbps, flow_start_times_us_list, flow_spec_list, is_full_postproc=False):
         self.experiment_family = experiment_family
         self.proto = proto
+        self.topo_yaml_file = topo_yaml_file
 
         self.src_dst_pairs_list = src_dst_pairs_list
         self.num_flows = num_flows
@@ -589,7 +595,12 @@ class Experiment():
         logger.info("ssird_sim_duration={:f}; dctcp_sim_duration={:f}".format(ssird_sim_dur_l, dctcp_sim_dur_l))
 
         self.prep_experiment_input(self.src_dst_pairs_list, self.flow_spec_list, self.flow_start_times_us_list)
-        ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(ssird_sim_duration=ssird_sim_dur_l, dctcp_sim_duration=dctcp_sim_dur_l, experiment_name=self.experiment_name, log_level=log_level)
+        ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(
+            ssird_sim_duration=ssird_sim_dur_l,
+            dctcp_sim_duration=dctcp_sim_dur_l,
+            experiment_name=self.experiment_name,
+            topo_yaml_file=self.topo_yaml_file,
+            log_level=log_level)
 
         outputs_dir = f"{PATH_TO_SIM_COORD}outputs/{self.experiment_family}/"
         Path(outputs_dir).mkdir(parents=True, exist_ok=True)
@@ -632,7 +643,7 @@ class Experiment():
         mri_filepath = mri.create_p2p_mri(multiflow_obj_list)
         return mri_filepath
 
-    def prep_experiment_spec_scripts(self, ssird_sim_duration, dctcp_sim_duration, experiment_name, log_level):
+    def prep_experiment_spec_scripts(self, ssird_sim_duration, dctcp_sim_duration, experiment_name, topo_yaml_file, log_level):
         logger.info("-----\nPreparing experiment spec scripts")
         try:
             logger.info("### Creating spec scripts parent dir: " + self.param_scripts_dir)
@@ -642,8 +653,8 @@ class Experiment():
 
         sim_script = SimSpecScript(self.param_scripts_dir, self.experiment_name) 
         mri_relative_path = "{}{}/{}.csv".format(MRI_RELATIVE_PATH, self.experiment_family, experiment_name)
-        ssird_sim_script_path = sim_script.create_ssird_noburst_params_script(mri_relative_path, ssird_sim_duration, log_level)
-        dctcp_sim_script_path = sim_script.create_dctcp_noburst_params_script(mri_relative_path, dctcp_sim_duration, log_level)
+        ssird_sim_script_path = sim_script.create_ssird_noburst_params_script(mri_relative_path, ssird_sim_duration, topo_yaml_file, log_level)
+        dctcp_sim_script_path = sim_script.create_dctcp_noburst_params_script(mri_relative_path, dctcp_sim_duration, topo_yaml_file, log_level)
 
         return ssird_sim_script_path, dctcp_sim_script_path
 
@@ -713,6 +724,7 @@ class ExperimentGroup:
     def __init__(self,
                     experiment_family,
                     proto_names_list,
+                    topo_yaml_file,
                     src_dst_pairs_list,
                     num_flows,
                     byteload_size_B_list,
@@ -729,6 +741,7 @@ class ExperimentGroup:
 
         self.experiment_family = experiment_family
         self.proto_names_l = proto_names_list
+        self.topo_yaml_file = topo_yaml_file
         self.src_dst_pairs_list = src_dst_pairs_list
         self.num_flows = num_flows
         self.byteload_size_B_list = byteload_size_B_list
@@ -775,7 +788,18 @@ class ExperimentGroup:
                     byteload_size_B = self.byteload_size_B_list[exp_id]
                     byteload_interval_ns = self.target_mean_byteload_interval_nanosec_list[exp_id]
                     experiment_name = Experiment.get_experiment_name(self.num_flows, self.target_flow_rate_gbps, byteload_size_B, byteload_interval_ns) + self.title_addendum
-                    experiment = Experiment(self.experiment_family, experiment_name, proto, self.src_dst_pairs_list, self.num_flows, self.target_flow_rate_gbps, self.flow_start_times_us_list_list[exp_id], self.flow_spec_list_list[exp_id], self.is_full_postproc) 
+                    experiment = Experiment(
+                        self.experiment_family,
+                        experiment_name,
+                        proto,
+                        self.topo_yaml_file,
+                        self.src_dst_pairs_list,
+                        self.num_flows,
+                        self.target_flow_rate_gbps,
+                        self.flow_start_times_us_list_list[exp_id],
+                        self.flow_spec_list_list[exp_id],
+                        self.is_full_postproc
+                    ) 
 
                     # submit experiment to thread pool
                     future = executor.submit(
@@ -839,6 +863,7 @@ class ExperimentGroup:
 
     def generate_overall_experiment_metrics(self):
         logger.info("\n##### GENERATE METRICS #####")
+        logger.info(f"{self.experiment_family}")
         return ExperimentGroupResultsProcessed(self.processed_results_list)
 
     @staticmethod

@@ -199,10 +199,10 @@ if __name__ == "__main__":
         target_mean_byteload_interval_nanosec_list=[100, 1000, 10000, 100000],
         target_mean_num_byteloads_list=[10000, 1000, 100, 10],
         target_mean_flow_interarr_ns=1000,
-        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_byteload_intervals=False,
         is_use_poisson_num_byteloads=False,
         is_use_poisson_flow_interarr=True,
         is_full_postproc=False,
-        title_addendum="_p2p_poisson_fullrange_31flo",
+        title_addendum="_p2p_poisson_fullrange_31flo_fixed_intervals",
         log_level=dale_experiment_rig.LOG_LEVEL_2
     )

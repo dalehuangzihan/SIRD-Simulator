@@ -860,6 +860,7 @@ def simple_experiment(is_full_postproc=True, title_addendum="", log_level=dale_e
     assert num_of_experiments == len(exp_metrics.dctcp_fct_list)
 
 def experiment_p2p_poisson_flows(
+        topo_yaml_file,
         num_flows,
         byteload_size_B,
         target_mean_byteload_interval_nanosec,
@@ -868,6 +869,8 @@ def experiment_p2p_poisson_flows(
         is_use_poisson_byteload_intervals,
         is_use_poisson_num_byteloads,
         is_use_poisson_flow_interarr,
+        ssird_sim_dur_list,
+        dctcp_sim_dur_list,
         is_full_postproc=True,
         title_addendum="",
         log_level=dale_experiment_rig.LOG_LEVEL_2
@@ -878,6 +881,7 @@ def experiment_p2p_poisson_flows(
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
+    # topo_yaml_file = "4-hosts.yaml"
     src_dst_pairs_list = [(0,1)]
 
     target_flow_rate_gbps = (byteload_size_B * 8) / (target_mean_byteload_interval_nanosec * pow(10,-9)) * pow(10, -9)
@@ -916,6 +920,8 @@ def experiment_p2p_poisson_flows(
     flow_max_interval_us = [max(f.interval_us_list) for f in flow_spec_list]
 
     logger.info(f"Protos tested: {proto_names}")
+    logger.info(f"Topo Yaml File: {topo_yaml_file}")
+    logger.info(f"Src-Dst pairs list: {src_dst_pairs_list}")
     logger.info(f"Num Flows: {num_flows}")
     logger.info(f"Byteload Size (B): {byteload_size_B}")
     logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec}")
@@ -934,9 +940,9 @@ def experiment_p2p_poisson_flows(
     logger.info(f"Flow Min Interval (us): {flow_min_interval_us}")
     logger.info(f"Flow Max Interval (us): {flow_max_interval_us}")
 
-    # For RTT = 5us
-    ssird_sim_dur_list = [0.1]
-    dctcp_sim_dur_list = [0.1]
+    # # For RTT = 5us
+    # ssird_sim_dur_list = [0.1]
+    # dctcp_sim_dur_list = [0.1]
 
     # TODO: modify assertion to work for spec that does specifies multiple experiments
     logger.debug(f"Max flow send durations (us): {max(flow_send_durations_us_list)}")
@@ -952,6 +958,7 @@ def experiment_p2p_poisson_flows(
     exp_grp = dale_experiment_rig.ExperimentGroup(
         experiment_family,
         proto_names,
+        topo_yaml_file,
         src_dst_pairs_list,
         num_flows,
         byteload_size_B_list,
@@ -969,6 +976,8 @@ def experiment_p2p_poisson_flows(
     exp_metrics = exp_grp.perform_experiment()
 
     logger.info(f"Protos tested: {proto_names}")
+    logger.info(f"Topo Yaml File: {topo_yaml_file}")
+    logger.info(f"Src-Dst pairs list: {src_dst_pairs_list}")
     logger.info(f"Num Flows: {num_flows}")
     logger.info(f"Byteload Size (B): {byteload_size_B}")
     logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec}")
@@ -1042,37 +1051,41 @@ if __name__ == "__main__":
     ''' --- Poisson Process Flows (NEW), RTT = 5us --- '''
 
     ''' Test experiment '''
-    # experiment_p2p_poisson_flows(
-    #     num_flows=3,
-    #     byteload_size_B=1458,
-    #     target_mean_byteload_interval_nanosec=1000,
-    #     target_mean_num_byteloads=500,
-    #     target_mean_flow_interarr_ns=1000,
-    #     is_use_poisson_num_byteloads=True,
-    #     is_use_poisson_flow_interarr=True,
-    #     is_full_postproc=False,
-    #     title_addendum="_p2p_poisson_flows_TEST_3flo",
-    #     log_level=dale_experiment_rig.LOG_LEVEL_2
-    # )
-
-    ''' 
-        100% Gdpt p2p goodput experiment
-            * 8flo
-            * 1560B per bload
-            * 1000ns intervals (avg)
-            * mean num bloads = 500
-            * 99.84Gbps total
-    '''
     experiment_p2p_poisson_flows(
-        num_flows=8,
-        byteload_size_B=1560,
+        topo_yaml_file="10-hosts-dumbbell.yaml",
+        num_flows=3,
+        byteload_size_B=1458,
         target_mean_byteload_interval_nanosec=1000,
-        target_mean_num_byteloads=10000, #1000,
+        target_mean_num_byteloads=500,
         target_mean_flow_interarr_ns=1000,
-        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_byteload_intervals=False,
         is_use_poisson_num_byteloads=False,
-        is_use_poisson_flow_interarr=True,
+        is_use_poisson_flow_interarr=False,
+        dctcp_sim_dur_list=[0.001],
+        ssird_sim_dur_list=[0.001],
         is_full_postproc=False,
-        title_addendum="_p2p_poisson_8flo_1560B_1us_10kBload_99pt84Gbps",
+        title_addendum="_p2p_poisson_flows_TEST_3flo",
         log_level=dale_experiment_rig.LOG_LEVEL_2
     )
+
+    # ''' 
+    #     100% Gdpt p2p goodput experiment
+    #         * 8flo
+    #         * 1560B per bload
+    #         * 1000ns intervals (avg)
+    #         * mean num bloads = 500
+    #         * 99.84Gbps total
+    # '''
+    # experiment_p2p_poisson_flows(
+    #     num_flows=8,
+    #     byteload_size_B=1560,
+    #     target_mean_byteload_interval_nanosec=1000,
+    #     target_mean_num_byteloads=10000, #1000,
+    #     target_mean_flow_interarr_ns=1000,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_num_byteloads=False,
+    #     is_use_poisson_flow_interarr=True,
+    #     is_full_postproc=False,
+    #     title_addendum="_p2p_poisson_8flo_1560B_1us_10kBload_99pt84Gbps",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2
+    # )
