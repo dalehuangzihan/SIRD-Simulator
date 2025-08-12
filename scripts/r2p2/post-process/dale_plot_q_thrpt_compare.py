@@ -335,3 +335,27 @@ if __name__ == "__main__":
         experiment_date="2025-08-12T_17-00-32Z",
         title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps_fixed_bload"
     )
+
+    do_comparison_graph_trimmed_new(
+        nw_elem=TOR,
+        src="tor_4",
+        dst="host_0",
+        num_flows=8,
+        target_per_host_perflo_gdpt_gbps=12,
+        byteload_size_B=1458,
+        inter_byteload_period_nanosec=1000,
+        experiment_date="2025-08-12T_18-31-32Z",
+        title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps_same_flo_interarr_same_interval"
+    )
+
+    do_comparison_graph_trimmed_new(
+        nw_elem=TOR,
+        src="tor_4",
+        dst="host_0",
+        num_flows=8,
+        target_per_host_perflo_gdpt_gbps=12,
+        byteload_size_B=1560,
+        inter_byteload_period_nanosec=1000,
+        experiment_date="2025-08-12T_18-33-42Z",
+        title_addendum="_incast_poisson_3to1_8flo_1560B_1us_99pt84Gbps_same_flo_interarr_same_interval"
+    )
