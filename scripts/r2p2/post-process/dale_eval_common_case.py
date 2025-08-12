@@ -390,7 +390,7 @@ def experiment_poissoninterval_1458B_bloads_10flo_10GbpsFlo(is_full_postproc=Tru
     num_of_experiments = len(flow_spec_list_list)
     assert(len(flow_start_times_us_list_list) == num_of_experiments)
 
-    logs_file_name = f"poisson_intervals_experiment_{num_flows}flo_{target_flow_rate_gbps}GbpsFlo_{dale_experiment_rig.Experiment.get_date_now()}.log"
+    logs_file_name = f"poisson_intervals_experiment_{num_flows}flo_{target_flow_rate_gbps}GbpsFlo_{dale_experiment_rig.Experiment.get_date_now_formatted()}.log"
     dale_experiment_rig.init_logs(experiment_family, logs_file_name)
 
     # Back up flow spec list # TODO: make infra to back up flow spec list list
@@ -510,7 +510,7 @@ def experiment_poissoninterval_1458B_bloads_50flo_1GbpsFlo(is_full_postproc=True
     num_of_experiments = len(flow_spec_list_list)
     assert(len(flow_start_times_us_list_list) == num_of_experiments)
 
-    logs_file_name = f"poisson_intervals_experiment_{num_flows}flo_{target_flow_rate_gbps}GbpsFlo_{dale_experiment_rig.Experiment.get_date_now()}.log"
+    logs_file_name = f"poisson_intervals_experiment_{num_flows}flo_{target_flow_rate_gbps}GbpsFlo_{dale_experiment_rig.Experiment.get_date_now_formatted()}.log"
     dale_experiment_rig.init_logs(experiment_family, logs_file_name)
 
     # Back up flow spec list # TODO: make infra to back up flow spec list list
@@ -632,7 +632,7 @@ def experiment_poissoninterval_1458B_bloads_50flo_2GbpsFlo(is_full_postproc=True
     num_of_experiments = len(flow_spec_list_list)
     assert(len(flow_start_times_us_list_list) == num_of_experiments)
 
-    logs_file_name = f"poisson_intervals_experiment_{num_flows}flo_{target_flow_rate_gbps}GbpsFlo_{dale_experiment_rig.Experiment.get_date_now()}.log"
+    logs_file_name = f"poisson_intervals_experiment_{num_flows}flo_{target_flow_rate_gbps}GbpsFlo_{dale_experiment_rig.Experiment.get_date_now_formatted()}.log"
     dale_experiment_rig.init_logs(experiment_family, logs_file_name)
 
     # # Back up flow spec list # TODO: make infra to back up flow spec list list
@@ -877,6 +877,7 @@ def experiment_p2p_poisson_flows(
     ):
 
     experiment_family = f"Poisson_Flows{title_addendum}"
+    experiment_date = dale_experiment_rig.Experiment.get_date_now_formatted()
     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
@@ -885,8 +886,8 @@ def experiment_p2p_poisson_flows(
     src_dst_pairs_list = [(0,1)]
 
     target_flow_rate_gbps = (byteload_size_B * 8) / (target_mean_byteload_interval_nanosec * pow(10,-9)) * pow(10, -9)
-    logs_file_name = f"poisson_flow_p2p_experiment_{dale_experiment_rig.Experiment.get_experiment_name(num_flows, target_flow_rate_gbps, byteload_size_B, target_mean_byteload_interval_nanosec)}.log"
-    dale_experiment_rig.init_logs(experiment_family, logs_file_name)
+    logs_file_name = f"poisson_flow_p2p_experiment_{dale_experiment_rig.Experiment.get_experiment_name(num_flows, target_flow_rate_gbps, byteload_size_B, target_mean_byteload_interval_nanosec, experiment_date)}{title_addendum}"
+    dale_experiment_rig.init_logs(experiment_family, logs_file_name+".log")
 
     flow_generator = dale_experiment_rig.FlowSpecGenerator(
         num_flows=num_flows,
@@ -908,7 +909,7 @@ def experiment_p2p_poisson_flows(
 
     # Back up flow spec list # TODO: make infra to back up flow spec list list
     flow_spec_dict = dale_experiment_rig.FlowSpec.flow_spec_list_to_dict(flow_spec_list, flow_start_times_us_list)
-    dale_experiment_rig.FlowSpec.flow_specs_dict_to_file(flow_spec_dict, dale_experiment_rig.FLOW_SPECS_JSON_PATH, logs_file_name)
+    dale_experiment_rig.FlowSpec.flow_specs_dict_to_file(flow_spec_dict, dale_experiment_rig.FLOW_SPECS_JSON_PATH, logs_file_name+".json")
 
     flow_rate_gbps_list = [round(f.flow_rate_bps*pow(10,-9),6) for f in flow_spec_list]
     flow_size_B_list = [f.flow_size_B for f in flow_spec_list]
@@ -925,7 +926,7 @@ def experiment_p2p_poisson_flows(
     logger.info(f"Num Flows: {num_flows}")
     logger.info(f"Byteload Size (B): {byteload_size_B}")
     logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec}")
-    logger.info(f"  is_use_poisson_num_byteloads={is_use_poisson_num_byteloads}")
+    logger.info(f"  is_use_poisson_byteload_intervals={is_use_poisson_byteload_intervals}")
     logger.info(f"Target Mean Flow Interarrival (ns): {target_mean_flow_interarr_ns}")
     logger.info(f"  is_use_poisson_flow_interarr={is_use_poisson_flow_interarr}")
     logger.info(f"Target Flow Rate (Gbps): {target_flow_rate_gbps}")
@@ -957,6 +958,7 @@ def experiment_p2p_poisson_flows(
     target_mean_byteload_interval_nanosec_list = [target_mean_byteload_interval_nanosec]
     exp_grp = dale_experiment_rig.ExperimentGroup(
         experiment_family,
+        experiment_date,
         proto_names,
         topo_yaml_file,
         src_dst_pairs_list,
@@ -981,7 +983,7 @@ def experiment_p2p_poisson_flows(
     logger.info(f"Num Flows: {num_flows}")
     logger.info(f"Byteload Size (B): {byteload_size_B}")
     logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec}")
-    logger.info(f"  is_use_poisson_num_byteloads={is_use_poisson_num_byteloads}")
+    logger.info(f"  is_use_poisson_byteload_intervals={is_use_poisson_byteload_intervals}")
     logger.info(f"Target Mean Flow Interarrival (ns): {target_mean_flow_interarr_ns}")
     logger.info(f"  is_use_poisson_flow_interarr={is_use_poisson_flow_interarr}")
     logger.info(f"Target Flow Rate (Gbps): {target_flow_rate_gbps}")

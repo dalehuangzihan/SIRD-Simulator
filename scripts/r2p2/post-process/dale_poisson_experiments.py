@@ -5,6 +5,8 @@ import dale_experiment_rig
 logger = dale_experiment_rig.logging.getLogger(__name__)
 
 def experiment_p2p_poisson_const_flow_rate_vary_byteload_size_and_interval(
+        topo_yaml_file,
+        src_dst_pairs_list,
         num_flows,
         byteload_size_B_list,
         target_mean_byteload_interval_nanosec_list,
@@ -13,12 +15,15 @@ def experiment_p2p_poisson_const_flow_rate_vary_byteload_size_and_interval(
         is_use_poisson_byteload_intervals,
         is_use_poisson_num_byteloads,
         is_use_poisson_flow_interarr,
+        ssird_sim_dur_list,
+        dctcp_sim_dur_list,
         is_full_postproc=True,
         title_addendum="",
         log_level=dale_experiment_rig.LOG_LEVEL_2
     ):
 
     experiment_family = f"Poisson{title_addendum}"
+    experiment_date = dale_experiment_rig.Experiment.get_date_now_formatted()
     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
@@ -29,8 +34,8 @@ def experiment_p2p_poisson_const_flow_rate_vary_byteload_size_and_interval(
     num_of_experiments = len(byteload_size_B_list)
     target_flow_rate_gbps = (byteload_size_B_list[0] * 8) / (target_mean_byteload_interval_nanosec_list[0] * pow(10,-9)) * pow(10, -9)
 
-    logs_file_name = f"poisson_p2p_{num_flows}flo_{round(target_flow_rate_gbps)}Gbps.log"
-    dale_experiment_rig.init_logs(experiment_family, logs_file_name)
+    logs_file_name = f"poisson_p2p_{num_flows}flo_{round(target_flow_rate_gbps)}Gbps_{experiment_date}{title_addendum}"
+    dale_experiment_rig.init_logs(experiment_family, logs_file_name+".log")
 
     # Generate flow specs for each experiment
     flow_spec_list_list = []
@@ -69,7 +74,7 @@ def experiment_p2p_poisson_const_flow_rate_vary_byteload_size_and_interval(
 
     # Back up flow spec list list # TODO: make infra to back up flow spec list list
     exp_flows_dict_dict = dale_experiment_rig.FlowSpec.flow_spec_list_list_to_dict(flow_spec_list_list, flow_start_times_us_list_list)
-    dale_experiment_rig.FlowSpec.flow_specs_dict_to_file(exp_flows_dict_dict, dale_experiment_rig.FLOW_SPECS_JSON_PATH, f"multi_exp_{logs_file_name}")
+    dale_experiment_rig.FlowSpec.flow_specs_dict_to_file(exp_flows_dict_dict, dale_experiment_rig.FLOW_SPECS_JSON_PATH, f"multi_exp_{logs_file_name}.json")
 
     flow_rate_gbps_list = [round(f.flow_rate_bps*pow(10,-9),6) for f in flow_spec_list]
     flow_size_B_list = [f.flow_size_B for f in flow_spec_list]
@@ -81,26 +86,29 @@ def experiment_p2p_poisson_const_flow_rate_vary_byteload_size_and_interval(
     flow_max_interval_us = [max(f.interval_us_list) for f in flow_spec_list]
 
     logger.info(f"Protos tested: {proto_names}")
+    logger.info(f"Topo Yaml File: {topo_yaml_file}")
+    logger.info(f"Src-Dst pairs list: {src_dst_pairs_list}")
     logger.info(f"Num Flows: {num_flows}")
-    logger.info(f"Byteload Size (B): {byteload_size_B_list}")
-    logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec_list}")
-    logger.info(f"  is_use_poisson_num_byteloads={is_use_poisson_num_byteloads}")
+    logger.info(f"Byteload Size (B): {byteload_size_B}")
+    logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec}")
+    logger.info(f"  is_use_poisson_byteload_intervals={is_use_poisson_byteload_intervals}")
     logger.info(f"Target Mean Flow Interarrival (ns): {target_mean_flow_interarr_ns}")
     logger.info(f"  is_use_poisson_flow_interarr={is_use_poisson_flow_interarr}")
     logger.info(f"Target Flow Rate (Gbps): {target_flow_rate_gbps}")
+    logger.info(f"Num Byteloads: {flow_num_byteloads_list}")
+    logger.info(f"  is_use_poisson_num_byteloads={is_use_poisson_num_byteloads}")
     logger.info(f"Flow Start Times (us): {flow_start_times_us_list}")
     logger.info(f"Flow Rate (Gbps): {flow_rate_gbps_list}")
     logger.info(f"Flow Size (B): {flow_size_B_list}")
-    logger.info(f"Num Byteloads: {flow_num_byteloads_list}")
     logger.info(f"Flow Send Durations (us): {flow_send_durations_us_list}")
     logger.info(f"Flow Min Byteload Size (B): {flow_min_byteload_size_B_list}")
     logger.info(f"Flow Max Byteload Size (B): {flow_max_byteload_size_B_list}")
     logger.info(f"Flow Min Interval (us): {flow_min_interval_us}")
     logger.info(f"Flow Max Interval (us): {flow_max_interval_us}")
 
-    # For RTT = 5us
-    ssird_sim_dur_list = [0.08, 0.05, 0.03, 0.02, 0.01] 
-    dctcp_sim_dur_list = [0.08, 0.05, 0.03, 0.02, 0.01]
+    # # For RTT = 5us
+    # ssird_sim_dur_list = [0.08, 0.05, 0.03, 0.02, 0.01] 
+    # dctcp_sim_dur_list = [0.08, 0.05, 0.03, 0.02, 0.01]
 
     # TODO: modify assertion to work for spec that does specifies multiple experiments
     logger.debug(f"Max flow send durations (us): {max(flow_send_durations_us_list)}")
@@ -113,7 +121,9 @@ def experiment_p2p_poisson_const_flow_rate_vary_byteload_size_and_interval(
 
     exp_grp = dale_experiment_rig.ExperimentGroup(
         experiment_family,
+        experiment_date,
         proto_names,
+        topo_yaml_file,
         src_dst_pairs_list,
         num_flows,
         byteload_size_B_list,
@@ -131,17 +141,20 @@ def experiment_p2p_poisson_const_flow_rate_vary_byteload_size_and_interval(
     exp_metrics = exp_grp.perform_experiment()
 
     logger.info(f"Protos tested: {proto_names}")
+    logger.info(f"Topo Yaml File: {topo_yaml_file}")
+    logger.info(f"Src-Dst pairs list: {src_dst_pairs_list}")
     logger.info(f"Num Flows: {num_flows}")
     logger.info(f"Byteload Size (B): {byteload_size_B}")
     logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec}")
-    logger.info(f"  is_use_poisson_num_byteloads={is_use_poisson_num_byteloads}")
+    logger.info(f"  is_use_poisson_byteload_intervals={is_use_poisson_byteload_intervals}")
     logger.info(f"Target Mean Flow Interarrival (ns): {target_mean_flow_interarr_ns}")
     logger.info(f"  is_use_poisson_flow_interarr={is_use_poisson_flow_interarr}")
     logger.info(f"Target Flow Rate (Gbps): {target_flow_rate_gbps}")
+    logger.info(f"Num Byteloads: {flow_num_byteloads_list}")
+    logger.info(f"  is_use_poisson_num_byteloads={is_use_poisson_num_byteloads}")
     logger.info(f"Flow Start Times (us): {flow_start_times_us_list}")
     logger.info(f"Flow Rate (Gbps): {flow_rate_gbps_list}")
     logger.info(f"Flow Size (B): {flow_size_B_list}")
-    logger.info(f"Num Byteloads: {flow_num_byteloads_list}")
     logger.info(f"Flow Send Durations (us): {flow_send_durations_us_list}")
     logger.info(f"Flow Min Byteload Size (B): {flow_min_byteload_size_B_list}")
     logger.info(f"Flow Max Byteload Size (B): {flow_max_byteload_size_B_list}")

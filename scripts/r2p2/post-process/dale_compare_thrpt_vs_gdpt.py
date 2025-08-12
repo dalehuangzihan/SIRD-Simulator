@@ -95,6 +95,16 @@ def get_qts_result_path(proto, nw_elem, src, dst, num_flows, num_byteloads_per_f
     else:
         print(f"ERROR: proto name '{proto}' unrecognised!")
 
+def get_qts_result_path_new(proto, nw_elem, src, dst, num_flows, target_per_flow_gdpt_gbps, byteload_size_B, inter_byteload_period_nanosec, experiment_date, title_addendum=""):
+    if proto.upper() == SSIRD_PROTO_NAME: 
+        return f"{PATH_TO_SIM_RESULTS}{SSIRD_PROTO_NAME}-{num_flows}flo-{round(target_per_flow_gdpt_gbps)}Gbps-{byteload_size_B}B-{inter_byteload_period_nanosec}ns-{experiment_date}{title_addendum}/data/{SSIRD_PROTO_NAME}/{CLIENT_INJECTION_RATE_GBPS}/output/qts/{nw_elem}/qts_{src}_{dst}.csv"
+
+    elif proto.upper() == DCTCP_PROTO_NAME:
+        return f"{PATH_TO_SIM_RESULTS}{DCTCP_PROTO_NAME}-{DCTCP_ECN_THRESH}-{num_flows}flo-{round(target_per_flow_gdpt_gbps)}Gbps-{byteload_size_B}B-{inter_byteload_period_nanosec}ns-{experiment_date}{title_addendum}/data/{DCTCP_PROTO_NAME}-{DCTCP_ECN_THRESH}/{CLIENT_INJECTION_RATE_GBPS}/output/qts/{nw_elem}/qts_{src}_{dst}.csv"
+
+    else:
+        print(f"ERROR: proto name '{proto}' unrecognised!")
+
 def get_qts_result(proto, nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum=""):
     qts_result_path = get_qts_result_path(proto, nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum)
     # print(ssird_qts_result_path)
@@ -102,6 +112,15 @@ def get_qts_result(proto, nw_elem, src, dst, num_flows, num_byteloads_per_flow, 
     timestamp_cutoff_s = get_qts_timestamp_cutoff_from_csv(qts_result_path)
     qts_results_obj = get_qts_results_from_csv(nw_elem, src, dst, qts_result_path, timestamp_cutoff_s)
     return qts_results_obj
+
+def get_qts_result_new(proto, nw_elem, src, dst, num_flows, target_per_flow_gdpt_gbps, byteload_size_B, inter_byteload_period_nanosec, experiment_date, title_addendum=""):
+    qts_result_path = get_qts_result_path_new(proto, nw_elem, src, dst, num_flows, target_per_flow_gdpt_gbps, byteload_size_B, inter_byteload_period_nanosec, experiment_date, title_addendum)
+    # print(ssird_qts_result_path)
+
+    timestamp_cutoff_s = get_qts_timestamp_cutoff_from_csv(qts_result_path)
+    qts_results_obj = get_qts_results_from_csv(nw_elem, src, dst, qts_result_path, timestamp_cutoff_s)
+    return qts_results_obj
+    
 
 '''
 ========== NW OVERHEAD PLOTS ==========

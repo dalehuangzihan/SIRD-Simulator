@@ -1995,7 +1995,7 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
     if ((msg_state->data_bytes_received_ == msg_state->data_bytes_expected_) &&
         (msg_state->data_bytes_granted_ == msg_state->data_bytes_expected_)) // w/o this, msg_state may get deleted before all the bytes it requested are granted (bcs of commong grant pool)
     {
-        slog::log2(debug_, this_addr_, "msg=", std::get<2>(msg_state->req_id_), "data_bytes_received_=", msg_state->data_bytes_received_, "data_bytes_granted_=", msg_state->data_bytes_granted_);
+        slog::log3(debug_, this_addr_, "msg=", std::get<2>(msg_state->req_id_), "data_bytes_received_=", msg_state->data_bytes_received_, "data_bytes_granted_=", msg_state->data_bytes_granted_);
         inbound_->print_all(this_addr_);
         assert(msg_state->received_msg_info_);
         // assert(msg_state->data_bytes_expected_ == msg_state->data_bytes_granted_); // not true because of fungible credit at sender

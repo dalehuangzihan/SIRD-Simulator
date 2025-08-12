@@ -244,6 +244,7 @@ def experiment_incast_poisson_flows(
     ):
 
     experiment_family = f"Poisson_Flows{title_addendum}"
+    experiment_date = dale_experiment_rig.Experiment.get_date_now_formatted()
     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
@@ -251,8 +252,8 @@ def experiment_incast_poisson_flows(
     # src_dst_pairs_list = [(1,0), (2,0), (3,0)]
 
     target_flow_rate_gbps = (byteload_size_B * 8) / (target_mean_byteload_interval_nanosec * pow(10,-9)) * pow(10, -9)
-    logs_file_name = f"poisson_flow_incast_experiment_{len(src_dst_pairs_list)}to1_{dale_experiment_rig.Experiment.get_experiment_name(num_flows, target_flow_rate_gbps, byteload_size_B, target_mean_byteload_interval_nanosec)}.log"
-    dale_experiment_rig.init_logs(experiment_family, logs_file_name)
+    logs_file_name = f"poisson_incast_{len(src_dst_pairs_list)}to1_{dale_experiment_rig.Experiment.get_experiment_name(num_flows, target_flow_rate_gbps, byteload_size_B, target_mean_byteload_interval_nanosec, experiment_date)}{title_addendum}"
+    dale_experiment_rig.init_logs(experiment_family, logs_file_name+".log")
 
     flow_generator = dale_experiment_rig.FlowSpecGenerator(
         num_flows=num_flows,
@@ -274,7 +275,7 @@ def experiment_incast_poisson_flows(
 
     # Back up flow spec list # TODO: make infra to back up flow spec list list
     flow_spec_dict = dale_experiment_rig.FlowSpec.flow_spec_list_to_dict(flow_spec_list, flow_start_times_us_list)
-    dale_experiment_rig.FlowSpec.flow_specs_dict_to_file(flow_spec_dict, dale_experiment_rig.FLOW_SPECS_JSON_PATH, logs_file_name)
+    dale_experiment_rig.FlowSpec.flow_specs_dict_to_file(flow_spec_dict, dale_experiment_rig.FLOW_SPECS_JSON_PATH, logs_file_name+".json")
 
     flow_rate_gbps_list = [round(f.flow_rate_bps*pow(10,-9),6) for f in flow_spec_list]
     flow_size_B_list = [f.flow_size_B for f in flow_spec_list]
@@ -291,14 +292,15 @@ def experiment_incast_poisson_flows(
     logger.info(f"Num Flows: {num_flows}")
     logger.info(f"Byteload Size (B): {byteload_size_B}")
     logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec}")
-    logger.info(f"  is_use_poisson_num_byteloads={is_use_poisson_num_byteloads}")
+    logger.info(f"  is_use_poisson_byteload_intervals={is_use_poisson_byteload_intervals}")
     logger.info(f"Target Mean Flow Interarrival (ns): {target_mean_flow_interarr_ns}")
     logger.info(f"  is_use_poisson_flow_interarr={is_use_poisson_flow_interarr}")
     logger.info(f"Target Flow Rate (Gbps): {target_flow_rate_gbps}")
+    logger.info(f"Num Byteloads: {flow_num_byteloads_list}")
+    logger.info(f"  is_use_poisson_num_byteloads={is_use_poisson_num_byteloads}")
     logger.info(f"Flow Start Times (us): {flow_start_times_us_list}")
     logger.info(f"Flow Rate (Gbps): {flow_rate_gbps_list}")
     logger.info(f"Flow Size (B): {flow_size_B_list}")
-    logger.info(f"Num Byteloads: {flow_num_byteloads_list}")
     logger.info(f"Flow Send Durations (us): {flow_send_durations_us_list}")
     logger.info(f"Flow Min Byteload Size (B): {flow_min_byteload_size_B_list}")
     logger.info(f"Flow Max Byteload Size (B): {flow_max_byteload_size_B_list}")
@@ -326,6 +328,7 @@ def experiment_incast_poisson_flows(
     target_mean_byteload_interval_nanosec_list = [target_mean_byteload_interval_nanosec]
     exp_grp = dale_experiment_rig.ExperimentGroup(
         experiment_family,
+        experiment_date,
         proto_names,
         topo_yaml_file,
         src_dst_pairs_list,
@@ -350,7 +353,7 @@ def experiment_incast_poisson_flows(
     logger.info(f"Num Flows: {num_flows}")
     logger.info(f"Byteload Size (B): {byteload_size_B}")
     logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec}")
-    logger.info(f"  is_use_poisson_num_byteloads={is_use_poisson_num_byteloads}")
+    logger.info(f"  is_use_poisson_byteload_intervals={is_use_poisson_byteload_intervals}")
     logger.info(f"Target Mean Flow Interarrival (ns): {target_mean_flow_interarr_ns}")
     logger.info(f"  is_use_poisson_flow_interarr={is_use_poisson_flow_interarr}")
     logger.info(f"Target Flow Rate (Gbps): {target_flow_rate_gbps}")
@@ -389,7 +392,165 @@ if __name__ == "__main__":
     # experiment_incast_3to1_16GbpsFlo(is_full_postproc=True, title_addendum="_incast_3to1_5flo_16GbpsFlo_200KBflo", log_level=dale_experiment_rig.LOG_LEVEL_2) 
 
 
-    ''' === RTT = 5us === '''
+    ''' === 1458B, RTT = 5us === '''
+
+    # ''' 
+    #     3 to 1 incast experiment
+    #         * 8flo
+    #         * 1458B per bload
+    #         * 1000ns intervals (avg)
+    #         * mean num bloads = 500
+    #         * 93.312Gbps total per sender
+    # '''
+    # experiment_incast_poisson_flows(
+    #     topo_yaml_file="4-hosts.yaml",
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0)],
+    #     num_flows=8,
+    #     byteload_size_B=1458,
+    #     target_mean_byteload_interval_nanosec=1000,
+    #     target_mean_num_byteloads=500,
+    #     target_mean_flow_interarr_ns=1000,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_num_byteloads=True,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.01],
+    #     dctcp_sim_dur_list=[0.01],
+    #     is_full_postproc=True,
+    #     title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2
+    # )
+
+    # ''' 
+    #     3 to 1 incast experiment
+    #         * 8flo
+    #         * 1458B per bload
+    #         * 1000ns intervals (avg)
+    #         * fix num bloads = 500
+    #         * 93.312Gbps total per sender
+    # '''
+    # experiment_incast_poisson_flows(
+    #     topo_yaml_file="4-hosts.yaml",
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0)],
+    #     num_flows=8,
+    #     byteload_size_B=1458,
+    #     target_mean_byteload_interval_nanosec=1000,
+    #     target_mean_num_byteloads=500,
+    #     target_mean_flow_interarr_ns=1000,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_num_byteloads=False,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.01],
+    #     dctcp_sim_dur_list=[0.01],
+    #     is_full_postproc=True,
+    #     title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps_fixed_bload",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2
+    # )
+
+    # ''' 
+    #     3 to 1 incast experiment
+    #         * 8flo
+    #         * 1458B per bload
+    #         * 1000ns intervals (avg)
+    #         * mean num bloads = 500
+    #         * 93.312Gbps total per sender
+    # '''
+    # experiment_incast_poisson_flows(
+    #     topo_yaml_file="4-hosts.yaml",
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0)],
+    #     num_flows=8,
+    #     byteload_size_B=1458,
+    #     target_mean_byteload_interval_nanosec=1000,
+    #     target_mean_num_byteloads=500,
+    #     target_mean_flow_interarr_ns=0,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_num_byteloads=True,
+    #     is_use_poisson_flow_interarr=False,
+    #     ssird_sim_dur_list=[0.01],
+    #     dctcp_sim_dur_list=[0.01],
+    #     is_full_postproc=True,
+    #     title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps_same_flo_interarr",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2
+    # )
+
+    # ''' 
+    #     3 to 1 incast experiment
+    #         * 8flo
+    #         * 1458B per bload
+    #         * 1000ns intervals (avg)
+    #         * mean num bloads = 500
+    #         * 93.312Gbps total per sender
+    # '''
+    # experiment_incast_poisson_flows(
+    #     topo_yaml_file="4-hosts.yaml",
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0)],
+    #     num_flows=8,
+    #     byteload_size_B=1458,
+    #     target_mean_byteload_interval_nanosec=1000,
+    #     target_mean_num_byteloads=500,
+    #     target_mean_flow_interarr_ns=0,
+    #     is_use_poisson_byteload_intervals=False,
+    #     is_use_poisson_num_byteloads=True,
+    #     is_use_poisson_flow_interarr=False,
+    #     ssird_sim_dur_list=[0.01],
+    #     dctcp_sim_dur_list=[0.01],
+    #     is_full_postproc=True,
+    #     title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps_same_flo_interarr_same_interval",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2
+    # )
+
+    # ''' 
+    #     3 to 1 incast experiment
+    #         * 8flo
+    #         * 1458B per bload
+    #         * 1000ns intervals (avg)
+    #         * mean num bloads = 500
+    #         * 93.312Gbps total per sender
+    # '''
+    # experiment_incast_poisson_flows(
+    #     topo_yaml_file="4-hosts.yaml",
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0)],
+    #     num_flows=8,
+    #     byteload_size_B=1458,
+    #     target_mean_byteload_interval_nanosec=1000,
+    #     target_mean_num_byteloads=500,
+    #     target_mean_flow_interarr_ns=0,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_num_byteloads=False,
+    #     is_use_poisson_flow_interarr=False,
+    #     ssird_sim_dur_list=[0.01],
+    #     dctcp_sim_dur_list=[0.01],
+    #     is_full_postproc=True,
+    #     title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps_same_flo_interarr_fixed_num_bload",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2
+    # )
+
+    # ''' 
+    #     9 to 1 incast experiment
+    #         * 8flo
+    #         * 1458B per bload
+    #         * 1000ns intervals (avg)
+    #         * mean num bloads = 500
+    #         * 93.312Gbps total per sender
+    # '''
+    # experiment_incast_poisson_flows(
+    #     topo_yaml_file='10-hosts-dumbbell.yaml',
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0)],
+    #     num_flows=8,
+    #     byteload_size_B=1458,
+    #     target_mean_byteload_interval_nanosec=1000,
+    #     target_mean_num_byteloads=500,
+    #     target_mean_flow_interarr_ns=1000,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_num_byteloads=True,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.1],
+    #     dctcp_sim_dur_list=[0.1],
+    #     is_full_postproc=True,
+    #     title_addendum="_incast_poisson_9to1_8flo_1458B_1us_93pt312Gbps",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2
+    # ) 
+
+    ''' === 1560B, RTT = 5us === '''
 
     # ''' 
     #     3 to 1 incast experiment
@@ -438,6 +599,84 @@ if __name__ == "__main__":
     #     log_level=dale_experiment_rig.LOG_LEVEL_2
     # )
 
+    # ''' 
+    #     3 to 1 incast experiment
+    #         * 8flo
+    #         * 1560B per bload
+    #         * 1000ns intervals (avg)
+    #         * mean num bloads = 500
+    #         * 99.84Gbps total per sender
+    # '''
+    # experiment_incast_poisson_flows(
+    #     topo_yaml_file="4-hosts.yaml",
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0)],
+    #     num_flows=8,
+    #     byteload_size_B=1560,
+    #     target_mean_byteload_interval_nanosec=1000,
+    #     target_mean_num_byteloads=500,
+    #     target_mean_flow_interarr_ns=0,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_num_byteloads=True,
+    #     is_use_poisson_flow_interarr=False,
+    #     ssird_sim_dur_list=[0.01],
+    #     dctcp_sim_dur_list=[0.01],
+    #     is_full_postproc=True,
+    #     title_addendum="_incast_poisson_3to1_8flo_1560B_1us_99pt84Gbps_same_flo_interarr",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2
+    # )
+
+    # ''' 
+    #     3 to 1 incast experiment
+    #         * 8flo
+    #         * 1560B per bload
+    #         * 1000ns intervals (avg)
+    #         * mean num bloads = 500
+    #         * 99.84Gbps total per sender
+    # '''
+    # experiment_incast_poisson_flows(
+    #     topo_yaml_file="4-hosts.yaml",
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0)],
+    #     num_flows=8,
+    #     byteload_size_B=1560,
+    #     target_mean_byteload_interval_nanosec=1000,
+    #     target_mean_num_byteloads=500,
+    #     target_mean_flow_interarr_ns=0,
+    #     is_use_poisson_byteload_intervals=False,
+    #     is_use_poisson_num_byteloads=True,
+    #     is_use_poisson_flow_interarr=False,
+    #     ssird_sim_dur_list=[0.01],
+    #     dctcp_sim_dur_list=[0.01],
+    #     is_full_postproc=True,
+    #     title_addendum="_incast_poisson_3to1_8flo_1560B_1us_99pt84Gbps_same_flo_interarr_same_interval",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2
+    # )
+
+    # ''' 
+    #     3 to 1 incast experiment
+    #         * 8flo
+    #         * 1560B per bload
+    #         * 1000ns intervals (avg)
+    #         * mean num bloads = 500
+    #         * 99.84Gbps total per sender
+    # '''
+    # experiment_incast_poisson_flows(
+    #     topo_yaml_file="4-hosts.yaml",
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0)],
+    #     num_flows=8,
+    #     byteload_size_B=1560,
+    #     target_mean_byteload_interval_nanosec=1000,
+    #     target_mean_num_byteloads=500,
+    #     target_mean_flow_interarr_ns=0,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_num_byteloads=False,
+    #     is_use_poisson_flow_interarr=False,
+    #     ssird_sim_dur_list=[0.01],
+    #     dctcp_sim_dur_list=[0.01],
+    #     is_full_postproc=True,
+    #     title_addendum="_incast_poisson_3to1_8flo_1560B_1us_99pt84Gbps_same_flo_interarr_fixed_num_bload",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2
+    # )
+
     ''' 
         9 to 1 incast experiment
             * 8flo
@@ -464,8 +703,7 @@ if __name__ == "__main__":
         log_level=dale_experiment_rig.LOG_LEVEL_2
     )   
 
-
-    ''' === RTT = 1ms === '''
+    # ''' === RTT = 1ms === '''
 
     # ''' 
     #     3 to 1 incast experiment (RTT = 1ms)

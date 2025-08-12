@@ -175,7 +175,7 @@ void R2p2Application::req_recv(int req_size, RequestIdTuple &&request_id_tuple)
     assert(msg_created_at > 9.9); // assumes sim starts at 10.0
     if (do_trace_)
     {
-        slog::log6(debug_, local_addr_, "rrq");
+        slog::log2(debug_, local_addr_, "rrq: cl_addr_=", request_id_tuple.cl_addr_, "req_id_=", request_id_tuple.req_id_, "app_level_id_=", request_id_tuple.app_level_id_, "req_size=", req_size);
         trace_state("rrq",
                     request_id_tuple.cl_addr_,
                     request_id_tuple.req_id_,

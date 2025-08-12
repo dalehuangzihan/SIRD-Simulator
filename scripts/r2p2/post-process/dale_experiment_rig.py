@@ -439,7 +439,7 @@ class ExperimentOutputRaw:
         else:
             measured_total_nw_gdpt_gbps = -1 
 
-        return ExperimentMetrics(self.proto, fct_list, measured_total_app_gdpt_gbps, measured_app_gdpt_gbps_per_flow_list, measured_total_nw_gdpt_gbps, measured_nw_gdpt_gbps_per_flow_list)
+        return ExperimentMetrics(self.proto, fct_list, measured_total_app_gdpt_gbps, measured_app_gdpt_gbps_per_flow_list, measured_total_nw_gdpt_gbps, measured_nw_gdpt_gbps_per_flow_list), flow_stats_dict
 
 class FlowTraceEvent:
     SRQ_EVENT = "srq"
@@ -712,17 +712,18 @@ class Experiment():
     @staticmethod
     def get_experiment_name(num_flows, target_flow_rate_gbps, byteload_size_B, byteload_interval_ns, experiment_date=None):
         if experiment_date is None:
-            experiment_date = Experiment.get_date_now()
+            experiment_date = Experiment.get_date_now_formatted()
         return "{}flo-{}Gbps-{}B-{}ns-{}".format(num_flows, round(target_flow_rate_gbps), byteload_size_B, byteload_interval_ns, experiment_date)
     
     @staticmethod
-    def get_date_now():
+    def get_date_now_formatted():
         return datetime.datetime.now().strftime("%Y-%m-%dT_%H-%M-%SZ")
 
 class ExperimentGroup:
 
     def __init__(self,
                     experiment_family,
+                    experiment_date,
                     proto_names_list,
                     topo_yaml_file,
                     src_dst_pairs_list,
@@ -740,6 +741,7 @@ class ExperimentGroup:
                 ):
 
         self.experiment_family = experiment_family
+        self.experiment_date = experiment_date
         self.proto_names_l = proto_names_list
         self.topo_yaml_file = topo_yaml_file
         self.src_dst_pairs_list = src_dst_pairs_list
@@ -787,7 +789,7 @@ class ExperimentGroup:
                     # NOTE: 11/08/2025: currently all byteloads have the same size.
                     byteload_size_B = self.byteload_size_B_list[exp_id]
                     byteload_interval_ns = self.target_mean_byteload_interval_nanosec_list[exp_id]
-                    experiment_name = Experiment.get_experiment_name(self.num_flows, self.target_flow_rate_gbps, byteload_size_B, byteload_interval_ns) + self.title_addendum
+                    experiment_name = Experiment.get_experiment_name(self.num_flows, self.target_flow_rate_gbps, byteload_size_B, byteload_interval_ns, self.experiment_date) + self.title_addendum
                     experiment = Experiment(
                         self.experiment_family,
                         experiment_name,
@@ -830,9 +832,9 @@ class ExperimentGroup:
             assert(all(r.exp_id == i for r, i in zip(self.dctcp_raw_experiment_results_list, range(0, self.num_experiments))))
 
         ssird_path_to_app_trace_files_list = [r.app_trace_file_path for r in self.ssird_raw_experiment_results_list if r is not None]
-        Experiment.write_app_trace_paths_to_file(SSIRD_PROTO_NAME, self.experiment_family, self.num_flows, self.target_flow_rate_gbps, Experiment.get_date_now(), ssird_path_to_app_trace_files_list)
+        Experiment.write_app_trace_paths_to_file(SSIRD_PROTO_NAME, self.experiment_family, self.num_flows, self.target_flow_rate_gbps, Experiment.get_date_now_formatted(), ssird_path_to_app_trace_files_list)
         dctcp_path_to_app_trace_files_list = [r.app_trace_file_path for r in self.dctcp_raw_experiment_results_list if r is not None]
-        Experiment.write_app_trace_paths_to_file(DCTCP_PROTO_NAME, self.experiment_family, self.num_flows, self.target_flow_rate_gbps, Experiment.get_date_now(), dctcp_path_to_app_trace_files_list)
+        Experiment.write_app_trace_paths_to_file(DCTCP_PROTO_NAME, self.experiment_family, self.num_flows, self.target_flow_rate_gbps, Experiment.get_date_now_formatted(), dctcp_path_to_app_trace_files_list)
         logger.info(f"Simulations ended at: {datetime.datetime.now()}")
     
     def post_process_results(self):
@@ -846,7 +848,7 @@ class ExperimentGroup:
                 ssird_exp_metrics = None
             else:
                 logger.info(f"Processing SIRD results exp_id {ssird_result.exp_id}:: {ssird_result.num_flows}flo-{ssird_result.target_flow_rate_gbps}Gbps_target")
-                ssird_exp_metrics = ssird_result.process_results_fct()
+                ssird_exp_metrics, ssird_flow_stats_dict = ssird_result.process_results_fct()
                 logger.info(f"{ssird_exp_metrics.proto} FCT (ms): {ssird_exp_metrics.fct_list}\nApp Gdpt (overall): {ssird_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {ssird_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {ssird_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {ssird_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
 
             dctcp_result = self.dctcp_raw_experiment_results_list[i]
@@ -855,7 +857,7 @@ class ExperimentGroup:
                 dctcp_exp_metrics = None
             else:
                 logger.info(f"Processing DCTCP results exp_id {dctcp_result.exp_id}:: {dctcp_result.num_flows}flo-{dctcp_result.target_flow_rate_gbps}Gbps_target")
-                dctcp_exp_metrics = dctcp_result.process_results_fct()
+                dctcp_exp_metrics, dctcp_flow_stats_dict = dctcp_result.process_results_fct()
                 logger.info(f"{dctcp_exp_metrics.proto} FCT (ms): {dctcp_exp_metrics.fct_list}\nApp Gdpt (overall): {dctcp_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {dctcp_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {dctcp_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {dctcp_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
 
             processed_result = ExperimentResultsProcessed(ssird_exp_metrics, dctcp_exp_metrics)
@@ -881,7 +883,7 @@ class ExperimentGroup:
                                               num_flows=num_flows,
                                               flow_spec_list=flow_spec_list_list[i],
                                               target_flow_rate_gbps=target_flow_rate_gbps)
-            exp_metrics = exp_output_raw.process_results_fct() 
+            exp_metrics, flow_stats_dict = exp_output_raw.process_results_fct() 
             if (SSIRD_PROTO_NAME in proto):
                 processed_result = ExperimentResultsProcessed(ssird_experiment_metrics=exp_metrics)
             elif (DCTCP_PROTO_FAMILY_NAME in proto):
@@ -905,19 +907,8 @@ class ExperimentGroup:
         print(f"* SSIRD FCT: {exp_metrics.ssird_fct_list}")
         print(f"* DCTCP FCT: {exp_metrics.dctcp_fct_list}")
 
-        return exp_metrics
+        return exp_metrics, flow_stats_dict
 
-def init_logs(experiment_family, logs_file_name, log_level=logging.DEBUG):
-    full_rel_path = f"{LOGS_REL_PATH}{experiment_family}/"
-    Path(full_rel_path).mkdir(parents=True, exist_ok=True) 
-    logs_file_path = full_rel_path + logs_file_name
-    logging.basicConfig(
-        level=log_level,
-        handlers=[
-            logging.FileHandler(logs_file_path, mode='w'),
-            logging.StreamHandler()
-        ]
-    )
 
 class FlowSpec:
     def __init__(self, num_byteloads, byteload_size_B_list, flow_size_B, interval_us_list, byteload_rel_timestamp_us_list, total_flow_send_duration_us, flow_rate_bps):
@@ -1234,7 +1225,7 @@ class FlowSpecGenerator:
         self.max_flow_interarr_ns = max_flow_interarr_ns
         self.is_use_poisson_flow_interarr = is_use_poisson_flow_interarr
 
-        self.flow_rate_bps = (byteload_size_B * 8) / (self.target_mean_flow_interarr_ns * pow(10,-9))
+        self.flow_rate_bps = (byteload_size_B * 8) / (self.target_mean_byteload_interval_ns * pow(10,-9))
 
     def generate_poisson_flows(self):
         if (self.is_use_poisson_num_byteloads):
@@ -1310,6 +1301,19 @@ class FlowSpecGenerator:
         )
         flow_start_times_ns = np.cumsum(sampled_flow_interarr_ns)
         return flow_start_times_ns.tolist()
+
+
+def init_logs(experiment_family, logs_file_name, log_level=logging.DEBUG):
+    full_rel_path = f"{LOGS_REL_PATH}{experiment_family}/"
+    Path(full_rel_path).mkdir(parents=True, exist_ok=True) 
+    logs_file_path = full_rel_path + logs_file_name
+    logging.basicConfig(
+        level=log_level,
+        handlers=[
+            logging.FileHandler(logs_file_path, mode='w'),
+            logging.StreamHandler()
+        ]
+    )
 
 # if __name__ == "__main__":
 
