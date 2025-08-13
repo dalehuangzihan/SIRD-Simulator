@@ -183,7 +183,8 @@ def do_comparison_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_
     plot_qing_comparison_graph_trimmed(ssird_qing_padded, dctcp_qing_padded, time_axis_padded_s, experiment_name, nw_elem, src, dst, title_addendum)
     
 def do_comparison_graph_trimmed_new(nw_elem, src, dst, num_flows, target_per_host_perflo_gdpt_gbps, byteload_size_B, inter_byteload_period_nanosec, experiment_date, title_addendum = ""):
-    experiment_name = title_addendum + "_" + dale_experiment_rig.Experiment.get_experiment_name(num_flows, target_per_host_perflo_gdpt_gbps, byteload_size_B, inter_byteload_period_nanosec, experiment_date)
+    # experiment_name = title_addendum + "_" + dale_experiment_rig.Experiment.get_experiment_name(num_flows, target_per_host_perflo_gdpt_gbps, byteload_size_B, inter_byteload_period_nanosec, experiment_date)
+    experiment_info = f"{title_addendum}_{nw_elem}_{src}_{dst}"
 
     ssird_subpkt_result = dale_compare_thrpt_vs_gdpt.get_qts_result_new(dale_compare_thrpt_vs_gdpt.SSIRD_PROTO_NAME, nw_elem, src, dst, num_flows, target_per_host_perflo_gdpt_gbps, byteload_size_B, inter_byteload_period_nanosec, experiment_date, title_addendum)
     dctcp_subpkt_result = dale_compare_thrpt_vs_gdpt.get_qts_result_new(dale_compare_thrpt_vs_gdpt.DCTCP_PROTO_NAME, nw_elem, src, dst, num_flows, target_per_host_perflo_gdpt_gbps, byteload_size_B, inter_byteload_period_nanosec, experiment_date, title_addendum)
@@ -196,11 +197,11 @@ def do_comparison_graph_trimmed_new(nw_elem, src, dst, num_flows, target_per_hos
     num_datapoints = len(time_axis_padded_s)
     ssird_thrpt_padded = ssird_subpkt_result.throughput_gbps_list + [0]*(num_datapoints - len(ssird_subpkt_result.throughput_gbps_list))
     dctcp_thrpt_padded = dctcp_subpkt_result.throughput_gbps_list + [0]*(num_datapoints - len(dctcp_subpkt_result.throughput_gbps_list))
-    plot_thrpt_comparison_graph_trimmed(ssird_thrpt_padded, dctcp_thrpt_padded, time_axis_padded_s, experiment_name, title_addendum)
+    plot_thrpt_comparison_graph_trimmed(ssird_thrpt_padded, dctcp_thrpt_padded, time_axis_padded_s, experiment_info, title_addendum)
 
     ssird_qing_padded = ssird_subpkt_result.queueing_KB_list +  [0]*(num_datapoints - len(ssird_subpkt_result.queueing_KB_list))
     dctcp_qing_padded = dctcp_subpkt_result.queueing_KB_list +  [0]*(num_datapoints - len(dctcp_subpkt_result.queueing_KB_list))
-    plot_qing_comparison_graph_trimmed(ssird_qing_padded, dctcp_qing_padded, time_axis_padded_s, experiment_name, nw_elem, src, dst, title_addendum)
+    plot_qing_comparison_graph_trimmed(ssird_qing_padded, dctcp_qing_padded, time_axis_padded_s, experiment_info, nw_elem, src, dst, title_addendum)
 
     
 def do_ssird_graph_trimmed(nw_elem, src, dst, num_flows, num_byteloads_per_flow, byteload_size_B, inter_byteload_period_us, title_addendum = ""):
@@ -287,31 +288,31 @@ if __name__ == "__main__":
     # do_comparison_graph_trimmed(TOR, "tor_4", "host_0", 5, 100, 2000, 1, title_addendum="_incast_3to1_5flo_16GbpsFlo_200KBflo")
     # do_comparison_graph_trimmed(TOR, "tor_4", "host_0", 31, 10, 2000, 10, title_addendum="_3to1_incast_test_31flo")
 
-    do_comparison_graph_trimmed_new(
-        nw_elem=TOR,
-        src="tor_4",
-        dst="host_0",
-        num_flows=8,
-        target_per_host_perflo_gdpt_gbps=12,
-        byteload_size_B=1560,
-        inter_byteload_period_nanosec=1000,
-        experiment_date="2025-08-12T_10-09-35Z",
-        title_addendum="_incast_poisson_3to1_8flo_1560B_1us_99pt84Gbps"
+    # do_comparison_graph_trimmed_new(
+    #     nw_elem=TOR,
+    #     src="tor_4",
+    #     dst="host_0",
+    #     num_flows=8,
+    #     target_per_host_perflo_gdpt_gbps=12,
+    #     byteload_size_B=1560,
+    #     inter_byteload_period_nanosec=1000,
+    #     experiment_date="2025-08-12T_10-09-35Z",
+    #     title_addendum="_incast_poisson_3to1_8flo_1560B_1us_99pt84Gbps"
+    # )
 
-    )
+    # do_comparison_graph_trimmed_new(
+    #     nw_elem=TOR,
+    #     src="tor_4",
+    #     dst="host_0",
+    #     num_flows=8,
+    #     target_per_host_perflo_gdpt_gbps=12,
+    #     byteload_size_B=1560,
+    #     inter_byteload_period_nanosec=1000,
+    #     experiment_date="2025-08-12T_10-09-58Z",
+    #     title_addendum="_incast_poisson_3to1_8flo_1560B_1us_99pt84Gbps_fixed_bload"
+    # )
 
-    do_comparison_graph_trimmed_new(
-        nw_elem=TOR,
-        src="tor_4",
-        dst="host_0",
-        num_flows=8,
-        target_per_host_perflo_gdpt_gbps=12,
-        byteload_size_B=1560,
-        inter_byteload_period_nanosec=1000,
-        experiment_date="2025-08-12T_10-09-58Z",
-        title_addendum="_incast_poisson_3to1_8flo_1560B_1us_99pt84Gbps_fixed_bload"
-    )
-
+    ''' --- incast 3to1 8flo 1458B 1us --- '''
     do_comparison_graph_trimmed_new(
         nw_elem=TOR,
         src="tor_4",
@@ -323,39 +324,87 @@ if __name__ == "__main__":
         experiment_date="2025-08-12T_17-04-38Z",
         title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps"
     )
-
     do_comparison_graph_trimmed_new(
-        nw_elem=TOR,
-        src="tor_4",
-        dst="host_0",
+        nw_elem=HOST,
+        src="host_1",
+        dst="tor_4",
         num_flows=8,
         target_per_host_perflo_gdpt_gbps=12,
         byteload_size_B=1458,
         inter_byteload_period_nanosec=1000,
-        experiment_date="2025-08-12T_17-00-32Z",
-        title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps_fixed_bload"
+        experiment_date="2025-08-12T_17-04-38Z",
+        title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps"
     )
-
     do_comparison_graph_trimmed_new(
-        nw_elem=TOR,
-        src="tor_4",
-        dst="host_0",
+        nw_elem=HOST,
+        src="host_2",
+        dst="tor_4",
         num_flows=8,
         target_per_host_perflo_gdpt_gbps=12,
         byteload_size_B=1458,
         inter_byteload_period_nanosec=1000,
-        experiment_date="2025-08-12T_18-31-32Z",
-        title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps_same_flo_interarr_same_interval"
+        experiment_date="2025-08-12T_17-04-38Z",
+        title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps"
+    )
+    do_comparison_graph_trimmed_new(
+        nw_elem=HOST,
+        src="host_3",
+        dst="tor_4",
+        num_flows=8,
+        target_per_host_perflo_gdpt_gbps=12,
+        byteload_size_B=1458,
+        inter_byteload_period_nanosec=1000,
+        experiment_date="2025-08-12T_17-04-38Z",
+        title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps"
     )
 
+    ''' --- incast 3to1 2flo 1458B 1us (low load) --- '''
     do_comparison_graph_trimmed_new(
         nw_elem=TOR,
         src="tor_4",
         dst="host_0",
-        num_flows=8,
+        num_flows=2,
         target_per_host_perflo_gdpt_gbps=12,
-        byteload_size_B=1560,
+        byteload_size_B=1458,
         inter_byteload_period_nanosec=1000,
-        experiment_date="2025-08-12T_18-33-42Z",
-        title_addendum="_incast_poisson_3to1_8flo_1560B_1us_99pt84Gbps_same_flo_interarr_same_interval"
+        experiment_date="2025-08-13T_11-34-13Z",
+        title_addendum="_incast_poisson_3to1_2flo_1458B_1us_23pt33Gbps"
     )
+
+    
+
+    # do_comparison_graph_trimmed_new(
+    #     nw_elem=TOR,
+    #     src="tor_4",
+    #     dst="host_0",
+    #     num_flows=8,
+    #     target_per_host_perflo_gdpt_gbps=12,
+    #     byteload_size_B=1458,
+    #     inter_byteload_period_nanosec=1000,
+    #     experiment_date="2025-08-12T_17-00-32Z",
+    #     title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps_fixed_bload"
+    # )
+
+    # do_comparison_graph_trimmed_new(
+    #     nw_elem=TOR,
+    #     src="tor_4",
+    #     dst="host_0",
+    #     num_flows=8,
+    #     target_per_host_perflo_gdpt_gbps=12,
+    #     byteload_size_B=1458,
+    #     inter_byteload_period_nanosec=1000,
+    #     experiment_date="2025-08-12T_18-31-32Z",
+    #     title_addendum="_incast_poisson_3to1_8flo_1458B_1us_93pt312Gbps_same_flo_interarr_same_interval"
+    # )
+
+    # do_comparison_graph_trimmed_new(
+    #     nw_elem=TOR,
+    #     src="tor_4",
+    #     dst="host_0",
+    #     num_flows=8,
+    #     target_per_host_perflo_gdpt_gbps=12,
+    #     byteload_size_B=1560,
+    #     inter_byteload_period_nanosec=1000,
+    #     experiment_date="2025-08-12T_18-33-42Z",
+    #     title_addendum="_incast_poisson_3to1_8flo_1560B_1us_99pt84Gbps_same_flo_interarr_same_interval"
+    # )

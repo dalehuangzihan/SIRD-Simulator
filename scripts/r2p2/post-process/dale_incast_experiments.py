@@ -420,6 +420,33 @@ if __name__ == "__main__":
     #     log_level=dale_experiment_rig.LOG_LEVEL_2
     # )
 
+    ''' 
+        3 to 1 incast experiment (low load)
+            * 2flo
+            * 1458B per bload
+            * 1000ns intervals (avg)
+            * mean num bloads = 500
+            * 23.33Gbps total per sender
+            * 69.984Gbps total at downlink
+    '''
+    experiment_incast_poisson_flows(
+        topo_yaml_file="4-hosts.yaml",
+        src_dst_pairs_list=[(1,0), (2,0), (3,0)],
+        num_flows=2,
+        byteload_size_B=1458,
+        target_mean_byteload_interval_nanosec=1000,
+        target_mean_num_byteloads=500,
+        target_mean_flow_interarr_ns=1000,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_num_byteloads=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.01],
+        dctcp_sim_dur_list=[0.01],
+        is_full_postproc=True,
+        title_addendum="_incast_poisson_3to1_2flo_1458B_1us_23pt33Gbps",
+        log_level=dale_experiment_rig.LOG_LEVEL_2
+    )
+
     # ''' 
     #     3 to 1 incast experiment
     #         * 8flo
@@ -677,31 +704,31 @@ if __name__ == "__main__":
     #     log_level=dale_experiment_rig.LOG_LEVEL_2
     # )
 
-    ''' 
-        9 to 1 incast experiment
-            * 8flo
-            * 1560B per bload
-            * 1000ns intervals (avg)
-            * mean num bloads = 500
-            * 99.84Gbps total per sender
-    '''
-    experiment_incast_poisson_flows(
-        topo_yaml_file='10-hosts-dumbbell.yaml',
-        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0)],
-        num_flows=8,
-        byteload_size_B=1560,
-        target_mean_byteload_interval_nanosec=1000,
-        target_mean_num_byteloads=500,
-        target_mean_flow_interarr_ns=1000,
-        is_use_poisson_byteload_intervals=True,
-        is_use_poisson_num_byteloads=True,
-        is_use_poisson_flow_interarr=True,
-        ssird_sim_dur_list=[0.1],
-        dctcp_sim_dur_list=[0.1],
-        is_full_postproc=True,
-        title_addendum="_incast_poisson_9to1_8flo_1560B_1us_99pt84Gbps",
-        log_level=dale_experiment_rig.LOG_LEVEL_2
-    )   
+    # ''' 
+    #     9 to 1 incast experiment
+    #         * 8flo
+    #         * 1560B per bload
+    #         * 1000ns intervals (avg)
+    #         * mean num bloads = 500
+    #         * 99.84Gbps total per sender
+    # '''
+    # experiment_incast_poisson_flows(
+    #     topo_yaml_file='10-hosts-dumbbell.yaml',
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0)],
+    #     num_flows=8,
+    #     byteload_size_B=1560,
+    #     target_mean_byteload_interval_nanosec=1000,
+    #     target_mean_num_byteloads=500,
+    #     target_mean_flow_interarr_ns=1000,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_num_byteloads=True,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.1],
+    #     dctcp_sim_dur_list=[0.1],
+    #     is_full_postproc=True,
+    #     title_addendum="_incast_poisson_9to1_8flo_1560B_1us_99pt84Gbps",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2
+    # )   
 
     # ''' === RTT = 1ms === '''
 
