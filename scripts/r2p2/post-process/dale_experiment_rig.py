@@ -709,9 +709,8 @@ class Experiment():
         return overall_duration_s * multiplication_factor
 
     @staticmethod
-    def get_experiment_name(num_flows, target_flow_rate_gbps, byteload_size_B, byteload_interval_ns, experiment_date=None):
-        if experiment_date is None:
-            return "nodate"
+    def get_experiment_name(num_flows, target_flow_rate_gbps, byteload_size_B, byteload_interval_ns, experiment_date="nodate"):
+        # if experiment_date is None:
             # experiment_date = Experiment.get_date_now_formatted()
         return "{}flo-{}Gbps-{}B-{}ns-{}".format(num_flows, round(target_flow_rate_gbps), byteload_size_B, byteload_interval_ns, experiment_date)
     
@@ -763,6 +762,7 @@ class ExperimentGroup:
 
     def check_inputs(self):
 
+        print(len(self.byteload_size_B_list), len(self.target_mean_byteload_interval_nanosec_list), len(self.src_dst_pairs_to_flowspecs_dict_list))
         assert(len(set([
             len(self.byteload_size_B_list),
             len(self.target_mean_byteload_interval_nanosec_list),
