@@ -570,8 +570,8 @@ if __name__ == "__main__":
     #     is_use_poisson_byteload_intervals=True,
     #     is_use_poisson_num_byteloads=True,
     #     is_use_poisson_flow_interarr=True,
-    #     ssird_sim_dur_list=[0.1],
-    #     dctcp_sim_dur_list=[0.1],
+    #     ssird_sim_dur_list=[0.01],
+    #     dctcp_sim_dur_list=[0.01],
     #     is_full_postproc=True,
     #     title_addendum="_incast_poisson_9to1_8flo_1458B_1us_93pt312Gbps",
     #     log_level=dale_experiment_rig.LOG_LEVEL_2
@@ -723,8 +723,8 @@ if __name__ == "__main__":
     #     is_use_poisson_byteload_intervals=True,
     #     is_use_poisson_num_byteloads=True,
     #     is_use_poisson_flow_interarr=True,
-    #     ssird_sim_dur_list=[0.1],
-    #     dctcp_sim_dur_list=[0.1],
+    #     ssird_sim_dur_list=[0.01],
+    #     dctcp_sim_dur_list=[0.01],
     #     is_full_postproc=True,
     #     title_addendum="_incast_poisson_9to1_8flo_1560B_1us_99pt84Gbps",
     #     log_level=dale_experiment_rig.LOG_LEVEL_2
