@@ -352,7 +352,7 @@ class ExperimentOutputRaw:
     '''
     Is the raw un-processed experiment outputs
     '''
-    def __init__(self, exp_id, experiment_family, experiment_name, app_trace_file_path, proto, src_dst_pairs_list, num_flows, flow_spec_list, target_flow_rate_gbps):
+    def __init__(self, exp_id, experiment_family, experiment_name, app_trace_file_path, proto, src_dst_pairs_list, src_dst_pairs_to_flowspecs_dict, num_flows, target_flow_rate_gbps):
         self.exp_id = exp_id
         self.experiment_family = experiment_family
         self.experiment_name = experiment_name
@@ -361,7 +361,7 @@ class ExperimentOutputRaw:
         self.app_trace_file_path = app_trace_file_path
 
         self.num_flows = num_flows
-        self.flow_spec_list = flow_spec_list
+        self.src_dst_pairs_to_flowspecs_dict = src_dst_pairs_to_flowspecs_dict
         self.target_flow_rate_gbps = target_flow_rate_gbps
 
     def process_results_fct(self):
@@ -369,10 +369,11 @@ class ExperimentOutputRaw:
         
         d = {}
         for src, dst in self.src_dst_pairs_list:
+            flow_spec_list, _ = self.src_dst_pairs_to_flowspecs_dict[(src,dst)]
             for flow_id in range(0, self.num_flows):
                 src_dst_pair = sorted([src,dst]) # each src-dst pair is unique, so both h0->h1 and h1->h0 flows should be treated as under the same src-dst pair
                 dict_key = (src_dst_pair[0], src_dst_pair[1], flow_id)
-                d[dict_key] = FlowStats(self.proto, src, dst, flow_id, self.flow_spec_list[flow_id].num_byteloads, self.flow_spec_list[flow_id].byteload_size_B_list)
+                d[dict_key] = FlowStats(self.proto, src, dst, flow_id, flow_spec_list[flow_id].num_byteloads, flow_spec_list[flow_id].byteload_size_B_list)
         flow_stats_dict = collections.OrderedDict(sorted(d.items()))
         del d
 
@@ -565,7 +566,7 @@ class FlowStats:
 
 class Experiment():
 
-    def __init__(self, experiment_family, experiment_name, proto, topo_yaml_file, src_dst_pairs_list, num_flows, target_flow_rate_gbps, flow_start_times_us_list, flow_spec_list, is_full_postproc=False):
+    def __init__(self, experiment_family, experiment_name, proto, topo_yaml_file, src_dst_pairs_list, num_flows, target_flow_rate_gbps, src_dst_pairs_to_flowspecs_dict, is_full_postproc=False):
         self.experiment_family = experiment_family
         self.proto = proto
         self.topo_yaml_file = topo_yaml_file
@@ -573,7 +574,7 @@ class Experiment():
         self.src_dst_pairs_list = src_dst_pairs_list
         self.num_flows = num_flows
         self.target_flow_rate_gbps = target_flow_rate_gbps
-        self.flow_spec_list = flow_spec_list
+        self.src_dst_pairs_to_flowspecs_dict = src_dst_pairs_to_flowspecs_dict
         self.experiment_name = experiment_name 
 
         self.mri_input_dir = PATH_TO_EXPERIMENTS_INPUTS + experiment_family + "/"
@@ -586,15 +587,12 @@ class Experiment():
         self.create_plots = f"{int(is_full_postproc)}"
         self.delete_current = "0"
 
-        self.flow_start_times_us_list = flow_start_times_us_list
-        self.num_flows = len(flow_start_times_us_list)
-
     def run(self, exp_id, ssird_sim_dur_l, dctcp_sim_dur_l, log_level):
         logger.info("\n=====\nExecute experiment " + self.experiment_name)
         logger.info(f'Flags: {self.run_simulations}, {self.run_post_proc}, {self.create_timeseires}, {self.create_plots}, {self.delete_current}')
         logger.info("ssird_sim_duration={:f}; dctcp_sim_duration={:f}".format(ssird_sim_dur_l, dctcp_sim_dur_l))
 
-        self.prep_experiment_input(self.src_dst_pairs_list, self.flow_spec_list, self.flow_start_times_us_list)
+        self.prep_experiment_input(self.src_dst_pairs_list, self.src_dst_pairs_to_flowspecs_dict)
         ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(
             ssird_sim_duration=ssird_sim_dur_l,
             dctcp_sim_duration=dctcp_sim_dur_l,
@@ -620,14 +618,14 @@ class Experiment():
             app_trace_file_path,
             self.proto,
             self.src_dst_pairs_list,
+            self.src_dst_pairs_to_flowspecs_dict,
             self.num_flows,
-            self.flow_spec_list,
             self.target_flow_rate_gbps
         )
 
         return experiment_results_raw
 
-    def prep_experiment_input(self, src_dst_pairs_list, flow_spec_list, flow_start_times_list):
+    def prep_experiment_input(self, src_dst_pairs_list, src_dst_pairs_to_flowspecs_dict):
         logger.info("-----\nPreparing experiment input MRIs")
         try:
             logger.info("### Creating MRI inputs parent dir: " + self.mri_input_dir)
@@ -638,7 +636,8 @@ class Experiment():
         mri = ManualReqInterval(self.mri_input_dir, self.experiment_name)
         multiflow_obj_list = []
         for src, dst in src_dst_pairs_list:
-            multiflow_obj = MultiFlow(src, dst, flow_spec_list, flow_start_times_list)  
+            flow_spec_list, flow_start_times_us_list = src_dst_pairs_to_flowspecs_dict[(src,dst)]
+            multiflow_obj = MultiFlow(src, dst, flow_spec_list, flow_start_times_us_list)  
             multiflow_obj_list.append(multiflow_obj)
         mri_filepath = mri.create_p2p_mri(multiflow_obj_list)
         return mri_filepath
@@ -712,7 +711,8 @@ class Experiment():
     @staticmethod
     def get_experiment_name(num_flows, target_flow_rate_gbps, byteload_size_B, byteload_interval_ns, experiment_date=None):
         if experiment_date is None:
-            experiment_date = Experiment.get_date_now_formatted()
+            return "nodate"
+            # experiment_date = Experiment.get_date_now_formatted()
         return "{}flo-{}Gbps-{}B-{}ns-{}".format(num_flows, round(target_flow_rate_gbps), byteload_size_B, byteload_interval_ns, experiment_date)
     
     @staticmethod
@@ -731,8 +731,7 @@ class ExperimentGroup:
                     byteload_size_B_list,
                     target_mean_byteload_interval_nanosec_list,
                     target_flow_rate_gbps,
-                    flow_start_times_us_list_list,
-                    flow_spec_list_list,
+                    src_dst_pairs_to_flowspecs_dict_list,
                     ssird_sim_dur_list,
                     dctcp_sim_dur_list,
                     is_full_postproc=False,
@@ -749,28 +748,35 @@ class ExperimentGroup:
         self.byteload_size_B_list = byteload_size_B_list
         self.target_mean_byteload_interval_nanosec_list = target_mean_byteload_interval_nanosec_list
         self.target_flow_rate_gbps = target_flow_rate_gbps
-        self.flow_start_times_us_list_list = flow_start_times_us_list_list
-        self.flow_spec_list_list = flow_spec_list_list
+        self.src_dst_pairs_to_flowspecs_dict_list = src_dst_pairs_to_flowspecs_dict_list
         self.is_full_postproc = is_full_postproc
         self.ssird_sim_dur_list = ssird_sim_dur_list
         self.dctcp_sim_dur_list = dctcp_sim_dur_list
         self.title_addendum = title_addendum
         self.log_level = log_level
 
-        # check inputs
-        assert(len(set([
-            len(byteload_size_B_list),
-            len(target_mean_byteload_interval_nanosec_list),
-            len(flow_start_times_us_list_list),
-            len(flow_spec_list_list),
-            ])) == 1)
-        self.num_experiments = len(flow_spec_list_list)
-        assert(all(len(flow_spec_list) == num_flows for flow_spec_list in flow_spec_list_list))
-        assert(all(len(flow_start_times) == num_flows for flow_start_times in flow_start_times_us_list_list))
+        self.check_inputs()
 
         self.ssird_raw_experiment_results_list = [None] * self.num_experiments
         self.dctcp_raw_experiment_results_list = [None] * self.num_experiments
         self.processed_results_list = []
+
+    def check_inputs(self):
+
+        assert(len(set([
+            len(self.byteload_size_B_list),
+            len(self.target_mean_byteload_interval_nanosec_list),
+            len(self.src_dst_pairs_to_flowspecs_dict_list),
+            ])) == 1)
+        self.num_experiments = len(self.src_dst_pairs_to_flowspecs_dict_list)
+
+        for src_dst_pairs_to_flowspecs_dict in self.src_dst_pairs_to_flowspecs_dict_list:
+            assert(len(self.src_dst_pairs_list) == len(src_dst_pairs_to_flowspecs_dict))
+            for src, dst in self.src_dst_pairs_list:
+                assert((src,dst) in src_dst_pairs_to_flowspecs_dict)
+                flow_spec_list, flow_start_times_us_list = src_dst_pairs_to_flowspecs_dict[(src,dst)]
+                assert(len(flow_spec_list) == self.num_flows)
+                assert(len(flow_start_times_us_list) == self.num_flows)
 
     def perform_experiment(self):
         self.run_group()
@@ -798,8 +804,7 @@ class ExperimentGroup:
                         self.src_dst_pairs_list,
                         self.num_flows,
                         self.target_flow_rate_gbps,
-                        self.flow_start_times_us_list_list[exp_id],
-                        self.flow_spec_list_list[exp_id],
+                        self.src_dst_pairs_to_flowspecs_dict_list[exp_id],
                         self.is_full_postproc
                     ) 
 
@@ -870,6 +875,7 @@ class ExperimentGroup:
 
     @staticmethod
     def process_side_loaded_results(proto, src_dst_pairs_list, num_flows, flow_spec_list_list, target_flow_rate_gbps, app_trace_paths_list):
+        # TODO: update to use src_dst_pairs_to_flowspecs_dict
         # NOTE: this mtd can only read results for 1 proto at a time
         assert(len(set( [len(flow_spec_list_list), len(app_trace_paths_list)] )) == 1)
         processed_results_list = []
@@ -881,7 +887,7 @@ class ExperimentGroup:
                                               proto=proto,
                                               src_dst_pairs_list=src_dst_pairs_list,
                                               num_flows=num_flows,
-                                              flow_spec_list=flow_spec_list_list[i],
+                                              src_dst_pairs_to_flowspecs_dict=flow_spec_list_list[i],
                                               target_flow_rate_gbps=target_flow_rate_gbps)
             exp_metrics, flow_stats_dict = exp_output_raw.process_results_fct() 
             if (SSIRD_PROTO_NAME in proto):
@@ -943,7 +949,45 @@ class FlowSpec:
         }
 
     @staticmethod
+    def convert_src_dst_pairs_flowspec_dict_list_to_jsondict(src_dst_pairs_to_flowspecs_dict_list):
+        all_experiment_inputs_json = {}
+        for i in range(len(src_dst_pairs_to_flowspecs_dict_list)):
+            src_dst_pairs_to_flowspecs_dict = src_dst_pairs_to_flowspecs_dict_list[i]
+            src_dst_pairs_to_flowspecs_json = {}
+            for src, dst in src_dst_pairs_to_flowspecs_dict:
+                key = f"{src},{dst}"
+                flow_spec_list, flow_start_times_us_list = src_dst_pairs_to_flowspecs_dict[(src,dst)]
+                val = FlowSpec.flow_spec_list_to_dict(flow_spec_list, flow_start_times_us_list)
+                src_dst_pairs_to_flowspecs_json[key] = val
+
+            all_experiment_inputs_json[i] = src_dst_pairs_to_flowspecs_json
+        return all_experiment_inputs_json
+
+
+    @staticmethod
+    def parse_src_dst_pairs_flowspec_dict_list_from_jsonfile(parent_dir, file_name):
+        file_path = parent_dir + file_name
+        with open(file_path, 'r') as f:
+            all_experiment_inputs_json = json.load(f)
+
+        src_dst_pairs_to_flowspecs_dict_list = []
+        for exp_id in range(len(all_experiment_inputs_json)):
+            exp_input_json = all_experiment_inputs_json[str(exp_id)]
+            src_dst_pairs_to_flowspecs_dict = {}
+            for src_dst_str, flow_spec_list_dict in exp_input_json.items():
+                src_dst_list = src_dst_str.split(",")
+                assert(len(src_dst_list) == 2)
+                src = src_dst_list[0]
+                dst = src_dst_list[1]
+                flow_spec_list, flow_start_times_us_list = FlowSpec.dict_to_flow_spec_list_info(flow_spec_list_dict)
+                src_dst_pairs_to_flowspecs_dict[(src,dst)] = (flow_spec_list, flow_start_times_us_list)
+            src_dst_pairs_to_flowspecs_dict_list.append(src_dst_pairs_to_flowspecs_dict)
+
+        return src_dst_pairs_to_flowspecs_dict_list
+
+    @staticmethod
     def flow_spec_list_to_dict(flow_spec_list, flow_start_times_us_list):
+        # TODO: update to use src_dst_pairs_to_flowspecs_dict
         assert(len(flow_spec_list) == len(flow_start_times_us_list))
         full_dict = {
             'flow_start_times_us_list': flow_start_times_us_list,
@@ -954,7 +998,27 @@ class FlowSpec:
         return full_dict
 
     @staticmethod
+    def dict_to_flow_spec_list_info(dict):
+        flow_start_times_us_list = dict['flow_start_times_us_list']
+        flow_spec_dict_dict = dict['flow_spec_dict_dict']
+        flow_spec_list = []
+        for _, flow_spec_dict in flow_spec_dict_dict.items():
+            flow_spec = FlowSpec(
+                num_byteloads=flow_spec_dict['num_byteloads'],
+                byteload_size_B_list=flow_spec_dict['byteload_size_B_list'],
+                flow_size_B=flow_spec_dict['flow_size_B'],
+                interval_us_list=flow_spec_dict['interval_us_list'],
+                byteload_rel_timestamp_us_list=flow_spec_dict['byteload_timestamp_us_list'],
+                total_flow_send_duration_us=flow_spec_dict['total_flow_send_duration_us'],
+                flow_rate_bps=flow_spec_dict['flow_rate_bps']
+            )
+            flow_spec_list.append(flow_spec)
+        
+        return flow_spec_list, flow_start_times_us_list
+
+    @staticmethod
     def flow_spec_list_list_to_dict(flow_spec_list_list, flow_start_times_us_list_list):
+        # TODO: update to use src_dst_pairs_to_flowspecs_dict
         assert(len(flow_spec_list_list) == len(flow_start_times_us_list_list))
         num_experiments = len(flow_spec_list_list)
         exp_flows_dict_dict = {}
@@ -966,14 +1030,16 @@ class FlowSpec:
         return exp_flows_dict_dict
 
     @staticmethod
-    def flow_specs_dict_to_file(flow_spec_list_full_dict, parent_dir, file_name):
+    def write_jsondict_to_jsonfile(dict, parent_dir, file_name):
         Path(parent_dir).mkdir(parents=True, exist_ok=True)
         file_path = parent_dir + file_name
         with open(file_path, 'w') as file:
-            json.dump(flow_spec_list_full_dict, file, indent=None)
+            json.dump(dict, file, indent=None)
+            # json.dump(dict, file, indent=4)
 
     @staticmethod
     def parse_flow_specs_json_file(parent_dir, file_name):
+        # TODO: update to use src_dst_pairs_to_flowspecs_dict
         file_path = parent_dir + file_name
         with open(file_path, 'r') as f:
             data = json.load(f)
@@ -997,6 +1063,7 @@ class FlowSpec:
 
     @staticmethod
     def parse_multi_exp_flow_specs_json_file(parent_dir, file_name):
+        # TODO: update to use src_dst_pairs_to_flowspecs_dict
         file_path = parent_dir + file_name
         with open(file_path, 'r') as f:
             data = json.load(f)
@@ -1048,7 +1115,7 @@ class PoissonIntervalGenerator:
         self.check_generator_params()
 
     def generate_interval_samples_ns_list(self):
-        logging.info(f"PoissonIntervalGenerator: Genrate Byteload Intervals:\ntarget_mean_ns={self.target_mean_interval_ns}\nmin_interval_ns={self.min_interval_ns}\nmax_interval_ns={self.max_interval_ns}\nnum_intervals={self.num_intervals}\nnum_samples_needed={self.num_samples_needed}")
+        logging.info(f"PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns={self.target_mean_interval_ns}, min_interval_ns={self.min_interval_ns}, max_interval_ns={self.max_interval_ns}, num_intervals={self.num_intervals}, num_samples_needed={self.num_samples_needed})")
         # print(f"PoissonIntervalGenerator: Generate Byteload Intervals:\ntarget_mean_ns={self.target_mean_interval_ns}\nmin_interval_ns={self.min_interval_ns}\nmax_interval_ns={self.max_interval_ns}\nnum_intervals={self.num_intervals}\nnum_samples_needed={self.num_samples_needed}")
 
         lam = self.solve_lambda_for_mean_discrete(mu=self.target_mean_interval_ns, L=self.min_interval_ns, U=self.max_interval_ns)
@@ -1247,6 +1314,7 @@ class FlowSpecGenerator:
 
         byteload_intervals_us_list_list = []
         for i in range(0, self.num_flows):
+            logging.info(f"\n  Generating intervals for flow={i}")
             num_intervals = num_byteloads_list[i] - 1
             pig = PoissonIntervalGenerator(self.target_mean_byteload_interval_ns, self.max_interval_ns, self.min_interval_ns, num_intervals, num_samples_needed=1)
             if (self.is_use_poisson_byteload_intervals):

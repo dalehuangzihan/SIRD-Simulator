@@ -275,7 +275,7 @@ def experiment_incast_poisson_flows(
 
     # Back up flow spec list # TODO: make infra to back up flow spec list list
     flow_spec_dict = dale_experiment_rig.FlowSpec.flow_spec_list_to_dict(flow_spec_list, flow_start_times_us_list)
-    dale_experiment_rig.FlowSpec.flow_specs_dict_to_file(flow_spec_dict, dale_experiment_rig.FLOW_SPECS_JSON_PATH, logs_file_name+".json")
+    dale_experiment_rig.FlowSpec.write_jsondict_to_jsonfile(flow_spec_dict, dale_experiment_rig.FLOW_SPECS_JSON_PATH, logs_file_name+".json")
 
     flow_rate_gbps_list = [round(f.flow_rate_bps*pow(10,-9),6) for f in flow_spec_list]
     flow_size_B_list = [f.flow_size_B for f in flow_spec_list]
