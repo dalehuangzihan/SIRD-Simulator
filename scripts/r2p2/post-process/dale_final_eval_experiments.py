@@ -2,10 +2,10 @@ import dale_experiment_rig
 
 logger = dale_experiment_rig.logging.getLogger(__name__)
 
-def experiment_incast(
+def run_experiment(
         topo_yaml_file,
         src_dst_pairs_list,
-        num_flows,
+        num_flows_list,
         byteload_size_B_list,
         target_mean_byteload_interval_nanosec_list,
         target_mean_num_byteloads_list,
@@ -16,22 +16,30 @@ def experiment_incast(
         ssird_sim_dur_list,
         dctcp_sim_dur_list,
         is_full_postproc=True,
+        title_prefix="",
         title_addendum="",
         log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date="nodate"
     ):
 
-    experiment_family = f"FE_Incast_{title_addendum}"
+    experiment_family = f"{title_prefix}"
     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME]
     # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME]
     # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME]
 
-    assert(len(byteload_size_B_list) == len(target_mean_byteload_interval_nanosec_list))
+    assert(len(set([
+            len(num_flows_list),
+            len(byteload_size_B_list),
+            len(target_mean_byteload_interval_nanosec_list),
+            len(target_mean_num_byteloads_list),
+            len(ssird_sim_dur_list),
+            len(dctcp_sim_dur_list)
+        ])) == 1)
     num_of_experiments = len(byteload_size_B_list)
     target_flow_rate_gbps = (byteload_size_B_list[0] * 8) / (target_mean_byteload_interval_nanosec_list[0] * pow(10,-9)) * pow(10, -9)
 
-    logs_file_name = f"fe_incast_{len(src_dst_pairs_list)}to1_{title_addendum}"
-    dale_experiment_rig.init_logs(experiment_family, logs_file_name+".log")
+    logs_file_name = f"{experiment_family}{len(src_dst_pairs_list)}to1{title_addendum}_{experiment_date}"
+    dale_experiment_rig.init_logs(f"{experiment_family}{title_addendum}", logs_file_name+".log")
 
 
     src_dst_pairs_to_flowspecs_dict_list = [] # list of src_dst_pairs_to_flowspecs_dict objs, one per experiment
@@ -40,6 +48,7 @@ def experiment_incast(
 
     for i in range(0, num_of_experiments):
         logger.info(f"\n* Generating flows for experiment {i} ---")
+        num_flows = num_flows_list[i]
         byteload_size_B = byteload_size_B_list[i]
         target_mean_byteload_interval_nanosec = target_mean_byteload_interval_nanosec_list[i]
         target_mean_num_byteloads = target_mean_num_byteloads_list[i]
@@ -94,13 +103,13 @@ def experiment_incast(
     flow_send_durations_us_list = [f.total_flow_send_duration_us for f in all_flow_specs_list]
     flow_min_byteload_size_B_list = [min(f.byteload_size_B_list) for f in all_flow_specs_list]
     flow_max_byteload_size_B_list = [max(f.byteload_size_B_list) for f in all_flow_specs_list]
-    flow_min_interval_us = [min(f.interval_us_list) for f in all_flow_specs_list]
-    flow_max_interval_us = [max(f.interval_us_list) for f in all_flow_specs_list]
+    flow_min_interval_us = [min(f.interval_us_list) if len(f.interval_us_list) > 0 else f.interval_us_list for f in all_flow_specs_list]
+    flow_max_interval_us = [max(f.interval_us_list) if len(f.interval_us_list) > 0 else f.interval_us_list for f in all_flow_specs_list]
 
     logger.info(f"Protos tested: {proto_names}")
     logger.info(f"Topo Yaml File: {topo_yaml_file}")
     logger.info(f"Src-Dst pairs list: {src_dst_pairs_list}")
-    logger.info(f"Num Flows: {num_flows}")
+    logger.info(f"Num Flows: {num_flows_list}")
     logger.info(f"Byteload Size (B): {byteload_size_B}")
     logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec_list}")
     logger.info(f"  is_use_poisson_byteload_intervals={is_use_poisson_byteload_intervals}")
@@ -133,7 +142,7 @@ def experiment_incast(
         proto_names,
         topo_yaml_file,
         src_dst_pairs_list,
-        num_flows,
+        num_flows_list,
         byteload_size_B_list,
         target_mean_byteload_interval_nanosec_list,
         target_flow_rate_gbps,
@@ -150,7 +159,7 @@ def experiment_incast(
     logger.info(f"Protos tested: {proto_names}")
     logger.info(f"Topo Yaml File: {topo_yaml_file}")
     logger.info(f"Src-Dst pairs list: {src_dst_pairs_list}")
-    logger.info(f"Num Flows: {num_flows}")
+    logger.info(f"Num Flows: {num_flows_list}")
     logger.info(f"Byteload Size (B): {byteload_size_B}")
     logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec_list}")
     logger.info(f"  is_use_poisson_byteload_intervals={is_use_poisson_byteload_intervals}")
@@ -196,45 +205,69 @@ def incast_9to1_1458B_maxload():
             * mean num bloads = 500
             * 93.312Gbps total per sender
     '''
-    experiment_incast(
+    run_experiment(
         topo_yaml_file='10-hosts-dumbbell.yaml',
         src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0)],
-        num_flows=8,
-        byteload_size_B_list=[1458],
-        target_mean_byteload_interval_nanosec_list=[1000],
-        target_mean_num_byteloads_list=[500],
+        num_flows_list=[2, 8],
+        byteload_size_B_list=[1458, 1458],
+        target_mean_byteload_interval_nanosec_list=[1000, 1000],
+        target_mean_num_byteloads_list=[500, 500],
         target_mean_flow_interarr_ns=1000,
         is_use_poisson_byteload_intervals=True,
-        is_use_poisson_num_byteloads=False,
+        is_use_poisson_num_byteloads=True, # TODO: change to: draw flow size from workload distr
         is_use_poisson_flow_interarr=True,
-        ssird_sim_dur_list=[0.01],
-        dctcp_sim_dur_list=[0.01],
+        ssird_sim_dur_list=[0.01, 0.01],
+        dctcp_sim_dur_list=[0.01, 0.01],
         is_full_postproc=True,
+        title_prefix="FE_Incast_expdistr_flowsize_",
         title_addendum="_incast_poisson_9to1_8flo_1458B_1us_93pt312Gbps",
         log_level=dale_experiment_rig.LOG_LEVEL_2,
-        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+        # experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+        experiment_date="nodate"
     ) 
 
 if __name__ == "__main__":
-    ''' 
-        9 to 1 incast experiment
-        * test
-    '''
-    experiment_incast(
-        topo_yaml_file='10-hosts-dumbbell.yaml',
-        src_dst_pairs_list=[(1,0), (2,0)],
-        num_flows=2,
-        byteload_size_B_list=[2000, 4000],
-        target_mean_byteload_interval_nanosec_list=[2000, 4000],
-        target_mean_num_byteloads_list=[50, 50],
-        target_mean_flow_interarr_ns=2000,
-        is_use_poisson_byteload_intervals=True,
-        is_use_poisson_num_byteloads=False,
-        is_use_poisson_flow_interarr=True,
-        ssird_sim_dur_list=[0.001, 0.001],
-        dctcp_sim_dur_list=[0.001, 0.001],
-        is_full_postproc=True,
-        title_addendum="_rig_test",
-        log_level=dale_experiment_rig.LOG_LEVEL_2,
-        experiment_date="nodate"
-    ) 
+    incast_9to1_1458B_maxload()
+
+    # ''' 
+    #     9 to 1 incast experiment
+    #     * test
+    # '''
+    # run_experiment(
+    #     topo_yaml_file='10-hosts-dumbbell.yaml',
+    #     src_dst_pairs_list=[(1,0), (2,0)],
+    #     num_flows_list=[2, 3],
+    #     byteload_size_B_list=[2000, 4000],
+    #     target_mean_byteload_interval_nanosec_list=[2000, 4000],
+    #     target_mean_num_byteloads_list=[50, 50],
+    #     target_mean_flow_interarr_ns=2000,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_num_byteloads=False,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.001, 0.001],
+    #     dctcp_sim_dur_list=[0.001, 0.001],
+    #     is_full_postproc=True,
+    #     title_prefix="FE_TEST_",
+    #     title_addendum="_rig_test",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2,
+    #     experiment_date="nodate"
+    # ) 
+    # run_experiment(
+    #     topo_yaml_file='10-hosts-dumbbell.yaml',
+    #     src_dst_pairs_list=[(1,0)],
+    #     num_flows_list=[3],
+    #     byteload_size_B_list=[2000],
+    #     target_mean_byteload_interval_nanosec_list=[2000],
+    #     target_mean_num_byteloads_list=[3],
+    #     target_mean_flow_interarr_ns=2000,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_num_byteloads=False,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.001],
+    #     dctcp_sim_dur_list=[0.001],
+    #     is_full_postproc=True,
+    #     title_prefix="FE_test_",
+    #     title_addendum="_rig_test",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2,
+    #     experiment_date="nodate"
+    # ) 
