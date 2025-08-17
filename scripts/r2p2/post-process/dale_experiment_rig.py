@@ -24,6 +24,7 @@ LINK_SPEED_BITS_PER_SEC = 100 * pow(10,9) * 8 # 100Gbps
 SSIRD_PROTO_NAME = "SSIRD"
 DCTCP_PROTO_NAME = f"DCTCP-{DCTCP_ECN_MARKING_THRESHOLD}"
 DCTCP_PROTO_FAMILY_NAME = "DCTCP"
+XPASS_PROTO_NAME = "ExpressPass"
 
 # PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
 PATH_TO_SIRD_SIM = "/data/dh1723/SIRD-Simulator/" # NOTE: use this for batch1 server
@@ -216,8 +217,9 @@ class ManualReqInterval():
                 wr.writerow(mri_byteloads_spec)
 
 class SimSpecScript:
-    PATH_TO_SSIRD_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-ssird-2host-p2p-noburst.sh"
-    PATH_TO_DCTCP_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-dctcp-2host-p2p-noburst.sh"
+    PATH_TO_SSIRD_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-ssird-noburst.sh"
+    PATH_TO_DCTCP_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-dctcp.sh"
+    PATH_TO_XPASS_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-xpass.sh"
 
     MANUAL_REQ_INTERVAL_FILE_L = "manual_req_interval_file_l"
     DURATION_MODIFIER_L = "duration_modifier_l"
@@ -268,56 +270,100 @@ class SimSpecScript:
                 fout.write(line_out)
         return script_filepath
 
+    def create_xpass_noburst_params_script(self, mri_relative_path, sim_duration, topo_yaml_file, log_level):
+        script_filepath = self.parent_dir + f"{XPASS_PROTO_NAME}-" + self.experiment_name + ".sh"
+        with open(self.PATH_TO_XPASS_TEMPLATE_NOBURST) as template, open(script_filepath, 'w') as fout:
+            lines_in = template.readlines()
+            for i in range(len(lines_in)):
+                line_out = lines_in[i]
+                if self.TOPOLOGY_FILE_L in line_out:
+                    line_out = "{}='{}'\n".format(self.TOPOLOGY_FILE_L, topo_yaml_file)
+                elif self.MANUAL_REQ_INTERVAL_FILE_L in line_out:
+                    line_out = "{}='{}'\n".format(self.MANUAL_REQ_INTERVAL_FILE_L, mri_relative_path)
+                elif self.DURATION_MODIFIER_L in line_out:
+                    line_out = "{}='{:f}'\n".format(self.DURATION_MODIFIER_L, sim_duration)
+                elif self.GLOBAL_DEBUG in line_out:
+                    line_out = "{}='{}'\n".format(self.GLOBAL_DEBUG, log_level)
+                fout.write(line_out)
+        return script_filepath
+
 class ExperimentGroupResultsProcessed:
     def __init__(self, processed_results_list):
         self.processed_results_list = processed_results_list
 
         self.ssird_fct_list = []
         self.dctcp_fct_list = []
+        self.xpass_fct_list = []
 
         self.total_app_gdpt_gbps_measured_list_ssird = []
         self.total_app_gdpt_gbps_measured_list_dctcp = []
+        self.total_app_gdpt_gbps_measured_list_xpass = []
         self.app_gdpt_gbps_measured_per_flow_list_list_ssird = []
         self.app_gdpt_gbps_measured_per_flow_list_list_dctcp = []
+        self.app_gdpt_gbps_measured_per_flow_list_list_xpass = []
 
         self.total_nw_gdpt_gbps_measured_list_ssird = []
         self.total_nw_gdpt_gbps_measured_list_dctcp = []
+        self.total_nw_gdpt_gbps_measured_list_xpass = []
         self.nw_gdpt_gbps_measured_per_flow_list_list_ssird = []
         self.nw_gdpt_gbps_measured_per_flow_list_list_dctcp = []
+        self.nw_gdpt_gbps_measured_per_flow_list_list_xpass = []
+
+        self.sorted_flowsize_fct_list_list_ssird = []
+        self.sorted_flowsize_fct_list_list_dctcp = []
+        self.sorted_flowsize_fct_list_list_xpass = []
 
         for results in self.processed_results_list:
             self.ssird_fct_list.append(results.ssird_fct)
             self.dctcp_fct_list.append(results.dctcp_fct)
+            self.xpass_fct_list.append(results.xpass_fct)
 
             self.total_app_gdpt_gbps_measured_list_ssird.append(results.ssird_total_app_gdpt_gbps_measured)
             self.total_app_gdpt_gbps_measured_list_dctcp.append(results.dctcp_total_app_gdpt_gbps_measured)
+            self.total_app_gdpt_gbps_measured_list_xpass.append(results.xpass_total_app_gdpt_gbps_measured)
             self.app_gdpt_gbps_measured_per_flow_list_list_ssird.append(results.ssird_app_gdpt_gbps_measured_per_flow_list)
             self.app_gdpt_gbps_measured_per_flow_list_list_dctcp.append(results.dctcp_app_gdpt_gbps_measured_per_flow_list)
+            self.app_gdpt_gbps_measured_per_flow_list_list_xpass.append(results.xpass_app_gdpt_gbps_measured_per_flow_list)
 
             self.total_nw_gdpt_gbps_measured_list_ssird.append(results.ssird_total_nw_gdpt_gbps_measured)
             self.total_nw_gdpt_gbps_measured_list_dctcp.append(results.dctcp_total_nw_gdpt_gbps_measured )
+            self.total_nw_gdpt_gbps_measured_list_xpass.append(results.xpass_total_nw_gdpt_gbps_measured )
             self.nw_gdpt_gbps_measured_per_flow_list_list_ssird.append(results.ssird_nw_gdpt_gbps_measured_per_flow_list )
             self.nw_gdpt_gbps_measured_per_flow_list_list_dctcp.append(results.dctcp_nw_gdpt_gbps_measured_per_flow_list )
+            self.nw_gdpt_gbps_measured_per_flow_list_list_xpass.append(results.xpass_nw_gdpt_gbps_measured_per_flow_list )
+
+            self.sorted_flowsize_fct_list_list_ssird.append(results.ssird_sorted_flowsize_fct_list)
+            self.sorted_flowsize_fct_list_list_dctcp.append(results.dctcp_sorted_flowsize_fct_list)
+            self.sorted_flowsize_fct_list_list_xpass.append(results.xpass_sorted_flowsize_fct_list)
 
 class ExperimentResultsProcessed:
-    def __init__(self, ssird_experiment_metrics=None, dctcp_experiment_metrics=None):
+    def __init__(self, ssird_experiment_metrics=None, dctcp_experiment_metrics=None, xpass_experiment_metrics=None, ssird_sorted_flowsize_fct_list=None, dctcp_sorted_flowsize_fct_list=None, xpass_sorted_flowsize_fct_list=None):
         self.ssird_experiment_metrics = ssird_experiment_metrics
         self.dctcp_experiment_metrics = dctcp_experiment_metrics
+        self.xpass_experiment_metrics = xpass_experiment_metrics
+        self.ssird_sorted_flowsize_fct_list = ssird_sorted_flowsize_fct_list
+        self.dctcp_sorted_flowsize_fct_list = dctcp_sorted_flowsize_fct_list
+        self.xpass_sorted_flowsize_fct_list = xpass_sorted_flowsize_fct_list
 
         self.ssird_fct = None
         self.dctcp_fct = None
+        self.xpass_fct = None
 
         self.ssird_total_app_gdpt_gbps_measured = None
         self.dctcp_total_app_gdpt_gbps_measured = None
+        self.xpass_total_app_gdpt_gbps_measured = None
 
         self.ssird_app_gdpt_gbps_measured_per_flow_list = None
         self.dctcp_app_gdpt_gbps_measured_per_flow_list = None
+        self.xpass_app_gdpt_gbps_measured_per_flow_list = None
 
         self.ssird_total_nw_gdpt_gbps_measured = None
         self.dctcp_total_nw_gdpt_gbps_measured = None
+        self.xpass_total_nw_gdpt_gbps_measured = None
 
         self.ssird_nw_gdpt_gbps_measured_per_flow_list = None
         self.dctcp_nw_gdpt_gbps_measured_per_flow_list = None
+        self.xpass_nw_gdpt_gbps_measured_per_flow_list = None
 
         self.ingest_metrics()
 
@@ -337,6 +383,14 @@ class ExperimentResultsProcessed:
             self.dctcp_app_gdpt_gbps_measured_per_flow_list = self.dctcp_experiment_metrics.app_gdpt_gbps_measured_per_flow_list
             self.dctcp_total_nw_gdpt_gbps_measured = self.dctcp_experiment_metrics.total_nw_gdpt_gbps_measured
             self.dctcp_nw_gdpt_gbps_measured_per_flow_list = self.dctcp_experiment_metrics.nw_gdpt_gbps_measured_per_flow_list
+
+        if (self.xpass_experiment_metrics):
+            assert(XPASS_PROTO_NAME in self.dctcp_experiment_metrics.proto)
+            self.xpass_fct = self.xpass_experiment_metrics.fct_list
+            self.xpass_total_app_gdpt_gbps_measured = self.xpass_experiment_metrics.total_app_gdpt_gbps_measured
+            self.xpass_app_gdpt_gbps_measured_per_flow_list = self.xpass_experiment_metrics.app_gdpt_gbps_measured_per_flow_list
+            self.xpass_total_nw_gdpt_gbps_measured = self.xpass_experiment_metrics.total_nw_gdpt_gbps_measured
+            self.xpass_nw_gdpt_gbps_measured_per_flow_list = self.xpass_experiment_metrics.nw_gdpt_gbps_measured_per_flow_list
 
 class ExperimentMetrics:
     def __init__(self, proto, fct_list, total_app_gdpt_gbps_measured, app_gdpt_gbps_measured_per_flow_list, total_nw_gdpt_gbps_measured, nw_gdpt_gbps_measured_per_flow_list):
@@ -545,7 +599,7 @@ class FlowStats:
         logger.debug(f"Flow {self.flow_id}:: first_event_name: {self.first_event_name}, final_event_name: {self.final_event_name}, expected_data_B: {expected_flow_size_B}, recv_data_B: {self.total_data_bytes_recv_B}")
         if(self.total_data_bytes_sent_B != expected_flow_size_B and expected_flow_size_B >= 4):
             logger.error(f"total_data_bytes_sent_B={self.total_data_bytes_sent_B}, expected_flow_size_B={expected_flow_size_B}, diff={self.total_data_bytes_sent_B - expected_flow_size_B}")
-        if (self.total_data_bytes_recv_B != expected_flow_size_B):
+        if (self.total_data_bytes_recv_B != expected_flow_size_B and expected_flow_size_B >= 4):
             logger.error(f"Missing data! flow_id: {self.flow_id}: total bytes recv: {self.total_data_bytes_recv_B}, expected flow size = {expected_flow_size_B}, diff = {expected_flow_size_B - self.total_data_bytes_recv_B}")
 
     def get_fct_s(self):
@@ -589,15 +643,16 @@ class Experiment():
         self.create_plots = f"{int(is_full_postproc)}"
         self.delete_current = "0"
 
-    def run(self, exp_id, ssird_sim_dur_l, dctcp_sim_dur_l, log_level):
+    def run(self, exp_id, ssird_sim_dur_l, dctcp_sim_dur_l, xpass_sim_dur_l, log_level):
         logger.info("\n=====\nExecute experiment " + self.experiment_name)
         logger.info(f'Flags: {self.run_simulations}, {self.run_post_proc}, {self.create_timeseires}, {self.create_plots}, {self.delete_current}')
         logger.info("ssird_sim_duration={:f}; dctcp_sim_duration={:f}".format(ssird_sim_dur_l, dctcp_sim_dur_l))
 
         self.prep_experiment_input(self.src_dst_pairs_list, self.src_dst_pairs_to_flowspecs_dict)
-        ssird_sim_script_path, dctcp_sim_script_path = self.prep_experiment_spec_scripts(
+        ssird_sim_script_path, dctcp_sim_script_path, xpass_sim_script_path = self.prep_experiment_spec_scripts(
             ssird_sim_duration=ssird_sim_dur_l,
             dctcp_sim_duration=dctcp_sim_dur_l,
+            xpass_sim_duration=xpass_sim_dur_l,
             experiment_name=self.experiment_name,
             topo_yaml_file=self.topo_yaml_file,
             log_level=log_level)
@@ -610,6 +665,8 @@ class Experiment():
             self.execute(self.proto, ssird_sim_script_path, f"{outputs_dir}ssird_{self.experiment_name}")
         elif self.proto == DCTCP_PROTO_NAME:
             self.execute(self.proto, dctcp_sim_script_path, f"{outputs_dir}{DCTCP_PROTO_NAME}_{self.experiment_name}")
+        elif self.proto == XPASS_PROTO_NAME:
+            self.execute(self.proto, xpass_sim_script_path, f"{outputs_dir}{XPASS_PROTO_NAME}_{self.experiment_name}")
         else:
             logger.error(f"Unrecognised protocol name '{self.proto}'")
 
@@ -644,7 +701,7 @@ class Experiment():
         mri_filepath = mri.create_p2p_mri(multiflow_obj_list)
         return mri_filepath
 
-    def prep_experiment_spec_scripts(self, ssird_sim_duration, dctcp_sim_duration, experiment_name, topo_yaml_file, log_level):
+    def prep_experiment_spec_scripts(self, ssird_sim_duration, dctcp_sim_duration, xpass_sim_duration, experiment_name, topo_yaml_file, log_level):
         logger.info("-----\nPreparing experiment spec scripts")
         try:
             logger.info("### Creating spec scripts parent dir: " + self.param_scripts_dir)
@@ -656,8 +713,9 @@ class Experiment():
         mri_relative_path = "{}{}/{}.csv".format(MRI_RELATIVE_PATH, self.experiment_family, experiment_name)
         ssird_sim_script_path = sim_script.create_ssird_noburst_params_script(mri_relative_path, ssird_sim_duration, topo_yaml_file, log_level)
         dctcp_sim_script_path = sim_script.create_dctcp_noburst_params_script(mri_relative_path, dctcp_sim_duration, topo_yaml_file, log_level)
+        xpass_sim_script_path = sim_script.create_xpass_noburst_params_script(mri_relative_path, xpass_sim_duration, topo_yaml_file, log_level)
 
-        return ssird_sim_script_path, dctcp_sim_script_path
+        return ssird_sim_script_path, dctcp_sim_script_path, xpass_sim_script_path
 
     def execute(self, proto_name, sim_script_path, sim_output_path):
         logger.info("-----\nRunning experiment for " + proto_name)
@@ -736,6 +794,7 @@ class ExperimentGroup:
                     src_dst_pairs_to_flowspecs_dict_list,
                     ssird_sim_dur_list,
                     dctcp_sim_dur_list,
+                    xpass_sim_dur_list,
                     is_full_postproc=False,
                     log_level=LOG_LEVEL_2,
                     title_addendum=""
@@ -754,6 +813,7 @@ class ExperimentGroup:
         self.is_full_postproc = is_full_postproc
         self.ssird_sim_dur_list = ssird_sim_dur_list
         self.dctcp_sim_dur_list = dctcp_sim_dur_list
+        self.xpass_sim_dur_list = xpass_sim_dur_list
         self.title_addendum = title_addendum
         self.log_level = log_level
 
@@ -761,6 +821,7 @@ class ExperimentGroup:
 
         self.ssird_raw_experiment_results_list = [None] * self.num_experiments
         self.dctcp_raw_experiment_results_list = [None] * self.num_experiments
+        self.xpass_raw_experiment_results_list = [None] * self.num_experiments
         self.processed_results_list = []
 
     def check_inputs(self):
@@ -820,6 +881,7 @@ class ExperimentGroup:
                         exp_id,
                         ssird_sim_dur_l=self.ssird_sim_dur_list[exp_id],
                         dctcp_sim_dur_l=self.dctcp_sim_dur_list[exp_id],
+                        xpass_sim_dur_l=self.xpass_sim_dur_list[exp_id],
                         log_level=self.log_level
                     ) 
                     futures_list.append((exp_id, future, experiment_name, proto))
@@ -832,6 +894,8 @@ class ExperimentGroup:
                         self.ssird_raw_experiment_results_list[exp_id] = raw_result
                     elif raw_result.proto == DCTCP_PROTO_NAME:
                         self.dctcp_raw_experiment_results_list[exp_id] = raw_result
+                    elif raw_result.proto == XPASS_PROTO_NAME:
+                        self.xpass_raw_experiment_results_list[exp_id] = raw_result
                     else:
                         logger.error(f"Unrecognised protocol name '{raw_result.proto}' in experiment result! (experiment_name={experiment_name})")
                 except Exception as e:
@@ -841,11 +905,15 @@ class ExperimentGroup:
             assert(all(r.exp_id == i for r, i in zip(self.ssird_raw_experiment_results_list, range(0, self.num_experiments))))
         if (DCTCP_PROTO_NAME in self.proto_names_l):
             assert(all(r.exp_id == i for r, i in zip(self.dctcp_raw_experiment_results_list, range(0, self.num_experiments))))
+        if (XPASS_PROTO_NAME in self.proto_names_l):
+            assert(all(r.exp_id == i for r, i in zip(self.xpass_raw_experiment_results_list, range(0, self.num_experiments))))
 
         ssird_path_to_app_trace_files_list = [r.app_trace_file_path for r in self.ssird_raw_experiment_results_list if r is not None]
         Experiment.write_app_trace_paths_to_file(SSIRD_PROTO_NAME, self.experiment_family, self.num_flows_list, self.target_flow_rate_gbps, self.experiment_date, ssird_path_to_app_trace_files_list)
         dctcp_path_to_app_trace_files_list = [r.app_trace_file_path for r in self.dctcp_raw_experiment_results_list if r is not None]
         Experiment.write_app_trace_paths_to_file(DCTCP_PROTO_NAME, self.experiment_family, self.num_flows_list, self.target_flow_rate_gbps, self.experiment_date, dctcp_path_to_app_trace_files_list)
+        xpass_path_to_app_trace_files_list = [r.app_trace_file_path for r in self.xpass_raw_experiment_results_list if r is not None]
+        Experiment.write_app_trace_paths_to_file(XPASS_PROTO_NAME, self.experiment_family, self.num_flows_list, self.target_flow_rate_gbps, self.experiment_date, xpass_path_to_app_trace_files_list)
         logger.info(f"Simulations ended at: {datetime.datetime.now()}")
     
     def post_process_results(self):
@@ -857,27 +925,70 @@ class ExperimentGroup:
             if ssird_result == None:
                 logger.error("No results for SSIRD")
                 ssird_exp_metrics = None
+                ssird_sorted_flowsize_fct_list = None
             else:
                 logger.info(f"Processing SIRD results exp_id {ssird_result.exp_id}:: {ssird_result.num_flows}flo-{ssird_result.target_flow_rate_gbps}Gbps_target")
                 ssird_exp_metrics, ssird_flow_stats_dict = ssird_result.process_results_fct()
+                ssird_sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(ssird_flow_stats_dict)
                 logger.info(f"{ssird_exp_metrics.proto} FCT (ms): {ssird_exp_metrics.fct_list}\nApp Gdpt (overall): {ssird_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {ssird_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {ssird_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {ssird_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
 
             dctcp_result = self.dctcp_raw_experiment_results_list[exp_id]
             if dctcp_result == None:
                 logger.error("No results for DCTCP")
                 dctcp_exp_metrics = None
+                dctcp_sorted_flowsize_fct_list = None
             else:
                 logger.info(f"Processing DCTCP results exp_id {dctcp_result.exp_id}:: {dctcp_result.num_flows}flo-{dctcp_result.target_flow_rate_gbps}Gbps_target")
                 dctcp_exp_metrics, dctcp_flow_stats_dict = dctcp_result.process_results_fct()
+                dctcp_sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(dctcp_flow_stats_dict)
                 logger.info(f"{dctcp_exp_metrics.proto} FCT (ms): {dctcp_exp_metrics.fct_list}\nApp Gdpt (overall): {dctcp_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {dctcp_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {dctcp_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {dctcp_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
 
-            processed_result = ExperimentResultsProcessed(ssird_exp_metrics, dctcp_exp_metrics)
+            xpass_result = self.xpass_raw_experiment_results_list[exp_id]
+            if xpass_result == None:
+                logger.error("No results for ExpressPass")
+                xpass_exp_metrics = None
+                xpass_sorted_flowsize_fct_list = None
+            else:
+                logger.info(f"Processing ExpressPass results exp_id {xpass_result.exp_id}:: {xpass_result.num_flows}flo-{xpass_result.target_flow_rate_gbps}Gbps_target")
+                xpass_exp_metrics, xpass_flow_stats_dict = xpass_result.process_results_fct()
+                xpass_sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(xpass_flow_stats_dict)
+                logger.info(f"{xpass_exp_metrics.proto} FCT (ms): {xpass_exp_metrics.fct_list}\nApp Gdpt (overall): {xpass_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {xpass_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {xpass_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {xpass_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
+            
+            processed_result = ExperimentResultsProcessed(ssird_exp_metrics, dctcp_exp_metrics, xpass_exp_metrics, ssird_sorted_flowsize_fct_list, dctcp_sorted_flowsize_fct_list, xpass_sorted_flowsize_fct_list)
             self.processed_results_list.append(processed_result)
 
     def generate_overall_experiment_metrics(self):
         logger.info("\n##### GENERATE METRICS #####")
         logger.info(f"{self.experiment_family}{self.title_addendum}")
         return ExperimentGroupResultsProcessed(self.processed_results_list)
+
+    @staticmethod
+    def get_sorted_flowsize_fct(flow_stats_dict):
+        srcdst_to_flowstatslist_dict = {}
+
+        for key, flow_stat in flow_stats_dict.items():
+            # initialise vals (empty lists) in srcdst_to_flowstatslist_dict
+            src_or_dst_1, src_or_dst_2, flow_id = key
+            srcdst_to_flowstatslist_dict[(src_or_dst_1, src_or_dst_2)] = []
+
+        for key, flow_stat in flow_stats_dict.items():
+            # append to vals (lists) in scrdst_to_flowstatslist_dict
+            src_or_dst_1, src_or_dst_2, flow_id = key
+            srcdst_to_flowstatslist_dict[(src_or_dst_1, src_or_dst_2)].append(flow_stat)
+
+        # print("======")
+        flow_size_fct_list = [] # contains flows across all sender rcvr pairs in this experiment
+        for srcdst, flow_stat_list in srcdst_to_flowstatslist_dict.items():
+            # print(f"srcdst={srcdst}")
+            for flow_stat in flow_stat_list:
+                fct = flow_stat.end_time_s - flow_stat.start_time_s
+                # print(f"flow_id={flow_stat.flow_id}, flow_size_B={flow_stat.total_data_bytes_recv_B}, FCT(s)={flow_stat.end_time_s - flow_stat.start_time_s}")
+                flow_size_fct_list.append((flow_stat.total_data_bytes_recv_B, fct))
+        flow_size_fct_list.sort(key=lambda x: x[0]) # sort by flow size
+        # print(f"{flow_size_fct_list}")
+        
+        return flow_size_fct_list
+
 
     @staticmethod
     def process_side_loaded_results(proto, src_dst_pairs_list, num_flows, flow_spec_list_list, target_flow_rate_gbps, app_trace_paths_list):
@@ -1486,6 +1597,7 @@ class EmpiricalDistr(ABC):
 class FixedDistr(EmpiricalDistr):
     ''' Is workload where each sampled flow has the same fixed flow size '''
     def __init__(self, num_byteloads, byteload_size_B):
+        self.cdf_file_name = "NA"
         self.num_byteloads = num_byteloads
         self.byteload_size_B = byteload_size_B
 
