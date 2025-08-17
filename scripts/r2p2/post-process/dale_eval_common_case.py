@@ -893,7 +893,7 @@ def experiment_p2p_poisson_flows(
         num_flows=num_flows,
         byteload_size_B=byteload_size_B,
         target_mean_byteload_interval_ns=target_mean_byteload_interval_nanosec,
-        target_mean_num_byteloads=target_mean_num_byteloads,
+        flow_size_distr=target_mean_num_byteloads,
         target_mean_flow_interarr_ns=target_mean_flow_interarr_ns,
         is_use_poisson_byteload_intervals=is_use_poisson_byteload_intervals,
         is_use_poisson_num_byteloads=is_use_poisson_num_byteloads,

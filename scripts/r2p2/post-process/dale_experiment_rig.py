@@ -1,13 +1,13 @@
 import sys, subprocess
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from abc import ABC, abstractmethod
 import csv
 import datetime
 import logging
 import collections
-import math
+import math, random
 import numpy as np
-from scipy.stats import truncexpon
 import json
 
 # for thread pool
@@ -39,6 +39,7 @@ APP_TRACE_PATHS_BACKUP_PATH = PATH_TO_POST_PROCESS + "experiment_app_trace_paths
 LOGS_REL_PATH = "experiment_output/" # is relative to post-process/ dir
 FLOW_SPECS_JSON_PATH = PATH_TO_POST_PROCESS + "flow_specs_json/"
 SAVED_FLOW_SPECS_JSON_PATH = PATH_TO_POST_PROCESS + "saved_flow_specs_json/"
+PATH_TO_WORKOAD_DISTR_CDF = PATH_TO_POST_PROCESS + "sizeDistributions/"
 
 LOG_LEVEL_1 = 1
 LOG_LEVEL_2 = 2
@@ -1289,14 +1290,11 @@ class FlowSpecGenerator:
                     target_mean_byteload_interval_ns=1000,
                     min_interval_ns=1,
                     max_interval_ns=10000,
-                    target_mean_num_byteloads=500,
-                    min_num_byteloads=2,
-                    max_num_byteloads=2000,
+                    flow_size_distr=500,
                     target_mean_flow_interarr_ns=1000,
                     min_flow_interarr_ns=0,
                     max_flow_interarr_ns=100000,
                     is_use_poisson_byteload_intervals=True,
-                    is_use_poisson_num_byteloads=True,
                     is_use_poisson_flow_interarr=True
                 ):
         self.num_flows = num_flows
@@ -1308,11 +1306,7 @@ class FlowSpecGenerator:
         self.max_interval_ns = max_interval_ns
         self.is_use_poisson_byteload_intervals = is_use_poisson_byteload_intervals
 
-        self.target_mean_num_byteloads = target_mean_num_byteloads
-        self.min_num_byteloads = min_num_byteloads
-        assert(self.min_num_byteloads > 1)
-        self.max_num_byteloads = max_num_byteloads
-        self.is_use_poisson_num_byteloads = is_use_poisson_num_byteloads
+        self.flow_size_distr = flow_size_distr
 
         self.target_mean_flow_interarr_ns = target_mean_flow_interarr_ns
         self.min_flow_interarr_ns = min_flow_interarr_ns
@@ -1322,28 +1316,44 @@ class FlowSpecGenerator:
         self.flow_rate_bps = (byteload_size_B * 8) / (self.target_mean_byteload_interval_ns * pow(10,-9))
 
     def generate_poisson_flows(self):
-        if (self.is_use_poisson_num_byteloads):
-            num_byteloads_list = self.generate_num_byteloads_for_all_flows()
-        else:
-            num_byteloads_list = [self.target_mean_num_byteloads] * self.num_flows
 
         if (self.is_use_poisson_flow_interarr):
             flow_start_times_ns_list = self.generate_flow_start_times_ns_for_all_flows()
         else:
             flow_start_times_ns_list = np.concatenate([[0], np.cumsum([self.target_mean_flow_interarr_ns]*(self.num_flows-1))]).tolist()
-
         flow_start_times_us_list = [start_ns/1000 for start_ns in flow_start_times_ns_list]
         assert(len(set([
             self.num_flows,
-            len(num_byteloads_list),
             len(flow_start_times_us_list)
             ])) == 1)
 
+        num_byteloads_list = []
+        byteload_size_B_list_list = []
         byteload_intervals_us_list_list = []
         for i in range(0, self.num_flows):
+
+            logging.info(f"\n  Generating flow size for flow={i}")
+            # print(f"\n  Generating flow size for flow={i}")
+            flow_size_B = self.flow_size_distr.get_flow_size_B()
+            byteload_size_B_list = []
+            if (flow_size_B < self.byteload_size_B):
+                byteload_size_B_list.append(flow_size_B)
+            else:
+                remaining_bytes_in_flow = flow_size_B
+                while(remaining_bytes_in_flow >= self.byteload_size_B):
+                    byteload_size_B_list.append(self.byteload_size_B)
+                    remaining_bytes_in_flow -= self.byteload_size_B
+                if (remaining_bytes_in_flow > 0):
+                    byteload_size_B_list.append(remaining_bytes_in_flow)
+
+            num_byteloads = len(byteload_size_B_list)
+            num_byteloads_list.append(num_byteloads)
+            byteload_size_B_list_list.append(byteload_size_B_list)
+            logging.debug(f"    Flow={i}, flow_size_B={flow_size_B}, num_byteloads={num_byteloads}, byteload_size_B_list={byteload_size_B_list}")
+
             logging.info(f"\n  Generating intervals for flow={i}")
             # print(f"\n  Generating intervals for flow={i}")
-            num_intervals = num_byteloads_list[i] - 1
+            num_intervals = num_byteloads - 1
             pig = PoissonIntervalGenerator(self.target_mean_byteload_interval_ns, self.max_interval_ns, self.min_interval_ns, num_intervals, num_samples_needed=1)
 
             retries_remaining = self.RETRY_LIMIT
@@ -1373,8 +1383,8 @@ class FlowSpecGenerator:
         flow_spec_list = []
         for j in range(0, self.num_flows):
             num_byteloads = num_byteloads_list[j]
-            byteload_size_B_list = [self.byteload_size_B]*num_byteloads
-            flow_size_B = self.byteload_size_B*num_byteloads
+            byteload_size_B_list = byteload_size_B_list_list[j]
+            flow_size_B = sum(byteload_size_B_list)
             interval_us_list = byteload_intervals_us_list_list[j]
             byteload_rel_timestamp_us_list = np.round(np.cumsum(np.concatenate([[0], interval_us_list])), 3).tolist() 
             total_flow_send_duration_us = round(byteload_rel_timestamp_us_list[-1] + flow_start_times_us_list[j], 3)
@@ -1395,7 +1405,7 @@ class FlowSpecGenerator:
         return flow_spec_list, flow_start_times_us_list
 
     def generate_num_byteloads_for_all_flows(self):
-        lam_num_byteloads = 1/self.target_mean_num_byteloads
+        lam_num_byteloads = 1/self.flow_size_distr
         sampled_num_byteloads = DiscTuncExpDistr.sample_discrete_trunc_exp(
             num_samples=self.num_flows,
             lam=lam_num_byteloads,
@@ -1415,6 +1425,106 @@ class FlowSpecGenerator:
         flow_start_times_ns = np.cumsum(sampled_flow_interarr_ns)
         return flow_start_times_ns.tolist()
 
+class EmpiricalDistr(ABC):
+    ''' Is Abstract class for workload flow size distributions '''
+    @abstractmethod
+    def get_flow_size_B(self):
+        pass
+
+    @staticmethod
+    def normalize_cdf(cdf):
+        """Ensure we store CDF as sorted list of (flow_size, cumulative_prob)."""
+        if(isinstance(cdf, dict)):
+            cdf = list(cdf.items())
+        assert(all(prob >= 0 and prob <= 1 for size, prob in cdf))
+        cdf.sort(key=lambda x: x[1])  # sort by probability
+        return cdf
+
+    @staticmethod
+    def load_cdf_from_file(filename):
+        """
+        Loads CDF from file like Google_SearchRPC.txt.
+        First line might be ignored if its avg size or metadata.
+        """
+        cdf = []
+        with open(filename, 'r') as f:
+            first_line = f.readline().strip()
+            try:
+                # first line might be a mean or scaling value; ignore it, continue reading actual CDF entries
+                float(first_line)  
+            except ValueError:
+                # first line is be part of CDF
+                parts = first_line.split()
+                if len(parts) == 2:
+                    # parts[0] is flow size; parts[1] is cumulative prob
+                    cdf.append((float(parts[0]), float(parts[1])))
+
+            # read rest of lines
+            for line in f:
+                parts = line.strip().split()
+                if len(parts) != 2:
+                    continue
+                size, prob = float(parts[0]), float(parts[1])
+                cdf.append((size, prob))
+        
+        if (len(cdf) == 0):
+            raise ValueError(f"No CDF data found in {filename}")
+
+        return EmpiricalDistr.normalize_cdf(cdf)
+
+    @staticmethod
+    def sample_flow_size_from_distr_B(cdf_pairs_list, seed):
+        # cdf_pairs_list is in format (<flow_size>, <cumulative_prob>)
+        random.seed(seed)
+        u = random.random()
+        for flow_size, cum_prob in cdf_pairs_list:
+            if cum_prob >= u:
+                return math.ceil(flow_size)
+        return math.ceil(cdf_pairs_list[-1][0])  # fallback to max size
+
+class FixedDistr(EmpiricalDistr):
+    ''' Is workload where each sampled flow has the same fixed flow size '''
+    def __init__(self, num_byteloads, byteload_size_B):
+        self.num_byteloads = num_byteloads
+        self.byteload_size_B = byteload_size_B
+
+    def get_flow_size_B(self):
+        return self.byteload_size_B * self.num_byteloads
+
+class W1Distr(EmpiricalDistr):
+    ''' Is workload where each sampled flow has flow size drawn from analytically-derived manual CDF (rounded to next-highest int) '''
+    def __init__(self, seed=None):
+        self.seed = seed
+        self.cdf = {
+            1.0: 0.0,
+            3.1623: 0.27,
+            10.0: 0.35,
+            31.623: 0.5,
+            100.0: 0.63,
+            316.23: 0.83,
+            1000.0: 0.96,
+            3162.3: 0.99453,
+            10000.0: 0.99971856,
+            31623.0: 0.99998841,
+            100000.0: 0.99999956,
+            316230.0: 0.9999999837,
+            1000000.0: 1.0 
+        }
+        self.cdf = EmpiricalDistr.normalize_cdf(self.cdf)
+
+    def get_flow_size_B(self):
+        return EmpiricalDistr.sample_flow_size_from_distr_B(self.cdf, self.seed)
+
+class WxDistr(EmpiricalDistr):
+    ''' Is workload where each sampled flow has flow size drawn from a cdf specified in a text file (from sird, homa paper)'''
+    def __init__(self, cdf_file_name, seed=None):
+        self.cdf_file_name = cdf_file_name
+        self.cdf_file_path = PATH_TO_WORKOAD_DISTR_CDF + self.cdf_file_name
+        self.seed = seed
+        self.cdf = EmpiricalDistr.load_cdf_from_file(self.cdf_file_path)
+    
+    def get_flow_size_B(self):
+        return EmpiricalDistr.sample_flow_size_from_distr_B(self.cdf, self.seed)
 
 def init_logs(logs_subdir, logs_file_name, log_level=logging.DEBUG):
     full_rel_path = f"{LOGS_REL_PATH}{logs_subdir}/"
@@ -1430,22 +1540,25 @@ def init_logs(logs_subdir, logs_file_name, log_level=logging.DEBUG):
 
 if __name__ == "__main__":
 
-    num_flows = 1
+    num_flows = 5
     byteload_size_B = 1458
     target_mean_byteload_interval_ns = 3000
-    target_mean_num_byteloads = 1
+    # flow_size_distr = FixedDistr(num_byteloads=10, byteload_size_B=1458)
+    flow_size_distr = WxDistr("Google_SearchRPC.txt") 
+    # flow_size_distr = WxDistr("Google_AllRPC.txt") 
+    # flow_size_distr = WxDistr("Facebook_HadoopDist_All.txt") 
+    # flow_size_distr = WxDistr("DCTCP_MsgSizeDist.txt") 
+    # flow_size_distr = WxDistr("Fabricated_Heavy_Middle.txt") 
     target_mean_flow_interarr_ns = 2000
     is_use_poisson_byteload_intervals = True
-    is_use_poisson_num_byteloads = False
     is_use_poisson_flow_interarr = False
     flow_generator = FlowSpecGenerator(
         num_flows=num_flows,
         byteload_size_B=byteload_size_B,
         target_mean_byteload_interval_ns=target_mean_byteload_interval_ns,
-        target_mean_num_byteloads=target_mean_num_byteloads,
+        flow_size_distr=flow_size_distr,
         target_mean_flow_interarr_ns=target_mean_flow_interarr_ns,
         is_use_poisson_byteload_intervals=is_use_poisson_byteload_intervals,
-        is_use_poisson_num_byteloads=is_use_poisson_num_byteloads,
         is_use_poisson_flow_interarr=is_use_poisson_flow_interarr
     )
 

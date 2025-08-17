@@ -53,7 +53,7 @@ def experiment_p2p_poisson_const_flow_rate_vary_byteload_size_and_interval(
             byteload_size_B=byteload_size_B,
             target_mean_byteload_interval_ns=target_mean_byteload_interval_nanosec,
             max_interval_ns=target_mean_byteload_interval_nanosec*100, # NOTE: we override default here cuz we have 10000ns interval in one of experiments
-            target_mean_num_byteloads=target_mean_num_byteloads,
+            flow_size_distr=target_mean_num_byteloads,
             target_mean_flow_interarr_ns=target_mean_flow_interarr_ns,
             is_use_poisson_byteload_intervals=is_use_poisson_byteload_intervals,
             is_use_poisson_num_byteloads=is_use_poisson_num_byteloads,
