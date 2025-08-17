@@ -9,6 +9,7 @@ def run_experiment(
         num_flows_list,
         byteload_size_B_list,
         target_mean_byteload_interval_nanosec_list,
+        max_interval_nanosec_list,
         flow_size_distr_list,
         target_mean_flow_interarr_ns,
         is_use_poisson_byteload_intervals,
@@ -55,6 +56,7 @@ def run_experiment(
         byteload_size_B = byteload_size_B_list[i]
         flow_size_distr = flow_size_distr_list[i]
         target_mean_byteload_interval_nanosec = target_mean_byteload_interval_nanosec_list[i]
+        max_interval_nanosec = max_interval_nanosec_list[i]
         exp_target_flow_rate_gbps = (byteload_size_B_list[i] * 8) / (target_mean_byteload_interval_nanosec_list[i] * pow(10,-9)) * pow(10, -9)
         assert(round(exp_target_flow_rate_gbps, 9) == round(target_flow_rate_gbps, 9))
 
@@ -68,6 +70,7 @@ def run_experiment(
                 target_mean_byteload_interval_ns=target_mean_byteload_interval_nanosec,
                 flow_size_distr=flow_size_distr,
                 target_mean_flow_interarr_ns=target_mean_flow_interarr_ns,
+                max_interval_ns=max_interval_nanosec,
                 is_use_poisson_byteload_intervals=is_use_poisson_byteload_intervals,
                 is_use_poisson_flow_interarr=is_use_poisson_flow_interarr
             )
@@ -220,7 +223,8 @@ def onertt_delay_p2p_lowload():
         src_dst_pairs_list=[(0,1)],
         num_flows_list=[6]*5,
         byteload_size_B_list=[100, 1000, 10000, 100000, 1000000],
-        target_mean_byteload_interval_nanosec_list=[100, 1000, 10000, 100000, 1000000],
+        target_mean_byteload_interval_nanosec_list=[100, 1000, 10000, 100000, 1000000], 
+        max_interval_nanosec_list=[100, 1000, 10000, 100000, 1000000],
         flow_size_distr_list=[
             dale_experiment_rig.FixedDistr(num_byteloads=10000, byteload_size_B=100),
             dale_experiment_rig.FixedDistr(num_byteloads=1000, byteload_size_B=1000),
@@ -228,11 +232,12 @@ def onertt_delay_p2p_lowload():
             dale_experiment_rig.FixedDistr(num_byteloads=10, byteload_size_B=100000),
             dale_experiment_rig.FixedDistr(num_byteloads=1, byteload_size_B=1000000),
             ],
-        target_mean_flow_interarr_ns=2000,
-        is_use_poisson_byteload_intervals=True,
-        is_use_poisson_flow_interarr=True,
+        target_mean_flow_interarr_ns=0,
+        is_use_poisson_byteload_intervals=False,
+        is_use_poisson_flow_interarr=False,
         ssird_sim_dur_list=[0.08]*5,
         dctcp_sim_dur_list=[0.08]*5,
+        xpass_sim_dur_list=[0.08]*5,
         is_full_postproc=True,
         title_prefix="FE_1rtt_delay_",
         title_addendum="_test_5usRTT",
@@ -258,6 +263,7 @@ def incast_9to1_1458B_maxload():
         num_flows_list=[2, 8],
         byteload_size_B_list=[1458, 1458],
         target_mean_byteload_interval_nanosec_list=[1000, 1000],
+        max_interval_nanosec_list=[10000, 10000],
         flow_size_distr_list=[500, 500],
         target_mean_flow_interarr_ns=1000,
         is_use_poisson_byteload_intervals=True,
@@ -265,6 +271,7 @@ def incast_9to1_1458B_maxload():
         is_use_poisson_flow_interarr=True,
         ssird_sim_dur_list=[0.01, 0.01],
         dctcp_sim_dur_list=[0.01, 0.01],
+        xpass_sim_dur_list=[0.01, 0.01],
         is_full_postproc=True,
         title_prefix="FE_Incast_expdistr_flowsize_",
         title_addendum="_incast_poisson_9to1_8flo_1458B_1us_93pt312Gbps",
@@ -274,26 +281,29 @@ def incast_9to1_1458B_maxload():
     ) 
 
 if __name__ == "__main__":
+    # onertt_delay_p2p_lowload()
+
     # incast_9to1_1458B_maxload()
 
-    # ''' 
-    #     9 to 1 incast experiment
-    #     * test
-    # '''
+    ''' 
+        9 to 1 incast experiment
+        * test
+    '''
     run_experiment(
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME],
         topo_yaml_file='10-hosts-dumbbell.yaml',
         src_dst_pairs_list=[(1,0), (2,0)],
-        num_flows_list=[2, 3],
-        byteload_size_B_list=[2000, 4000],
-        target_mean_byteload_interval_nanosec_list=[2000, 4000],
-        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Google_SearchRPC.txt")]*2,
+        num_flows_list=[10, 50],
+        byteload_size_B_list=[1458, 1458],
+        target_mean_byteload_interval_nanosec_list=[1000, 1000],
+        max_interval_nanosec_list=[10000, 10000],
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Fabricated_Heavy_Middle.txt")]*2,
         target_mean_flow_interarr_ns=2000,
         is_use_poisson_byteload_intervals=True,
         is_use_poisson_flow_interarr=True,
-        ssird_sim_dur_list=[0.0001, 0.0001],
-        dctcp_sim_dur_list=[0.0001, 0.0001],
-        xpass_sim_dur_list=[0.0001, 0.0001],
+        ssird_sim_dur_list=[0.01, 0.01],
+        dctcp_sim_dur_list=[0.01, 0.01],
+        xpass_sim_dur_list=[0.01, 0.01],
         is_full_postproc=True,
         title_prefix="FE_test_",
         title_addendum="_rig_test",

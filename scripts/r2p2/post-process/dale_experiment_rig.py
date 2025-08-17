@@ -1461,7 +1461,8 @@ class FlowSpecGenerator:
             num_byteloads = len(byteload_size_B_list)
             num_byteloads_list.append(num_byteloads)
             byteload_size_B_list_list.append(byteload_size_B_list)
-            logging.debug(f"    Flow={i}, flow_size_B={flow_size_B}, num_byteloads={num_byteloads}, byteload_size_B_list={byteload_size_B_list}")
+            # logging.debug(f"    Flow={i}, flow_size_B={flow_size_B}, num_byteloads={num_byteloads}, byteload_size_B_list={byteload_size_B_list}")
+            logging.debug(f"    Flow={i}, flow_size_B={flow_size_B}, num_byteloads={num_byteloads}, len(byteload_size_B_list)={len(byteload_size_B_list)}")
 
             logging.info(f"\n  Generating intervals for flow={i}")
             # print(f"\n  Generating intervals for flow={i}")
