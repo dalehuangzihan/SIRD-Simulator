@@ -510,6 +510,8 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
                 slog::log3(debug_, local_addr_, "$$ pt1");
                 assert(std::find(waiting_flows_.begin(), waiting_flows_.end(), app_lvl_req_id) == waiting_flows_.end());
                 flow_id_to_agent_map_.erase(app_lvl_req_id);
+                /* Dale: TODO: (?) reset agent when we release agent/conn back to pool (for xpass) */
+                agent->reset(-1);
                 dstid_to_free_agent_pool_.at(srvr_addr)->push_back(agent);
                 pool_size = dstid_to_free_agent_pool_.at(srvr_addr)->size();
                 /** Dale: restrict conn pool size to 1 */

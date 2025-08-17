@@ -7,6 +7,7 @@
 #include "template.h"
 #include <assert.h>
 #include <math.h>
+#include <deque>
 
 #include "r2p2-hdr.h"
 #include "simple-log.h"
@@ -141,6 +142,8 @@ public:
         credit_recved_rtt_ = 0;
         last_credit_recv_update_ = 0;
         times_conn_used_++;
+        /* Dale: reset curr_app_data_sent_ */
+        curr_app_data_sent_ = 0;
 
         // Cancel all timers as they are no longer relevant
         if (send_credit_timer_.status() != TIMER_IDLE)
@@ -159,6 +162,8 @@ public:
     virtual void recv(Packet *, Handler *);
     void advance_bytes(seq_t nb);
     void advance_bytes(int nb, RequestIdTuple &&req_id);
+    /* Dale: track the amount of app data that this agent has sent */
+    long curr_app_data_sent_ = 0;
 
 protected:
     virtual void delay_bind_init_all();
