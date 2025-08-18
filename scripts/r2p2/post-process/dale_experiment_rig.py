@@ -385,7 +385,7 @@ class ExperimentResultsProcessed:
             self.dctcp_nw_gdpt_gbps_measured_per_flow_list = self.dctcp_experiment_metrics.nw_gdpt_gbps_measured_per_flow_list
 
         if (self.xpass_experiment_metrics):
-            assert(XPASS_PROTO_NAME in self.dctcp_experiment_metrics.proto)
+            assert(XPASS_PROTO_NAME in self.xpass_experiment_metrics.proto)
             self.xpass_fct = self.xpass_experiment_metrics.fct_list
             self.xpass_total_app_gdpt_gbps_measured = self.xpass_experiment_metrics.total_app_gdpt_gbps_measured
             self.xpass_app_gdpt_gbps_measured_per_flow_list = self.xpass_experiment_metrics.app_gdpt_gbps_measured_per_flow_list
