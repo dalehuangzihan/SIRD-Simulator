@@ -580,6 +580,8 @@ class FlowStats:
                 self.total_data_bytes_recv_B = flow_trace_event.get_req_size()
             elif (self.proto == DCTCP_PROTO_NAME):
                 self.total_data_bytes_recv_B = flow_trace_event.get_req_size()
+            elif (self.proto == XPASS_PROTO_NAME):
+                self.total_data_bytes_recv_B = flow_trace_event.get_req_size()
             else:
                 logger.error(f"Unrecognised proto name {self.proto}")
 
