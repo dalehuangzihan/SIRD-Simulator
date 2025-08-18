@@ -385,7 +385,7 @@ class ExperimentResultsProcessed:
             self.dctcp_nw_gdpt_gbps_measured_per_flow_list = self.dctcp_experiment_metrics.nw_gdpt_gbps_measured_per_flow_list
 
         if (self.xpass_experiment_metrics):
-            assert(XPASS_PROTO_NAME in self.dctcp_experiment_metrics.proto)
+            assert(XPASS_PROTO_NAME in self.xpass_experiment_metrics.proto)
             self.xpass_fct = self.xpass_experiment_metrics.fct_list
             self.xpass_total_app_gdpt_gbps_measured = self.xpass_experiment_metrics.total_app_gdpt_gbps_measured
             self.xpass_app_gdpt_gbps_measured_per_flow_list = self.xpass_experiment_metrics.app_gdpt_gbps_measured_per_flow_list
@@ -1461,7 +1461,8 @@ class FlowSpecGenerator:
             num_byteloads = len(byteload_size_B_list)
             num_byteloads_list.append(num_byteloads)
             byteload_size_B_list_list.append(byteload_size_B_list)
-            logging.debug(f"    Flow={i}, flow_size_B={flow_size_B}, num_byteloads={num_byteloads}, byteload_size_B_list={byteload_size_B_list}")
+            # logging.debug(f"    Flow={i}, flow_size_B={flow_size_B}, num_byteloads={num_byteloads}, byteload_size_B_list={byteload_size_B_list}")
+            logging.debug(f"    Flow={i}, flow_size_B={flow_size_B}, num_byteloads={num_byteloads}, len(byteload_size_B_list)={len(byteload_size_B_list)}")
 
             logging.info(f"\n  Generating intervals for flow={i}")
             # print(f"\n  Generating intervals for flow={i}")
@@ -1558,6 +1559,10 @@ class EmpiricalDistr(ABC):
         Loads CDF from file like Google_SearchRPC.txt.
         First line might be ignored if its avg size or metadata.
         """
+        filepath = Path(filename)
+        if (not filepath.exists()):
+            raise FileNotFoundError(f"Filepath {filepath} does not exist!")
+
         cdf = []
         with open(filename, 'r') as f:
             first_line = f.readline().strip()
