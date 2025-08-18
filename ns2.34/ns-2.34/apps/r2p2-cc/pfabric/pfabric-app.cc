@@ -414,7 +414,9 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
         }
         // Has the whole request been received
         slog::log5(debug_, local_addr_, "req_state->bytes_recvd_:", req_state->bytes_recvd_, "req_state->total_size_B_", req_state->total_size_B_);
-        if (req_state->bytes_recvd_ == req_state->total_size_B_)
+        /* Dale: req_state->bytes_recvd_ >= req_state->total_size_B_ could technically occur if one of the byteloads in the flow is smaller than 4B */
+        /* Dale: janky hack (?): allow rrq even if not all expected bytes have been recd, so long as is_final_req_of_conn_==True -> allows us to get over some edge cases in experiments */
+        if (req_state->bytes_recvd_ >= req_state->total_size_B_ || req_id_tup.is_final_req_of_conn_)
         {
             /* Dale: only do rrq and after we've receieved the final byteload of the flow */
             if (req_id_tup.is_final_req_of_conn_)

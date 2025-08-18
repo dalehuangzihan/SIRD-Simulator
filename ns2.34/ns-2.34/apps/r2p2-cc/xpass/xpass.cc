@@ -629,8 +629,9 @@ Packet *XPassAgent::construct_data(Packet *credit)
 		r2p2_hdr->flow_id() = cur_req_id_tup_->flow_id_;
 		/* Dale: set total msg data size in  header */
 		r2p2_hdr->total_msg_data() = cur_req_id_tup_->total_msg_data_;
-		/* Dale: set is_final_req_of_conn flag in header*/
-		r2p2_hdr->is_final_req_of_conn() = (cur_req_id_tup_->is_final_req_of_conn_ && curr_app_data_sent_ == cur_req_id_tup_->total_msg_data_);
+        slog::log6(debug_, addr(), "src=", cur_req_id_tup_->cl_addr_, "dst=", cur_req_id_tup_->sr_addr_, "is_final_req_of_conn_=", cur_req_id_tup_->is_final_req_of_conn_, "curr_app_data_sent_=", curr_app_data_sent_, "total_msg_data_=", cur_req_id_tup_->total_msg_data_);
+		/* Dale: set is_final_req_of_conn flag in header; curr_app_data_sent_ >= total_msg_data_ can happen if some byteloads originally have size smaller than 4B */
+		r2p2_hdr->is_final_req_of_conn() = (cur_req_id_tup_->is_final_req_of_conn_ && curr_app_data_sent_ >= cur_req_id_tup_->total_msg_data_);
         assert(cur_req_id_tup_->ts_ > 0);
     }
     // else // can happen during warmup.

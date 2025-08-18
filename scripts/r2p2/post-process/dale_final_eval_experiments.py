@@ -116,7 +116,7 @@ def run_experiment(
     logger.info(f"Topo Yaml File: {topo_yaml_file}")
     logger.info(f"Src-Dst pairs list: {src_dst_pairs_list}")
     logger.info(f"Num Flows: {num_flows_list}")
-    logger.info(f"Byteload Size (B): {byteload_size_B}")
+    logger.info(f"Byteload Size (B): {byteload_size_B_list}")
     logger.info(f"Flow size distr workload: {[distr.cdf_file_name for distr in flow_size_distr_list]}")
     logger.info(f"Target Mean Byteload Interval (ns): {target_mean_byteload_interval_nanosec_list}")
     logger.info(f"  is_use_poisson_byteload_intervals={is_use_poisson_byteload_intervals}")
