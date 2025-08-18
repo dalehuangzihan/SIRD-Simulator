@@ -1,0 +1,806 @@
+DEBUG:__main__:Flow size distr workload: ['DCTCP_MsgSizeDist.txt', 'DCTCP_MsgSizeDist.txt']
+INFO:__main__:
+* Generating flows for experiment 0 ---
+INFO:__main__:
+Generating flow for src_dst_pair=(1, 0)
+INFO:root:
+  Generating flow size for flow=0
+DEBUG:root:    Flow=0, flow_size_B=106, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=0
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=1
+DEBUG:root:    Flow=1, flow_size_B=6, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=1
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=2
+DEBUG:root:    Flow=2, flow_size_B=18, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=2
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=3
+DEBUG:root:    Flow=3, flow_size_B=12334, num_byteloads=9, len(byteload_size_B_list)=9
+INFO:root:
+  Generating intervals for flow=3
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=8, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:Generated samples: shape=(1, 8)
+DEBUG:root:sample unique means (ns): [1000.]
+DEBUG:root:Step 2) Generated 1 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=4
+DEBUG:root:    Flow=4, flow_size_B=44, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=4
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:__main__:
+Generating flow for src_dst_pair=(2, 0)
+INFO:root:
+  Generating flow size for flow=0
+DEBUG:root:    Flow=0, flow_size_B=294, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=0
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=1
+DEBUG:root:    Flow=1, flow_size_B=30, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=1
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=2
+DEBUG:root:    Flow=2, flow_size_B=587, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=2
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=3
+DEBUG:root:    Flow=3, flow_size_B=1084, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=3
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=4
+DEBUG:root:    Flow=4, flow_size_B=46, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=4
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:__main__:
+Generating flow for src_dst_pair=(3, 0)
+INFO:root:
+  Generating flow size for flow=0
+DEBUG:root:    Flow=0, flow_size_B=178, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=0
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=1
+DEBUG:root:    Flow=1, flow_size_B=1783, num_byteloads=2, len(byteload_size_B_list)=2
+INFO:root:
+  Generating intervals for flow=1
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=1, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=1, returning target_mean_interval as single sample.
+DEBUG:root:Step 2) Generated 1 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=2
+DEBUG:root:    Flow=2, flow_size_B=31, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=2
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=3
+DEBUG:root:    Flow=3, flow_size_B=2133, num_byteloads=2, len(byteload_size_B_list)=2
+INFO:root:
+  Generating intervals for flow=3
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=1, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=1, returning target_mean_interval as single sample.
+DEBUG:root:Step 2) Generated 1 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=4
+DEBUG:root:    Flow=4, flow_size_B=15, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=4
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:__main__:
+* Generating flows for experiment 1 ---
+INFO:__main__:
+Generating flow for src_dst_pair=(1, 0)
+INFO:root:
+  Generating flow size for flow=0
+DEBUG:root:    Flow=0, flow_size_B=35, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=0
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=1
+DEBUG:root:    Flow=1, flow_size_B=17, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=1
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=2
+DEBUG:root:    Flow=2, flow_size_B=2533, num_byteloads=2, len(byteload_size_B_list)=2
+INFO:root:
+  Generating intervals for flow=2
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=1, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=1, returning target_mean_interval as single sample.
+DEBUG:root:Step 2) Generated 1 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=3
+DEBUG:root:    Flow=3, flow_size_B=2883, num_byteloads=2, len(byteload_size_B_list)=2
+INFO:root:
+  Generating intervals for flow=3
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=1, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=1, returning target_mean_interval as single sample.
+DEBUG:root:Step 2) Generated 1 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=4
+DEBUG:root:    Flow=4, flow_size_B=1933, num_byteloads=2, len(byteload_size_B_list)=2
+INFO:root:
+  Generating intervals for flow=4
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=1, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=1, returning target_mean_interval as single sample.
+DEBUG:root:Step 2) Generated 1 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=5
+DEBUG:root:    Flow=5, flow_size_B=1933, num_byteloads=2, len(byteload_size_B_list)=2
+INFO:root:
+  Generating intervals for flow=5
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=1, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=1, returning target_mean_interval as single sample.
+DEBUG:root:Step 2) Generated 1 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=6
+DEBUG:root:    Flow=6, flow_size_B=29, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=6
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=7
+DEBUG:root:    Flow=7, flow_size_B=1184, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=7
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=8
+DEBUG:root:    Flow=8, flow_size_B=10334, num_byteloads=8, len(byteload_size_B_list)=8
+INFO:root:
+  Generating intervals for flow=8
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=7, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:Generated samples: shape=(1, 7)
+DEBUG:root:sample unique means (ns): [1000.]
+DEBUG:root:Step 2) Generated 1 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=9
+DEBUG:root:    Flow=9, flow_size_B=26, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=9
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:__main__:
+Generating flow for src_dst_pair=(2, 0)
+INFO:root:
+  Generating flow size for flow=0
+DEBUG:root:    Flow=0, flow_size_B=2, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=0
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=1
+DEBUG:root:    Flow=1, flow_size_B=4, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=1
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=2
+DEBUG:root:    Flow=2, flow_size_B=18001, num_byteloads=13, len(byteload_size_B_list)=13
+INFO:root:
+  Generating intervals for flow=2
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=12, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:Generated samples: shape=(1, 12)
+DEBUG:root:sample unique means (ns): [1000.]
+DEBUG:root:Step 2) Generated 1 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=3
+DEBUG:root:    Flow=3, flow_size_B=4, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=3
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=4
+DEBUG:root:    Flow=4, flow_size_B=2333, num_byteloads=2, len(byteload_size_B_list)=2
+INFO:root:
+  Generating intervals for flow=4
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=1, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=1, returning target_mean_interval as single sample.
+DEBUG:root:Step 2) Generated 1 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=5
+DEBUG:root:    Flow=5, flow_size_B=14, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=5
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=6
+DEBUG:root:    Flow=6, flow_size_B=4, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=6
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=7
+DEBUG:root:    Flow=7, flow_size_B=4, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=7
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=8
+DEBUG:root:    Flow=8, flow_size_B=27, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=8
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=9
+DEBUG:root:    Flow=9, flow_size_B=3283, num_byteloads=3, len(byteload_size_B_list)=3
+INFO:root:
+  Generating intervals for flow=9
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=2, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:Generated samples: shape=(1, 2)
+DEBUG:root:sample unique means (ns): [1000.]
+DEBUG:root:Step 2) Generated 1 samples, taking first 1 samples needed
+INFO:__main__:
+Generating flow for src_dst_pair=(3, 0)
+INFO:root:
+  Generating flow size for flow=0
+DEBUG:root:    Flow=0, flow_size_B=1933, num_byteloads=2, len(byteload_size_B_list)=2
+INFO:root:
+  Generating intervals for flow=0
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=1, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=1, returning target_mean_interval as single sample.
+DEBUG:root:Step 2) Generated 1 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=1
+DEBUG:root:    Flow=1, flow_size_B=14, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=1
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=2
+DEBUG:root:    Flow=2, flow_size_B=16001, num_byteloads=11, len(byteload_size_B_list)=11
+INFO:root:
+  Generating intervals for flow=2
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=10, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:Generated samples: shape=(1, 10)
+DEBUG:root:sample unique means (ns): [1000.]
+DEBUG:root:Step 2) Generated 1 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=3
+DEBUG:root:    Flow=3, flow_size_B=16, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=3
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=4
+DEBUG:root:    Flow=4, flow_size_B=561, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=4
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=5
+DEBUG:root:    Flow=5, flow_size_B=14, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=5
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=6
+DEBUG:root:    Flow=6, flow_size_B=32, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=6
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=7
+DEBUG:root:    Flow=7, flow_size_B=126, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=7
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=8
+DEBUG:root:    Flow=8, flow_size_B=2, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=8
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:root:
+  Generating flow size for flow=9
+DEBUG:root:    Flow=9, flow_size_B=46, num_byteloads=1, len(byteload_size_B_list)=1
+INFO:root:
+  Generating intervals for flow=9
+INFO:root:PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns=1000, min_interval_ns=1, max_interval_ns=10000, num_intervals=0, num_samples_needed=1)
+DEBUG:root:Step 1) λ solving for mean=1000 is 0.001000
+DEBUG:root:WARN: num_intervals=0, returning empty sample list.
+DEBUG:root:Step 2) Generated 0 samples, taking first 1 samples needed
+INFO:__main__:Protos tested: ['SSIRD', 'DCTCP-50']
+INFO:__main__:Topo Yaml File: 4-hosts.yaml
+INFO:__main__:Src-Dst pairs list: [(1, 0), (2, 0), (3, 0)]
+INFO:__main__:Num Flows: [5, 10]
+INFO:__main__:Byteload Size (B): 1458
+INFO:__main__:Flow size distr workload: ['DCTCP_MsgSizeDist.txt', 'DCTCP_MsgSizeDist.txt']
+INFO:__main__:Target Mean Byteload Interval (ns): [1000, 1000]
+INFO:__main__:  is_use_poisson_byteload_intervals=True
+INFO:__main__:Target Mean Flow Interarrival (ns): 1000
+INFO:__main__:  is_use_poisson_flow_interarr=True
+INFO:__main__:Target Flow Rate (Gbps): 11.664
+INFO:__main__:Num Byteloads: [1, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 2, 2, 2, 1, 1, 8, 1, 1, 1, 13, 1, 2, 1, 1, 1, 1, 3, 2, 1, 11, 1, 1, 1, 1, 1, 1, 1]
+INFO:__main__:Flow Start Times (us): [{(1, 0): [0.161, 3.567, 3.652, 4.317, 5.269], (2, 0): [1.234, 1.479, 2.027, 5.067, 5.956], (3, 0): [0.799, 5.214, 5.411, 6.2, 10.013]}, {(1, 0): [2.295, 2.405, 2.589, 3.311, 6.83, 6.951, 7.598, 11.305, 12.555, 13.761], (2, 0): [0.14, 0.446, 0.663, 0.67, 1.781, 2.031, 2.682, 2.696, 2.847, 3.289], (3, 0): [0.219, 0.247, 0.571, 2.258, 2.308, 2.624, 2.655, 3.133, 4.054, 4.252]}]
+INFO:__main__:Flow Rate (Gbps): [11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664]
+INFO:__main__:Flow Size (B): [106, 6, 18, 12334, 44, 294, 30, 587, 1084, 46, 178, 1783, 31, 2133, 15, 35, 17, 2533, 2883, 1933, 1933, 29, 1184, 10334, 26, 2, 4, 18001, 4, 2333, 14, 4, 4, 27, 3283, 1933, 14, 16001, 16, 561, 14, 32, 126, 2, 46]
+INFO:__main__:Flow Send Durations (us): [0.161, 3.567, 3.652, 12.317, 5.269, 1.234, 1.479, 2.027, 5.067, 5.956, 0.799, 6.214, 5.411, 7.2, 10.013, 2.295, 2.405, 3.589, 4.311, 7.83, 7.951, 7.598, 11.305, 19.555, 13.761, 0.14, 0.446, 12.663, 0.67, 2.781, 2.031, 2.682, 2.696, 2.847, 5.289, 1.219, 0.247, 10.571, 2.258, 2.308, 2.624, 2.655, 3.133, 4.054, 4.252]
+INFO:__main__:Flow Min Byteload Size (B): [106, 6, 18, 670, 44, 294, 30, 587, 1084, 46, 178, 325, 31, 675, 15, 35, 17, 1075, 1425, 475, 475, 29, 1184, 128, 26, 2, 4, 505, 4, 875, 14, 4, 4, 27, 367, 475, 14, 1421, 16, 561, 14, 32, 126, 2, 46]
+INFO:__main__:Flow Max Byteload Size (B): [106, 6, 18, 1458, 44, 294, 30, 587, 1084, 46, 178, 1458, 31, 1458, 15, 35, 17, 1458, 1458, 1458, 1458, 29, 1184, 1458, 26, 2, 4, 1458, 4, 1458, 14, 4, 4, 27, 1458, 1458, 14, 1458, 16, 561, 14, 32, 126, 2, 46]
+INFO:__main__:Flow Min Interval (us): [[], [], [], 0.027, [], [], [], [], [], [], [], 1.0, [], 1.0, [], [], [], 1.0, 1.0, 1.0, 1.0, [], [], 0.185, [], [], [], 0.19, [], 1.0, [], [], [], [], 0.83, 1.0, [], 0.175, [], [], [], [], [], [], []]
+INFO:__main__:Flow Max Interval (us): [[], [], [], 2.28, [], [], [], [], [], [], [], 1.0, [], 1.0, [], [], [], 1.0, 1.0, 1.0, 1.0, [], [], 1.61, [], [], [], 3.815, [], 1.0, [], [], [], [], 1.17, 1.0, [], 3.18, [], [], [], [], [], [], []]
+DEBUG:__main__:Max flow send durations (us): 19.555
+INFO:__main__:* Sim duration (SSIRD): [0.001, 0.001]
+INFO:__main__:* Sim duration (DCTCP): [0.001, 0.001]
+INFO:__main__:* Sim duration (XPass): [0.001, 0.001]
+INFO:dale_experiment_rig:Experiment started at: 2025-08-18 10:42:55.826629
+INFO:dale_experiment_rig:
+##### RUN GROUP #####
+INFO:dale_experiment_rig:
+=====
+Execute experiment FE_incast__4host_DctcpMsgSizeDist_loadtest__5flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z
+INFO:dale_experiment_rig:
+=====
+Execute experiment FE_incast__4host_DctcpMsgSizeDist_loadtest__5flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:
+=====
+Execute experiment FE_incast__4host_DctcpMsgSizeDist_loadtest__10flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z
+INFO:dale_experiment_rig:ssird_sim_duration=0.001000; dctcp_sim_duration=0.001000
+INFO:dale_experiment_rig:
+=====
+Execute experiment FE_incast__4host_DctcpMsgSizeDist_loadtest__10flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z
+INFO:dale_experiment_rig:ssird_sim_duration=0.001000; dctcp_sim_duration=0.001000
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:Flags: 1, 1, 1, 1, 0
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:ssird_sim_duration=0.001000; dctcp_sim_duration=0.001000
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FE_incast_/
+INFO:dale_experiment_rig:ssird_sim_duration=0.001000; dctcp_sim_duration=0.001000
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FE_incast_/
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:-----
+Preparing experiment input MRIs
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FE_incast_/
+INFO:dale_experiment_rig:### Creating MRI inputs parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FE_incast_/
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FE_incast_/ aready exists.
+DEBUG:dale_experiment_rig:num flows: 5
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FE_incast_/ aready exists.
+DEBUG:dale_experiment_rig:num flows: 5
+INFO:dale_experiment_rig:File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/manual-req-intervals/dale_experiments/FE_incast_/ aready exists.
+DEBUG:dale_experiment_rig:num flows: 5
+DEBUG:dale_experiment_rig:num flows: 10
+DEBUG:dale_experiment_rig:num flows: 5
+DEBUG:dale_experiment_rig:num flows: 10
+DEBUG:dale_experiment_rig:num flows: 5
+DEBUG:dale_experiment_rig:num flows: 10
+DEBUG:dale_experiment_rig:num flows: 5
+DEBUG:dale_experiment_rig:num flows: 10
+DEBUG:dale_experiment_rig:num flows: 10
+DEBUG:dale_experiment_rig:num flows: 10
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FE_incast_/
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:-----
+Preparing experiment spec scripts
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FE_incast_/
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FE_incast_/
+INFO:dale_experiment_rig:### Creating spec scripts parent dir: /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FE_incast_/
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FE_incast_/ aready exists.
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FE_incast_/ aready exists.
+INFO:dale_experiment_rig:#### WARNING: File /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FE_incast_/ aready exists.
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FE_incast_/SSIRD-FE_incast__4host_DctcpMsgSizeDist_loadtest__5flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z.sh
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FE_incast_/ssird_FE_incast__4host_DctcpMsgSizeDist_loadtest__5flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FE_incast_/ssird_FE_incast__4host_DctcpMsgSizeDist_loadtest__5flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z_stderr.out
+INFO:dale_experiment_rig:-----
+Running experiment for SSIRD
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FE_incast_/SSIRD-FE_incast__4host_DctcpMsgSizeDist_loadtest__10flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z.sh
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FE_incast_/DCTCP-50-FE_incast__4host_DctcpMsgSizeDist_loadtest__5flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z.sh
+INFO:dale_experiment_rig:-----
+Running experiment for DCTCP-50
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FE_incast_/ssird_FE_incast__4host_DctcpMsgSizeDist_loadtest__10flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z_stdout.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FE_incast_/DCTCP-50_FE_incast__4host_DctcpMsgSizeDist_loadtest__5flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z_stdout.out
+INFO:dale_experiment_rig:### Script:/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/config/dale_experiments/FE_incast_/DCTCP-50-FE_incast__4host_DctcpMsgSizeDist_loadtest__10flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z.sh
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FE_incast_/ssird_FE_incast__4host_DctcpMsgSizeDist_loadtest__10flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z_stderr.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FE_incast_/DCTCP-50_FE_incast__4host_DctcpMsgSizeDist_loadtest__5flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z_stderr.out
+INFO:dale_experiment_rig:### Output path (stdout): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FE_incast_/DCTCP-50_FE_incast__4host_DctcpMsgSizeDist_loadtest__10flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z_stdout.out
+INFO:dale_experiment_rig:### Output path (stderr): /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/outputs/FE_incast_/DCTCP-50_FE_incast__4host_DctcpMsgSizeDist_loadtest__10flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z_stderr.out
+INFO:dale_experiment_rig:-----
+Backing up app trace file paths
+DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_/5+10flo_12Gbps_2025-08-18T_10-42-08Z/SSIRD_app_traces.txt
+INFO:dale_experiment_rig:-----
+Backing up app trace file paths
+DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_/5+10flo_12Gbps_2025-08-18T_10-42-08Z/DCTCP-50_app_traces.txt
+INFO:dale_experiment_rig:-----
+Backing up app trace file paths
+DEBUG:dale_experiment_rig:/data/dh1723/SIRD-Simulator/scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_/5+10flo_12Gbps_2025-08-18T_10-42-08Z/ExpressPass_app_traces.txt
+INFO:dale_experiment_rig:Simulations ended at: 2025-08-18 10:51:23.712852
+INFO:dale_experiment_rig:
+##### POST PROCESS RESULTS #####
+INFO:dale_experiment_rig:=====
+** Num Flows: 5, Target Flow Rate (Gbps): 11.664, ssird_sim_dur (s): 0.001, dctcp_sim_dur (s): 0.001
+INFO:dale_experiment_rig:Processing SIRD results exp_id 0:: 5flo-11.664Gbps_target
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast__4host_DctcpMsgSizeDist_loadtest__5flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z/data/SSIRD/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 106, recv_data_B: 106
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6, recv_data_B: 6
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 18, recv_data_B: 18
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 9, num srq events: 9, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 12334, recv_data_B: 12334
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 44, recv_data_B: 44
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 294, recv_data_B: 294
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 30, recv_data_B: 30
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 587, recv_data_B: 587
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1084, recv_data_B: 1084
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 46, recv_data_B: 46
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 178, recv_data_B: 178
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1783, recv_data_B: 1783
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 31, recv_data_B: 31
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2133, recv_data_B: 2133
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 15, recv_data_B: 15
+INFO:dale_experiment_rig:SSIRD FCT (ms): [1.1739999999704764e-05, 4.208000000005541e-06, 4.161000001445814e-06, 1.5684000000959486e-05, 5.9619999994708905e-06, 8.409999999514639e-06, 7.343000000048505e-06, 1.0694000000199821e-05, 8.633000000202173e-06, 2.897999999973422e-06, 1.2148999999794796e-05, 8.862999999692533e-06, 3.0060000000275977e-06, 1.1530000000092855e-05, 2.5479999994360014e-06]
+App Gdpt (overall): 11.858506087163965 Gbps
+App Gdpt (per flow): [None, None, None, 11.66399999836963, None, None, None, None, None, None, None, 11.664000008729344, None, 11.664000008729344, None]
+Network Gdpt (overall): 7.535887096692439
+Network Gdpt (per flow): [0.07223168654355414, 0.01140684410644886, 0.03460706559720371, 6.291252231188704, 0.05904059041114374, 0.2796670630363543, 0.032684189023343954, 0.43912474283825076, 1.0045175489165892, 0.1269841269852916, 0.11721129311252385, 1.6093873406854151, 0.08250166333922926, 1.479965307880536, 0.0470957613919003]
+INFO:dale_experiment_rig:Processing DCTCP results exp_id 0:: 5flo-11.664Gbps_target
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast__4host_DctcpMsgSizeDist_loadtest__5flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z/data/DCTCP-50/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 106, recv_data_B: 106
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 6, recv_data_B: 6
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 18, recv_data_B: 18
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 9, num srq events: 9, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 12334, recv_data_B: 12334
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 44, recv_data_B: 44
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 294, recv_data_B: 294
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 30, recv_data_B: 30
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 587, recv_data_B: 587
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1084, recv_data_B: 1084
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 46, recv_data_B: 46
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 178, recv_data_B: 178
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1783, recv_data_B: 1783
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 31, recv_data_B: 31
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2133, recv_data_B: 2133
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 15, recv_data_B: 15
+INFO:dale_experiment_rig:DCTCP-50 FCT (ms): [2.528999999640291e-06, 2.513000000092802e-06, 2.515000000258283e-06, 1.0620000001182461e-05, 2.6230000003124587e-06, 2.560000000428886e-06, 2.5169999986474068e-06, 2.6060000006822293e-06, 2.6860000001960316e-06, 2.5200000006719847e-06, 2.5410000006331757e-06, 3.7659999989614334e-06, 2.6120000011786715e-06, 3.619999999315837e-06, 2.515000000258283e-06]
+App Gdpt (overall): 11.858506087163965 Gbps
+App Gdpt (per flow): [None, None, None, 11.66399999836963, None, None, None, None, None, None, None, 11.664000008729344, None, 11.664000008729344, None]
+Network Gdpt (overall): 10.118570654816315
+Network Gdpt (per flow): [0.33531039941503127, 0.01910067648158672, 0.057256461226724314, 9.291148774860035, 0.13419748378119284, 0.9187499998460785, 0.09535160910964322, 1.8019953947700025, 3.228592702668315, 0.14603174599280513, 0.5604092875423701, 3.7875730228182816, 0.09494640118227006, 4.713812155587021, 0.04771371768893693]
+ERROR:dale_experiment_rig:No results for ExpressPass
+INFO:dale_experiment_rig:=====
+** Num Flows: 10, Target Flow Rate (Gbps): 11.664, ssird_sim_dur (s): 0.001, dctcp_sim_dur (s): 0.001
+INFO:dale_experiment_rig:Processing SIRD results exp_id 1:: 10flo-11.664Gbps_target
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast__4host_DctcpMsgSizeDist_loadtest__10flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z/data/SSIRD/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 35, recv_data_B: 35
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 17, recv_data_B: 17
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2533, recv_data_B: 2533
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2883, recv_data_B: 2883
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1933, recv_data_B: 1933
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1933, recv_data_B: 1933
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 29, recv_data_B: 29
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1184, recv_data_B: 1184
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 8, num srq events: 8, num rrq events: 2
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 10334, recv_data_B: 10334
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 26, recv_data_B: 26
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2, recv_data_B: 4
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4, recv_data_B: 4
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 13, num srq events: 13, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 18001, recv_data_B: 18001
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4, recv_data_B: 4
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2333, recv_data_B: 2333
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14, recv_data_B: 14
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4, recv_data_B: 4
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4, recv_data_B: 4
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 27, recv_data_B: 27
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 3, num srq events: 3, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3283, recv_data_B: 3283
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1933, recv_data_B: 1933
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14, recv_data_B: 14
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 11, num srq events: 11, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 16001, recv_data_B: 16001
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 16, recv_data_B: 16
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 561, recv_data_B: 561
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14, recv_data_B: 14
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 32, recv_data_B: 32
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 126, recv_data_B: 126
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2, recv_data_B: 4
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 46, recv_data_B: 46
+INFO:dale_experiment_rig:SSIRD FCT (ms): [7.67799999934482e-06, 7.4760000003948335e-06, 1.2264000000428155e-05, 1.825500000052216e-05, 5.13400000023978e-06, 4.26099999906171e-06, 2.5539999999324436e-06, 2.729000000201154e-06, 1.4592999999507583e-05, 2.5480000012123583e-06, 7.6129999992957664e-06, 7.576999999869827e-06, 1.9792999999879157e-05, 7.563000000487818e-06, 7.444000001299855e-06, 6.355000000013433e-06, 5.6900000000581485e-06, 5.682999999478966e-06, 5.547999998967157e-06, 7.613000001072123e-06, 8.229000000525843e-06, 7.5870000006972305e-06, 1.7897999999405556e-05, 5.636000000919239e-06, 5.793999999781363e-06, 5.240000000128475e-06, 5.271999999223453e-06, 4.869000001406221e-06, 3.754999999827646e-06, 3.707000001185179e-06]
+App Gdpt (overall): 26.043368528712556 Gbps
+App Gdpt (per flow): [None, None, 11.664000008729344, 11.663999988009918, 11.663999988009918, 11.664000008729344, None, None, 11.663999999849588, None, None, None, 11.66400000009625, None, 11.663999988009918, None, None, None, None, 11.66399999836963, 11.663999988009918, None, 11.664000000441574, None, None, None, None, None, None, None]
+Network Gdpt (overall): 18.759478672989232
+Network Gdpt (per flow): [0.036467830167217115, 0.01819154628047316, 1.6523157207511867, 1.26343467539525, 3.0120763535796193, 3.629195025441267, 0.09083790133364789, 3.4708684497258417, 5.665181936736081, 0.08163265302238304, 0.00420333639865495, 0.004223307377662632, 7.275703531595979, 0.0042311252145889175, 2.507254163989916, 0.017623918174628366, 0.005623901581664848, 0.005630828788128427, 0.03893294881763007, 3.4498883483910805, 1.879207680035464, 0.014762093052551394, 7.152084031972931, 0.022711142650660585, 0.7745944080375139, 0.021374045801002668, 0.048558421858442315, 0.20702402951507057, 0.008521970706116856, 0.09927164820133406]
+INFO:dale_experiment_rig:Processing DCTCP results exp_id 1:: 10flo-11.664Gbps_target
+INFO:dale_experiment_rig:Processing results from /data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast__4host_DctcpMsgSizeDist_loadtest__10flo-12Gbps-1458B-1000ns-2025-08-18T_10-42-08Z/data/DCTCP-50/60/applications_trace.str
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 35, recv_data_B: 35
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 17, recv_data_B: 17
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2533, recv_data_B: 2533
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2883, recv_data_B: 2883
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1933, recv_data_B: 1933
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1933, recv_data_B: 1933
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 29, recv_data_B: 29
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1184, recv_data_B: 1184
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 8, num srq events: 8, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 10334, recv_data_B: 10334
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 26, recv_data_B: 26
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2, recv_data_B: 4
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4, recv_data_B: 4
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 13, num srq events: 13, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 18001, recv_data_B: 18001
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4, recv_data_B: 4
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2333, recv_data_B: 2333
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14, recv_data_B: 14
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4, recv_data_B: 4
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 4, recv_data_B: 4
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 27, recv_data_B: 27
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 3, num srq events: 3, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 3283, recv_data_B: 3283
+INFO:dale_experiment_rig:Flow 0:: num of byteloads: 2, num srq events: 2, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 0:: first_event_name: srq, final_event_name: rrq, expected_data_B: 1933, recv_data_B: 1933
+INFO:dale_experiment_rig:Flow 1:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 1:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14, recv_data_B: 14
+INFO:dale_experiment_rig:Flow 2:: num of byteloads: 11, num srq events: 11, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 2:: first_event_name: srq, final_event_name: rrq, expected_data_B: 16001, recv_data_B: 16001
+INFO:dale_experiment_rig:Flow 3:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 3:: first_event_name: srq, final_event_name: rrq, expected_data_B: 16, recv_data_B: 16
+INFO:dale_experiment_rig:Flow 4:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 4:: first_event_name: srq, final_event_name: rrq, expected_data_B: 561, recv_data_B: 561
+INFO:dale_experiment_rig:Flow 5:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 5:: first_event_name: srq, final_event_name: rrq, expected_data_B: 14, recv_data_B: 14
+INFO:dale_experiment_rig:Flow 6:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 6:: first_event_name: srq, final_event_name: rrq, expected_data_B: 32, recv_data_B: 32
+INFO:dale_experiment_rig:Flow 7:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 7:: first_event_name: srq, final_event_name: rrq, expected_data_B: 126, recv_data_B: 126
+INFO:dale_experiment_rig:Flow 8:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 8:: first_event_name: srq, final_event_name: rrq, expected_data_B: 2, recv_data_B: 4
+INFO:dale_experiment_rig:Flow 9:: num of byteloads: 1, num srq events: 1, num rrq events: 1
+DEBUG:dale_experiment_rig:Flow 9:: first_event_name: srq, final_event_name: rrq, expected_data_B: 46, recv_data_B: 46
+INFO:dale_experiment_rig:DCTCP-50 FCT (ms): [2.517999998730147e-06, 2.515000000258283e-06, 3.6839999992821504e-06, 3.7400000003628975e-06, 3.588000000220859e-06, 3.690999999861333e-06, 2.5169999986474068e-06, 2.7019999997435207e-06, 9.53300000006152e-06, 2.5170000004237636e-06, 2.513000000092802e-06, 2.5329999999712527e-06, 1.4731999998573997e-05, 2.7760000005372376e-06, 3.652000000187172e-06, 2.515000000258283e-06, 2.513000000092802e-06, 2.513000000092802e-06, 2.594999999772085e-06, 4.570999999842229e-06, 3.588000000220859e-06, 2.7249999998701924e-06, 1.2739999998956364e-05, 2.515000000258283e-06, 2.6020000003512678e-06, 2.515000000258283e-06, 2.517999998730147e-06, 2.613000001261412e-06, 2.513000000092802e-06, 2.6230000003124587e-06]
+App Gdpt (overall): 26.043368528712556 Gbps
+App Gdpt (per flow): [None, None, 11.664000008729344, 11.663999988009918, 11.663999988009918, 11.664000008729344, None, None, 11.663999999849588, None, None, None, 11.66400000009625, None, 11.663999988009918, None, None, None, None, 11.66399999836963, 11.663999988009918, None, 11.664000000441574, None, None, None, None, None, None, None]
+Network Gdpt (overall): 23.084381264230334
+Network Gdpt (per flow): [0.11119936463113854, 0.05407554671412852, 5.500542889236852, 6.166844919187719, 4.309921961830579, 4.189650501376583, 0.09217322213932176, 3.5055514437080317, 8.672191335305413, 0.08263806117003615, 0.012733784321057812, 0.012633241216092845, 9.775183275450683, 0.011527377519382946, 5.110624315181663, 0.04453280317634113, 0.012733784321057812, 0.012733784321057812, 0.08323699422696376, 5.745788667885916, 4.309921961830579, 0.04110091743315054, 10.047723705689652, 0.05089463220153272, 1.724827055877834, 0.04453280317634113, 0.1016679905198981, 0.3857634900548769, 0.012733784321057812, 0.1402973694076107]
+ERROR:dale_experiment_rig:No results for ExpressPass
+INFO:dale_experiment_rig:
+##### GENERATE METRICS #####
+INFO:dale_experiment_rig:FE_incast__4host_DctcpMsgSizeDist_loadtest
+INFO:__main__:Protos tested: ['SSIRD', 'DCTCP-50']
+INFO:__main__:Topo Yaml File: 4-hosts.yaml
+INFO:__main__:Src-Dst pairs list: [(1, 0), (2, 0), (3, 0)]
+INFO:__main__:Num Flows: [5, 10]
+INFO:__main__:Byteload Size (B): [1458, 1458]
+INFO:__main__:Flow size distr workload: ['DCTCP_MsgSizeDist.txt', 'DCTCP_MsgSizeDist.txt']
+INFO:__main__:Target Mean Byteload Interval (ns): [1000, 1000]
+INFO:__main__:  is_use_poisson_byteload_intervals=True
+INFO:__main__:Target Mean Flow Interarrival (ns): 1000
+INFO:__main__:  is_use_poisson_flow_interarr=True
+INFO:__main__:Target Flow Rate (Gbps): 11.664
+INFO:__main__:Num Byteloads: [1, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 2, 2, 2, 1, 1, 8, 1, 1, 1, 13, 1, 2, 1, 1, 1, 1, 3, 2, 1, 11, 1, 1, 1, 1, 1, 1, 1]
+INFO:__main__:Flow Start Times (us): [{(1, 0): [0.161, 3.567, 3.652, 4.317, 5.269], (2, 0): [1.234, 1.479, 2.027, 5.067, 5.956], (3, 0): [0.799, 5.214, 5.411, 6.2, 10.013]}, {(1, 0): [2.295, 2.405, 2.589, 3.311, 6.83, 6.951, 7.598, 11.305, 12.555, 13.761], (2, 0): [0.14, 0.446, 0.663, 0.67, 1.781, 2.031, 2.682, 2.696, 2.847, 3.289], (3, 0): [0.219, 0.247, 0.571, 2.258, 2.308, 2.624, 2.655, 3.133, 4.054, 4.252]}]
+INFO:__main__:Flow Rate (Gbps): [11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664, 11.664]
+INFO:__main__:Flow Size (B): [106, 6, 18, 12334, 44, 294, 30, 587, 1084, 46, 178, 1783, 31, 2133, 15, 35, 17, 2533, 2883, 1933, 1933, 29, 1184, 10334, 26, 2, 4, 18001, 4, 2333, 14, 4, 4, 27, 3283, 1933, 14, 16001, 16, 561, 14, 32, 126, 2, 46]
+INFO:__main__:Flow Send Durations (us): [0.161, 3.567, 3.652, 12.317, 5.269, 1.234, 1.479, 2.027, 5.067, 5.956, 0.799, 6.214, 5.411, 7.2, 10.013, 2.295, 2.405, 3.589, 4.311, 7.83, 7.951, 7.598, 11.305, 19.555, 13.761, 0.14, 0.446, 12.663, 0.67, 2.781, 2.031, 2.682, 2.696, 2.847, 5.289, 1.219, 0.247, 10.571, 2.258, 2.308, 2.624, 2.655, 3.133, 4.054, 4.252]
+INFO:__main__:Flow Min Byteload Size (B): [106, 6, 18, 670, 44, 294, 30, 587, 1084, 46, 178, 325, 31, 675, 15, 35, 17, 1075, 1425, 475, 475, 29, 1184, 128, 26, 2, 4, 505, 4, 875, 14, 4, 4, 27, 367, 475, 14, 1421, 16, 561, 14, 32, 126, 2, 46]
+INFO:__main__:Flow Max Byteload Size (B): [106, 6, 18, 1458, 44, 294, 30, 587, 1084, 46, 178, 1458, 31, 1458, 15, 35, 17, 1458, 1458, 1458, 1458, 29, 1184, 1458, 26, 2, 4, 1458, 4, 1458, 14, 4, 4, 27, 1458, 1458, 14, 1458, 16, 561, 14, 32, 126, 2, 46]
+INFO:__main__:Flow Min Interval (us): [[], [], [], 0.027, [], [], [], [], [], [], [], 1.0, [], 1.0, [], [], [], 1.0, 1.0, 1.0, 1.0, [], [], 0.185, [], [], [], 0.19, [], 1.0, [], [], [], [], 0.83, 1.0, [], 0.175, [], [], [], [], [], [], []]
+INFO:__main__:Flow Max Interval (us): [[], [], [], 2.28, [], [], [], [], [], [], [], 1.0, [], 1.0, [], [], [], 1.0, 1.0, 1.0, 1.0, [], [], 1.61, [], [], [], 3.815, [], 1.0, [], [], [], [], 1.17, 1.0, [], 3.18, [], [], [], [], [], [], []]
+INFO:__main__:APP Gdpt Gbps measured (SSIRD): [11.858506087163965, 26.043368528712556]
+INFO:__main__:APP Gdpt Gbps measured (DCTCP): [11.858506087163965, 26.043368528712556]
+INFO:__main__:APP Gdpt Gbps measured (XPass): [None, None]
+DEBUG:__main__:APP Gdpt Gbps measured per flow (SSIRD): [[None, None, None, 11.66399999836963, None, None, None, None, None, None, None, 11.664000008729344, None, 11.664000008729344, None], [None, None, 11.664000008729344, 11.663999988009918, 11.663999988009918, 11.664000008729344, None, None, 11.663999999849588, None, None, None, 11.66400000009625, None, 11.663999988009918, None, None, None, None, 11.66399999836963, 11.663999988009918, None, 11.664000000441574, None, None, None, None, None, None, None]]
+DEBUG:__main__:APP Gdpt Gbps measured per flow (DCTCP): [[None, None, None, 11.66399999836963, None, None, None, None, None, None, None, 11.664000008729344, None, 11.664000008729344, None], [None, None, 11.664000008729344, 11.663999988009918, 11.663999988009918, 11.664000008729344, None, None, 11.663999999849588, None, None, None, 11.66400000009625, None, 11.663999988009918, None, None, None, None, 11.66399999836963, 11.663999988009918, None, 11.664000000441574, None, None, None, None, None, None, None]]
+DEBUG:__main__:APP Gdpt Gbps measured per flow (XPass): [None, None]
+INFO:__main__:NW Gdpt Gbps measured (SSIRD): [7.535887096692439, 18.759478672989232]
+INFO:__main__:NW Gdpt Gbps measured (DCTCP): [10.118570654816315, 23.084381264230334]
+INFO:__main__:NW Gdpt Gbps measured (Xpass): [None, None]
+DEBUG:__main__:NW Gdpt Gbps measured per flow (SSIRD): [[0.07223168654355414, 0.01140684410644886, 0.03460706559720371, 6.291252231188704, 0.05904059041114374, 0.2796670630363543, 0.032684189023343954, 0.43912474283825076, 1.0045175489165892, 0.1269841269852916, 0.11721129311252385, 1.6093873406854151, 0.08250166333922926, 1.479965307880536, 0.0470957613919003], [0.036467830167217115, 0.01819154628047316, 1.6523157207511867, 1.26343467539525, 3.0120763535796193, 3.629195025441267, 0.09083790133364789, 3.4708684497258417, 5.665181936736081, 0.08163265302238304, 0.00420333639865495, 0.004223307377662632, 7.275703531595979, 0.0042311252145889175, 2.507254163989916, 0.017623918174628366, 0.005623901581664848, 0.005630828788128427, 0.03893294881763007, 3.4498883483910805, 1.879207680035464, 0.014762093052551394, 7.152084031972931, 0.022711142650660585, 0.7745944080375139, 0.021374045801002668, 0.048558421858442315, 0.20702402951507057, 0.008521970706116856, 0.09927164820133406]]
+DEBUG:__main__:NW Gdpt Gbps measured per flow (DCTCP): [[0.33531039941503127, 0.01910067648158672, 0.057256461226724314, 9.291148774860035, 0.13419748378119284, 0.9187499998460785, 0.09535160910964322, 1.8019953947700025, 3.228592702668315, 0.14603174599280513, 0.5604092875423701, 3.7875730228182816, 0.09494640118227006, 4.713812155587021, 0.04771371768893693], [0.11119936463113854, 0.05407554671412852, 5.500542889236852, 6.166844919187719, 4.309921961830579, 4.189650501376583, 0.09217322213932176, 3.5055514437080317, 8.672191335305413, 0.08263806117003615, 0.012733784321057812, 0.012633241216092845, 9.775183275450683, 0.011527377519382946, 5.110624315181663, 0.04453280317634113, 0.012733784321057812, 0.012733784321057812, 0.08323699422696376, 5.745788667885916, 4.309921961830579, 0.04110091743315054, 10.047723705689652, 0.05089463220153272, 1.724827055877834, 0.04453280317634113, 0.1016679905198981, 0.3857634900548769, 0.012733784321057812, 0.1402973694076107]]
+DEBUG:__main__:NW Gdpt Gbps measured per flow (XPass): [None, None]
+INFO:__main__:* Sim duration (SSIRD): [0.001, 0.001]
+INFO:__main__:* Sim duration (DCTCP): [0.001, 0.001]
+INFO:__main__:* Sim duration (XPass): [0.001, 0.001]
+INFO:__main__:* SSIRD FCT: [[1.1739999999704764e-05, 4.208000000005541e-06, 4.161000001445814e-06, 1.5684000000959486e-05, 5.9619999994708905e-06, 8.409999999514639e-06, 7.343000000048505e-06, 1.0694000000199821e-05, 8.633000000202173e-06, 2.897999999973422e-06, 1.2148999999794796e-05, 8.862999999692533e-06, 3.0060000000275977e-06, 1.1530000000092855e-05, 2.5479999994360014e-06], [7.67799999934482e-06, 7.4760000003948335e-06, 1.2264000000428155e-05, 1.825500000052216e-05, 5.13400000023978e-06, 4.26099999906171e-06, 2.5539999999324436e-06, 2.729000000201154e-06, 1.4592999999507583e-05, 2.5480000012123583e-06, 7.6129999992957664e-06, 7.576999999869827e-06, 1.9792999999879157e-05, 7.563000000487818e-06, 7.444000001299855e-06, 6.355000000013433e-06, 5.6900000000581485e-06, 5.682999999478966e-06, 5.547999998967157e-06, 7.613000001072123e-06, 8.229000000525843e-06, 7.5870000006972305e-06, 1.7897999999405556e-05, 5.636000000919239e-06, 5.793999999781363e-06, 5.240000000128475e-06, 5.271999999223453e-06, 4.869000001406221e-06, 3.754999999827646e-06, 3.707000001185179e-06]]
+INFO:__main__:* DCTCP FCT: [[2.528999999640291e-06, 2.513000000092802e-06, 2.515000000258283e-06, 1.0620000001182461e-05, 2.6230000003124587e-06, 2.560000000428886e-06, 2.5169999986474068e-06, 2.6060000006822293e-06, 2.6860000001960316e-06, 2.5200000006719847e-06, 2.5410000006331757e-06, 3.7659999989614334e-06, 2.6120000011786715e-06, 3.619999999315837e-06, 2.515000000258283e-06], [2.517999998730147e-06, 2.515000000258283e-06, 3.6839999992821504e-06, 3.7400000003628975e-06, 3.588000000220859e-06, 3.690999999861333e-06, 2.5169999986474068e-06, 2.7019999997435207e-06, 9.53300000006152e-06, 2.5170000004237636e-06, 2.513000000092802e-06, 2.5329999999712527e-06, 1.4731999998573997e-05, 2.7760000005372376e-06, 3.652000000187172e-06, 2.515000000258283e-06, 2.513000000092802e-06, 2.513000000092802e-06, 2.594999999772085e-06, 4.570999999842229e-06, 3.588000000220859e-06, 2.7249999998701924e-06, 1.2739999998956364e-05, 2.515000000258283e-06, 2.6020000003512678e-06, 2.515000000258283e-06, 2.517999998730147e-06, 2.613000001261412e-06, 2.513000000092802e-06, 2.6230000003124587e-06]]
+INFO:__main__:* XPass FCT: [None, None]
+INFO:__main__:** SSIRD FCT sorted: [[(6, 4.208000000005541e-06), (15, 2.5479999994360014e-06), (18, 4.161000001445814e-06), (30, 7.343000000048505e-06), (31, 3.0060000000275977e-06), (44, 5.9619999994708905e-06), (46, 2.897999999973422e-06), (106, 1.1739999999704764e-05), (178, 1.2148999999794796e-05), (294, 8.409999999514639e-06), (587, 1.0694000000199821e-05), (1084, 8.633000000202173e-06), (1783, 8.862999999692533e-06), (2133, 1.1530000000092855e-05), (12334, 1.5684000000959486e-05)], [(4, 7.6129999992957664e-06), (4, 7.576999999869827e-06), (4, 7.563000000487818e-06), (4, 5.6900000000581485e-06), (4, 5.682999999478966e-06), (4, 3.754999999827646e-06), (14, 6.355000000013433e-06), (14, 7.5870000006972305e-06), (14, 5.240000000128475e-06), (16, 5.636000000919239e-06), (17, 7.4760000003948335e-06), (26, 2.5480000012123583e-06), (27, 5.547999998967157e-06), (29, 2.5539999999324436e-06), (32, 5.271999999223453e-06), (35, 7.67799999934482e-06), (46, 3.707000001185179e-06), (126, 4.869000001406221e-06), (561, 5.793999999781363e-06), (1184, 2.729000000201154e-06), (1933, 5.13400000023978e-06), (1933, 4.26099999906171e-06), (1933, 8.229000000525843e-06), (2333, 7.444000001299855e-06), (2533, 1.2264000000428155e-05), (2883, 1.825500000052216e-05), (3283, 7.613000001072123e-06), (10334, 1.4592999999507583e-05), (16001, 1.7897999999405556e-05), (18001, 1.9792999999879157e-05)]]
+INFO:__main__:** DCTCP FCT sorted: [[(6, 2.513000000092802e-06), (15, 2.515000000258283e-06), (18, 2.515000000258283e-06), (30, 2.5169999986474068e-06), (31, 2.6120000011786715e-06), (44, 2.6230000003124587e-06), (46, 2.5200000006719847e-06), (106, 2.528999999640291e-06), (178, 2.5410000006331757e-06), (294, 2.560000000428886e-06), (587, 2.6060000006822293e-06), (1084, 2.6860000001960316e-06), (1783, 3.7659999989614334e-06), (2133, 3.619999999315837e-06), (12334, 1.0620000001182461e-05)], [(4, 2.513000000092802e-06), (4, 2.5329999999712527e-06), (4, 2.7760000005372376e-06), (4, 2.513000000092802e-06), (4, 2.513000000092802e-06), (4, 2.513000000092802e-06), (14, 2.515000000258283e-06), (14, 2.7249999998701924e-06), (14, 2.515000000258283e-06), (16, 2.515000000258283e-06), (17, 2.515000000258283e-06), (26, 2.5170000004237636e-06), (27, 2.594999999772085e-06), (29, 2.5169999986474068e-06), (32, 2.517999998730147e-06), (35, 2.517999998730147e-06), (46, 2.6230000003124587e-06), (126, 2.613000001261412e-06), (561, 2.6020000003512678e-06), (1184, 2.7019999997435207e-06), (1933, 3.588000000220859e-06), (1933, 3.690999999861333e-06), (1933, 3.588000000220859e-06), (2333, 3.652000000187172e-06), (2533, 3.6839999992821504e-06), (2883, 3.7400000003628975e-06), (3283, 4.570999999842229e-06), (10334, 9.53300000006152e-06), (16001, 1.2739999998956364e-05), (18001, 1.4731999998573997e-05)]]
+INFO:__main__:** XPass FCT sorted: [None, None]

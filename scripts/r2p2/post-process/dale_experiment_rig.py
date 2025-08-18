@@ -1559,6 +1559,10 @@ class EmpiricalDistr(ABC):
         Loads CDF from file like Google_SearchRPC.txt.
         First line might be ignored if its avg size or metadata.
         """
+        filepath = Path(filename)
+        if (not filepath.exists()):
+            raise FileNotFoundError(f"Filepath {filepath} does not exist!")
+
         cdf = []
         with open(filename, 'r') as f:
             first_line = f.readline().strip()
