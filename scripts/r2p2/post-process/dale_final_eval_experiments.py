@@ -425,6 +425,29 @@ def incast_3to1_1458B_googleAllRpc():
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
 
+def incast_10to1_1458B_googleAllRpc():
+    run_experiment(
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        num_flows_list=[5, 10, 20],
+        byteload_size_B_list=[1458]*3,
+        target_mean_byteload_interval_nanosec_list=[1000]*3,
+        max_interval_nanosec_list=[10000]*3,
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Google_AllRPC.txt")]*3,
+        target_mean_flow_interarr_ns=1000,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.01]*3,
+        dctcp_sim_dur_list=[0.01]*3,
+        xpass_sim_dur_list=[0.01]*3,
+        is_full_postproc=True,
+        title_prefix="FE_incast_",
+        title_addendum="_10host_GoogleAllRPC_loadtest",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+
 if __name__ == "__main__":
 
     ''' FINAL EXPERIMENTS '''
@@ -434,10 +457,11 @@ if __name__ == "__main__":
     ''' FINAL EXPERIMENTS (LOAD TEST)'''
     # incast_3to1_1458B_fbHadoopDist()
     # incast_3to1_1458B_dctcpMsgSizeDist()
-    incast_3to1_1458B_googleAllRpc()
+    # incast_3to1_1458B_googleAllRpc()
 
     # incast_10to1_1458B_fbHadoopDist()
     # incast_10to1_1458B_dctcpMsgSizeDist()
+    incast_10to1_1458B_googleAllRpc()
 
     # incast_10to1_1458B_fabricated_heavy_middle()
 
