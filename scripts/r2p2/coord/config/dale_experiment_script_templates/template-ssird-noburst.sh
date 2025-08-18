@@ -32,11 +32,14 @@ global_debug='6'
 r2p2_budgets_intra_max_bytes_l='108000'
 r2p2_elet_srpb_l='72000'
 r2p2_unsolicited_thresh_bytes_l="0" # no bursts
+# sendr policy:: 0 -> fair sharing, 1-> SRPT for sender_policy_ratio_ of the BW, 2-> prioritize receivers with highest credit backlog (at sender_policy_ratio_ % of the BW)
 r2p2_hybrid_sender_policy_l="1"
 r2p2_sender_policy_ratio_l='0.5'
 r2p2_sender_ecn_threshold_l="25"
 r2p2_elet_account_unsched_l="1"
 r2p2_hybrid_sender_algo_l="0"
+# rcvr policy:: 0: TS among msgs, 1: fifo among senders, 2: fifo among messages 3: SRPT
+r2p2_elet_receiver_policy_l='3' 
 # ===================== DCTCP Parameters =====================
 
 # ===================== HOMA Parametrs =====================
