@@ -122,7 +122,30 @@ public:
     }
     void reset(int nop)
     {
-        (void)nop;
+        /* Dale: do partial reset (state & timers when same flow triggers forward_request() in pfabric)*/
+        // (void)nop;
+        if (nop == 0)
+        {
+            /* Dale: do partial reset */
+            slog::log6(debug_, addr(), "XPassAgent::reset() (PARTIAL) times_conn_used_=", times_conn_used_);
+            credit_send_state_ = XPASS_SEND_CLOSED;
+            credit_recv_state_ = XPASS_RECV_CLOSED;
+
+            // Cancel all timers as they are no longer relevant
+            if (send_credit_timer_.status() != TIMER_IDLE)
+                send_credit_timer_.cancel();
+            if (credit_stop_timer_.status() != TIMER_IDLE)
+                credit_stop_timer_.cancel();
+
+            if (sender_retransmit_timer_.status() != TIMER_IDLE)
+                sender_retransmit_timer_.cancel();
+            if (receiver_retransmit_timer_.status() != TIMER_IDLE)
+                receiver_retransmit_timer_.cancel();
+            if (fct_timer_.status() != TIMER_IDLE)
+                fct_timer_.cancel();
+            return;
+        }
+
         slog::log6(debug_, addr(), "XPassAgent::reset() times_conn_used_=", times_conn_used_);
         credit_send_state_ = XPASS_SEND_CLOSED;
         credit_recv_state_ = XPASS_RECV_CLOSED;

@@ -358,7 +358,8 @@ void PfabricApplication<T>::forward_request(RequestIdTuple &req_id, T *agent, in
     // send msg
     assert(agent != nullptr);
     assert(req_id.is_request_);
-    agent->reset(-1);
+    /* Dale: do partial reset (nop==0) for xpass: resets state and timers, not counters */
+    agent->reset(0); 
     agent->advance_bytes(req_id.msg_bytes_, std::move(req_id));
 }
 
@@ -400,7 +401,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
         {
             slog::log5(debug_, local_addr_, "Register incoming request with sz:", total_msg_sz);
             req_state = new MsgState();
-            req_state->total_size_B_ = total_msg_sz;
+            req_state->total_size_B_ = max(total_msg_sz, req_id_tup.total_msg_data_);
             req_state->bytes_recvd_ = payload;
             (*req_id_to_req_state)[app_lvl_req_id] = req_state;
         }
@@ -510,7 +511,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
                 slog::log3(debug_, local_addr_, "$$ pt1");
                 assert(std::find(waiting_flows_.begin(), waiting_flows_.end(), app_lvl_req_id) == waiting_flows_.end());
                 flow_id_to_agent_map_.erase(app_lvl_req_id);
-                /* Dale: TODO: (?) reset agent when we release agent/conn back to pool (for xpass) */
+                /* Dale: fully reset agent when we release agent/conn back to pool (for xpass) */
                 agent->reset(-1);
                 dstid_to_free_agent_pool_.at(srvr_addr)->push_back(agent);
                 pool_size = dstid_to_free_agent_pool_.at(srvr_addr)->size();

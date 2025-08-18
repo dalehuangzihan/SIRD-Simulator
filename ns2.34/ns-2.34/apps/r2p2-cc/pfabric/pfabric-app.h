@@ -108,7 +108,7 @@ protected:
                      int resp_size,
                      int pool_size);
 
-    int MAX_POOL_SIZE = 40;
+    int MAX_POOL_SIZE = 1;
 };
 
 #endif
