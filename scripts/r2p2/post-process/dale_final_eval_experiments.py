@@ -466,9 +466,9 @@ def incast_10to1_1458B_fbHadoopDist_load_fullsweep():
         target_mean_flow_interarr_ns=1000,
         is_use_poisson_byteload_intervals=True,
         is_use_poisson_flow_interarr=True,
-        ssird_sim_dur_list=[0.01]*9,
-        dctcp_sim_dur_list=[0.01]*9,
-        xpass_sim_dur_list=[0.01]*9,
+        ssird_sim_dur_list=[0.02]*9,
+        dctcp_sim_dur_list=[0.02]*9,
+        xpass_sim_dur_list=[0.02]*9,
         is_full_postproc=True,
         title_prefix="FE_incast_fullsweep_",
         title_addendum="_10host_fbHadoopDist_load_fullsweep",
@@ -519,8 +519,8 @@ if __name__ == "__main__":
     # incast_10to1_1458B_fabricated_heavy_middle()
 
     ''' FINAL EXPERIMENTS (FULL LOAD SWEEP) '''
-    # incast_10to1_1458B_fbHadoopDist_load_fullsweep()
-    incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep()
+    incast_10to1_1458B_fbHadoopDist_load_fullsweep()
+    # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep()
 
 
 
