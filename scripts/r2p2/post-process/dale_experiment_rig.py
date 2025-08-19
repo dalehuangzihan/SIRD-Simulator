@@ -1448,23 +1448,29 @@ class FlowSpecGenerator:
 
             logging.info(f"\n  Generating flow size for flow={i}")
             # print(f"\n  Generating flow size for flow={i}")
-            flow_size_B = self.flow_size_distr.get_flow_size_B()
+            flow_size_generated_B = self.flow_size_distr.get_flow_size_B()
             byteload_size_B_list = []
-            if (flow_size_B < self.byteload_size_B):
-                byteload_size_B_list.append(flow_size_B)
+            if (flow_size_generated_B < self.byteload_size_B):
+                if (flow_size_generated_B < 4):
+                    # ensure byteload size is at least 4B
+                    flow_size_generated_B = 4
+                byteload_size_B_list.append(flow_size_generated_B)
             else:
-                remaining_bytes_in_flow = flow_size_B
+                remaining_bytes_in_flow = flow_size_generated_B
                 while(remaining_bytes_in_flow >= self.byteload_size_B):
                     byteload_size_B_list.append(self.byteload_size_B)
                     remaining_bytes_in_flow -= self.byteload_size_B
                 if (remaining_bytes_in_flow > 0):
+                    if (remaining_bytes_in_flow < 4):
+                        # ensure byteload size is at least 4B
+                        remaining_bytes_in_flow = 4
                     byteload_size_B_list.append(remaining_bytes_in_flow)
 
             num_byteloads = len(byteload_size_B_list)
             num_byteloads_list.append(num_byteloads)
             byteload_size_B_list_list.append(byteload_size_B_list)
             # logging.debug(f"    Flow={i}, flow_size_B={flow_size_B}, num_byteloads={num_byteloads}, byteload_size_B_list={byteload_size_B_list}")
-            logging.debug(f"    Flow={i}, flow_size_B={flow_size_B}, num_byteloads={num_byteloads}, len(byteload_size_B_list)={len(byteload_size_B_list)}")
+            logging.debug(f"    Flow={i}, flow_size_B={sum(byteload_size_B_list)}, num_byteloads={num_byteloads}, len(byteload_size_B_list)={len(byteload_size_B_list)}")
 
             logging.info(f"\n  Generating intervals for flow={i}")
             # print(f"\n  Generating intervals for flow={i}")
