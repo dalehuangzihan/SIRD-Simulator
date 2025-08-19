@@ -53,12 +53,15 @@ def run_experiment_from_saved_json(
     src_dst_pairs_to_flow_start_times_us_dict_list = [] # list of src_dst_pairs_to_flow_start_times_us_dict objs, one per experiment
 
     src_dst_pairs_to_flowspecs_dict_list = dale_experiment_rig.FlowSpec.parse_src_dst_pairs_flowspec_dict_list_from_jsonfile(dale_experiment_rig.FLOW_SPECS_JSON_PATH, saved_json_file)
-    for src_dst_pairs_to_flowspecs_dict in src_dst_pairs_to_flowspecs_dict_list: # iterating thru experiments
+    for exp_id in range(len(src_dst_pairs_to_flowspecs_dict_list)): # iterating thru experiments
+        src_dst_pairs_to_flowspecs_dict = src_dst_pairs_to_flowspecs_dict_list[exp_id]
         # print(src_dst_pairs_to_flowspecs_dict)
         src_dst_pairs_to_flow_start_times_us_dict = {}
         for src_dst_pair in src_dst_pairs_list:
             src_dst_pair_key = (src_dst_pair[0], src_dst_pair[1])
             flow_spec_list, flow_start_times_us_list = src_dst_pairs_to_flowspecs_dict[src_dst_pair_key]
+            assert(len(flow_spec_list) == len(flow_start_times_us_list))
+            assert(len(flow_spec_list) == num_flows_list[exp_id])
             all_flow_specs_list.extend(flow_spec_list)
             src_dst_pairs_to_flow_start_times_us_dict[src_dst_pair] = flow_start_times_us_list
         src_dst_pairs_to_flow_start_times_us_dict_list.append(src_dst_pairs_to_flow_start_times_us_dict)
@@ -286,4 +289,25 @@ if __name__ == "__main__":
     #     title_addendum="_4host_GoogleAllRPC_loadtest",
     #     log_level=dale_experiment_rig.LOG_LEVEL_6,
     #     experiment_date="2025-08-18T_14-32-25Z_redo_no_sub4_bloads"
+    # ) 
+    # run_experiment_from_saved_json(
+    #     saved_json_file="FE_incast_fullsweep_10to1_10host_fbHadoopDist_load_fullsweep_2025-08-19T_10-49-13Z.json",
+    #     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+    #     topo_yaml_file='12-hosts-dumbbell.yaml',
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+    #     num_flows_list=[2, 6, 10, 14, 18, 22, 24, 28, 32],
+    #     byteload_size_B_list=[1458]*9,
+    #     target_mean_byteload_interval_nanosec_list=[1000]*9,
+    #     flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_HadoopDist_All.txt")]*9,
+    #     target_mean_flow_interarr_ns=1000,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.02]*9,
+    #     dctcp_sim_dur_list=[0.02]*9,
+    #     xpass_sim_dur_list=[0.02]*9,
+    #     is_full_postproc=True,
+    #     title_prefix="exp_rig_test_",
+    #     title_addendum="_load_from_json_test",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2,
+    #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     # ) 
