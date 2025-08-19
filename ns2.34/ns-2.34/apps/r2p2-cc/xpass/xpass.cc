@@ -338,6 +338,12 @@ void XPassAgent::recv_data(Packet *pkt)
     req_id.sr_addr_ = r2p2_hdr->sr_addr();
     req_id.client_port_ = dport();
     req_id.ts_ = r2p2_hdr->msg_creation_time();
+    /* Dale: add flow_id_ to header */
+    req_id.flow_id_ = r2p2_hdr->flow_id();
+    /* Dale: set total msg data size in header */
+    req_id.total_msg_data_ = r2p2_hdr->total_msg_data();
+    /* Dale: set is_final_req_of_conn flag in header */
+    req_id.is_final_req_of_conn_ = r2p2_hdr->is_final_req_of_conn();
     int datalen = hdr_cmn::access(pkt)->size() - hdr_tcp::access(pkt)->hlen();
 
     // correct for when the last pkt of the message was below min ethernet size
@@ -488,7 +494,7 @@ Packet *XPassAgent::construct_credit_request()
     // to measure rtt between credit request and first credit
     // for sender.
     rtt_ = now();
-    slog::log5(debug_, addr(), "XPassAgent::construct_credit_request() (sndr). t_seqno_=", t_seqno_, "xpass_hdr_size_=", xpass_hdr_size_, "tcmnh->size()=", cmnh->size());
+    slog::log5(debug_, addr(), "XPassAgent::construct_credit_request() (sndr). t_seqno_=", t_seqno_, "curseq_=", curseq_, "xpass_hdr_size_=", xpass_hdr_size_, "tcmnh->size()=", cmnh->size());
 
     return p;
 }
@@ -601,6 +607,8 @@ Packet *XPassAgent::construct_data(Packet *credit)
     // Hack for xpass port
     if (cur_req_id_tup_ != nullptr)
     {
+        curr_app_data_sent_ += datalen;
+
         hdr_r2p2 *r2p2_hdr = hdr_r2p2::access(p);
         r2p2_hdr->app_level_id() = cur_req_id_tup_->app_level_id_;
         r2p2_hdr->msg_bytes() = cur_req_id_tup_->msg_bytes_;
@@ -617,6 +625,13 @@ Packet *XPassAgent::construct_data(Packet *credit)
         r2p2_hdr->sr_addr() = cur_req_id_tup_->sr_addr_;
         r2p2_hdr->msg_creation_time() = cur_req_id_tup_->ts_;
         r2p2_hdr->is_pfabric_app_msg() = true;
+		/* Dale: set flow_id in header */
+		r2p2_hdr->flow_id() = cur_req_id_tup_->flow_id_;
+		/* Dale: set total msg data size in  header */
+		r2p2_hdr->total_msg_data() = cur_req_id_tup_->total_msg_data_;
+        slog::log6(debug_, addr(), "src=", cur_req_id_tup_->cl_addr_, "dst=", cur_req_id_tup_->sr_addr_, "is_final_req_of_conn_=", cur_req_id_tup_->is_final_req_of_conn_, "curr_app_data_sent_=", curr_app_data_sent_, "total_msg_data_=", cur_req_id_tup_->total_msg_data_);
+		/* Dale: set is_final_req_of_conn flag in header; curr_app_data_sent_ >= total_msg_data_ can happen if some byteloads originally have size smaller than 4B */
+		r2p2_hdr->is_final_req_of_conn() = (cur_req_id_tup_->is_final_req_of_conn_ && curr_app_data_sent_ >= cur_req_id_tup_->total_msg_data_);
         assert(cur_req_id_tup_->ts_ > 0);
     }
     // else // can happen during warmup.
@@ -681,6 +696,7 @@ void XPassAgent::send_credit()
 void XPassAgent::send_credit_stop()
 {
     slog::log6(debug_, addr(), "XPassAgent::send_credit_stop() - scheduling sender retr timer in (us):", (rtt_ > 0 ? (2. * rtt_) : default_credit_stop_timeout_) * 1000.0 * 1000.0);
+    slog::log6(debug_, addr(), "send_credit_stop(): curseq_=", curseq_, "t_seqno_=", t_seqno_);
     send(construct_credit_stop(), 0);
     // set on timer
     sender_retransmit_timer_.resched(rtt_ > 0 ? (2. * rtt_) : default_credit_stop_timeout_);

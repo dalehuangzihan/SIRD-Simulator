@@ -580,6 +580,8 @@ class FlowStats:
                 self.total_data_bytes_recv_B = flow_trace_event.get_req_size()
             elif (self.proto == DCTCP_PROTO_NAME):
                 self.total_data_bytes_recv_B = flow_trace_event.get_req_size()
+            elif (self.proto == XPASS_PROTO_NAME):
+                self.total_data_bytes_recv_B = flow_trace_event.get_req_size()
             else:
                 logger.error(f"Unrecognised proto name {self.proto}")
 
@@ -587,7 +589,7 @@ class FlowStats:
             logger.error(f"Unrecognised flow trace event {trace_event_name}")
 
     def check_flow_stats(self):
-        logger.info(f"Flow {self.flow_id}:: num of byteloads: {self.num_byteloads}, num srq events: {self.num_srq}, num rrq events: {self.num_rrq}")
+        logger.info(f"srcdst:{(self.src, self.dst)} Flow {self.flow_id}:: num of byteloads: {self.num_byteloads}, num srq events: {self.num_srq}, num rrq events: {self.num_rrq}")
 
         assert(self.num_srq == self.num_byteloads) # TODO: remove assertion if adaptive batching feature is implemented
         assert(self.first_event_name == FlowTraceEvent.SRQ_EVENT)
@@ -1103,8 +1105,8 @@ class FlowSpec:
             for src_dst_str, flow_spec_list_dict in exp_input_json.items():
                 src_dst_list = src_dst_str.split(",")
                 assert(len(src_dst_list) == 2)
-                src = src_dst_list[0]
-                dst = src_dst_list[1]
+                src = int(src_dst_list[0])
+                dst = int(src_dst_list[1])
                 flow_spec_list, flow_start_times_us_list = FlowSpec.dict_to_flow_spec_list_info(flow_spec_list_dict)
                 src_dst_pairs_to_flowspecs_dict[(src,dst)] = (flow_spec_list, flow_start_times_us_list)
             src_dst_pairs_to_flowspecs_dict_list.append(src_dst_pairs_to_flowspecs_dict)
