@@ -629,7 +629,7 @@ def incast_10to1_1458B_googleAllRpc_loadtest():
     ========== INCAST EXPERIMENTS (FULL LOAD SWEEP): ==========
 '''
 
-def incast_10to1_1458B_fabHvyMid_fullsweep():
+def incast_10to1_1458B_fabHvyMid_load_fullsweep():
     run_experiment(
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
@@ -719,7 +719,7 @@ if __name__ == "__main__":
     # incast_10to1_1458B_fabricated_heavy_middle()
 
     ''' FINAL EXPERIMENTS (FULL LOAD SWEEP) '''
-    incast_10to1_1458B_fabHvyMid_fullsweep()
+    incast_10to1_1458B_fabHvyMid_load_fullsweep()
     # incast_10to1_1458B_fbHadoopDist_load_fullsweep()
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep()
 
