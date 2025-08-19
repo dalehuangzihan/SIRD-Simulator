@@ -284,10 +284,10 @@ def onertt_delay_p2p_lowload_40flo():
     ) 
 
 ''' 
-    ========== INCAST EXPERIMENTS: ==========
+    ========== INCAST EXPERIMENTS (LOAD TEST): ==========
 '''
 
-def incast_10to1_1458B_fabricated_heavy_middle():
+def incast_10to1_1458B_fabricated_heavy_middle_loadtest():
     run_experiment(
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
@@ -310,7 +310,7 @@ def incast_10to1_1458B_fabricated_heavy_middle():
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
 
-def incast_3to1_1458B_fbHadoopDist():
+def incast_3to1_1458B_fbHadoopDist_loadtest():
     run_experiment(
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME],
         topo_yaml_file='4-hosts.yaml',
@@ -333,7 +333,7 @@ def incast_3to1_1458B_fbHadoopDist():
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
 
-def incast_10to1_1458B_fbHadoopDist():
+def incast_10to1_1458B_fbHadoopDist_loadtest():
     run_experiment(
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
@@ -356,7 +356,7 @@ def incast_10to1_1458B_fbHadoopDist():
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
 
-def incast_3to1_1458B_dctcpMsgSizeDist():
+def incast_3to1_1458B_dctcpMsgSizeDist_loadtest():
     run_experiment(
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME],
         topo_yaml_file='4-hosts.yaml',
@@ -379,7 +379,7 @@ def incast_3to1_1458B_dctcpMsgSizeDist():
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
 
-def incast_10to1_1458B_dctcpMsgSizeDist():
+def incast_10to1_1458B_dctcpMsgSizeDist_loadtest():
     run_experiment(
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
@@ -402,7 +402,7 @@ def incast_10to1_1458B_dctcpMsgSizeDist():
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
 
-def incast_3to1_1458B_googleAllRpc():
+def incast_3to1_1458B_googleAllRpc_loadtest():
     run_experiment(
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME],
         topo_yaml_file='4-hosts.yaml',
@@ -425,7 +425,7 @@ def incast_3to1_1458B_googleAllRpc():
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
 
-def incast_10to1_1458B_googleAllRpc():
+def incast_10to1_1458B_googleAllRpc_loadtest():
     run_experiment(
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
@@ -448,22 +448,81 @@ def incast_10to1_1458B_googleAllRpc():
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
 
+
+''' 
+    ========== INCAST EXPERIMENTS (FULL LOAD SWEEP): ==========
+'''
+
+def incast_10to1_1458B_fbHadoopDist_load_fullsweep():
+    run_experiment(
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        num_flows_list=[2, 6, 10, 14, 18, 22, 24],
+        byteload_size_B_list=[1458]*7,
+        target_mean_byteload_interval_nanosec_list=[1000]*7,
+        max_interval_nanosec_list=[10000]*7,
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_HadoopDist_All.txt")]*7,
+        target_mean_flow_interarr_ns=1000,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.01]*7,
+        dctcp_sim_dur_list=[0.01]*7,
+        xpass_sim_dur_list=[0.01]*7,
+        is_full_postproc=True,
+        title_prefix="FE_incast_fullsweep_",
+        title_addendum="_10host_fbHadoopDist_load_fullsweep",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+    print("FE_incast_fullsweep_"+"_10host_fbHadoopDist_load_fullsweep")
+
+def incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep():
+    run_experiment(
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        num_flows_list=[2, 6, 8, 10, 12, 14, 16, 18],
+        byteload_size_B_list=[1458]*8,
+        target_mean_byteload_interval_nanosec_list=[1000]*8,
+        max_interval_nanosec_list=[10000]*8,
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="DCTCP_MsgSizeDist.txt")]*8,
+        target_mean_flow_interarr_ns=1000,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.01]*8,
+        dctcp_sim_dur_list=[0.01]*8,
+        xpass_sim_dur_list=[0.01]*8,
+        is_full_postproc=True,
+        title_prefix="FE_incast_fullsweep_",
+        title_addendum="_10host_DctcpMsgSizeDist_load_fullsweep",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+    print("FE_incast_fullsweep_"+"_10host_DctcpMsgSizeDist_load_fullsweep")
+
 if __name__ == "__main__":
 
-    ''' FINAL EXPERIMENTS '''
+    ''' FINAL EXPERIMENTS (1RTT DELAY TEST) '''
     # onertt_delay_p2p_lowload()
     # onertt_delay_p2p_lowload_40flo()
 
-    ''' FINAL EXPERIMENTS (LOAD TEST)'''
+    ''' FINAL EXPERIMENTS (LOAD TEST) '''
     # incast_3to1_1458B_fbHadoopDist()
     # incast_3to1_1458B_dctcpMsgSizeDist()
     # incast_3to1_1458B_googleAllRpc()
 
     # incast_10to1_1458B_fbHadoopDist()
     # incast_10to1_1458B_dctcpMsgSizeDist()
-    incast_10to1_1458B_googleAllRpc()
+    # incast_10to1_1458B_googleAllRpc_loadtest()
 
     # incast_10to1_1458B_fabricated_heavy_middle()
+
+    ''' FINAL EXPERIMENTS (FULL LOAD SWEEP) '''
+    # incast_10to1_1458B_fbHadoopDist_load_fullsweep()
+    # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep()
+
+
 
     ''' TESTING '''
     # run_experiment(
