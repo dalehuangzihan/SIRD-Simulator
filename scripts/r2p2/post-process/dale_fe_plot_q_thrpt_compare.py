@@ -207,7 +207,20 @@ def do_comparison_graph_trimmed_new(nw_elem, src, dst, num_flows, target_per_hos
 
 
 if __name__ == "__main__":
-    
+    ''' --- incast 10to1 40flo 1458B 0.1us fabHvyMid loadtest --- '''
+    do_comparison_graph_trimmed_new(
+        nw_elem=TOR,
+        src="tor_12",
+        dst="host_0",
+        num_flows=40,
+        target_per_host_perflo_gdpt_gbps=117,
+        byteload_size_B=1458,
+        inter_byteload_period_nanosec=100,
+        experiment_date="nodate",
+        experiment_family="FE_incast_",
+        title_addendum="_12host_topo_fabHvyMid_loadtest"
+    )    
+
     ''' --- incast 10to1 10flo 1458B 1us DctcpMsgSizeDist loadtest --- '''
     do_comparison_graph_trimmed_new(
         nw_elem=TOR,

@@ -629,6 +629,30 @@ def incast_10to1_1458B_googleAllRpc_loadtest():
     ========== INCAST EXPERIMENTS (FULL LOAD SWEEP): ==========
 '''
 
+def incast_10to1_1458B_fabHvyMid_fullsweep():
+    run_experiment(
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        num_flows_list=[1, 2, 3, 4, 5, 7, 10, 20, 30, 40],
+        byteload_size_B_list=[1458]*10,
+        target_mean_byteload_interval_nanosec_list=[100]*10,
+        max_interval_nanosec_list=[10000]*10,
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Fabricated_Heavy_Middle.txt")]*10,
+        target_mean_flow_interarr_ns=1000,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.003]*10,
+        dctcp_sim_dur_list=[0.003]*10,
+        xpass_sim_dur_list=[0.003]*10,
+        is_full_postproc=True,
+        title_prefix="FE_incast_fullsweep_",
+        title_addendum="_10host_fabHvyMid_load_fullsweep",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+    print("FE_incast_fullsweep_"+"_10host_fabHvyMid_load_fullsweep")
+
 def incast_10to1_1458B_fbHadoopDist_load_fullsweep():
     run_experiment(
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
@@ -695,7 +719,8 @@ if __name__ == "__main__":
     # incast_10to1_1458B_fabricated_heavy_middle()
 
     ''' FINAL EXPERIMENTS (FULL LOAD SWEEP) '''
-    incast_10to1_1458B_fbHadoopDist_load_fullsweep()
+    incast_10to1_1458B_fabHvyMid_fullsweep()
+    # incast_10to1_1458B_fbHadoopDist_load_fullsweep()
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep()
 
 
