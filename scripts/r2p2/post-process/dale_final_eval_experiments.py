@@ -715,27 +715,48 @@ def incast_10to1_1458B_dctcpMsgSizeDist_loadtest():
     print("12host_dctcpMsgSizeDist_loadtest")
 
 def incast_10to1_1458B_fbCacheFollowerDist_loadtest():
-    run_experiment(
+    # run_experiment(
+    #     proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+    #     topo_yaml_file='12-hosts-dumbbell.yaml',
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+    #     num_flows_list=[1, 5, 10, 20, 30, 40],
+    #     byteload_size_B_list=[1458]*6,
+    #     target_mean_byteload_interval_nanosec_list=[800]*6,
+    #     max_interval_nanosec_list=[10000]*6,
+    #     flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_CacheFollowerDist_IntraCluster.txt")]*6,
+    #     target_mean_flow_interarr_ns=500,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.05]*6,
+    #     dctcp_sim_dur_list=[0.05]*6,
+    #     xpass_sim_dur_list=[0.05]*6,
+    #     is_full_postproc=True,
+    #     title_prefix="FE_incast_12host_",
+    #     title_addendum="_12host_fbCacheFollowerDist_loadtest_800ns",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2,
+    #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    # ) 
+    run_experiment_from_saved_json(
+        saved_json_file="FE_incast_12host_10to1_12host_fbCacheFollowerDist_loadtest_800ns_2025-08-20T_18-25-11Z.json",
         proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
         src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
         num_flows_list=[1, 5, 10, 20, 30, 40],
         byteload_size_B_list=[1458]*6,
         target_mean_byteload_interval_nanosec_list=[800]*6,
-        max_interval_nanosec_list=[10000]*6,
         flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_CacheFollowerDist_IntraCluster.txt")]*6,
         target_mean_flow_interarr_ns=500,
         is_use_poisson_byteload_intervals=True,
         is_use_poisson_flow_interarr=True,
-        ssird_sim_dur_list=[0.01]*6,
-        dctcp_sim_dur_list=[0.01]*6,
-        xpass_sim_dur_list=[0.01]*6,
+        ssird_sim_dur_list=[0.05]*6,
+        dctcp_sim_dur_list=[0.05]*6,
+        xpass_sim_dur_list=[0.05]*6,
         is_full_postproc=True,
         title_prefix="FE_incast_12host_",
-        title_addendum="_12host_fbCacheFollowerDist_loadtest_800ns",
+        title_addendum="_12host_fbCacheFollowerDist_loadtest_800ns_retry",
         log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
-    ) 
+    )
     print("12host_fbCacheFollowerDist_loadtest")
 
 def incast_3to1_1458B_googleAllRpc_loadtest():
