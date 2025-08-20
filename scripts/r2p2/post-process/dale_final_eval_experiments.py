@@ -808,14 +808,40 @@ def incast_10to1_1458B_googleAllRpc_loadtest():
     print("12host_googleAllRpc_loadtest")
 
 def incast_10to1_1458B_expDistr_loadtest():
-    run_experiment(
+    # run_experiment(
+    #     proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+    #     topo_yaml_file='12-hosts-dumbbell.yaml',
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+    #     num_flows_list=[1, 5, 10, 15, 20, 25],
+    #     byteload_size_B_list=[1458]*6,
+    #     target_mean_byteload_interval_nanosec_list=[1000]*6,
+    #     max_interval_nanosec_list=[10000]*6,
+    #     flow_size_distr_list=[dale_experiment_rig.ExpDistr(
+    #         byteload_size_B=1458,
+    #         avg_num_byteloads=500,
+    #         min_num_byteloads=10,
+    #         max_num_byteloads=2000
+    #     )]*6,
+    #     target_mean_flow_interarr_ns=1000,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.1]*6,
+    #     dctcp_sim_dur_list=[0.1]*6,
+    #     xpass_sim_dur_list=[0.1]*6,
+    #     is_full_postproc=True,
+    #     title_prefix="FE_incast_12host_",
+    #     title_addendum="_12host_ExpDistr_loadtest_1000ns",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2,
+    #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    # ) 
+    run_experiment_from_saved_json(
+        saved_json_file="FE_incast_12host_10to1_12host_ExpDistr_loadtest_1000ns_2025-08-20T_10-39-08Z.json",
         proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
         src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
         num_flows_list=[1, 5, 10, 15, 20, 25],
         byteload_size_B_list=[1458]*6,
         target_mean_byteload_interval_nanosec_list=[1000]*6,
-        max_interval_nanosec_list=[10000]*6,
         flow_size_distr_list=[dale_experiment_rig.ExpDistr(
             byteload_size_B=1458,
             avg_num_byteloads=500,
@@ -830,7 +856,7 @@ def incast_10to1_1458B_expDistr_loadtest():
         xpass_sim_dur_list=[0.1]*6,
         is_full_postproc=True,
         title_prefix="FE_incast_12host_",
-        title_addendum="_12host_ExpDistr_loadtest_1000ns",
+        title_addendum="_12host_ExpDistr_loadtest_1000ns_retry",
         log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
@@ -929,11 +955,11 @@ if __name__ == "__main__":
     # incast_5to1_1458B_googleAllRpc_loadtest()
 
     # incast_10to1_1458B_fabricated_heavy_middle_loadtest()
-    incast_10to1_1458B_fbHadoopDist_loadtest()
+    # incast_10to1_1458B_fbHadoopDist_loadtest()
     # incast_10to1_1458B_dctcpMsgSizeDist_loadtest()
     # incast_10to1_1458B_googleAllRpc_loadtest()
 
-    # incast_10to1_1458B_expDistr_loadtest()
+    incast_10to1_1458B_expDistr_loadtest()
 
     ''' FINAL EXPERIMENTS (FULL LOAD SWEEP) '''
     # incast_10to1_1458B_fabHvyMid_load_fullsweep()
