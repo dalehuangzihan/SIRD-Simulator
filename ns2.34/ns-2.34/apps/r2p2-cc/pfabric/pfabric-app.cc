@@ -377,7 +377,7 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
         assert(req_id_tup.ts_ > 0);
     long app_lvl_req_id = req_id_tup.app_level_id_;
     int total_msg_sz = req_id_tup.msg_bytes_;
-    slog::log6(debug_, local_addr_, "&& flow_id_:", req_id_tup.flow_id_);
+    slog::log6(debug_, local_addr_, "&& src_:", req_id_tup.cl_addr_, req_id_tup.cl_thread_id_, "flow_id_:", req_id_tup.flow_id_);
     // is this msg (part of) a request?
     if (req_id_tup.is_request_)
     {
@@ -413,10 +413,11 @@ void PfabricApplication<T>::recv_msg(int payload, RequestIdTuple &&req_id_tup)
             req_state->bytes_recvd_ += payload;
         }
         // Has the whole request been received
-        slog::log5(debug_, local_addr_, "req_state->bytes_recvd_:", req_state->bytes_recvd_, "req_state->total_size_B_", req_state->total_size_B_);
-        /* Dale: req_state->bytes_recvd_ >= req_state->total_size_B_ could technically occur if one of the byteloads in the flow is smaller than 4B */
-        /* Dale: janky hack (?): allow rrq even if not all expected bytes have been recd, so long as is_final_req_of_conn_==True -> allows us to get over some edge cases in experiments */
-        if (req_state->bytes_recvd_ >= req_state->total_size_B_ || req_id_tup.is_final_req_of_conn_)
+        slog::log5(debug_, local_addr_, "req_state->bytes_recvd_:", req_state->bytes_recvd_, "req_state->total_size_B_", req_state->total_size_B_, "is_xpass_app_msg_", req_id_tup.is_xpass_app_msg_);
+        /* Dale: try: hack for xpass */
+        if (req_state->bytes_recvd_ == req_state->total_size_B_
+            || (req_id_tup.is_xpass_app_msg_ && (req_id_tup.is_final_req_of_conn_ || req_state->bytes_recvd_ >= req_state->total_size_B_))
+        )
         {
             /* Dale: only do rrq and after we've receieved the final byteload of the flow */
             if (req_id_tup.is_final_req_of_conn_)

@@ -96,6 +96,9 @@ private:
     /* Dale: track total msg size in header */
     uint64_t total_msg_data_ = 0;
 
+    /* Dale: track if this is an expresspass packet */
+    bool is_xpass_app_msg_;
+
 public:
     hdr_r2p2() : first_urpc_(false), credit_(0), credit_pad_(0), credit_req_(0),
                  umsg_id_(-1), grant_delay_s_(0.0), msg_creation_time_(-1.0), is_pfabric_app_msg_(false),
@@ -107,7 +110,8 @@ public:
                   * Init conn_id_ to hysup::ConnectionPool::NO_CONN_AVAIL_
                   */
                  is_msg_extension_(false), is_ignore_msg_state_persist_(false),
-                 is_do_reply_(false) {}
+                 is_do_reply_(false),
+                 is_xpass_app_msg_(false) {}
     enum MsgTypes
     {
         REQUEST,
@@ -208,6 +212,8 @@ public:
     long &flow_id() { return flow_id_; }
     /* Dale: track total msg size in header */
     uint64_t &total_msg_data() {return total_msg_data_; }
+    /* Dale: track if this is an expresspass packet */
+    bool &is_xpass_app_msg() { return is_xpass_app_msg_; }
 };
 
 struct RequestIdTuple
@@ -284,6 +290,8 @@ struct RequestIdTuple
     /* Dale: track total msg size */
     long total_msg_data_ = 0;
     bool is_empty_ = true;
+    /* Dale: track if this is an expresspass packet */
+    bool is_xpass_app_msg_ = false;
 };
 
 #endif

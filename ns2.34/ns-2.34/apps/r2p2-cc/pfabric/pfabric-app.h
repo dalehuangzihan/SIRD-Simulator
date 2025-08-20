@@ -108,7 +108,8 @@ protected:
                      int resp_size,
                      int pool_size);
 
-    int MAX_POOL_SIZE = 40;
+    // int MAX_POOL_SIZE = 40;
+    int MAX_POOL_SIZE = 9999; /* Dale: i.e. no artificial limit on number of agents/conns in pool */
 };
 
 #endif
