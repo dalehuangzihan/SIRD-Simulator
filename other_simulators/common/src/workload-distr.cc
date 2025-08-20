@@ -102,7 +102,9 @@ double ManualDistr::get_next()
     {
 
         res = events_.front();
-        events_.erase(events_.begin());
+        /* Dale: try: use deque instead of vector */
+        // events_.erase(events_.begin());
+        events_.pop_front();
     }
     else
     {

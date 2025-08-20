@@ -2,6 +2,7 @@
 #define workload_distr_h
 
 #include <vector>
+#include <deque>
 #include <string>
 #include <random>
 #include <map>
@@ -33,8 +34,9 @@ public:
     double get_next() override;
     void set_mean(double new_mean) override{}; // no mean to set
 
-protected:
-    std::vector<double> events_;
+    /* Dale: 20/08/2025: try: use deque instead of vector; make public for debugging (instead of protected) */
+// protected:
+    std::deque<double> events_;
 };
 
 class FixedDistr : public RndDistr

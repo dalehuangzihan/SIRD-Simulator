@@ -154,6 +154,7 @@ void PfabricApplication<T>::send_request(RequestIdTuple *arg_req, size_t arg_siz
 
     /* Dale: store flow-id information in req_id */
     long flow_id = (long) req_flow_id_->get_next();
+    slog::log2(debug_, local_addr_, ">>flow_id=", flow_id, "req_flow_id_.empty()=", dynamic_cast<ManualDistr*>(req_flow_id_)->events_.empty(), "req_flow_id_.size()=", dynamic_cast<ManualDistr*>(req_flow_id_)->events_.size());
     /* Dale: get flag stating if this is the final byteload of the flow */
     bool is_final_byteload = (bool) req_is_final_byteload_->get_next();
 

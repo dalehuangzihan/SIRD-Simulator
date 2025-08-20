@@ -430,6 +430,7 @@ class ExperimentOutputRaw:
             for flow_id in range(0, self.num_flows):
                 src_dst_pair = sorted([src,dst]) # each src-dst pair is unique, so both h0->h1 and h1->h0 flows should be treated as under the same src-dst pair
                 dict_key = (src_dst_pair[0], src_dst_pair[1], flow_id)
+                # print(dict_key)
                 d[dict_key] = FlowStats(self.proto, src, dst, flow_id, flow_spec_list[flow_id].num_byteloads, flow_spec_list[flow_id].byteload_size_B_list)
         flow_stats_dict = collections.OrderedDict(sorted(d.items()))
         del d
@@ -453,6 +454,7 @@ class ExperimentOutputRaw:
                     dst = flow_trace_event.get_remote_addr()
                     src_dst_pair = sorted([src,dst]) # each src-dst pair is unique, so both h0->h1 and h1->h0 flows should be treated as under the same src-dst pair
                     dict_key = (src_dst_pair[0], src_dst_pair[1], flow_id)
+                    # print(dict_key)
                     flow_stats_dict.get(dict_key).update_flow_stats(flow_trace_event)
 
                     overall_start_time_s = min(flow_trace_event.get_timestamp(), overall_start_time_s)
@@ -750,10 +752,10 @@ class Experiment():
             logger.error("An error occurred while reading the file")
 
     @staticmethod
-    def write_app_trace_paths_to_file(proto, experiment_family, num_flows_list, target_flow_rate_gbps, experiment_date, app_trace_file_paths_list):
+    def write_app_trace_paths_to_file(proto, experiment_family, title_addendum, num_flows_list, target_flow_rate_gbps, experiment_date, app_trace_file_paths_list):
         logger.info("-----\nBacking up app trace file paths")
         num_flow_list_str = "+".join(str(num_flow) for num_flow in num_flows_list)
-        parent_dir = f"{APP_TRACE_PATHS_BACKUP_PATH}{experiment_family}/{num_flow_list_str}flo_{round(target_flow_rate_gbps)}Gbps_{experiment_date}/"
+        parent_dir = f"{APP_TRACE_PATHS_BACKUP_PATH}{experiment_family}/{title_addendum}_{num_flow_list_str}flo_{round(target_flow_rate_gbps)}Gbps_{experiment_date}/"
         Path(parent_dir).mkdir(parents=True, exist_ok=True)
         backup_filepath = parent_dir + f"{proto}_app_traces.txt"
         logger.debug(backup_filepath)
@@ -913,11 +915,11 @@ class ExperimentGroup:
             assert(all(r.exp_id == i for r, i in zip(self.xpass_raw_experiment_results_list, range(0, self.num_experiments))))
 
         ssird_path_to_app_trace_files_list = [r.app_trace_file_path for r in self.ssird_raw_experiment_results_list if r is not None]
-        Experiment.write_app_trace_paths_to_file(SSIRD_PROTO_NAME, self.experiment_family, self.num_flows_list, self.target_flow_rate_gbps, self.experiment_date, ssird_path_to_app_trace_files_list)
+        Experiment.write_app_trace_paths_to_file(SSIRD_PROTO_NAME, self.experiment_family, self.title_addendum, self.num_flows_list, self.target_flow_rate_gbps, self.experiment_date, ssird_path_to_app_trace_files_list)
         dctcp_path_to_app_trace_files_list = [r.app_trace_file_path for r in self.dctcp_raw_experiment_results_list if r is not None]
-        Experiment.write_app_trace_paths_to_file(DCTCP_PROTO_NAME, self.experiment_family, self.num_flows_list, self.target_flow_rate_gbps, self.experiment_date, dctcp_path_to_app_trace_files_list)
+        Experiment.write_app_trace_paths_to_file(DCTCP_PROTO_NAME, self.experiment_family, self.title_addendum, self.num_flows_list, self.target_flow_rate_gbps, self.experiment_date, dctcp_path_to_app_trace_files_list)
         xpass_path_to_app_trace_files_list = [r.app_trace_file_path for r in self.xpass_raw_experiment_results_list if r is not None]
-        Experiment.write_app_trace_paths_to_file(XPASS_PROTO_NAME, self.experiment_family, self.num_flows_list, self.target_flow_rate_gbps, self.experiment_date, xpass_path_to_app_trace_files_list)
+        Experiment.write_app_trace_paths_to_file(XPASS_PROTO_NAME, self.experiment_family, self.title_addendum, self.num_flows_list, self.target_flow_rate_gbps, self.experiment_date, xpass_path_to_app_trace_files_list)
         logger.info(f"Simulations ended at: {datetime.datetime.now()}")
     
     def post_process_results(self):
@@ -995,10 +997,10 @@ class ExperimentGroup:
 
 
     @staticmethod
-    def process_side_loaded_results(proto, src_dst_pairs_list, num_flows, flow_spec_list_list, target_flow_rate_gbps, app_trace_paths_list):
+    def process_side_loaded_results(proto, src_dst_pairs_list, num_flows_list, src_dst_pairs_to_flowspecs_dict_list, target_flow_rate_gbps, app_trace_paths_list):
         # TODO: update to use src_dst_pairs_to_flowspecs_dict
         # NOTE: this mtd can only read results for 1 proto at a time
-        assert(len(set( [len(flow_spec_list_list), len(app_trace_paths_list)] )) == 1)
+        assert(len(set( [len(src_dst_pairs_to_flowspecs_dict_list), len(app_trace_paths_list)] )) == 1)
         processed_results_list = []
         for i in range(0, len(app_trace_paths_list)):
             exp_output_raw = ExperimentOutputRaw(exp_id=None,
@@ -1007,8 +1009,8 @@ class ExperimentGroup:
                                               app_trace_file_path=app_trace_paths_list[i],
                                               proto=proto,
                                               src_dst_pairs_list=src_dst_pairs_list,
-                                              num_flows=num_flows,
-                                              src_dst_pairs_to_flowspecs_dict=flow_spec_list_list[i],
+                                              src_dst_pairs_to_flowspecs_dict=src_dst_pairs_to_flowspecs_dict_list[i],
+                                              num_flows=num_flows_list[i],
                                               target_flow_rate_gbps=target_flow_rate_gbps)
             exp_metrics, flow_stats_dict = exp_output_raw.process_results_fct() 
             if (SSIRD_PROTO_NAME in proto):
@@ -1018,21 +1020,34 @@ class ExperimentGroup:
             processed_results_list.append(processed_result)
         exp_metrics = ExperimentGroupResultsProcessed(processed_results_list)
         
-        print(f"Num flows: {num_flows}")
+        print(f"Src-Dst pairs list: {src_dst_pairs_list}")
+        print(f"Num Flows: {num_flows_list}")
+        print(f"  is_use_poisson_byteload_intervals={is_use_poisson_byteload_intervals}")
+        print(f"Target Mean Flow Interarrival (ns): {target_mean_flow_interarr_ns}")
+        print(f"  is_use_poisson_flow_interarr={is_use_poisson_flow_interarr}")
         print(f"Target Flow Rate (Gbps): {target_flow_rate_gbps}")
 
         print(f"APP Gdpt Gbps measured (SSIRD): {exp_metrics.total_app_gdpt_gbps_measured_list_ssird }")
         print(f"APP Gdpt Gbps measured (DCTCP): {exp_metrics.total_app_gdpt_gbps_measured_list_dctcp}")
+        print(f"APP Gdpt Gbps measured (XPass): {exp_metrics.total_app_gdpt_gbps_measured_list_xpass}")
         print(f"APP Gdpt Gbps measured per flow (SSIRD): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_ssird}")
         print(f"APP Gdpt Gbps measured per flow (DCTCP): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_dctcp}")
+        print(f"APP Gdpt Gbps measured per flow (XPass): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_xpass}")
 
         print(f"NW Gdpt Gbps measured (SSIRD): {exp_metrics.total_nw_gdpt_gbps_measured_list_ssird}")
         print(f"NW Gdpt Gbps measured (DCTCP): {exp_metrics.total_nw_gdpt_gbps_measured_list_dctcp}")
+        print(f"NW Gdpt Gbps measured (Xpass): {exp_metrics.total_nw_gdpt_gbps_measured_list_xpass}")
         print(f"NW Gdpt Gbps measured per flow (SSIRD): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_ssird}")
         print(f"NW Gdpt Gbps measured per flow (DCTCP): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_dctcp}")
+        print(f"NW Gdpt Gbps measured per flow (XPass): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_xpass}")
 
         print(f"* SSIRD FCT: {exp_metrics.ssird_fct_list}")
         print(f"* DCTCP FCT: {exp_metrics.dctcp_fct_list}")
+        print(f"* XPass FCT: {exp_metrics.xpass_fct_list}")
+
+        print(f"** SSIRD FCT sorted: {exp_metrics.sorted_flowsize_fct_list_list_ssird}")
+        print(f"** DCTCP FCT sorted: {exp_metrics.sorted_flowsize_fct_list_list_dctcp}")
+        print(f"** XPass FCT sorted: {exp_metrics.sorted_flowsize_fct_list_list_xpass}")
 
         return exp_metrics, flow_stats_dict
 
