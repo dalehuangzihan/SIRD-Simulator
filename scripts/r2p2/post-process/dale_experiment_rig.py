@@ -12,7 +12,8 @@ import json
 
 # for thread pool
 # MAX_WORKERS = 4 
-MAX_WORKERS = 12 # NOTE: use this for batch1 server
+# MAX_WORKERS = 12 # NOTE: use this for batch1 server
+MAX_WORKERS = 8 # NOTE: use this for octopus4 server
 
 MIN_BYTELOAD_INTERVAL_US = 0.001 # is 1ns
 
@@ -27,7 +28,8 @@ DCTCP_PROTO_FAMILY_NAME = "DCTCP"
 XPASS_PROTO_NAME = "ExpressPass"
 
 # PATH_TO_SIRD_SIM = "/home/dalehuang/Documents/ICL/msc_proj/SIRD-Simulator/"
-PATH_TO_SIRD_SIM = "/data/dh1723/SIRD-Simulator/" # NOTE: use this for batch1 server
+# PATH_TO_SIRD_SIM = "/data/dh1723/SIRD-Simulator/" # NOTE: use this for batch1 server
+PATH_TO_SIRD_SIM = "/home/dh1723/SIRD-Simulator/" # NOTE: use this for octopus4 server
 PATH_TO_SIM_COORD = PATH_TO_SIRD_SIM + "scripts/r2p2/coord/"
 PATH_TO_POST_PROCESS = PATH_TO_SIRD_SIM + "scripts/r2p2/post-process/"
 PATH_TO_SIM_RESULTS = PATH_TO_SIM_COORD + "results/"
