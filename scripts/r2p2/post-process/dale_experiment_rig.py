@@ -1404,7 +1404,7 @@ class FlowSpecGenerator:
                     target_mean_byteload_interval_ns=1000,
                     min_interval_ns=1,
                     max_interval_ns=10000,
-                    flow_size_distr=500,
+                    flow_size_distr=None,
                     target_mean_flow_interarr_ns=1000,
                     min_flow_interarr_ns=0,
                     max_flow_interarr_ns=100000,
@@ -1421,6 +1421,7 @@ class FlowSpecGenerator:
         self.is_use_poisson_byteload_intervals = is_use_poisson_byteload_intervals
 
         self.flow_size_distr = flow_size_distr
+        assert(self.flow_size_distr is not None)
 
         self.target_mean_flow_interarr_ns = target_mean_flow_interarr_ns
         self.min_flow_interarr_ns = min_flow_interarr_ns
@@ -1525,16 +1526,6 @@ class FlowSpecGenerator:
         
         return flow_spec_list, flow_start_times_us_list
 
-    def generate_num_byteloads_for_all_flows(self):
-        lam_num_byteloads = 1/self.flow_size_distr
-        sampled_num_byteloads = DiscTuncExpDistr.sample_discrete_trunc_exp(
-            num_samples=self.num_flows,
-            lam=lam_num_byteloads,
-            lower_bound=self.min_num_byteloads,
-            upper_bound=self.max_num_byteloads
-        )
-        return sampled_num_byteloads.tolist()
-
     def generate_flow_start_times_ns_for_all_flows(self):
         lam_flow_interarr = 1/self.target_mean_flow_interarr_ns
         sampled_flow_interarr_ns = DiscTuncExpDistr.sample_discrete_trunc_exp(
@@ -1616,6 +1607,28 @@ class FixedDistr(EmpiricalDistr):
 
     def get_flow_size_B(self):
         return self.byteload_size_B * self.num_byteloads
+
+class ExpDistr(EmpiricalDistr):
+    ''' Is workload where each sampled flow has num_byteloads sampled from an exponential distribution '''
+    def __init__(self, byteload_size_B, avg_num_byteloads, min_num_byteloads=10, max_num_byteloads=3000):
+        self.cdf_file_name = "NA_ExponentialDistr"
+        self.byteload_size_B = byteload_size_B
+        self.avg_num_byteloads = avg_num_byteloads
+        self.min_num_byteloads = min_num_byteloads
+        self.max_num_byteloads = max_num_byteloads
+
+    def generate_num_byteloads(self):
+        lam_num_byteloads = 1/self.avg_num_byteloads
+        sampled_num_byteloads = DiscTuncExpDistr.sample_discrete_trunc_exp(
+            num_samples=1,
+            lam=lam_num_byteloads,
+            lower_bound=self.min_num_byteloads,
+            upper_bound=self.max_num_byteloads
+        )
+        return sampled_num_byteloads.tolist()[0]
+
+    def get_flow_size_B(self):
+        return self.byteload_size_B * self.generate_num_byteloads()
 
 class W1Distr(EmpiricalDistr):
     ''' Is workload where each sampled flow has flow size drawn from analytically-derived manual CDF (rounded to next-highest int) '''
