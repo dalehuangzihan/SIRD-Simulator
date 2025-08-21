@@ -48,6 +48,14 @@ LOG_LEVEL_1 = 1
 LOG_LEVEL_2 = 2
 LOG_LEVEL_6 = 6
 
+SRPT = "srpt"
+FAIRSHARE = "fairshare"
+''' ------ TODO: Manually set which SSIRD template you want to use! ------ '''
+# SSIRD_POLICY = SRPT
+SSIRD_POLICY = FAIRSHARE
+''' ------------ '''
+
+
 logger = logging.getLogger(__name__)
 
 class Byteload:
@@ -135,7 +143,7 @@ class MultiFlow:
     
     def serialise_flows_to_byteloads(self):
         if len(self.flows_list) < 1:
-            logging.error(f"Flows list is empty (size={len(self.flows_list)})!")
+            logger.error(f"Flows list is empty (size={len(self.flows_list)})!")
             return
         serialised_byteloads_list = [] 
         for flow in self.flows_list:
@@ -219,7 +227,18 @@ class ManualReqInterval():
                 wr.writerow(mri_byteloads_spec)
 
 class SimSpecScript:
-    PATH_TO_SSIRD_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-ssird-noburst.sh"
+
+    SSIRD_TEMPLATE_NOBURST_SRPT = "template-ssird-noburst_srpt.sh"
+    SSIRD_TEMPLATE_NOBURST_FAIRSHARE = "template-ssird-noburst_fairshare.sh"
+
+    if (SSIRD_POLICY == SRPT):
+        PATH_TO_SSIRD_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + SSIRD_TEMPLATE_NOBURST_SRPT
+    elif (SSIRD_POLICY == FAIRSHARE):
+        PATH_TO_SSIRD_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + SSIRD_TEMPLATE_NOBURST_FAIRSHARE
+    else:
+        logger.error("Unrecognised SSIRD POLICY: {SSIRD_POLICY}")
+
+    # PATH_TO_SSIRD_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-ssird-noburst.sh"
     PATH_TO_DCTCP_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-dctcp.sh"
     PATH_TO_XPASS_TEMPLATE_NOBURST = PATH_TO_EXPERIMENT_SCRIPT_TEMPLATES + "template-xpass.sh"
 
@@ -855,8 +874,9 @@ class ExperimentGroup:
         return self.generate_overall_experiment_metrics()
     
     def run_group(self):
-        logger.info(f"Experiment started at: {datetime.datetime.now()}")
         logger.info("\n##### RUN GROUP #####")
+        logger.info(f"SSIRD POLICY: {SSIRD_POLICY}")
+        logger.info(f"Experiment started at: {datetime.datetime.now()}")
 
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             futures_list = []
@@ -965,6 +985,7 @@ class ExperimentGroup:
 
     def generate_overall_experiment_metrics(self):
         logger.info("\n##### GENERATE METRICS #####")
+        logger.info(f"SSIRD POLICY: {SSIRD_POLICY}")
         logger.info(f"{self.experiment_family}{self.title_addendum}")
         return ExperimentGroupResultsProcessed(self.processed_results_list)
 
@@ -1253,18 +1274,18 @@ class PoissonIntervalGenerator:
         self.check_generator_params()
 
     def generate_interval_samples_ns_list(self):
-        logging.info(f"PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns={self.target_mean_interval_ns}, min_interval_ns={self.min_interval_ns}, max_interval_ns={self.max_interval_ns}, num_intervals={self.num_intervals}, num_samples_needed={self.num_samples_needed})")
+        logger.info(f"PoissonIntervalGenerator: Generate Byteload Intervals: (target_mean_ns={self.target_mean_interval_ns}, min_interval_ns={self.min_interval_ns}, max_interval_ns={self.max_interval_ns}, num_intervals={self.num_intervals}, num_samples_needed={self.num_samples_needed})")
         # print(f"PoissonIntervalGenerator: Generate Byteload Intervals:\ntarget_mean_ns={self.target_mean_interval_ns}\nmin_interval_ns={self.min_interval_ns}\nmax_interval_ns={self.max_interval_ns}\nnum_intervals={self.num_intervals}\nnum_samples_needed={self.num_samples_needed}")
 
         lam = self.solve_lambda_for_mean_discrete(mu=self.target_mean_interval_ns, L=self.min_interval_ns, U=self.max_interval_ns)
 
-        logging.debug(f"Step 1) λ solving for mean={self.target_mean_interval_ns} is {lam:.6f}")
+        logger.debug(f"Step 1) λ solving for mean={self.target_mean_interval_ns} is {lam:.6f}")
         # print(f"Step 1) λ solving for mean={self.target_mean_interval_ns} is {lam:.6f}")
     
         if (self.num_intervals > 1):
             samples = self.mcmc_trunc_exp_cond_mean_discrete(lam, L=self.min_interval_ns, U=self.max_interval_ns, n=self.num_intervals, mu_target=self.target_mean_interval_ns)
 
-            logging.debug(f"Generated samples: shape={samples.shape}")
+            logger.debug(f"Generated samples: shape={samples.shape}")
             # print(f"Generated samples: shape={samples.shape}")
 
             num_samples_generated, num_intervals_per_sample = samples.shape
@@ -1273,7 +1294,7 @@ class PoissonIntervalGenerator:
 
             unique_means = np.unique(np.array(samples).mean(axis=1))
 
-            logging.debug(f"sample unique means (ns): {unique_means}")
+            logger.debug(f"sample unique means (ns): {unique_means}")
             # print(f"sample unique means (ns): {unique_means}")
 
             assert(len(unique_means == 1))
@@ -1282,19 +1303,19 @@ class PoissonIntervalGenerator:
         elif (self.num_intervals == 1):
             samples = np.array([[self.target_mean_interval_ns]])
             num_samples_generated = 1
-            logging.debug(f"WARN: num_intervals={self.num_intervals}, returning target_mean_interval as single sample.")
+            logger.debug(f"WARN: num_intervals={self.num_intervals}, returning target_mean_interval as single sample.")
             # print(f"WARN: num_intervals={self.num_intervals}, returning target_mean_interval as single sample.")
         
         else:
             samples = np.array([[]])
             num_samples_generated = 0
-            logging.debug(f"WARN: num_intervals={self.num_intervals}, returning empty sample list.")
+            logger.debug(f"WARN: num_intervals={self.num_intervals}, returning empty sample list.")
             # print(f"WARN: num_intervals={self.num_intervals}, returning empty sample list.")
 
         # print(f"\nsamples={samples.tolist()}\n")
         
 
-        logging.debug(f"Step 2) Generated {num_samples_generated} samples, taking first {self.num_samples_needed} samples needed"); 
+        logger.debug(f"Step 2) Generated {num_samples_generated} samples, taking first {self.num_samples_needed} samples needed"); 
         # print(f"Step 2) Generated {num_samples_generated} samples, taking first {self.num_samples_needed} samples needed"); 
 
         return samples[:self.num_samples_needed]
@@ -1461,7 +1482,7 @@ class FlowSpecGenerator:
         byteload_intervals_us_list_list = []
         for i in range(0, self.num_flows):
 
-            logging.info(f"\n  Generating flow size for flow={i}")
+            logger.info(f"\n  Generating flow size for flow={i}")
             # print(f"\n  Generating flow size for flow={i}")
             flow_size_generated_B = self.flow_size_distr.get_flow_size_B()
             byteload_size_B_list = []
@@ -1484,10 +1505,10 @@ class FlowSpecGenerator:
             num_byteloads = len(byteload_size_B_list)
             num_byteloads_list.append(num_byteloads)
             byteload_size_B_list_list.append(byteload_size_B_list)
-            # logging.debug(f"    Flow={i}, flow_size_B={flow_size_B}, num_byteloads={num_byteloads}, byteload_size_B_list={byteload_size_B_list}")
-            logging.debug(f"    Flow={i}, flow_size_B={sum(byteload_size_B_list)}, num_byteloads={num_byteloads}, len(byteload_size_B_list)={len(byteload_size_B_list)}")
+            # logger.debug(f"    Flow={i}, flow_size_B={flow_size_B}, num_byteloads={num_byteloads}, byteload_size_B_list={byteload_size_B_list}")
+            logger.debug(f"    Flow={i}, flow_size_B={sum(byteload_size_B_list)}, num_byteloads={num_byteloads}, len(byteload_size_B_list)={len(byteload_size_B_list)}")
 
-            logging.info(f"\n  Generating intervals for flow={i}")
+            logger.info(f"\n  Generating intervals for flow={i}")
             # print(f"\n  Generating intervals for flow={i}")
             num_intervals = num_byteloads - 1
             pig = PoissonIntervalGenerator(self.target_mean_byteload_interval_ns, self.max_interval_ns, self.min_interval_ns, num_intervals, num_samples_needed=1)
@@ -1501,9 +1522,9 @@ class FlowSpecGenerator:
                         flow_byteload_interval_ns_list = [self.target_mean_byteload_interval_ns] * num_intervals
                     break
                 except Exception as e:
-                    logging.warning(e)
+                    logger.warning(e)
                     retries_remaining -= 1
-                    logging.warning(f"retries remaining:{retries_remaining}")
+                    logger.warning(f"retries remaining:{retries_remaining}")
                     # print(f"retries remaining:{retries_remaining}")
                     if (retries_remaining == 0):
                         raise e
