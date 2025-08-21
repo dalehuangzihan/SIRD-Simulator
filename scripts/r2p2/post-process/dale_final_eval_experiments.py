@@ -1051,11 +1051,42 @@ def incast_10to1_1458B_googleAllRpc_load_fullsweep():
     ) 
     print("FE_incast_fullsweep_"+"_12host_googleAllRpc_load_fullsweep")
 
+
+''' 
+    ========== INCAST SSIRD POLICY EXPERIMENTS (FULL LOAD SWEEP): ==========
+'''
+
+def incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_ssird_policy_fairshare():
+    ''' USE THIS WORKLOAD DISTRIBUTION & FLOWSPEC FILE! '''
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.FAIRSHARE)
+    run_experiment_from_saved_json(
+        saved_json_file="FE_incast_12host_10to1_12host_DctcpMsgSizeDist_loadtest_800ns_2025-08-20T_10-12-29Z.json",
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        num_flows_list=[1, 5, 10, 20, 30, 40],
+        byteload_size_B_list=[1458]*6,
+        target_mean_byteload_interval_nanosec_list=[800]*6,
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="DCTCP_MsgSizeDist.txt")]*6,
+        target_mean_flow_interarr_ns=500,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.002]*6,
+        dctcp_sim_dur_list=[0.002]*6,
+        xpass_sim_dur_list=[0.002]*6,
+        is_full_postproc=True,
+        title_prefix="FE_incast_12host_fullsweep_ssird_policy_",
+        title_addendum="_12host_DctcpMsgSizeDist_load_fullsweep_800ns_fromjson_ssird_fairshare",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+    print("FE_incast_fullsweep_ssird_policy_"+"_12host_DctcpMsgSizeDist_load_fullsweep_ssird_fairshare")
+
 if __name__ == "__main__":
 
     ''' FINAL EXPERIMENTS (1RTT DELAY TEST) '''
     # onertt_delay_p2p_lowload()
-    onertt_delay_p2p_lowload_40flo()
+    # onertt_delay_p2p_lowload_40flo()
 
     ''' FINAL EXPERIMENTS (LOAD TEST) '''
     # incast_3to1_1458B_fbHadoopDist()
@@ -1082,7 +1113,8 @@ if __name__ == "__main__":
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep()
     # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep()
 
-
+    ''' FINAL EXPERIMENTS SSIRD POLICY (FULL LOAD SWEEP) '''
+    incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_ssird_policy_fairshare()
 
     ''' TESTING '''
     # run_experiment(
