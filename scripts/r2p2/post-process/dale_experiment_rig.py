@@ -1022,9 +1022,6 @@ class ExperimentGroup:
         
         print(f"Src-Dst pairs list: {src_dst_pairs_list}")
         print(f"Num Flows: {num_flows_list}")
-        print(f"  is_use_poisson_byteload_intervals={is_use_poisson_byteload_intervals}")
-        print(f"Target Mean Flow Interarrival (ns): {target_mean_flow_interarr_ns}")
-        print(f"  is_use_poisson_flow_interarr={is_use_poisson_flow_interarr}")
         print(f"Target Flow Rate (Gbps): {target_flow_rate_gbps}")
 
         print(f"APP Gdpt Gbps measured (SSIRD): {exp_metrics.total_app_gdpt_gbps_measured_list_ssird }")
