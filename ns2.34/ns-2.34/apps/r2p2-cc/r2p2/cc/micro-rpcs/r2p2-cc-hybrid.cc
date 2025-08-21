@@ -548,7 +548,7 @@ void R2p2CCHybrid::recv(Packet *pkt, Handler *h)
         {
             msg_state->pending_credit_req_data_queue_.push_back((uint16_t) data_to_credit); // type truncation shd be ok here cuz data to credit is < 1458 here.
         }
-        slog::log2(debug_, this_addr_, "@ rcv credit req: msg (", std::get<2>(msg_state->req_id_), " ), pending_CR_data_queue size=", msg_state->pending_credit_req_data_queue_.size());
+        slog::log3(debug_, this_addr_, "@ rcv credit req: msg (", std::get<2>(msg_state->req_id_), " ), pending_CR_data_queue size=", msg_state->pending_credit_req_data_queue_.size());
 
         msg_state->received_msg_info_ = true;
         slog::log5(debug_, this_addr_, "Set expected bytes to:",
@@ -1101,7 +1101,7 @@ void R2p2CCHybrid::send_data()
                 // hdr.credit_req() = msg_state->total_bytes_ - msg_state->credit_data_already_requested_;
 
                 /* Dale: make sender use same packetisation mtd as rcvr when it sends credits for this CR, so we can keep C and D packetisation constent */
-                slog::log2(debug_, this_addr_, "@ before forwarding CR: msg (", std::get<2>(msg_state->req_id_), "), data_awaiting_CR=", msg_state->data_awaiting_credit_request_, " data pkt queue size=", msg_state->data_pkts_to_send_queue_.size());
+                slog::log3(debug_, this_addr_, "@ before forwarding CR: msg (", std::get<2>(msg_state->req_id_), "), data_awaiting_CR=", msg_state->data_awaiting_credit_request_, " data pkt queue size=", msg_state->data_pkts_to_send_queue_.size());
 
                 hdr.credit_req() = msg_state->data_awaiting_credit_request_; 
                 msg_state->data_awaiting_credit_request_ = 0;
@@ -1154,7 +1154,7 @@ void R2p2CCHybrid::send_data()
                 msg_state->credit_data_already_requested_ += hdr.credit_req(); 
                 
                 /* Dale: log for debug */
-                slog::log2(debug_, this_addr_, "@@ after forwarding CR: msg (", std::get<2>(msg_state->req_id_), "), data_awaiting_CR=", msg_state->data_awaiting_credit_request_, " data pkt queue size=", msg_state->data_pkts_to_send_queue_.size());
+                slog::log3(debug_, this_addr_, "@@ after forwarding CR: msg (", std::get<2>(msg_state->req_id_), "), data_awaiting_CR=", msg_state->data_awaiting_credit_request_, " data pkt queue size=", msg_state->data_pkts_to_send_queue_.size());
             }
 
             slog::log5(debug_, this_addr_, "Activating message:", std::get<2>(msg_state->req_id_),
@@ -1203,7 +1203,7 @@ void R2p2CCHybrid::send_data()
     uint64_t credit_avail = msg_state->rcvr_state_->avail_credit_bytes_;
     
     /* Dale: send bytes using the packetisation manner used when we sent CR pkts and recived C pkts */
-    slog::log2(debug_, this_addr_, "@ before sending pkt of msg (", std::get<2>(msg_state->req_id_), "), data_to_send queue size=", msg_state->data_pkts_to_send_queue_.size());
+    slog::log3(debug_, this_addr_, "@ before sending pkt of msg (", std::get<2>(msg_state->req_id_), "), data_to_send queue size=", msg_state->data_pkts_to_send_queue_.size());
     assert(msg_state->data_pkts_to_send_queue_.size() > 0);
     uint16_t data_to_send_for_this_pkt = msg_state->data_pkts_to_send_queue_.front();
     msg_state->data_pkts_to_send_queue_.pop_front();
@@ -2045,7 +2045,7 @@ int R2p2CCHybrid::send_credit_policy_common(hysup::InboundMsgState *msg_state)
         // slog::log2(debug_, this_addr_, "msg=", std::get<2>(msg_state->req_id_), "JEJE");
         return 1;
     }
-    slog::log2(debug_, this_addr_, "@ before considering sending credit: msg:", std::get<2>(msg_state->req_id_), "pending_CR_data_queue size=", msg_state->pending_credit_req_data_queue_.size());
+    slog::log3(debug_, this_addr_, "@ before considering sending credit: msg:", std::get<2>(msg_state->req_id_), "pending_CR_data_queue size=", msg_state->pending_credit_req_data_queue_.size());
     int data_for_this_credit_pkt = msg_state->pending_credit_req_data_queue_.front();
 
     int credit_needed_data = std::min((int)MAX_R2P2_PAYLOAD, data_for_this_credit_pkt);
