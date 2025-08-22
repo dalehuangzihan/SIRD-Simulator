@@ -36,7 +36,7 @@ def plot_achieved_gdpt_vs_latency(
 
     plt.figure(figsize=(10, 6))
     plt.xlabel(f'Acheived Goodput (Gbps)')
-    plt.ylabel('Latency (ms)')
+    plt.ylabel('Latency (us)')
     plt.title(f'Achieved Goodput vs Latency\n{experiment_family}{title_addendum}\n{experiment_date}')
 
     ssird_fct_s_90p = [np.percentile(np.array(fct_s_list), 90) for fct_s_list in ssird_fct_s_list_list]

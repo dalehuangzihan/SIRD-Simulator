@@ -392,6 +392,7 @@ def run_experiment_from_saved_json(
     assert num_of_experiments == len(exp_metrics.ssird_fct_list)
     assert num_of_experiments == len(exp_metrics.dctcp_fct_list)
     assert num_of_experiments == len(exp_metrics.xpass_fct_list)
+
 ''' 
     ========== 1RTT EXPERIMENTS: ==========
 '''
@@ -671,6 +672,7 @@ def incast_5to1_1458B_dctcpMsgSizeDist_loadtest():
     ) 
 
 def incast_10to1_1458B_dctcpMsgSizeDist_loadtest():
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
     run_experiment(
         proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
@@ -716,6 +718,7 @@ def incast_10to1_1458B_dctcpMsgSizeDist_loadtest():
     print("12host_dctcpMsgSizeDist_loadtest")
 
 def incast_10to1_1458B_fbCacheFollowerDist_loadtest():
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
     # run_experiment(
     #     proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
     #     topo_yaml_file='12-hosts-dumbbell.yaml',
