@@ -585,17 +585,17 @@ def incast_10to1_1458B_fbHadoopDist_loadtest():
         proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
         src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
-        num_flows_list=[1, 2, 5, 10, 20, 30, 40],
-        byteload_size_B_list=[1458]*7,
-        target_mean_byteload_interval_nanosec_list=[300]*7,
-        max_interval_nanosec_list=[10000]*7,
-        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_HadoopDist_All.txt")]*7,
+        num_flows_list=[1, 5, 10, 20, 30, 40],
+        byteload_size_B_list=[1458]*6,
+        target_mean_byteload_interval_nanosec_list=[300]*6,
+        max_interval_nanosec_list=[10000]*6,
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_HadoopDist_All.txt")]*6,
         target_mean_flow_interarr_ns=500,
         is_use_poisson_byteload_intervals=True,
         is_use_poisson_flow_interarr=True,
-        ssird_sim_dur_list=[0.02]*7,
-        dctcp_sim_dur_list=[0.02]*7,
-        xpass_sim_dur_list=[0.02]*7,
+        ssird_sim_dur_list=[0.02]*6,
+        dctcp_sim_dur_list=[0.02]*6,
+        xpass_sim_dur_list=[0.02]*6,
         is_full_postproc=True,
         title_prefix="FE_incast_12host_",
         title_addendum="_12host_fbHadoopDist_loadtest_300ns",
@@ -1129,7 +1129,7 @@ if __name__ == "__main__":
 
     # incast_10to1_1458B_googleAllRpc_loadtest()
     # incast_10to1_1458B_fabricated_heavy_middle_loadtest()
-    # incast_10to1_1458B_fbHadoopDist_loadtest()
+    incast_10to1_1458B_fbHadoopDist_loadtest()
     # incast_10to1_1458B_fbCacheFollowerDist_loadtest()
     # incast_10to1_1458B_dctcpMsgSizeDist_loadtest()
 
@@ -1144,7 +1144,7 @@ if __name__ == "__main__":
 
     ''' FINAL EXPERIMENTS SSIRD POLICY (FULL LOAD SWEEP) '''
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_ssird_policy_fairshare()
-    incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_ssird_policy_fairshare()
+    # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_ssird_policy_fairshare()
 
     ''' TESTING '''
     # run_experiment(
