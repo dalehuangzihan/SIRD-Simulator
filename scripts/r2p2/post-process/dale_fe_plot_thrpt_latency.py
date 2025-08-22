@@ -76,6 +76,7 @@ def plot_achieved_gdpt_vs_latency(
 
 if __name__ == "__main__":
 
+    # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__12host_DctcpMsgSizeDist_load_fullsweep_800ns_fromjson/FE_incast_12host_fullsweep_10to1_12host_DctcpMsgSizeDist_load_fullsweep_800ns_fromjson_2025-08-20T_22-41-38Z.log
     # INFO:__main__:NW Gdpt Gbps measured (SSIRD): [8.875727129025025, 26.916826646915467, 27.45587587126008, 71.10769543567022, 73.4341733177687, 78.76356439030432]
     # INFO:__main__:NW Gdpt Gbps measured (DCTCP): [14.352308822137951, 42.455847449796664, 40.0246754922329, 83.60861562200749, 84.2705031805067, 88.31901189364444]
     # INFO:__main__:NW Gdpt Gbps measured (Xpass): [1.1625338901008542, 4.599414841697087, 5.375402380257017, 11.501608118880105, 12.803975226054224, 16.591948045500907]

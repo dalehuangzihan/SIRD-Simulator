@@ -153,6 +153,7 @@ def plot_fct_diff_ssird_xpass_vs_ideal(experiment_type, x_vals_list, ssird_fct_s
 def plot_fct_slowdown_ssird_xpass_vs_ideal(experiment_type, x_vals_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum="", is_log_x=False, is_log_y=False, y_lim=None):
     ssird_fct_slowdown_list = [s/i for s, i in zip(ssird_fct_s_list, ideal_fct_s_list)]
     xpass_fct_slowdown_list = [s/i for s, i in zip(xpass_fct_s_list, ideal_fct_s_list)]
+    ideal_fct_slowdown_list = [s/i for s, i in zip(ideal_fct_s_list, ideal_fct_s_list)]
 
     plt.figure(figsize=(10, 6))
 
@@ -167,8 +168,10 @@ def plot_fct_slowdown_ssird_xpass_vs_ideal(experiment_type, x_vals_list, ssird_f
 
     plt.plot(x_vals_list, ssird_fct_slowdown_list, label="SSIRD vs DCTCP", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
     plt.plot(x_vals_list, xpass_fct_slowdown_list, label="ExpressPass vs DCTCP", linestyle='-', marker='o', color=XPASS_PLOT_COLOUR)
+    plt.plot(x_vals_list, ideal_fct_slowdown_list, label="DCTCP", linestyle=':', marker='X', color=IDEAL_PLOT_COLOUR)
 
-    plt.ylabel('FCT Slowdown')
+    percentile = round((num_flows-1)/num_flows * 100, 2)
+    plt.ylabel(f'FCT Slowdown ({percentile}-th percentile)')
     plt.title(f"FCT Slowdown: SSIRD, ExpressPass vs Ideal (DCTCP): {experiment_type}\n({num_flows} Flows; {flow_size_B}B per Flow; {total_gdpt_gbps}Gbps Total Goodput)\n {title_addendum}")
     plt.legend()
 
@@ -199,7 +202,7 @@ def plot_fct_slowdown_ssird_xpass_vs_ideal(experiment_type, x_vals_list, ssird_f
 
 
 def analyse_fct_slowdown_ssird_xpass_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, xpass_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s=RTT_5US_S, title_addendum=""):
-    # NOTE: max 1 out of 15 flows is 93rd percentile 
+    # NOTE: max 1 out of 40 flows is 97.5th percentile 
     ssird_fct_s_max_list = [max(l) for l in ssird_fct_s_list_list]
     xpass_fct_s_max_list = [max(l) for l in xpass_fct_s_list_list]
     dctcp_fct_s_max_list = [max(l) for l in dctcp_fct_s_list_list]
@@ -356,6 +359,7 @@ def fe_analyse_ssird_vs_ideal_fct_fullrange_100Bto100KB_40flo_5usRTT():
     analyse_fct_slowdown_ssird_xpass_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s, title_addendum)
 
 def fe_analyse_ssird_xpass_vs_dctcp_fct_fullrange_100Bto100KB_40flo_5usRTT():
+    # scripts/r2p2/post-process/saved_experiment_outputs/FE_1rtt_delay__500Bto100KB_0pt8GbpsFlo_5usRTT_allproto/FE_1rtt_delay_1to1_500Bto100KB_0pt8GbpsFlo_5usRTT_allproto_2025-08-21T_10-55-28Z.log
     title_addendum = "_fullrange_500Bto100KB_40flo_allproto"
 
     rtt_s = RTT_5US_S
