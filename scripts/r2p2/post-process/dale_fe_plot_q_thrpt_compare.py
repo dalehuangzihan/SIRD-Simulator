@@ -404,12 +404,7 @@ def plot_achieved_gdpt_vs_max_qing_KB(
     plt.savefig(f"{PATH_TO_LOAD_VS_QING_DIR}{filename}")
     plt.close()
 
-if __name__ == "__main__":
-
-    # do_thrpt_qing_comparison_10to1_800ns_DctcpMsgSizeDist_load_fullsweep_experiment()
-    # get_max_qing_for_10to1_800ns_DctcpMsgSizeDist_load_fullsweep_experiment()
-
-
+def do_plots_for_DctcpMsgSizeDist_load_fullsweep_800ns():
     # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__12host_DctcpMsgSizeDist_load_fullsweep_800ns_fromjson/FE_incast_12host_fullsweep_10to1_12host_DctcpMsgSizeDist_load_fullsweep_800ns_fromjson_2025-08-20T_22-41-38Z.log
     plot_applied_downlink_load_vs_max_qing_KB(
         applied_downlink_gdpt_list_gbps=[20.32142857245574, 53.50592678031138, 51.729513662789095, 146.79326701476757, 210.51215223019966, 217.243663555441],
@@ -442,3 +437,46 @@ if __name__ == "__main__":
         title_addendum="_12host_DctcpMsgSizeDist_load_fullsweep_800ns_fromjson",
         y_lim=(-10, 300)
     )    
+
+def do_plots_for_fbHadoopDist_load_fullsweep_300ns():
+    # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson/FE_incast_12host_fullsweep_10to1_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_2025-08-22T_18-46-14Z.log
+    plot_applied_downlink_load_vs_max_qing_KB(
+        applied_downlink_gdpt_list_gbps=[64.09872905031376, 85.92954076936961, 108.17780458964074, 141.17512866659618, 168.5440517719636, 192.96945805027002],
+        nw_elem=TOR,
+        src="tor_12",
+        dst="host_0",
+        num_flows_list=[1, 5, 10, 20, 30, 40],
+        target_per_host_perflo_gdpt_gbps=39,
+        byteload_size_B=1458,
+        inter_byteload_period_nanosec=300,
+        experiment_date="2025-08-22T_18-46-14Z",
+        experiment_family="FE_incast_12host_fullsweep_",
+        title_addendum="_12host_fbHadoopDist_load_fullsweep_300ns_fromjson"
+    )    
+
+    # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson/FE_incast_12host_fullsweep_10to1_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_2025-08-22T_18-46-14Z.log
+    plot_achieved_gdpt_vs_max_qing_KB(
+        ssird_downlink_gdpt_list=[43.41708211283275, 85.11775591699849, 88.4808674946757, 86.69933905883063, 89.77031884891248, 86.33009654652182],
+        xpass_downlink_gdpt_list=[8.770284553786706, 77.39269677484748, 65.08964120189057, 83.7108276491369, 84.158029070331, 83.90237402996948],
+        dctcp_downlink_gdpt_list=[55.34828509998, 85.66162157056998, 93.91935919103946, 94.11016091089746, 91.45190459012693, 86.48900413806716],
+        nw_elem=TOR,
+        src="tor_12",
+        dst="host_0",
+        num_flows_list=[1, 5, 10, 20, 30, 40],
+        target_per_host_perflo_gdpt_gbps=39,
+        byteload_size_B=1458,
+        inter_byteload_period_nanosec=300,
+        experiment_date="2025-08-22T_18-46-14Z",
+        experiment_family="FE_incast_12host_fullsweep_",
+        title_addendum="_12host_fbHadoopDist_load_fullsweep_300ns_fromjson",
+        y_lim=(-100, 4000)
+    ) 
+
+if __name__ == "__main__":
+
+    # do_thrpt_qing_comparison_10to1_800ns_DctcpMsgSizeDist_load_fullsweep_experiment()
+    # get_max_qing_for_10to1_800ns_DctcpMsgSizeDist_load_fullsweep_experiment()
+
+    do_plots_for_DctcpMsgSizeDist_load_fullsweep_800ns()
+    do_plots_for_fbHadoopDist_load_fullsweep_300ns()
+
