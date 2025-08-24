@@ -346,14 +346,14 @@ def analyse_fct_slowdown_ssird_vs_ideal(inter_byteload_period_us_list, num_bytel
     ideal_fct_s_list = theoretical_fct_parallel_flows_s_list 
 
     # Plot FCT Diff
-    # fct_diff_ylim = (0, 2000)
-    fct_diff_ylim = None
+    fct_diff_ylim = (0, 2000)
+    # fct_diff_ylim = None
     plot_fct_diff_ssird_vs_ideal(VARY_INTERVAL, inter_byteload_period_us_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
     plot_fct_diff_ssird_vs_ideal(VARY_BLOAD_SIZE, byteload_size_B_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
 
     # Plot FCT Slowdown
-    # fct_slowdown_ylim = (0, 4)
-    fct_slowdown_ylim = None
+    fct_slowdown_ylim = (0, 4)
+    # fct_slowdown_ylim = None
     plot_fct_slowdown_ssird_vs_ideal(VARY_INTERVAL, inter_byteload_period_us_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_slowdown_ylim)
     plot_fct_slowdown_ssird_vs_ideal(VARY_BLOAD_SIZE, byteload_size_B_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_slowdown_ylim)
 
@@ -608,6 +608,6 @@ if __name__ == "__main__":
     # print("=====")
     # fe_analyse_ssird_vs_ideal_fct_fullrange_100Bto100KB_40flo_5usRTT()
 
-    # fe_analyse_ssird_xpass_vs_dctcp_fct_fullrange_100Bto100KB_40flo_5usRTT()
+    fe_analyse_ssird_xpass_vs_dctcp_fct_fullrange_100Bto100KB_40flo_5usRTT()
     fe_analyse_ssird_vs_ideal_fct_fullrange_100Bto100KB_40flo_1msRTT()
     fe_analyse_ssird_vs_ideal_fct_flowratesweep_10flo_1458B_2000nsTo150ns_10flo_1msRTT()
