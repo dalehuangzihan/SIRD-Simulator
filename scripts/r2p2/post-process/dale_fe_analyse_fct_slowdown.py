@@ -333,8 +333,31 @@ def analyse_fct_slowdown_ssird_xpass_vs_dctcp(inter_byteload_period_us_list, num
     plot_fct_slowdown_ssird_xpass_vs_dctcp(VARY_INTERVAL, inter_byteload_period_us_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_slowdown_ylim)
     plot_fct_slowdown_ssird_xpass_vs_dctcp(VARY_BLOAD_SIZE, byteload_size_B_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_slowdown_ylim)
 
+def analyse_fct_slowdown_ssird_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, xpass_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s=RTT_5US_S, title_addendum=""):
+    # NOTE: max 1 out of 40 flows is 97.5th percentile 
+    ssird_fct_s_max_list = [max(l) for l in ssird_fct_s_list_list]
+    print(f"SSIRD FCT (s) MAX:{ssird_fct_s_max_list}")
 
-def analyse_fct_slowdown_ssird_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s=RTT_5US_S, title_addendum=""):
+    theoretical_fct_parallel_flows_s_list = get_theoretical_fct_parallel_flows_s(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rtt_s)
+    print(f"THEORETICAL IDEAL Exactly-parallel FCT (s):{theoretical_fct_parallel_flows_s_list}")
+
+    ssird_fct_s_list = ssird_fct_s_max_list
+    print("*** VS THEORY")
+    ideal_fct_s_list = theoretical_fct_parallel_flows_s_list 
+
+    # Plot FCT Diff
+    # fct_diff_ylim = (0, 2000)
+    fct_diff_ylim = None
+    plot_fct_diff_ssird_vs_ideal(VARY_INTERVAL, inter_byteload_period_us_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
+    plot_fct_diff_ssird_vs_ideal(VARY_BLOAD_SIZE, byteload_size_B_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
+
+    # Plot FCT Slowdown
+    # fct_slowdown_ylim = (0, 4)
+    fct_slowdown_ylim = None
+    plot_fct_slowdown_ssird_vs_ideal(VARY_INTERVAL, inter_byteload_period_us_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_slowdown_ylim)
+    plot_fct_slowdown_ssird_vs_ideal(VARY_BLOAD_SIZE, byteload_size_B_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_slowdown_ylim)
+
+def analyse_fct_slowdown_ssird_vs_ideal_vary_flowrate(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s=RTT_5US_S, title_addendum=""):
     # NOTE: max 1 out of 40 flows is 97.5th percentile 
     ssird_fct_s_max_list = [max(l) for l in ssird_fct_s_list_list]
 
@@ -519,7 +542,33 @@ def fe_analyse_ssird_xpass_vs_dctcp_fct_fullrange_100Bto100KB_40flo_5usRTT():
         title_addendum
     )
 
-def fe_analyse_ssird_xpass_vs_dctcp_fct_flowratesweep_10flo_1458B_2000nsTo150ns_10flo_5usRTT():
+def fe_analyse_ssird_vs_ideal_fct_fullrange_100Bto100KB_40flo_1msRTT():
+    title_addendum = "TODO" # TODO:
+
+    rtt_s = RTT_1MS_S
+    num_flows = 40
+    flow_size_B = 1000000
+    total_gdpt_gbps = -1
+    inter_byteload_period_us_list = [0.5, 1, 5, 10, 50, 100]
+    num_byteloads_list = [2000, 1000, 200, 100, 20, 10]
+    byteload_size_B_list = [500, 1000, 5000, 10000, 50000, 100000]
+    ssird_fct_s_list_list = ["TODO"] # TODO:
+
+    print(f"RTT (us): {rtt_s * pow(10,6)}")
+    print(f"Byteload Size (B): {byteload_size_B_list}")
+    analyse_fct_slowdown_ssird_vs_ideal(
+        inter_byteload_period_us_list,
+        num_byteloads_list,
+        byteload_size_B_list,
+        ssird_fct_s_list_list,
+        num_flows,
+        flow_size_B,
+        total_gdpt_gbps,
+        rtt_s,
+        title_addendum
+    )
+
+def fe_analyse_ssird_vs_ideal_fct_flowratesweep_10flo_1458B_2000nsTo150ns_10flo_1msRTT():
     # scripts/r2p2/post-process/saved_experiment_outputs/FE_1rtt_delay_flowrate_sweep_1msRTT__10flo_1458B_2000nsTo150ns_1msRTT_allproto_test/FE_1rtt_delay_flowrate_sweep_1msRTT_5to1_10flo_1458B_2000nsTo150ns_1msRTT_allproto_test_2025-08-24T_17-23-11Z.log
     # INFO:__main__:* SSIRD FCT: [[0.0020014780000003896, 0.0025014880000000517, 0.0020015030000006817, 0.002501513000000344, 0.002001528000000974, 0.002501538000000636, 0.0020015520000011833, 0.0025015620000008454, 0.0020015770000014754, 0.0025015870000011375], [0.0017524780000002238, 0.002002498000001296, 0.001752503000000516, 0.002002523000001588, 0.001752528000000808, 0.002002548000000104, 0.0017525520000010175, 0.0020025720000003133, 0.0017525770000013097, 0.0020025970000006055], [0.0017026780000009012, 0.0019026880000012625, 0.0017027030000011933, 0.0019027130000015546, 0.0017027280000014855, 0.0019027380000000704, 0.0017027519999999186, 0.0019027620000002798, 0.0017027770000002107, 0.001902787000000572], [0.0016528780000015786, 0.001802878000001229, 0.0016529030000000944, 0.0018029030000015211, 0.0016529280000003865, 0.001802928000000037, 0.001652952000000596, 0.0018029520000002464, 0.001652977000000888, 0.0018029770000005385], [0.0016030780000004796, 0.001703098000000125, 0.0016031030000007718, 0.0017031230000004172, 0.001603128000001064, 0.0017031480000007093, 0.0016031520000012733, 0.0017031720000009187, 0.0016031770000015655, 0.0017031970000012109], [0.0015781780000008183, 0.0016531780000015317, 0.0015782030000011105, 0.0016532030000000475, 0.0015782280000014026, 0.0016532280000003396, 0.001578252000001612, 0.001653252000000549, 0.0015782770000001278, 0.0016532770000008412], [0.0015648120000015808, 0.0016263320000007297, 0.0015648370000000966, 0.001626357000001022, 0.001564861000000306, 0.0016263810000012313, 0.0015648860000005982, 0.0016264060000015235, 0.0015649110000008903, 0.0016264310000000393], [0.0015648120000015808, 0.0016263320000007297, 0.0015648370000000966, 0.001626357000001022, 0.001564861000000306, 0.0016263810000012313, 0.0015648860000005982, 0.0016264060000015235, 0.0015649110000008903, 0.0016264310000000393]]
     title_addendum = "_10flo_1458B_2000nsTo150ns_1msRTT_allproto_test"
@@ -537,7 +586,7 @@ def fe_analyse_ssird_xpass_vs_dctcp_fct_flowratesweep_10flo_1458B_2000nsTo150ns_
     print(f"Byteload Size (B): {byteload_size_B_list}")
 
     # TODO: make new plots with flow rate as x axis
-    analyse_fct_slowdown_ssird_vs_ideal(
+    analyse_fct_slowdown_ssird_vs_ideal_vary_flowrate(
         inter_byteload_period_us_list,
         num_byteloads_list,
         byteload_size_B_list,
@@ -558,4 +607,5 @@ if __name__ == "__main__":
     # fe_analyse_ssird_vs_ideal_fct_fullrange_100Bto100KB_40flo_5usRTT()
 
     fe_analyse_ssird_xpass_vs_dctcp_fct_fullrange_100Bto100KB_40flo_5usRTT()
-    fe_analyse_ssird_xpass_vs_dctcp_fct_flowratesweep_10flo_1458B_2000nsTo150ns_10flo_5usRTT()
+    # fe_analyse_ssird_vs_ideal_fct_fullrange_100Bto100KB_40flo_1msRTT()
+    fe_analyse_ssird_vs_ideal_fct_flowratesweep_10flo_1458B_2000nsTo150ns_10flo_1msRTT()
