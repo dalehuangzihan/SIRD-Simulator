@@ -506,12 +506,14 @@ class ExperimentOutputRaw:
             total_bytes_rcvd_B += flow_stats_obj.total_data_bytes_recv_B
 
         # TODO: FIX ME! This total-thrpt calc seems a lil iffy... it overestimates gbps by 5%. Why??
+        # NOTE: this calculation of overall app gdpt assumes that all flows are being directed to a SINGLE sender!
         # Measure overal app gdpt:
         if (overall_final_srq_timestamp_s - overall_srq_start_time_s > 0):
             measured_total_app_gdpt_gbps = (total_bytes_sent_until_penultimate_srq_B * 8) / (overall_final_srq_timestamp_s - overall_srq_start_time_s) * pow(10,-9)
         else:
             measured_total_app_gdpt_gbps = -1
 
+        # NOTE: this calculation of overall nw gdpt assumes that all flows are being directed to a SINGLE sender!
         # Measure overall nw gdpt:
         if (overall_final_rrq_timestamp_s is not None and overall_final_rrq_timestamp_s - overall_start_time_s > 0):
             measured_total_nw_gdpt_gbps = (total_bytes_rcvd_B * 8) / (overall_final_rrq_timestamp_s - overall_start_time_s) * pow(10,-9)

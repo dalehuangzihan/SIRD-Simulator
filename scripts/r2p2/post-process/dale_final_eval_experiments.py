@@ -24,7 +24,8 @@ def run_experiment(
         title_prefix="",
         title_addendum="",
         log_level=dale_experiment_rig.LOG_LEVEL_2,
-        experiment_date="nodate"
+        experiment_date="nodate",
+        is_all_same_flowrate=True
     ):
 
     experiment_family = f"{title_prefix}"
@@ -58,7 +59,8 @@ def run_experiment(
         target_mean_byteload_interval_nanosec = target_mean_byteload_interval_nanosec_list[i]
         max_interval_nanosec = max_interval_nanosec_list[i]
         exp_target_flow_rate_gbps = (byteload_size_B_list[i] * 8) / (target_mean_byteload_interval_nanosec_list[i] * pow(10,-9)) * pow(10, -9)
-        assert(round(exp_target_flow_rate_gbps, 9) == round(target_flow_rate_gbps, 9))
+        if (is_all_same_flowrate):
+            assert(round(exp_target_flow_rate_gbps, 9) == round(target_flow_rate_gbps, 9))
 
         src_dst_pairs_to_flowspecs_dict = {}
         src_dst_pairs_to_flow_start_times_us_dict = {}
@@ -433,8 +435,36 @@ def onertt_delay_p2p_lowload():
 def onertt_delay_p2p_lowload_40flo():
     ''' 1 to 1 point-to-point experiment '''
     assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
+    # run_experiment(
+    #     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+    #     topo_yaml_file='6-hosts-dumbbell.yaml',
+    #     src_dst_pairs_list=[(0,1)],
+    #     num_flows_list=[40]*6,
+    #     byteload_size_B_list=[500, 1000, 5000, 10000, 50000, 100000],
+    #     target_mean_byteload_interval_nanosec_list=[5000, 10000, 50000, 100000, 500000, 1000000], 
+    #     max_interval_nanosec_list=[5000, 10000, 50000, 100000, 500000, 1000000],
+    #     flow_size_distr_list=[
+    #         dale_experiment_rig.FixedDistr(num_byteloads=2000, byteload_size_B=500),
+    #         dale_experiment_rig.FixedDistr(num_byteloads=1000, byteload_size_B=1000),
+    #         dale_experiment_rig.FixedDistr(num_byteloads=200, byteload_size_B=5000),
+    #         dale_experiment_rig.FixedDistr(num_byteloads=100, byteload_size_B=10000),
+    #         dale_experiment_rig.FixedDistr(num_byteloads=20, byteload_size_B=50000),
+    #         dale_experiment_rig.FixedDistr(num_byteloads=10, byteload_size_B=100000)
+    #         ],
+    #     target_mean_flow_interarr_ns=0,
+    #     is_use_poisson_byteload_intervals=False,
+    #     is_use_poisson_flow_interarr=False,
+    #     ssird_sim_dur_list=[0.02]*6,
+    #     dctcp_sim_dur_list=[0.02]*6,
+    #     xpass_sim_dur_list=[0.02]*6,
+    #     is_full_postproc=True,
+    #     title_prefix="FE_1rtt_delay_",
+    #     title_addendum="_500Bto100KB_0pt8GbpsFlo_5usRTT_allproto",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2,
+    #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    # ) 
     run_experiment(
-        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
         topo_yaml_file='6-hosts-dumbbell.yaml',
         src_dst_pairs_list=[(0,1)],
         num_flows_list=[40]*6,
@@ -452,15 +482,64 @@ def onertt_delay_p2p_lowload_40flo():
         target_mean_flow_interarr_ns=0,
         is_use_poisson_byteload_intervals=False,
         is_use_poisson_flow_interarr=False,
-        ssird_sim_dur_list=[0.05]*6,
-        dctcp_sim_dur_list=[0.05]*6,
-        xpass_sim_dur_list=[0.05]*6,
+        ssird_sim_dur_list=[0.06]*6,
+        dctcp_sim_dur_list=[0.06]*6,
+        xpass_sim_dur_list=[0.06]*6,
         is_full_postproc=True,
-        title_prefix="FE_1rtt_delay_",
-        title_addendum="_500Bto100KB_0pt8GbpsFlo_5usRTT_allproto",
+        title_prefix="FE_1rtt_delay_1msRTT_",
+        title_addendum="_500Bto100KB_0pt8GbpsFlo_1msRTT_allproto",
         log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
+
+def onertt_delay_p2p_flowrate_sweep_40flo():
+    ''' 1 to 1 point-to-point experiment '''
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
+    # run_experiment(
+    #     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+    #     topo_yaml_file='10-hosts-dumbbell.yaml',
+    #     src_dst_pairs_list=[(0,5), (1,6), (2,7), (3,8), (4,9)],
+    #     num_flows_list=[2]*8,
+    #     byteload_size_B_list=[1458]*8,
+    #     target_mean_byteload_interval_nanosec_list=[2000, 1000, 800, 600, 400, 300, 200, 150], 
+    #     max_interval_nanosec_list=[2000, 1000, 800, 600, 400, 300, 200, 150],
+    #     flow_size_distr_list=[dale_experiment_rig.FixedDistr(num_byteloads=500, byteload_size_B=1458)]*8,
+    #     target_mean_flow_interarr_ns=0,
+    #     is_use_poisson_byteload_intervals=False,
+    #     is_use_poisson_flow_interarr=False,
+    #     ssird_sim_dur_list=[0.02]*8,
+    #     dctcp_sim_dur_list=[0.02]*8,
+    #     xpass_sim_dur_list=[0.02]*8,
+    #     is_full_postproc=True,
+    #     title_prefix="FE_1rtt_delay_flowrate_sweep_",
+    #     title_addendum="_10flo_1458B_2000nsTo150ns_5usRTT_allproto_test",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2,
+    #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted(),
+    #     is_all_same_flowrate=False
+    # ) 
+    run_experiment(
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+        topo_yaml_file='10-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(0,5), (1,6), (2,7), (3,8), (4,9)],
+        num_flows_list=[2]*8,
+        byteload_size_B_list=[1458]*8,
+        target_mean_byteload_interval_nanosec_list=[2000, 1000, 800, 600, 400, 300, 200, 150], 
+        max_interval_nanosec_list=[2000, 1000, 800, 600, 400, 300, 200, 150],
+        flow_size_distr_list=[dale_experiment_rig.FixedDistr(num_byteloads=500, byteload_size_B=1458)]*8,
+        target_mean_flow_interarr_ns=0,
+        is_use_poisson_byteload_intervals=False,
+        is_use_poisson_flow_interarr=False,
+        ssird_sim_dur_list=[0.06]*8,
+        dctcp_sim_dur_list=[0.06]*8,
+        xpass_sim_dur_list=[0.06]*8,
+        is_full_postproc=True,
+        title_prefix="FE_1rtt_delay_flowrate_sweep_1msRTT_",
+        title_addendum="_10flo_1458B_2000nsTo150ns_1msRTT_allproto_test",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted(),
+        is_all_same_flowrate=False
+    ) 
+    print("FE_1rtt_delay_flowrate_sweep_"+"_10flo_1458B_2000nsTo150ns_5usRTT_allproto_test")
 
 ''' 
     ========== INCAST EXPERIMENTS (LOAD TEST): ==========
@@ -1166,6 +1245,7 @@ if __name__ == "__main__":
     ''' FINAL EXPERIMENTS (1RTT DELAY TEST) '''
     # onertt_delay_p2p_lowload()
     # onertt_delay_p2p_lowload_40flo()
+    onertt_delay_p2p_flowrate_sweep_40flo()
 
     ''' FINAL EXPERIMENTS (LOAD TEST) '''
     # incast_3to1_1458B_fbHadoopDist()
@@ -1190,7 +1270,7 @@ if __name__ == "__main__":
     # incast_10to1_1458B_fabHvyMid_load_fullsweep()
     # incast_10to1_1458B_fbHadoopDist_load_fullsweep()
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep()
-    incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep()
+    # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep()
 
     ''' FINAL EXPERIMENTS SSIRD POLICY (FULL LOAD SWEEP) '''
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_ssird_policy_fairshare()
