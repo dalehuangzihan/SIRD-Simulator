@@ -27,6 +27,7 @@ PATH_TO_FCT_SLOWDOWN_PLOTS = PATH_TO_TMP_PLOT + "fct_slowdown_analysis/"
 
 VARY_BLOAD_SIZE = "Varying Byteload Size"
 VARY_INTERVAL = "Varying Intervals"
+VARY_FLOWRATE = "Varying Flow Rate"
 
 def get_theoretical_fct_parallel_flows_s(num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_interval_us_list, rtt_s):
     '''
@@ -70,7 +71,7 @@ def get_theoretical_fct_parallel_flows_s(num_flows, num_byteloads_per_flow_list,
     print(f"-- Theoretical thrpt per interval: {theoretical_thrpt_gbps_list}")
     return theoretical_fct_s_list
 
-def plot_fct_vs_interval_ssird_xpass_vs_ideal(inter_byteload_period_us_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum="", is_log_x=False, is_log_y=False, y_lim=None):
+def plot_fct_vs_interval_ssird_xpass_vs_dctcp(inter_byteload_period_us_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum="", is_log_x=False, is_log_y=False, y_lim=None):
     ssird_fct_ms_list = [t * 1000 for t in ssird_fct_s_list]
     xpass_fct_ms_list = [t * 1000 for t in xpass_fct_s_list]
     ideal_fct_ms_list = [t * 1000 for t in ideal_fct_s_list]
@@ -90,11 +91,11 @@ def plot_fct_vs_interval_ssird_xpass_vs_ideal(inter_byteload_period_us_list, ssi
 
     Path(PATH_TO_FCT_SLOWDOWN_PLOTS).mkdir(parents=True, exist_ok=True)
     filename_prefix = "FCT_VARY_INTERVAL_"
-    filename = f"{filename_prefix}ssird_vs_ideal_{num_flows}flo_{flow_size_B}BperFlo_{total_gdpt_gbps}GbpsGdpt{title_addendum}.png"
+    filename = f"{filename_prefix}ssird_vs_xpass_vs_dctcp_{num_flows}flo_{flow_size_B}BperFlo_{total_gdpt_gbps}GbpsGdpt{title_addendum}.png"
     plt.savefig(f"{PATH_TO_FCT_SLOWDOWN_PLOTS}{filename}")
     plt.close()
 
-def plot_fct_vs_byteload_size_ssird_xpass_vs_ideal(byteload_size_B_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum="", is_log_x=False, is_log_y=False, y_lim=None):
+def plot_fct_vs_byteload_size_ssird_xpass_vs_dctcp(byteload_size_B_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum="", is_log_x=False, is_log_y=False, y_lim=None):
     ssird_fct_ms_list = [t * 1000 for t in ssird_fct_s_list]
     xpass_fct_ms_list = [t * 1000 for t in xpass_fct_s_list]
     ideal_fct_ms_list = [t * 1000 for t in ideal_fct_s_list]
@@ -114,11 +115,11 @@ def plot_fct_vs_byteload_size_ssird_xpass_vs_ideal(byteload_size_B_list, ssird_f
 
     Path(PATH_TO_FCT_SLOWDOWN_PLOTS).mkdir(parents=True, exist_ok=True)
     filename_prefix = "FCT_VARY_BLOAD_SIZE_"
-    filename = f"{filename_prefix}ssird_vs_ideal_{num_flows}flo_{flow_size_B}BperFlo_{total_gdpt_gbps}GbpsGdpt{title_addendum}.png"
+    filename = f"{filename_prefix}ssird_vs_xpass_vs_dctcp_{num_flows}flo_{flow_size_B}BperFlo_{total_gdpt_gbps}GbpsGdpt{title_addendum}.png"
     plt.savefig(f"{PATH_TO_FCT_SLOWDOWN_PLOTS}{filename}")
     plt.close()
 
-def plot_fct_diff_ssird_xpass_vs_ideal(experiment_type, x_vals_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum="", is_log_x=False, is_log_y=False, y_lim=None):
+def plot_fct_diff_ssird_xpass_vs_dctcp(experiment_type, x_vals_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum="", is_log_x=False, is_log_y=False, y_lim=None):
     ssird_fct_diff_s_list = [s - i for s, i in zip(ssird_fct_s_list, ideal_fct_s_list)]
     ssird_fct_diff_us_list = [x * pow(10,6) for x in ssird_fct_diff_s_list]
 
@@ -135,6 +136,11 @@ def plot_fct_diff_ssird_xpass_vs_ideal(experiment_type, x_vals_list, ssird_fct_s
     elif experiment_type == VARY_INTERVAL:
         plt.xlabel('Inter-Byteload Interval (us)')
         filename_prefix = "FCT_DIFF_VARY_INTERVAL_"
+    elif experiment_type == VARY_FLOWRATE:
+        plt.xlabel('Flow Rate (Gbps)')
+        filename_prefix = "FCT_DIFF_VARY_FLOWRATE_"
+    else:
+        raise ValueError(f"Unknown experiment type: {experiment_type}")
     print(f"{filename_prefix:} FCT Diff (us): {ssird_fct_diff_us_list}")
 
     plt.ylabel('Flow Completion Time DIFF (us)')
@@ -146,11 +152,45 @@ def plot_fct_diff_ssird_xpass_vs_ideal(experiment_type, x_vals_list, ssird_fct_s
     if (y_lim): plt.ylim(y_lim)
 
     Path(PATH_TO_FCT_SLOWDOWN_PLOTS).mkdir(parents=True, exist_ok=True)
+    filename = f"{filename_prefix}ssird_vs_xpass_vs_dctcp_{num_flows}flo_{flow_size_B}BperFlo_{total_gdpt_gbps}GbpsGdpt{title_addendum}.png"
+    plt.savefig(f"{PATH_TO_FCT_SLOWDOWN_PLOTS}{filename}")
+    plt.close()
+
+def plot_fct_diff_ssird_vs_ideal(experiment_type, x_vals_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum="", is_log_x=False, is_log_y=False, y_lim=None):
+    ssird_fct_diff_s_list = [s - i for s, i in zip(ssird_fct_s_list, ideal_fct_s_list)]
+    ssird_fct_diff_us_list = [x * pow(10,6) for x in ssird_fct_diff_s_list]
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(x_vals_list, ssird_fct_diff_us_list, label="SSIRD vs Ideal (Theoretical)", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
+
+    if experiment_type == VARY_BLOAD_SIZE:
+        plt.xlabel('Byteload Size (B)')
+        filename_prefix = "FCT_DIFF_VARY_BLOAD_SIZE_"
+    elif experiment_type == VARY_INTERVAL:
+        plt.xlabel('Inter-Byteload Interval (us)')
+        filename_prefix = "FCT_DIFF_VARY_INTERVAL_"
+    elif experiment_type == VARY_FLOWRATE:
+        plt.xlabel('Flow Rate (Gbps)')
+        filename_prefix = "FCT_DIFF_VARY_FLOWRATE_"
+    else:
+        raise ValueError(f"Unknown experiment type: {experiment_type}")
+
+    print(f"{filename_prefix:} FCT Diff (us): {ssird_fct_diff_us_list}")
+
+    plt.ylabel('Flow Completion Time DIFF (us)')
+    plt.title(f"FCT Diff: SSIRD vs Ideal (Theoretical): {experiment_type}\n({num_flows} Flows; {flow_size_B}B per Flow; {total_gdpt_gbps}Gbps Total Goodput)\n {title_addendum}")
+    plt.legend()
+    plt.grid(True)
+    if (is_log_x): plt.xscale('log')
+    if (is_log_y): plt.yscale('log')
+    if (y_lim): plt.ylim(y_lim)
+
+    Path(PATH_TO_FCT_SLOWDOWN_PLOTS).mkdir(parents=True, exist_ok=True)
     filename = f"{filename_prefix}ssird_vs_ideal_{num_flows}flo_{flow_size_B}BperFlo_{total_gdpt_gbps}GbpsGdpt{title_addendum}.png"
     plt.savefig(f"{PATH_TO_FCT_SLOWDOWN_PLOTS}{filename}")
     plt.close()
 
-def plot_fct_slowdown_ssird_xpass_vs_ideal(experiment_type, x_vals_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum="", is_log_x=False, is_log_y=False, y_lim=None):
+def plot_fct_slowdown_ssird_xpass_vs_dctcp(experiment_type, x_vals_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum="", is_log_x=False, is_log_y=False, y_lim=None):
     ssird_fct_slowdown_list = [s/i for s, i in zip(ssird_fct_s_list, ideal_fct_s_list)]
     xpass_fct_slowdown_list = [s/i for s, i in zip(xpass_fct_s_list, ideal_fct_s_list)]
     ideal_fct_slowdown_list = [s/i for s, i in zip(ideal_fct_s_list, ideal_fct_s_list)]
@@ -164,6 +204,11 @@ def plot_fct_slowdown_ssird_xpass_vs_ideal(experiment_type, x_vals_list, ssird_f
     elif experiment_type == VARY_INTERVAL:
         plt.xlabel('Inter-Byteload Interval (us)')
         filename_prefix = "FCT_SLOWDOWN_VARY_INTERVAL_"
+    elif experiment_type == VARY_FLOWRATE:
+        plt.xlabel('Flow Rate (Gbps)')
+        filename_prefix = "FCT_SLOWDOWN_VARY_FLOWRATE_"
+    else:
+        raise ValueError(f"Unknown experiment type: {experiment_type}")
     print(f"{filename_prefix:} Slowdown: {ssird_fct_slowdown_list}")
 
     plt.plot(x_vals_list, ssird_fct_slowdown_list, label="SSIRD vs DCTCP", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
@@ -200,8 +245,60 @@ def plot_fct_slowdown_ssird_xpass_vs_ideal(experiment_type, x_vals_list, ssird_f
     plt.savefig(f"{PATH_TO_FCT_SLOWDOWN_PLOTS}{filename}")
     plt.close()
 
+def plot_fct_slowdown_ssird_vs_ideal(experiment_type, x_vals_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum="", is_log_x=False, is_log_y=False, y_lim=None):
+    ssird_fct_slowdown_list = [s/i for s, i in zip(ssird_fct_s_list, ideal_fct_s_list)]
+    ideal_fct_slowdown_list = [s/i for s, i in zip(ideal_fct_s_list, ideal_fct_s_list)]
 
-def analyse_fct_slowdown_ssird_xpass_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, xpass_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s=RTT_5US_S, title_addendum=""):
+    plt.figure(figsize=(10, 6))
+
+    if experiment_type == VARY_BLOAD_SIZE:
+        x_logscale_addendum = "(Log Scale)" if is_log_x else ""
+        plt.xlabel(f'Byteload Size (Bytes) {x_logscale_addendum}')
+        filename_prefix = "FCT_SLOWDOWN_VARY_BLOAD_SIZE_"
+    elif experiment_type == VARY_INTERVAL:
+        plt.xlabel('Inter-Byteload Interval (us)')
+        filename_prefix = "FCT_SLOWDOWN_VARY_INTERVAL_"
+    elif experiment_type == VARY_FLOWRATE:
+        plt.xlabel('Flow Rate (Gbps)')
+        filename_prefix = "FCT_SLOWDOWN_VARY_FLOWRATE_"
+    else:
+        raise ValueError(f"Unknown experiment type: {experiment_type}")
+    print(f"{filename_prefix:} Slowdown: {ssird_fct_slowdown_list}")
+
+    plt.plot(x_vals_list, ssird_fct_slowdown_list, label="SSIRD vs Theoretical", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
+    plt.plot(x_vals_list, ideal_fct_slowdown_list, label="Theoretical", linestyle=':', marker='X', color=IDEAL_PLOT_COLOUR)
+
+    percentile = round((num_flows-1)/num_flows * 100, 2)
+    plt.ylabel(f'FCT Slowdown ({percentile}-th percentile)')
+    plt.title(f"FCT Slowdown: SSIRD vs Ideal (Theoretical): {experiment_type}\n({num_flows} Flows; {flow_size_B}B per Flow; {total_gdpt_gbps}Gbps Total Goodput)\n {title_addendum}")
+    plt.legend()
+
+    ax = plt.gca()
+
+    ax.grid(True, which='both')
+    if (y_lim): plt.ylim(y_lim)
+    if (is_log_y): plt.yscale('log')
+    if (is_log_x):
+        ax.set_xscale('log')
+        # place ticks at the exact datapoints
+        xticks = sorted({float(x) for x in x_vals_list})
+        ax.xaxis.set_major_locator(mticker.FixedLocator(xticks))
+        # show their raw values as labels
+        labels = []
+        for x in xticks:
+            labels.append(f"{int(x)}" if float(x).is_integer() else f"{x:g}")
+            ax.xaxis.set_major_formatter(mticker.FixedFormatter(labels))
+            # improve readability (optional)
+            # plt.setp(ax.get_xticklabels(), rotation=45, ha='right')
+            plt.setp(ax.get_xticklabels(), rotation=0, ha='center')
+            ax.minorticks_off() # keep only your custom ticks
+
+    Path(PATH_TO_FCT_SLOWDOWN_PLOTS).mkdir(parents=True, exist_ok=True)
+    filename = f"{filename_prefix}ssird_vs_xpass_vs_dctcp_{num_flows}flo_{flow_size_B}BperFlo_{total_gdpt_gbps}GbpsGdpt{title_addendum}.png"
+    plt.savefig(f"{PATH_TO_FCT_SLOWDOWN_PLOTS}{filename}")
+    plt.close()
+
+def analyse_fct_slowdown_ssird_xpass_vs_dctcp(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, xpass_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s=RTT_5US_S, title_addendum=""):
     # NOTE: max 1 out of 40 flows is 97.5th percentile 
     ssird_fct_s_max_list = [max(l) for l in ssird_fct_s_list_list]
     xpass_fct_s_max_list = [max(l) for l in xpass_fct_s_list_list]
@@ -221,20 +318,53 @@ def analyse_fct_slowdown_ssird_xpass_vs_ideal(inter_byteload_period_us_list, num
     ideal_fct_s_list = dctcp_fct_s_max_list 
 
     # Plot FCT
-    plot_fct_vs_interval_ssird_xpass_vs_ideal(inter_byteload_period_us_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=None)
-    plot_fct_vs_byteload_size_ssird_xpass_vs_ideal(byteload_size_B_list,ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=None)
+    plot_fct_vs_interval_ssird_xpass_vs_dctcp(inter_byteload_period_us_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=None)
+    plot_fct_vs_byteload_size_ssird_xpass_vs_dctcp(byteload_size_B_list,ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=None)
 
     # Plot FCT Diff
     # fct_diff_ylim = (0, 2000)
     fct_diff_ylim = None
-    plot_fct_diff_ssird_xpass_vs_ideal(VARY_INTERVAL, inter_byteload_period_us_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
-    plot_fct_diff_ssird_xpass_vs_ideal(VARY_BLOAD_SIZE, byteload_size_B_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
+    plot_fct_diff_ssird_xpass_vs_dctcp(VARY_INTERVAL, inter_byteload_period_us_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
+    plot_fct_diff_ssird_xpass_vs_dctcp(VARY_BLOAD_SIZE, byteload_size_B_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
 
     # Plot FCT Slowdown
     # fct_slowdown_ylim = (0, 4)
     fct_slowdown_ylim = None
-    plot_fct_slowdown_ssird_xpass_vs_ideal(VARY_INTERVAL, inter_byteload_period_us_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_slowdown_ylim)
-    plot_fct_slowdown_ssird_xpass_vs_ideal(VARY_BLOAD_SIZE, byteload_size_B_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_slowdown_ylim)
+    plot_fct_slowdown_ssird_xpass_vs_dctcp(VARY_INTERVAL, inter_byteload_period_us_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_slowdown_ylim)
+    plot_fct_slowdown_ssird_xpass_vs_dctcp(VARY_BLOAD_SIZE, byteload_size_B_list, ssird_fct_s_list, xpass_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_slowdown_ylim)
+
+
+def analyse_fct_slowdown_ssird_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s=RTT_5US_S, title_addendum=""):
+    # NOTE: max 1 out of 40 flows is 97.5th percentile 
+    ssird_fct_s_max_list = [max(l) for l in ssird_fct_s_list_list]
+
+    print(f"SSIRD FCT (s) MAX:{ssird_fct_s_max_list}")
+
+    theoretical_fct_parallel_flows_s_list = get_theoretical_fct_parallel_flows_s(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rtt_s)
+    print(f"THEORETICAL IDEAL Exactly-parallel FCT (s):{theoretical_fct_parallel_flows_s_list}")
+
+    ssird_fct_s_list = ssird_fct_s_max_list
+
+    print("*** VS THEORY")
+    ideal_fct_s_list = theoretical_fct_parallel_flows_s_list 
+
+    flow_rate_gbps_list = []
+    assert(len(inter_byteload_period_us_list) == len(byteload_size_B_list))
+    for i in range(len(inter_byteload_period_us_list)):
+        inter_byteload_period_us = inter_byteload_period_us_list[i]
+        byteload_size_B = byteload_size_B_list[i]
+        flow_rate_gbps = round(byteload_size_B * 8 / (inter_byteload_period_us * pow(10, -6)) * pow(10,-9), 2)
+        flow_rate_gbps_list.append(flow_rate_gbps) 
+
+    # Plot FCT Diff
+    fct_diff_ylim = (0, 2000)
+    # fct_diff_ylim = None
+    plot_fct_diff_ssird_vs_ideal(VARY_FLOWRATE, flow_rate_gbps_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
+
+    # Plot FCT Slowdown
+    fct_slowdown_ylim = (0, 4)
+    # fct_slowdown_ylim = None
+    plot_fct_slowdown_ssird_vs_ideal(VARY_FLOWRATE, flow_rate_gbps_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, title_addendum, is_log_x=True, y_lim=fct_slowdown_ylim)
 
 ''' Analyse Experiment Results: '''
 
@@ -296,7 +426,7 @@ def fe_analyse_ssird_vs_ideal_fct_fullrange_100Bto1MB_6flo_5usRTT():
 
     print(f"RTT (us): {rtt_s * pow(10,6)}")
     print(f"Byteload Size (B): {byteload_size_B_list}")
-    analyse_fct_slowdown_ssird_xpass_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s, title_addendum)
+    analyse_fct_slowdown_ssird_xpass_vs_dctcp(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s, title_addendum)
 
 def fe_analyse_ssird_vs_ideal_fct_fullrange_100Bto100KB_40flo_5usRTT():
     # ##### GENERATE METRICS #####
@@ -356,7 +486,7 @@ def fe_analyse_ssird_vs_ideal_fct_fullrange_100Bto100KB_40flo_5usRTT():
 
     print(f"RTT (us): {rtt_s * pow(10,6)}")
     print(f"Byteload Size (B): {byteload_size_B_list}")
-    analyse_fct_slowdown_ssird_xpass_vs_ideal(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s, title_addendum)
+    analyse_fct_slowdown_ssird_xpass_vs_dctcp(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s, title_addendum)
 
 def fe_analyse_ssird_xpass_vs_dctcp_fct_fullrange_100Bto100KB_40flo_5usRTT():
     # scripts/r2p2/post-process/saved_experiment_outputs/FE_1rtt_delay__500Bto100KB_0pt8GbpsFlo_5usRTT_allproto/FE_1rtt_delay_1to1_500Bto100KB_0pt8GbpsFlo_5usRTT_allproto_2025-08-21T_10-55-28Z.log
@@ -375,7 +505,7 @@ def fe_analyse_ssird_xpass_vs_dctcp_fct_fullrange_100Bto100KB_40flo_5usRTT():
 
     print(f"RTT (us): {rtt_s * pow(10,6)}")
     print(f"Byteload Size (B): {byteload_size_B_list}")
-    analyse_fct_slowdown_ssird_xpass_vs_ideal(
+    analyse_fct_slowdown_ssird_xpass_vs_dctcp(
         inter_byteload_period_us_list,
         num_byteloads_list,
         byteload_size_B_list,
@@ -390,31 +520,28 @@ def fe_analyse_ssird_xpass_vs_dctcp_fct_fullrange_100Bto100KB_40flo_5usRTT():
     )
 
 def fe_analyse_ssird_xpass_vs_dctcp_fct_flowratesweep_10flo_1458B_2000nsTo150ns_10flo_5usRTT():
-    # scripts/r2p2/post-process/saved_experiment_outputs/FE_1rtt_delay_flowrate_sweep__10flo_1458B_2000nsTo150ns_5usRTT_allproto_test/FE_1rtt_delay_flowrate_sweep_5to1_10flo_1458B_2000nsTo150ns_5usRTT_allproto_test_2025-08-24T_16-47-41Z.log
-    title_addendum = "_10flo_1458B_2000nsTo150ns_5usRTT_allproto_test"
+    # scripts/r2p2/post-process/saved_experiment_outputs/FE_1rtt_delay_flowrate_sweep_1msRTT__10flo_1458B_2000nsTo150ns_1msRTT_allproto_test/FE_1rtt_delay_flowrate_sweep_1msRTT_5to1_10flo_1458B_2000nsTo150ns_1msRTT_allproto_test_2025-08-24T_17-23-11Z.log
+    # INFO:__main__:* SSIRD FCT: [[0.0020014780000003896, 0.0025014880000000517, 0.0020015030000006817, 0.002501513000000344, 0.002001528000000974, 0.002501538000000636, 0.0020015520000011833, 0.0025015620000008454, 0.0020015770000014754, 0.0025015870000011375], [0.0017524780000002238, 0.002002498000001296, 0.001752503000000516, 0.002002523000001588, 0.001752528000000808, 0.002002548000000104, 0.0017525520000010175, 0.0020025720000003133, 0.0017525770000013097, 0.0020025970000006055], [0.0017026780000009012, 0.0019026880000012625, 0.0017027030000011933, 0.0019027130000015546, 0.0017027280000014855, 0.0019027380000000704, 0.0017027519999999186, 0.0019027620000002798, 0.0017027770000002107, 0.001902787000000572], [0.0016528780000015786, 0.001802878000001229, 0.0016529030000000944, 0.0018029030000015211, 0.0016529280000003865, 0.001802928000000037, 0.001652952000000596, 0.0018029520000002464, 0.001652977000000888, 0.0018029770000005385], [0.0016030780000004796, 0.001703098000000125, 0.0016031030000007718, 0.0017031230000004172, 0.001603128000001064, 0.0017031480000007093, 0.0016031520000012733, 0.0017031720000009187, 0.0016031770000015655, 0.0017031970000012109], [0.0015781780000008183, 0.0016531780000015317, 0.0015782030000011105, 0.0016532030000000475, 0.0015782280000014026, 0.0016532280000003396, 0.001578252000001612, 0.001653252000000549, 0.0015782770000001278, 0.0016532770000008412], [0.0015648120000015808, 0.0016263320000007297, 0.0015648370000000966, 0.001626357000001022, 0.001564861000000306, 0.0016263810000012313, 0.0015648860000005982, 0.0016264060000015235, 0.0015649110000008903, 0.0016264310000000393], [0.0015648120000015808, 0.0016263320000007297, 0.0015648370000000966, 0.001626357000001022, 0.001564861000000306, 0.0016263810000012313, 0.0015648860000005982, 0.0016264060000015235, 0.0015649110000008903, 0.0016264310000000393]]
+    title_addendum = "_10flo_1458B_2000nsTo150ns_1msRTT_allproto_test"
 
-    rtt_s = RTT_5US_S
-    num_flows = 10
+    rtt_s = RTT_1MS_S
+    num_flows = 2
     flow_size_B = -1
     total_gdpt_gbps = -1
     inter_byteload_period_us_list = [2, 1, 0.8, 0.6, 0.4, 0.3, 0.2, 0.15]
     num_byteloads_list = [500]*8
     byteload_size_B_list = [1458]*8
-    ssird_fct_s_list_list = [[0.0010028550000011904, 0.001008978000001548, 0.0010028800000014826, 0.0010090030000000638, 0.0010029049999999984, 0.001009028000000356, 0.0010029290000002078, 0.0010090520000005654, 0.0010029540000005, 0.0010090770000008575], [0.0005028450000015283, 0.000509988000001016, 0.0005028700000000441, 0.0005100130000013081, 0.0005028950000003363, 0.0005100380000016003, 0.0005029190000005457, 0.0005100620000000333, 0.0005029440000008378, 0.0005100870000003255], [0.00040366500000033056, 0.0004104620000013881, 0.0004036900000006227, 0.000410364000000385, 0.00040371500000091487, 0.0004103880000005944, 0.0004037390000011243, 0.00041041300000088654, 0.00040376400000141643, 0.0004104380000011787], [0.00030364500000068517, 0.0003106520000013546, 0.0003036700000009773, 0.0003105540000003515, 0.0003036950000012695, 0.0003105780000005609, 0.0003037190000014789, 0.00031060300000085306, 0.0003037439999999947, 0.0003106280000011452], [0.00020347500000106322, 0.0002106590000003905, 0.00020350000000135537, 0.00021082800000016277, 0.00020352499999987117, 0.000210730000000936, 0.00020357400000037273, 0.00021075500000122815, 0.00020354900000008058, 0.00021077900000143757], [0.0001535090000004402, 0.00017014500000023247, 0.00015353300000064962, 0.00017017500000093833, 0.00015355800000094177, 0.00017020499999986782, 0.0001535850000013994, 0.00017023500000057368, 0.0001536150000003289, 0.00017026500000127953], [0.00010368800000115641, 0.00016984500000027936, 0.00010371500000161404, 0.0001698750000009852, 0.00010373699999988162, 0.0001699049999999147, 0.0001036330000001584, 0.00016993000000020686, 0.00010366300000086426, 0.000169955000000499], [8.989500000033956e-05, 0.0001698750000009852, 8.992500000104542e-05, 0.0001699049999999147, 8.995499999997492e-05, 0.00016993500000062056, 8.998000000026707e-05, 0.00016996000000091271, 9.000500000055922e-05, 0.00016998500000120487]]
-    dctcp_fct_s_list_list = [[0.0010017950000005271, 0.001001918000000046, 0.0010018190000007365, 0.0010019420000002555, 0.0010018440000010287, 0.0010019670000005476, 0.0010018690000013208, 0.0010019920000008398, 0.0010018930000015303, 0.0010020160000010492], [0.000502795000000944, 0.0005029180000004629, 0.0005028190000011534, 0.0005029420000006724, 0.0005028440000014456, 0.0005029670000009645, 0.0005028689999999614, 0.0005029920000012567, 0.0005028930000001708, 0.0005030160000014661], [0.0004029949999999616, 0.00040311800000125686, 0.000403019000000171, 0.00040314200000146627, 0.00040304400000046314, 0.00040316699999998207, 0.0004030690000007553, 0.0004031920000002742, 0.0004030930000009647, 0.00040321600000048363], [0.0003031950000007555, 0.0003033180000002744, 0.0003032190000009649, 0.00030334200000048384, 0.00030324400000125706, 0.000303367000000776, 0.0003032690000015492, 0.00030339200000106814, 0.00030329299999998227, 0.00030341600000127755], [0.00020339500000154942, 0.00020351800000106834, 0.00020341899999998247, 0.00020354200000127776, 0.00020344400000027463, 0.0002035670000015699, 0.00020346900000056678, 0.0002035920000000857, 0.0002034930000007762, 0.00020361600000029512], [0.0001534950000010582, 0.00015361800000057713, 0.00015351900000126761, 0.00015364200000078654, 0.00015354400000155977, 0.0001536670000010787, 0.00015356900000007556, 0.00015369200000137084, 0.00015359300000028497, 0.00015371600000158026], [0.00012593500000157576, 0.00012662600000012958, 0.00012568900000076155, 0.00012662600000012958, 0.0001257140000010537, 0.000126650000000339, 0.0001264519999999436, 0.000126650000000339, 0.0001264519999999436, 0.000126650000000339], [0.00012660100000161378, 0.00012654300000036756, 0.00012662600000012958, 0.00012632100000153912, 0.00012661200000074757, 0.00012655300000119496, 0.00012662600000012958, 0.00012632100000153912, 0.00012665100000042173, 0.00012634600000005491]]
-    xpass_fct_s_list_list = [[0.0010028280000007328, 0.001059838000001534, 0.001002853000001025, 0.0010029820000010403, 0.0010028800000014826, 0.0010030100000015807, 0.0010029060000000811, 0.0010030360000001792, 0.001002932000000456, 0.0010030620000005541], [0.0005028280000001217, 0.0005029580000002198, 0.0005028530000004139, 0.0005030600000015539, 0.0005028800000008715, 0.0005030090000008869, 0.0005029060000012464, 0.0005030350000012618, 0.0005029320000016213, 0.0005040030000014184], [0.0004941250000012332, 0.0005101010000014838, 0.0004038720000014706, 0.0005117190000003546, 0.0005473410000007561, 0.00046071400000080587, 0.000551888000000389, 0.0005013810000011887, 0.00044875000000033083, 0.0004986640000002041], [0.0003674620000015949, 0.00038457000000136077, 0.00037343000000156223, 0.0003652309999999659, 0.00034396200000053057, 0.00038113200000111647, 0.0003690280000014923, 0.00036691500000074484, 0.0003036320000013859, 0.00032224700000149653], [0.00023833300000042357, 0.00023942300000001637, 0.00023899800000037885, 0.00024226300000051992, 0.00022539500000107182, 0.0002515110000000931, 0.00023331700000106537, 0.00025278500000069926, 0.00023368700000148124, 0.0002452230000002942], [0.0002342730000002291, 0.00024154200000126025, 0.0002443690000006882, 0.00023574000000081696, 0.00023210300000009454, 0.00024504800000002547, 0.00024405700000151853, 0.0002444550000006984, 0.00022670300000093846, 0.000253709000000768], [0.00023415500000112388, 0.0002412650000014338, 0.00026128100000022414, 0.00022283200000039471, 0.0002221260000005998, 0.00025383000000012146, 0.00024222200000068028, 0.00025013100000137456, 0.00023086800000093888, 0.0002466460000007942], [0.00023407500000161008, 0.00024145900000149823, 0.0002612430000006327, 0.0002228040000016307, 0.00032398799999988626, 0.0003826600000014224, 0.0002420189999998712, 0.00024984000000038975, 0.00023027900000016643, 0.0003250470000004668]]
+    ssird_fct_s_list_list = [[0.0020014780000003896, 0.0025014880000000517, 0.0020015030000006817, 0.002501513000000344, 0.002001528000000974, 0.002501538000000636, 0.0020015520000011833, 0.0025015620000008454, 0.0020015770000014754, 0.0025015870000011375], [0.0017524780000002238, 0.002002498000001296, 0.001752503000000516, 0.002002523000001588, 0.001752528000000808, 0.002002548000000104, 0.0017525520000010175, 0.0020025720000003133, 0.0017525770000013097, 0.0020025970000006055], [0.0017026780000009012, 0.0019026880000012625, 0.0017027030000011933, 0.0019027130000015546, 0.0017027280000014855, 0.0019027380000000704, 0.0017027519999999186, 0.0019027620000002798, 0.0017027770000002107, 0.001902787000000572], [0.0016528780000015786, 0.001802878000001229, 0.0016529030000000944, 0.0018029030000015211, 0.0016529280000003865, 0.001802928000000037, 0.001652952000000596, 0.0018029520000002464, 0.001652977000000888, 0.0018029770000005385], [0.0016030780000004796, 0.001703098000000125, 0.0016031030000007718, 0.0017031230000004172, 0.001603128000001064, 0.0017031480000007093, 0.0016031520000012733, 0.0017031720000009187, 0.0016031770000015655, 0.0017031970000012109], [0.0015781780000008183, 0.0016531780000015317, 0.0015782030000011105, 0.0016532030000000475, 0.0015782280000014026, 0.0016532280000003396, 0.001578252000001612, 0.001653252000000549, 0.0015782770000001278, 0.0016532770000008412], [0.0015648120000015808, 0.0016263320000007297, 0.0015648370000000966, 0.001626357000001022, 0.001564861000000306, 0.0016263810000012313, 0.0015648860000005982, 0.0016264060000015235, 0.0015649110000008903, 0.0016264310000000393], [0.0015648120000015808, 0.0016263320000007297, 0.0015648370000000966, 0.001626357000001022, 0.001564861000000306, 0.0016263810000012313, 0.0015648860000005982, 0.0016264060000015235, 0.0015649110000008903, 0.0016264310000000393]]
 
     print(f"RTT (us): {rtt_s * pow(10,6)}")
     print(f"Byteload Size (B): {byteload_size_B_list}")
 
     # TODO: make new plots with flow rate as x axis
-    analyse_fct_slowdown_ssird_xpass_vs_ideal(
+    analyse_fct_slowdown_ssird_vs_ideal(
         inter_byteload_period_us_list,
         num_byteloads_list,
         byteload_size_B_list,
         ssird_fct_s_list_list,
-        xpass_fct_s_list_list,
-        dctcp_fct_s_list_list,
         num_flows,
         flow_size_B,
         total_gdpt_gbps,
