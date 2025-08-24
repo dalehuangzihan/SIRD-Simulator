@@ -13,7 +13,7 @@ import json
 # for thread pool
 # MAX_WORKERS = 4 
 # MAX_WORKERS = 12 # NOTE: use this for batch1 server
-MAX_WORKERS = 8 # NOTE: use this for octopus4 server
+MAX_WORKERS = 12 # NOTE: use this for octopus4 server
 
 MIN_BYTELOAD_INTERVAL_US = 0.001 # is 1ns
 
@@ -1034,10 +1034,15 @@ class ExperimentGroup:
                                               num_flows=num_flows_list[i],
                                               target_flow_rate_gbps=target_flow_rate_gbps)
             exp_metrics, flow_stats_dict = exp_output_raw.process_results_fct() 
+            sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(flow_stats_dict)
             if (SSIRD_PROTO_NAME in proto):
-                processed_result = ExperimentResultsProcessed(ssird_experiment_metrics=exp_metrics)
+                processed_result = ExperimentResultsProcessed(ssird_experiment_metrics=exp_metrics, ssird_sorted_flowsize_fct_list=sorted_flowsize_fct_list)
             elif (DCTCP_PROTO_FAMILY_NAME in proto):
-                processed_result = ExperimentResultsProcessed(dctcp_experiment_metrics=exp_metrics)
+                processed_result = ExperimentResultsProcessed(dctcp_experiment_metrics=exp_metrics, dctcp_sorted_flowsize_fct_list=sorted_flowsize_fct_list)
+            elif (XPASS_PROTO_NAME in proto):
+                processed_result = ExperimentResultsProcessed(xpass_experiment_metrics=exp_metrics, xpass_sorted_flowsize_fct_list=sorted_flowsize_fct_list)
+            else:
+                raise ValueError(f"Unrecognised protocol name: {proto}")
             processed_results_list.append(processed_result)
         exp_metrics = ExperimentGroupResultsProcessed(processed_results_list)
         
