@@ -1219,9 +1219,12 @@ def incast_10to1_1458B_googleAllRpc_load_fullsweep():
         target_mean_flow_interarr_ns=500,
         is_use_poisson_byteload_intervals=True,
         is_use_poisson_flow_interarr=True,
-        ssird_sim_dur_list=[0.002]*6,
-        dctcp_sim_dur_list=[0.002]*6,
-        xpass_sim_dur_list=[0.002]*6,
+        ssird_sim_dur_list=[0.0008]*6,
+        dctcp_sim_dur_list=[0.0008]*6,
+        xpass_sim_dur_list=[0.0008]*6,
+        # ssird_sim_dur_list=[0.001]*6,
+        # dctcp_sim_dur_list=[0.001]*6,
+        # xpass_sim_dur_list=[0.001]*6,
         is_full_postproc=True,
         title_prefix="FE_incast_12host_fullsweep_",
         title_addendum="_12host_GoogleAllRPC_load_fullsweep_300ns_fromjson",
@@ -1369,12 +1372,12 @@ if __name__ == "__main__":
     # incast_10to1_1458B_expDistr_loadtest()
 
     ''' FINAL EXPERIMENTS (FULL LOAD SWEEP) '''
-    # incast_10to1_1458B_googleAllRpc_load_fullsweep()
+    incast_10to1_1458B_googleAllRpc_load_fullsweep()
     # incast_10to1_1458B_fabHvyMid_load_fullsweep()
     # incast_10to1_1458B_fbHadoopDist_load_fullsweep()
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep()
     # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep()
-    incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep()
+    # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep()
 
     ''' FINAL EXPERIMENTS SSIRD POLICY (FULL LOAD SWEEP) '''
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_ssird_policy_fairshare()
