@@ -27,6 +27,7 @@ def plot_achieved_gdpt_vs_latency(
     experiment_family, title_addendum, experiment_date,
     ssird_achieved_gdpt_gbps_list, xpass_achieved_gdpt_gbps_list, dctcp_achieved_gdpt_gbps_list,
     ssird_fct_s_list_list, xpass_fct_s_list_list, dctcp_fct_s_list_list,
+    percentile,
     x_lim=None, y_lim=None
 ):
 
@@ -36,12 +37,12 @@ def plot_achieved_gdpt_vs_latency(
 
     plt.figure(figsize=(10, 6))
     plt.xlabel(f'Acheived Goodput (Gbps)')
-    plt.ylabel('Latency (us)')
+    plt.ylabel(f'Latency (us) ({percentile}-th percentile)')
     plt.title(f'Achieved Goodput vs Latency\n{experiment_family}{title_addendum}\n{experiment_date}')
 
-    ssird_fct_s_90p = [np.percentile(np.array(fct_s_list), 90) for fct_s_list in ssird_fct_s_list_list]
-    xpass_fct_s_90p = [np.percentile(np.array(fct_s_list), 90) for fct_s_list in xpass_fct_s_list_list]
-    dctcp_fct_s_90p = [np.percentile(np.array(fct_s_list), 90) for fct_s_list in dctcp_fct_s_list_list]
+    ssird_fct_s_90p = [np.percentile(np.array(fct_s_list), percentile) for fct_s_list in ssird_fct_s_list_list]
+    xpass_fct_s_90p = [np.percentile(np.array(fct_s_list), percentile) for fct_s_list in xpass_fct_s_list_list]
+    dctcp_fct_s_90p = [np.percentile(np.array(fct_s_list), percentile) for fct_s_list in dctcp_fct_s_list_list]
 
     ssird_fct_us = [x*1000*1000 for x in ssird_fct_s_90p]
     xpass_fct_us = [x*1000*1000 for x in xpass_fct_s_90p]
@@ -100,7 +101,8 @@ def do_plot_for_DctcpMsgSizeDist_load_fullsweep_800ns():
         dctcp_achieved_gdpt_gbps_list=dctcp_achieved_gdpt_gbps_list,
         ssird_fct_s_list_list=ssird_fct_s_list_list,
         xpass_fct_s_list_list=xpass_fct_s_list_list,
-        dctcp_fct_s_list_list=dctcp_fct_s_list_list
+        dctcp_fct_s_list_list=dctcp_fct_s_list_list,
+        percentile=90
     )
 
 def do_plot_for_fbHadoopDist_load_fullsweep_300ns():
@@ -129,7 +131,8 @@ def do_plot_for_fbHadoopDist_load_fullsweep_300ns():
         dctcp_achieved_gdpt_gbps_list=dctcp_achieved_gdpt_gbps_list,
         ssird_fct_s_list_list=ssird_fct_s_list_list,
         xpass_fct_s_list_list=xpass_fct_s_list_list,
-        dctcp_fct_s_list_list=dctcp_fct_s_list_list
+        dctcp_fct_s_list_list=dctcp_fct_s_list_list,
+        percentile=90
     )
 
 def do_plot_for_fbCacheFollowerDist_load_fullsweep_5000ns():
@@ -161,13 +164,12 @@ def do_plot_for_fbCacheFollowerDist_load_fullsweep_5000ns():
         dctcp_achieved_gdpt_gbps_list=dctcp_achieved_gdpt_gbps_list,
         ssird_fct_s_list_list=ssird_fct_s_list_list,
         xpass_fct_s_list_list=xpass_fct_s_list_list,
-        dctcp_fct_s_list_list=dctcp_fct_s_list_list
+        dctcp_fct_s_list_list=dctcp_fct_s_list_list,
+        percentile=90
     )
 
 if __name__ == "__main__":
 
     do_plot_for_DctcpMsgSizeDist_load_fullsweep_800ns()
-
     do_plot_for_fbHadoopDist_load_fullsweep_300ns()
-
     do_plot_for_fbCacheFollowerDist_load_fullsweep_5000ns()

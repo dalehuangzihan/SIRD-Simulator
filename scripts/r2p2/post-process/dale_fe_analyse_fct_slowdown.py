@@ -167,7 +167,7 @@ def plot_fct_diff_ssird_vs_ideal(
     ssird_fct_diff_us_list = [x * pow(10,6) for x in ssird_fct_diff_s_list]
 
     plt.figure(figsize=(10, 6))
-    plt.plot(x_vals_list, ssird_fct_diff_us_list, label="SSIRD vs Ideal (Theoretical)", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
+    plt.plot(x_vals_list, ssird_fct_diff_us_list, label="SSIRD vs Theoretical", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
 
     if experiment_type == VARY_BLOAD_SIZE:
         plt.xlabel('Byteload Size (B)')
@@ -310,7 +310,19 @@ def plot_fct_slowdown_ssird_vs_ideal(
     plt.savefig(f"{PATH_TO_FCT_SLOWDOWN_PLOTS}{filename}")
     plt.close()
 
-def analyse_fct_slowdown_ssird_xpass_vs_dctcp(inter_byteload_period_us_list, num_byteloads_list, byteload_size_B_list, ssird_fct_s_list_list, xpass_fct_s_list_list, dctcp_fct_s_list_list, num_flows, flow_size_B, total_gdpt_gbps, rtt_s=RTT_5US_S, title_addendum=""):
+def analyse_fct_slowdown_ssird_xpass_vs_dctcp(
+        inter_byteload_period_us_list,
+        num_byteloads_list,
+        byteload_size_B_list,
+        ssird_fct_s_list_list,
+        xpass_fct_s_list_list,
+        dctcp_fct_s_list_list,
+        num_flows,
+        flow_size_B,
+        total_gdpt_gbps,
+        rtt_s=RTT_5US_S,
+        title_addendum=""
+    ):
     # NOTE: max 1 out of 40 flows is 97.5th percentile 
     ssird_fct_s_max_list = [max(l) for l in ssird_fct_s_list_list]
     xpass_fct_s_max_list = [max(l) for l in xpass_fct_s_list_list]

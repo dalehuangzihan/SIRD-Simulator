@@ -43,18 +43,16 @@ def plot_flow_size_vs_latency(
 
         num_flows = len(ssird_flow_size_fct_s_pairs_list)
 
-        ssird_flow_size_list = [size for size, fct_s in ssird_flow_size_fct_s_pairs_list]
+        ssird_flow_size_KB_list = [size/1000 for size, fct_s in ssird_flow_size_fct_s_pairs_list]
 
         ssird_fct_us_list = [fct_s*1000*1000 for size, fct_s in ssird_flow_size_fct_s_pairs_list] 
 
         plt.figure(figsize=(10, 6))
-        plt.xlabel(f'Flow Size (Bytes)')
+        plt.xlabel(f'Flow Size (KB)')
         plt.ylabel('Latency (us)')
         plt.title(f'Flow Size vs Latency {num_flows}flo\n{experiment_family}{title_addendum}\n{experiment_date}')
 
-        plt.plot(ssird_flow_size_list, ssird_fct_us_list, label="SSIRD", linestyle='-', marker='^', color=SSIRD_PLOT_COLOUR, markersize=3)
-
-        # plt.xscale('log')
+        plt.plot(ssird_flow_size_KB_list, ssird_fct_us_list, label="SSIRD", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR, markersize=4)
 
         plt.legend()
 
@@ -101,19 +99,19 @@ def plot_flow_size_vs_latency_compare(
         ]))==1)
         num_flows = len(ssird_flow_size_fct_s_pairs_list)
 
-        ssird_flow_size_list = [size for size, fct_s in ssird_flow_size_fct_s_pairs_list]
-        ssird_flow_size_list_combined_byteloads = [size for size, fct_s in ssird_flow_size_fct_s_pairs_list_combined_byteloads]
+        ssird_flow_size_KB_list = [size/1000 for size, fct_s in ssird_flow_size_fct_s_pairs_list]
+        ssird_flow_size_KB_list_combined_byteloads = [size/1000 for size, fct_s in ssird_flow_size_fct_s_pairs_list_combined_byteloads]
 
         ssird_fct_us_list = [fct_s*1000*1000 for size, fct_s in ssird_flow_size_fct_s_pairs_list] 
         ssird_fct_us_list_combined_byteloads = [fct_s*1000*1000 for size, fct_s in ssird_flow_size_fct_s_pairs_list_combined_byteloads] 
 
         plt.figure(figsize=(10, 6))
-        plt.xlabel(f'Flow Size (Bytes)')
+        plt.xlabel(f'Flow Size (KB)')
         plt.ylabel('Latency (us)')
         plt.title(f'Flow Size vs Latency {num_flows}flo\n{experiment_family}{title_addendum}\n{experiment_date}')
 
-        plt.plot(ssird_flow_size_list, ssird_fct_us_list, label="SSIRD", linestyle='-', marker='^', color=SSIRD_PLOT_COLOUR, markersize=3, zorder=3)
-        plt.plot(ssird_flow_size_list_combined_byteloads, ssird_fct_us_list_combined_byteloads, label="SSIRD (combined byteloads)", linestyle='-', marker='^', color=XPASS_PLOT_COLOUR, markersize=3, zorder=2)
+        plt.plot(ssird_flow_size_KB_list, ssird_fct_us_list, label="SSIRD", linestyle='-', marker='^', color=SSIRD_PLOT_COLOUR, markersize=3, zorder=3)
+        plt.plot(ssird_flow_size_KB_list_combined_byteloads, ssird_fct_us_list_combined_byteloads, label="SSIRD (combined byteloads)", linestyle='-', marker='^', color=XPASS_PLOT_COLOUR, markersize=3, zorder=2)
         # plt.xscale('log')
 
         plt.legend()
@@ -230,4 +228,4 @@ if __name__ == "__main__":
     do_flowsize_latency_plots_incast_12host_fullsweep_fbHadoopDist_300ns()
     do_flowsize_latency_plots_incast_12host_fullsweep_fbCacheFollowerDist_5000ns()
 
-    do_flowsize_latency_plots_incast_12host_fullsweep_DctcpMsgSistDist_800ns_srpt_compare()
+    # do_flowsize_latency_plots_incast_12host_fullsweep_DctcpMsgSistDist_800ns_srpt_compare()
