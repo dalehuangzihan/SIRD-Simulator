@@ -13,7 +13,7 @@ import json
 # for thread pool
 # MAX_WORKERS = 4 
 # MAX_WORKERS = 12 # NOTE: use this for batch1 server
-MAX_WORKERS = 12 # NOTE: use this for octopus4 server
+MAX_WORKERS = 14 # NOTE: use this for octopus4 server
 
 MIN_BYTELOAD_INTERVAL_US = 0.001 # is 1ns
 
@@ -1640,6 +1640,16 @@ class EmpiricalDistr(ABC):
                 return math.ceil(flow_size)
         return math.ceil(cdf_pairs_list[-1][0])  # fallback to max size
 
+    @staticmethod
+    def sample_flow_size_from_distr_numpkt_distr_B(cdf_pairs_list, pktsize_B, seed):
+        # cdf_pairs_list is in format (<num_pkts>, <cumulative_prob>)
+        random.seed(seed)
+        u = random.random()
+        for num_pkts, cum_prob in cdf_pairs_list:
+            if cum_prob >= u:
+                return math.ceil(num_pkts * pktsize_B)
+        return math.ceil(cdf_pairs_list[-1][0] * pktsize_B)  # fallback to max size
+
 class FixedDistr(EmpiricalDistr):
     ''' Is workload where each sampled flow has the same fixed flow size '''
     def __init__(self, num_byteloads, byteload_size_B):
@@ -1703,9 +1713,21 @@ class WxDistr(EmpiricalDistr):
         self.cdf_file_path = PATH_TO_WORKOAD_DISTR_CDF + self.cdf_file_name
         self.seed = seed
         self.cdf = EmpiricalDistr.load_cdf_from_file(self.cdf_file_path)
+        assert(self.cdf_file_name != "DCTCP_MsgSizeDist.txt")
     
     def get_flow_size_B(self):
         return EmpiricalDistr.sample_flow_size_from_distr_B(self.cdf, self.seed)
+
+class W5Distr_DctcpMsgSizeDistActual(EmpiricalDistr):
+    def __init__(self, seed=None):
+        self.cdf_file_name = "DCTCP_MsgSizeDist.txt"
+        self.cdf_file_path = PATH_TO_WORKOAD_DISTR_CDF + self.cdf_file_name
+        self.seed = seed
+        self.pktsize_B = 1442
+        self.cdf = EmpiricalDistr.load_cdf_from_file(self.cdf_file_path)
+    
+    def get_flow_size_B(self):
+        return EmpiricalDistr.sample_flow_size_from_distr_numpkt_distr_B(self.cdf, self.pktsize_B, self.seed)
 
 def init_logs(logs_subdir, logs_file_name, log_level=logging.DEBUG):
     full_rel_path = f"{LOGS_REL_PATH}{logs_subdir}/"

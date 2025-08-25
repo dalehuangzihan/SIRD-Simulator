@@ -890,47 +890,47 @@ def incast_5to1_1458B_googleAllRpc_loadtest():
     ) 
 
 def incast_10to1_1458B_googleAllRpc_loadtest():
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
     # run_experiment(
     #     proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
     #     topo_yaml_file='12-hosts-dumbbell.yaml',
     #     src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
     #     num_flows_list=[5, 10, 20, 30, 40, 50],
     #     byteload_size_B_list=[1458]*6,
-    #     target_mean_byteload_interval_nanosec_list=[200]*6,
+    #     target_mean_byteload_interval_nanosec_list=[300]*6,
     #     max_interval_nanosec_list=[10000]*6,
     #     flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Google_AllRPC.txt")]*6,
     #     target_mean_flow_interarr_ns=500,
     #     is_use_poisson_byteload_intervals=True,
     #     is_use_poisson_flow_interarr=True,
-    #     ssird_sim_dur_list=[0.01]*6,
-    #     dctcp_sim_dur_list=[0.01]*6,
-    #     xpass_sim_dur_list=[0.01]*6,
+    #     ssird_sim_dur_list=[0.005]*6,
+    #     dctcp_sim_dur_list=[0.005]*6,
+    #     xpass_sim_dur_list=[0.005]*6,
     #     is_full_postproc=True,
     #     title_prefix="FE_incast_12host_",
-    #     title_addendum="_12host_GoogleAllRPC_loadtest_200ns",
+    #     title_addendum="_12host_GoogleAllRPC_loadtest_300ns",
     #     log_level=dale_experiment_rig.LOG_LEVEL_2,
     #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     # ) 
     run_experiment_from_saved_json(
-        saved_json_file="FE_incast_12host_10to1_12host_GoogleAllRPC_loadtest_200ns_2025-08-20T_10-48-59Z.json",
+        saved_json_file="FE_incast_12host_10to1_12host_GoogleAllRPC_loadtest_300ns_2025-08-25T_19-31-25Z.json",
         proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
         src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
         num_flows_list=[5, 10, 20, 30, 40, 50],
         byteload_size_B_list=[1458]*6,
-        target_mean_byteload_interval_nanosec_list=[200]*6,
+        target_mean_byteload_interval_nanosec_list=[300]*6,
         flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Google_AllRPC.txt")]*6,
         target_mean_flow_interarr_ns=500,
         is_use_poisson_byteload_intervals=True,
         is_use_poisson_flow_interarr=True,
-        ssird_sim_dur_list=[0.01]*6,
-        dctcp_sim_dur_list=[0.01]*6,
-        xpass_sim_dur_list=[0.01]*6,
+        ssird_sim_dur_list=[0.002]*6,
+        dctcp_sim_dur_list=[0.002]*6,
+        xpass_sim_dur_list=[0.002]*6,
         is_full_postproc=True,
         title_prefix="FE_incast_12host_",
-        title_addendum="_12host_GoogleAllRPC_loadtest_200ns_retry",
-        # log_level=dale_experiment_rig.LOG_LEVEL_2,
-        log_level=dale_experiment_rig.LOG_LEVEL_6,
+        title_addendum="_12host_GoogleAllRPC_loadtest_300ns_retry",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
     print("12host_googleAllRpc_loadtest")
@@ -963,6 +963,77 @@ def incast_10to1_1458B_expDistr_loadtest():
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
     print("12host_ExpDistr_loadtest")
+
+def incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest():
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
+    # run_experiment(
+    #     proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+    #     topo_yaml_file='12-hosts-dumbbell.yaml',
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+    #     num_flows_list=[1, 3, 5, 7, 10, 15, 20],
+    #     byteload_size_B_list=[1458]*7,
+    #     target_mean_byteload_interval_nanosec_list=[10000]*7,
+    #     max_interval_nanosec_list=[20000]*7,
+    #     flow_size_distr_list=[dale_experiment_rig.W5Distr_DctcpMsgSizeDistActual()]*7,
+    #     target_mean_flow_interarr_ns=1000,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.1]*7,
+    #     dctcp_sim_dur_list=[0.1]*7,
+    #     xpass_sim_dur_list=[0.1]*7,
+    #     is_full_postproc=True,
+    #     title_prefix="FE_incast_12host_v2_",
+    #     title_addendum="_12host_DctcpMsgSizeDistActual_loadtest_10Kns",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2,
+    #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    # ) 
+    # run_experiment(
+    #     proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+    #     # topo_yaml_file='12-hosts-dumbbell.yaml',
+    #     topo_yaml_file='6-hosts-dumbbell.yaml',
+    #     # src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0)],
+    #     num_flows_list=[1, 5, 10, 15, 20, 25, 30],
+    #     byteload_size_B_list=[1458]*7,
+    #     target_mean_byteload_interval_nanosec_list=[1000]*7,
+    #     max_interval_nanosec_list=[20000]*7,
+    #     flow_size_distr_list=[dale_experiment_rig.W5Distr_DctcpMsgSizeDistActual()]*7,
+    #     target_mean_flow_interarr_ns=1000,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.1]*7,
+    #     dctcp_sim_dur_list=[0.1]*7,
+    #     xpass_sim_dur_list=[0.1]*7,
+    #     is_full_postproc=True,
+    #     title_prefix="FE_incast_12host_",
+    #     title_addendum="_6host_DctcpMsgSizeDistActual_loadtest_1Kns",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2,
+    #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    # ) 
+    run_experiment_from_saved_json(
+        saved_json_file="FE_incast_12host_5to1_6host_DctcpMsgSizeDistActual_loadtest_1Kns_2025-08-25T_20-37-43Z.json",
+        proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+        # topo_yaml_file='12-hosts-dumbbell.yaml',
+        topo_yaml_file='6-hosts-dumbbell.yaml',
+        # src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0)],
+        num_flows_list=[1, 5, 10, 15, 20, 25, 30],
+        byteload_size_B_list=[1458]*7,
+        target_mean_byteload_interval_nanosec_list=[1000]*7,
+        flow_size_distr_list=[dale_experiment_rig.W5Distr_DctcpMsgSizeDistActual()]*7,
+        target_mean_flow_interarr_ns=1000,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.07]*7,
+        dctcp_sim_dur_list=[0.07]*7,
+        xpass_sim_dur_list=[0.07]*7,
+        is_full_postproc=True,
+        title_prefix="FE_incast_12host_",
+        title_addendum="_6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+    print("12host_dctcpMsgSizeDistActual_loadtest")
 
 ''' 
     ========== INCAST EXPERIMENTS (FULL LOAD SWEEP): ==========
@@ -1134,29 +1205,59 @@ def incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep():
     print("FE_incast_fullsweep_"+"_12host_fbCacheFollowerDist_load_fullsweep")
 
 def incast_10to1_1458B_googleAllRpc_load_fullsweep():
+    ''' USE THIS WORKLOAD DISTRIBUTION & FLOWSPEC FILE! '''
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
     run_experiment_from_saved_json(
-        saved_json_file="FE_incast_12host_10to1_12host_GoogleAllRPC_loadtest_200ns_2025-08-20T_10-48-59Z.json",
+        saved_json_file="FE_incast_12host_10to1_12host_GoogleAllRPC_loadtest_300ns_2025-08-25T_19-31-25Z.json",
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
         src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
         num_flows_list=[5, 10, 20, 30, 40, 50],
         byteload_size_B_list=[1458]*6,
-        target_mean_byteload_interval_nanosec_list=[200]*6,
+        target_mean_byteload_interval_nanosec_list=[300]*6,
         flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Google_AllRPC.txt")]*6,
         target_mean_flow_interarr_ns=500,
         is_use_poisson_byteload_intervals=True,
         is_use_poisson_flow_interarr=True,
-        ssird_sim_dur_list=[0.01]*6,
-        dctcp_sim_dur_list=[0.01]*6,
-        xpass_sim_dur_list=[0.01]*6,
+        ssird_sim_dur_list=[0.002]*6,
+        dctcp_sim_dur_list=[0.002]*6,
+        xpass_sim_dur_list=[0.002]*6,
         is_full_postproc=True,
-        title_prefix="FE_incast_12host_",
-        title_addendum="_12host_GoogleAllRPC_load_fullsweep_200ns_fromjson",
+        title_prefix="FE_incast_12host_fullsweep_",
+        title_addendum="_12host_GoogleAllRPC_load_fullsweep_300ns_fromjson",
         log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
-    print("FE_incast_fullsweep_"+"_12host_googleAllRpc_load_fullsweep")
+    print("FE_incast_12host_fullsweep_"+"_12host_GoogleAllRPC_loadtest_300ns_fromjson")
 
+def incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep():
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
+    run_experiment_from_saved_json(
+        saved_json_file="FE_incast_12host_5to1_6host_DctcpMsgSizeDistActual_loadtest_1Kns_2025-08-25T_20-37-43Z.json",
+        # proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+        topo_yaml_file='6-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0)],
+        num_flows_list=[1, 5, 10, 15, 20, 25, 30],
+        byteload_size_B_list=[1458]*7,
+        target_mean_byteload_interval_nanosec_list=[1000]*7,
+        flow_size_distr_list=[dale_experiment_rig.W5Distr_DctcpMsgSizeDistActual()]*7,
+        target_mean_flow_interarr_ns=1000,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.055]*7,
+        dctcp_sim_dur_list=[0.055]*7,
+        xpass_sim_dur_list=[0.055]*7,
+        # ssird_sim_dur_list=[0.07]*7,
+        # dctcp_sim_dur_list=[0.07]*7,
+        # xpass_sim_dur_list=[0.07]*7,
+        is_full_postproc=True,
+        title_prefix="FE_incast_12host_fullsweep_",
+        title_addendum="_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+    print("FE_incast_12host_fullsweep_"+"_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson")
 
 ''' 
     ========== INCAST SSIRD POLICY EXPERIMENTS (FULL LOAD SWEEP): ==========
@@ -1244,7 +1345,7 @@ if __name__ == "__main__":
 
     ''' FINAL EXPERIMENTS (1RTT DELAY TEST) '''
     # onertt_delay_p2p_lowload()
-    onertt_delay_p2p_lowload()
+    # onertt_delay_p2p_lowload()
     # onertt_delay_p2p_flowrate_sweep_40flo()
 
     ''' FINAL EXPERIMENTS (LOAD TEST) '''
@@ -1263,6 +1364,8 @@ if __name__ == "__main__":
     # incast_10to1_1458B_fbCacheFollowerDist_loadtest()
     # incast_10to1_1458B_dctcpMsgSizeDist_loadtest()
 
+    # incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest()
+
     # incast_10to1_1458B_expDistr_loadtest()
 
     ''' FINAL EXPERIMENTS (FULL LOAD SWEEP) '''
@@ -1271,6 +1374,7 @@ if __name__ == "__main__":
     # incast_10to1_1458B_fbHadoopDist_load_fullsweep()
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep()
     # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep()
+    incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep()
 
     ''' FINAL EXPERIMENTS SSIRD POLICY (FULL LOAD SWEEP) '''
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_ssird_policy_fairshare()
