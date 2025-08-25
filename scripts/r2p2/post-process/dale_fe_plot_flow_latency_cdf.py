@@ -131,10 +131,10 @@ def plot_ssird_flow_latency_cdf_loaded_vs_unloaded(
         proportion_of_flows_completed = [x / num_flows_total for x in num_flows_completed_count_cumulative]
 
         if (num_flows == num_flows_unloaded):
-            plt.plot(ssird_srpt_fct_us_list_sorted, proportion_of_flows_completed, label="SSIRD-Unloaded)", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR, markersize=2, zorder=1)
+            plt.plot(ssird_srpt_fct_us_list_sorted, proportion_of_flows_completed, label="SSIRD-Unloaded)", linestyle='-', linewidth=3, marker=None, color=DCTCP_PLOT_COLOUR, markersize=2, zorder=1)
         elif (num_flows == num_flows_loaded):
-            plt.plot(ssird_srpt_fct_us_list_sorted, proportion_of_flows_completed, label="SSIRD-Incast (SRPT)", linestyle='-', marker='^', color=SSIRD_PLOT_COLOUR, markersize=3, zorder=3)
-            plt.plot(ssird_fairshare_fct_us_list_sorted, proportion_of_flows_completed, label="SSIRD-Incast (Fair Share)", linestyle='-', marker='s', color=XPASS_PLOT_COLOUR, markersize=2, zorder=2)
+            plt.plot(ssird_srpt_fct_us_list_sorted, proportion_of_flows_completed, label="SSIRD-Incast (SRPT)", linestyle='-', linewidth=3, marker=None, color=SSIRD_PLOT_COLOUR, markersize=3, zorder=3)
+            plt.plot(ssird_fairshare_fct_us_list_sorted, proportion_of_flows_completed, label="SSIRD-Incast (Fair Share)", linestyle='-', linewidth=3, marker=None, color=XPASS_PLOT_COLOUR, markersize=2, zorder=2)
 
     plt.legend()
 
