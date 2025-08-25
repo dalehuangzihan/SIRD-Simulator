@@ -136,10 +136,9 @@ def plot_ssird_flow_latency_cdf_loaded_vs_unloaded(
             plt.plot(ssird_srpt_fct_us_list_sorted, proportion_of_flows_completed, label="SSIRD-Incast (SRPT)", linestyle='-', linewidth=3, marker=None, color=SSIRD_PLOT_COLOUR, markersize=3, zorder=3)
             plt.plot(ssird_fairshare_fct_us_list_sorted, proportion_of_flows_completed, label="SSIRD-Incast (Fair Share)", linestyle='-', linewidth=3, marker=None, color=XPASS_PLOT_COLOUR, markersize=2, zorder=2)
 
-    plt.legend()
-
     ax = plt.gca()
     ax.grid(True, which='both')
+    ax.legend(loc='lower right')
 
     if (x_lim is not None):
         ax.set_xlim(x_lim)

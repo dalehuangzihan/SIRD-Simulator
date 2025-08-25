@@ -54,9 +54,9 @@ def plot_achieved_gdpt_vs_latency(
     print(xpass_fct_s_90p)
     print(dctcp_fct_s_90p)
 
-    plt.plot(ssird_achieved_gdpt_gbps_list, ssird_fct_us, label="SSIRD", linestyle='-', marker='^', color=SSIRD_PLOT_COLOUR, markersize=8)
-    plt.plot(xpass_achieved_gdpt_gbps_list, xpass_fct_us, label="ExpressPass", linestyle='-', marker='s', color=XPASS_PLOT_COLOUR, markersize=7)
-    plt.plot(dctcp_achieved_gdpt_gbps_list, dctcp_fct_us, label="DCTCP", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR, markersize=7)
+    plt.plot(ssird_achieved_gdpt_gbps_list, ssird_fct_us, label="SSIRD", linestyle='-', marker='^', color=SSIRD_PLOT_COLOUR, markersize=8, zorder=3)
+    plt.plot(xpass_achieved_gdpt_gbps_list, xpass_fct_us, label="ExpressPass", linestyle='-', marker='s', color=XPASS_PLOT_COLOUR, markersize=7, zorder=2)
+    plt.plot(dctcp_achieved_gdpt_gbps_list, dctcp_fct_us, label="DCTCP", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR, markersize=7, zorder=1)
 
     plt.legend()
 

@@ -320,9 +320,9 @@ def plot_applied_downlink_load_vs_max_qing_KB(applied_downlink_gdpt_list_gbps, n
     plt.figure(figsize=(10, 6))
     plt.xlabel(f'Total Applied App Load at Receiver Downlink (percent)')
 
-    plt.plot(load_percent_list, ssird_max_qing_KB_list, label="SSIRD", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
-    plt.plot(load_percent_list, xpass_max_qing_KB_list, label="ExpressPass", linestyle='-', marker='o', color=XPASS_PLOT_COLOUR)
-    plt.plot(load_percent_list, dctcp_max_qing_KB_list, label="DCTCP", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR)
+    plt.plot(load_percent_list, ssird_max_qing_KB_list, label="SSIRD", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR, zorder=3)
+    plt.plot(load_percent_list, xpass_max_qing_KB_list, label="ExpressPass", linestyle='-', marker='o', color=XPASS_PLOT_COLOUR, zorder=2)
+    plt.plot(load_percent_list, dctcp_max_qing_KB_list, label="DCTCP", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR, zorder=1)
 
     plt.ylabel('Peak Queuing (KB)')
     plt.title(f"Peak Queuing vs Total Applied App Load at Downlink\n{experiment_family}{title_addendum}")
@@ -376,9 +376,9 @@ def plot_achieved_gdpt_vs_max_qing_KB(
     dctcp_max_qing_list = dctcp_max_qing_KB_list
     plt.ylabel('Peak Queuing (KB)')
 
-    plt.plot(ssird_downlink_gdpt_list_processed, ssird_max_qing_list, label="SSIRD", linestyle='-', marker='^', color=SSIRD_PLOT_COLOUR, markersize=8)
-    plt.plot(xpass_downlink_gdpt_list_processed, xpass_max_qing_list, label="ExpressPass", linestyle='-', marker='s', color=XPASS_PLOT_COLOUR, markersize=7)
-    plt.plot(dctcp_downlink_gdpt_list_processed, dctcp_max_qing_list, label="DCTCP", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR, markersize=7)
+    plt.plot(ssird_downlink_gdpt_list_processed, ssird_max_qing_list, label="SSIRD", linestyle='-', marker='^', color=SSIRD_PLOT_COLOUR, markersize=8, zorder=3)
+    plt.plot(xpass_downlink_gdpt_list_processed, xpass_max_qing_list, label="ExpressPass", linestyle='-', marker='s', color=XPASS_PLOT_COLOUR, markersize=7, zorder=2)
+    plt.plot(dctcp_downlink_gdpt_list_processed, dctcp_max_qing_list, label="DCTCP", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR, markersize=7, zorder=1)
 
     plt.title(f"Peak Queuing vs Achieved Goodput\n{experiment_family}{title_addendum}")
     plt.legend()
@@ -539,9 +539,9 @@ def plot_applied_downlink_load_vs_max_qing_KB_fbCacheFollower_sideloaded(applied
     plt.figure(figsize=(10, 6))
     plt.xlabel(f'Total Applied App Load at Receiver Downlink (percent)')
 
-    plt.plot(load_percent_list, ssird_max_qing_KB_list, label="SSIRD", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR)
-    plt.plot(load_percent_list, xpass_max_qing_KB_list, label="ExpressPass", linestyle='-', marker='o', color=XPASS_PLOT_COLOUR)
-    plt.plot(load_percent_list, dctcp_max_qing_KB_list, label="DCTCP", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR)
+    plt.plot(load_percent_list, ssird_max_qing_KB_list, label="SSIRD", linestyle='-', marker='o', color=SSIRD_PLOT_COLOUR, zorder=3)
+    plt.plot(load_percent_list, xpass_max_qing_KB_list, label="ExpressPass", linestyle='-', marker='o', color=XPASS_PLOT_COLOUR, zorder=2)
+    plt.plot(load_percent_list, dctcp_max_qing_KB_list, label="DCTCP", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR, zorder=1)
 
     plt.ylabel('Peak Queuing (KB)')
     plt.title(f"Peak Queuing vs Total Applied App Load at Downlink\n{experiment_family_overall}{title_addendum_overall}")
@@ -626,9 +626,9 @@ def plot_achieved_gdpt_vs_max_qing_KB_fbCacheFollower_sideloaded(
     dctcp_max_qing_list = dctcp_max_qing_KB_list
     plt.ylabel('Peak Queuing (KB)')
 
-    plt.plot(ssird_downlink_gdpt_list_processed, ssird_max_qing_list, label="SSIRD", linestyle='-', marker='^', color=SSIRD_PLOT_COLOUR, markersize=8)
-    plt.plot(xpass_downlink_gdpt_list_processed, xpass_max_qing_list, label="ExpressPass", linestyle='-', marker='s', color=XPASS_PLOT_COLOUR, markersize=7)
-    plt.plot(dctcp_downlink_gdpt_list_processed, dctcp_max_qing_list, label="DCTCP", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR, markersize=7)
+    plt.plot(ssird_downlink_gdpt_list_processed, ssird_max_qing_list, label="SSIRD", linestyle='-', marker='^', color=SSIRD_PLOT_COLOUR, markersize=8, zorder=3)
+    plt.plot(xpass_downlink_gdpt_list_processed, xpass_max_qing_list, label="ExpressPass", linestyle='-', marker='s', color=XPASS_PLOT_COLOUR, markersize=7, zorder=2)
+    plt.plot(dctcp_downlink_gdpt_list_processed, dctcp_max_qing_list, label="DCTCP", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR, markersize=7, zorder=1)
 
     plt.title(f"Peak Queuing vs Achieved Goodput\n{experiment_family_overall}{title_addendum_overall}")
     plt.legend()
