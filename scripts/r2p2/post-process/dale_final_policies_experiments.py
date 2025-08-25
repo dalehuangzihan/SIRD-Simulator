@@ -197,7 +197,8 @@ def run_experiment_from_saved_json_custom_numflows(
 Function to load flows from saved json and run experiments;
 Optionally combines all byteloads of each flow into a single byteload.
 '''
-def run_experiment_from_saved_json_custom_combine_byteloads(
+def run_experiment_from_saved_json_custom_combine_byteloads_zero_flowinterarr(
+        is_set_zero_flow_interarr,
         is_combine_byteloads,
         saved_json_file,
         proto_names,
@@ -242,22 +243,24 @@ def run_experiment_from_saved_json_custom_combine_byteloads(
 
     logger.debug(f"## LOADING FROM SAVED JSON FILE: {saved_json_file_path}")
     logger.debug(f"Flow size distr workload: {[distr.cdf_file_name for distr in flow_size_distr_list]}")
+    logger.info(f">>is_set_zero_flow_interarr={is_set_zero_flow_interarr}")
     logger.info(f">>is_combine_byteloads={is_combine_byteloads}")
 
     src_dst_pairs_to_flowspecs_dict_list = [] # list of src_dst_pairs_to_flowspecs_dict objs, one per experiment
-    all_flow_specs_list = [] # list of flow_spec objs across all src-dst pairs across all experiments
-    src_dst_pairs_to_flow_start_times_us_dict_list = [] # list of src_dst_pairs_to_flow_start_times_us_dict objs, one per experiment
-
     src_dst_pairs_to_flowspecs_dict_list = dale_experiment_rig.FlowSpec.parse_src_dst_pairs_flowspec_dict_list_from_jsonfile(dale_experiment_rig.SAVED_FLOW_SPECS_JSON_PATH, saved_json_file)
     for exp_id in range(len(src_dst_pairs_to_flowspecs_dict_list)): # iterating thru experiments
         src_dst_pairs_to_flowspecs_dict = src_dst_pairs_to_flowspecs_dict_list[exp_id]
         # print(src_dst_pairs_to_flowspecs_dict)
-        src_dst_pairs_to_flow_start_times_us_dict = {}
+        # src_dst_pairs_to_flow_start_times_us_dict = {}
         for src_dst_pair in src_dst_pairs_list:
             src_dst_pair_key = (src_dst_pair[0], src_dst_pair[1])
             flow_spec_list, flow_start_times_us_list = src_dst_pairs_to_flowspecs_dict[src_dst_pair_key]
             assert(len(flow_spec_list) == len(flow_start_times_us_list))
             assert(len(flow_spec_list) == num_flows_list[exp_id])
+
+            if (is_set_zero_flow_interarr):
+                flow_start_times_us_list = [0] * num_flows_list[exp_id]
+                assert(len(flow_spec_list) == len(flow_start_times_us_list))
 
             for i in range(len(flow_spec_list)):
                 flow_spec = flow_spec_list[i]
@@ -292,12 +295,34 @@ def run_experiment_from_saved_json_custom_combine_byteloads(
 
             # return # TODO: remove
 
+            src_dst_pairs_to_flowspecs_dict[src_dst_pair_key] = flow_spec_list, flow_start_times_us_list
+
+            # all_flow_specs_list.extend(flow_spec_list)
+            # src_dst_pairs_to_flow_start_times_us_dict[src_dst_pair] = flow_start_times_us_list
+
+        src_dst_pairs_to_flowspecs_dict_list[exp_id] = src_dst_pairs_to_flowspecs_dict
+
+        # src_dst_pairs_to_flow_start_times_us_dict_list.append(src_dst_pairs_to_flow_start_times_us_dict)
+
+    assert(num_of_experiments == len(src_dst_pairs_to_flowspecs_dict_list))
+
+
+    all_flow_specs_list = [] # list of flow_spec objs across all src-dst pairs across all experiments
+    src_dst_pairs_to_flow_start_times_us_dict_list = [] # list of src_dst_pairs_to_flow_start_times_us_dict objs, one per experiment
+    for exp_id in range(len(src_dst_pairs_to_flowspecs_dict_list)): # iterating thru experiments (AGAIN, to check if our modifications have actually been written in)
+        src_dst_pairs_to_flowspecs_dict = src_dst_pairs_to_flowspecs_dict_list[exp_id]
+        # print(src_dst_pairs_to_flowspecs_dict)
+        src_dst_pairs_to_flow_start_times_us_dict = {}
+        for src_dst_pair in src_dst_pairs_list:
+            src_dst_pair_key = (src_dst_pair[0], src_dst_pair[1])
+            flow_spec_list, flow_start_times_us_list = src_dst_pairs_to_flowspecs_dict[src_dst_pair_key]
+            assert(len(flow_spec_list) == len(flow_start_times_us_list))
+            assert(len(flow_spec_list) == num_flows_list[exp_id])
 
             all_flow_specs_list.extend(flow_spec_list)
             src_dst_pairs_to_flow_start_times_us_dict[src_dst_pair] = flow_start_times_us_list
-        src_dst_pairs_to_flow_start_times_us_dict_list.append(src_dst_pairs_to_flow_start_times_us_dict)
 
-    assert(num_of_experiments == len(src_dst_pairs_to_flowspecs_dict_list))
+        src_dst_pairs_to_flow_start_times_us_dict_list.append(src_dst_pairs_to_flow_start_times_us_dict)
 
     # return  # TODO: remove
 
@@ -463,7 +488,7 @@ def simple_ssird_incast_DctcpMsgSizeDist_same_flow_interarr():
 
 def simple_ssird_incast_DctcpMsgSizeDist_same_flow_interarr_combine_byteloads():
     assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
-    run_experiment_from_saved_json_custom_combine_byteloads(
+    run_experiment_from_saved_json_custom_combine_byteloads_zero_flowinterarr(
         is_combine_byteloads=True,
         saved_json_file="FE_p2p_srpt_exp_10to1_12host_10to1_DctcpMsgSizeDist_srpttest_800ns_same_flow_interarr_2025-08-22T_07-58-29Z.json",
         # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
@@ -490,7 +515,7 @@ def simple_ssird_incast_DctcpMsgSizeDist_same_flow_interarr_combine_byteloads():
 
 def incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_combine_byteloads():
     assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
-    run_experiment_from_saved_json_custom_combine_byteloads(
+    run_experiment_from_saved_json_custom_combine_byteloads_zero_flowinterarr(
         is_combine_byteloads=True,
         saved_json_file="FE_incast_12host_10to1_12host_DctcpMsgSizeDist_loadtest_800ns_2025-08-20T_10-12-29Z.json",
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
@@ -514,12 +539,178 @@ def incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_combine_byteloads():
     ) 
     print("FE_incast_12host_fullsweep_ssird_srpt_exp_"+"_12host_DctcpMsgSizeDist_load_fullsweep_800ns_fromjson_combine_byteloads")
 
+def incast_10to1_1458B_fbHadoopDist_load_fullsweep_srpt_compare():
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
+    ''' USE THIS WORKLOAD DISTRIBUTION & FLOWSPEC FILE! '''
+
+    # run_experiment_from_saved_json_custom_combine_byteloads_zero_flowinterarr(
+    #     is_set_zero_flow_interarr=True,
+    #     is_combine_byteloads=False,
+    #     saved_json_file="FE_incast_12host_10to1_12host_fbHadoopDist_loadtest_300ns_2025-08-22T_18-10-46Z.json",
+    #     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+    #     topo_yaml_file='12-hosts-dumbbell.yaml',
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+    #     num_flows_list=[1, 5, 10, 20, 30, 40],
+    #     byteload_size_B_list=[1458]*6,
+    #     target_mean_byteload_interval_nanosec_list=[300]*6,
+    #     flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_HadoopDist_All.txt")]*6,
+    #     target_mean_flow_interarr_ns=500,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.005]*6,
+    #     dctcp_sim_dur_list=[0.005]*6,
+    #     xpass_sim_dur_list=[0.005]*6,
+    #     is_full_postproc=True,
+    #     title_prefix="FE_incast_12host_fullsweep_ssird_srpt_compare_",
+    #     title_addendum="_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_zero_flowinterarr",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2,
+    #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    # )
+    # print("FE_incast_12host_fullsweep_ssird_srpt_test_"+"_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_zero_flowinterarr")
+
+    run_experiment_from_saved_json_custom_combine_byteloads_zero_flowinterarr(
+        is_set_zero_flow_interarr=True,
+        is_combine_byteloads=True,
+        saved_json_file="FE_incast_12host_10to1_12host_fbHadoopDist_loadtest_300ns_2025-08-22T_18-10-46Z.json",
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        num_flows_list=[1, 5, 10, 20, 30, 40],
+        byteload_size_B_list=[1458]*6,
+        target_mean_byteload_interval_nanosec_list=[300]*6,
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_HadoopDist_All.txt")]*6,
+        target_mean_flow_interarr_ns=500,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.005]*6,
+        dctcp_sim_dur_list=[0.005]*6,
+        xpass_sim_dur_list=[0.005]*6,
+        is_full_postproc=True,
+        title_prefix="FE_incast_12host_fullsweep_ssird_srpt_compare_",
+        title_addendum="_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_zero_flowinterarr_combine_bloads",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    )
+    print("FE_incast_12host_fullsweep_ssird_srpt_test_"+"_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_zero_flowinterarr_combine_bloads")
+
+def incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_srpt_compare():
+    ''' USE THIS WORKLOAD DISTRIBUTION & FLOWSPEC FILE! '''
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
+
+    # run_experiment_from_saved_json_custom_combine_byteloads_zero_flowinterarr(
+    #     is_set_zero_flow_interarr=True,
+    #     is_combine_byteloads=False,
+    #     saved_json_file="FE_incast_12host_10to1_12host_DctcpMsgSizeDist_loadtest_800ns_2025-08-20T_10-12-29Z.json",
+    #     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+    #     topo_yaml_file='12-hosts-dumbbell.yaml',
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+    #     num_flows_list=[1, 5, 10, 20, 30, 40],
+    #     byteload_size_B_list=[1458]*6,
+    #     target_mean_byteload_interval_nanosec_list=[800]*6,
+    #     flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="DCTCP_MsgSizeDist.txt")]*6,
+    #     target_mean_flow_interarr_ns=500,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.002]*6,
+    #     dctcp_sim_dur_list=[0.002]*6,
+    #     xpass_sim_dur_list=[0.002]*6,
+    #     is_full_postproc=True,
+    #     title_prefix="FE_incast_12host_fullsweep_ssird_srpt_compare_",
+    #     title_addendum="_12host_DctcpMsgSizeDist_load_fullsweep_800ns_fromjson_zero_flowinterarr",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2,
+    #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    # ) 
+    # print("FE_incast_12host_fullsweep_ssird_srpt_compare_"+"_12host_DctcpMsgSizeDist_load_fullsweep_800ns_fromjson_zero_flowinterarr")
+
+    run_experiment_from_saved_json_custom_combine_byteloads_zero_flowinterarr(
+        is_set_zero_flow_interarr=True,
+        is_combine_byteloads=True,
+        saved_json_file="FE_incast_12host_10to1_12host_DctcpMsgSizeDist_loadtest_800ns_2025-08-20T_10-12-29Z.json",
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        num_flows_list=[1, 5, 10, 20, 30, 40],
+        byteload_size_B_list=[1458]*6,
+        target_mean_byteload_interval_nanosec_list=[800]*6,
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="DCTCP_MsgSizeDist.txt")]*6,
+        target_mean_flow_interarr_ns=500,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.002]*6,
+        dctcp_sim_dur_list=[0.002]*6,
+        xpass_sim_dur_list=[0.002]*6,
+        is_full_postproc=True,
+        title_prefix="FE_incast_12host_fullsweep_ssird_srpt_compare_",
+        title_addendum="_12host_DctcpMsgSizeDist_load_fullsweep_800ns_fromjson_zero_flowinterarr_combine_bloads",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+    print("FE_incast_12host_fullsweep_ssird_srpt_compare_"+"_12host_DctcpMsgSizeDist_load_fullsweep_800ns_fromjson_zero_flowinterarr_combine_bloads")
+
+def incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_srpt_compare():
+    ''' USE THIS WORKLOAD DISTRIBUTION & FLOWSPEC FILE! '''
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
+
+    # run_experiment_from_saved_json_custom_combine_byteloads_zero_flowinterarr(
+    #     is_set_zero_flow_interarr=True,
+    #     is_combine_byteloads=False,
+    #     saved_json_file="FE_incast_12host_10to1_12host_fbCacheFollowerDist_loadtest_5000ns_1to40flo_2025-08-20T_22-41-02Z.json",
+    #     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+    #     topo_yaml_file='12-hosts-dumbbell.yaml',
+    #     src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+    #     num_flows_list=[1, 5, 10, 20, 30, 40],
+    #     byteload_size_B_list=[1458]*6,
+    #     target_mean_byteload_interval_nanosec_list=[5000]*6,
+    #     flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_CacheFollowerDist_IntraCluster.txt")]*6,
+    #     target_mean_flow_interarr_ns=500,
+    #     is_use_poisson_byteload_intervals=True,
+    #     is_use_poisson_flow_interarr=True,
+    #     ssird_sim_dur_list=[0.032]*6,
+    #     dctcp_sim_dur_list=[0.05]*6,
+    #     xpass_sim_dur_list=[0.05]*6,
+    #     is_full_postproc=True,
+    #     title_prefix="FE_incast_12host_fullsweep_ssird_srpt_compare_",
+    #     title_addendum="_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_zero_flowinterarr",
+    #     log_level=dale_experiment_rig.LOG_LEVEL_2,
+    #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    # ) 
+    # print("FE_incast_12host_fullsweep_ssird_srpt_compare_"+"_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_zero_flowinterarr")
+
+    run_experiment_from_saved_json_custom_combine_byteloads_zero_flowinterarr(
+        is_set_zero_flow_interarr=True,
+        is_combine_byteloads=True,
+        saved_json_file="FE_incast_12host_10to1_12host_fbCacheFollowerDist_loadtest_5000ns_1to40flo_2025-08-20T_22-41-02Z.json",
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        num_flows_list=[1, 5, 10, 20, 30, 40],
+        byteload_size_B_list=[1458]*6,
+        target_mean_byteload_interval_nanosec_list=[5000]*6,
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_CacheFollowerDist_IntraCluster.txt")]*6,
+        target_mean_flow_interarr_ns=500,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.032]*6,
+        dctcp_sim_dur_list=[0.05]*6,
+        xpass_sim_dur_list=[0.05]*6,
+        is_full_postproc=True,
+        title_prefix="FE_incast_12host_fullsweep_ssird_srpt_compare_",
+        title_addendum="_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_zero_flowinterarr_combine_bloads",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+    print("FE_incast_12host_fullsweep_ssird_srpt_compare_"+"_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_zero_flowinterarr_combine_bloads")
+
 if __name__ == "__main__":
 
     # simple_ssird_incast_DctcpMsgSizeDist_same_flow_interarr()
     # simple_ssird_incast_DctcpMsgSizeDist_same_flow_interarr_combine_byteloads()
 
-    incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_combine_byteloads()
+    # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_combine_byteloads()
+
+    # incast_10to1_1458B_fbHadoopDist_load_fullsweep_srpt_compare()
+    # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_srpt_compare()
+    incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_srpt_compare()
 
     # run_experiment_from_saved_json_custom_combine_byteloads(
     #     is_combine_byteloads=True,
