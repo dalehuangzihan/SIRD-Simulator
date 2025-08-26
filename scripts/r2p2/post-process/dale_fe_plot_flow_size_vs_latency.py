@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import csv
 
-import dale_experiment_rig
+import dale_fe_analyse_fct_slowdown
 
 PATH_TO_SCRIPTS_R2P2 = "/home/dh1723/SIRD-Simulator/scripts/r2p2/"
 # PATH_TO_SCRIPTS_R2P2 = "/data/dh1723/SIRD-Simulator/scripts/r2p2/"
@@ -267,11 +267,19 @@ def do_flowsize_latency_plots_incast_12host_fullsweep_fbHadoopDist_300ns_srpt_co
 
 if __name__ == "__main__":
 
-    do_flowsize_latency_plots_incast_12host_fullsweep_DctcpMsgSizeDist_800ns()
-    do_flowsize_latency_plots_incast_12host_fullsweep_fbHadoopDist_300ns()
-    do_flowsize_latency_plots_incast_12host_fullsweep_fbCacheFollowerDist_5000ns()
-    do_flowsize_latency_plots_incast_12host_fullsweep_GoogleAllRpc_300ns()
-    do_flowsize_latency_plots_incast_6hosts_fullsweep_DctcpMsgSizeActual_1000ns()
+    # do_flowsize_latency_plots_incast_12host_fullsweep_DctcpMsgSizeDist_800ns()
+    # do_flowsize_latency_plots_incast_12host_fullsweep_fbHadoopDist_300ns()
+    # do_flowsize_latency_plots_incast_12host_fullsweep_fbCacheFollowerDist_5000ns()
+    # do_flowsize_latency_plots_incast_12host_fullsweep_GoogleAllRpc_300ns()
+    # do_flowsize_latency_plots_incast_6hosts_fullsweep_DctcpMsgSizeActual_1000ns()
 
-    do_flowsize_latency_plots_incast_12host_fullsweep_DctcpMsgSistDist_800ns_srpt_compare()
-    do_flowsize_latency_plots_incast_12host_fullsweep_fbHadoopDist_300ns_srpt_compare()
+    # do_flowsize_latency_plots_incast_12host_fullsweep_DctcpMsgSistDist_800ns_srpt_compare()
+    # do_flowsize_latency_plots_incast_12host_fullsweep_fbHadoopDist_300ns_srpt_compare()
+
+    fct = dale_fe_analyse_fct_slowdown.get_theoretical_fct_single_flow_s(
+        flow_size_B=7210,
+        byteload_size_B=1458,
+        inter_byteload_interval_nanosec=1000,
+        rtt_s=dale_fe_analyse_fct_slowdown.RTT_5US_S
+    ) 
+    print(fct)

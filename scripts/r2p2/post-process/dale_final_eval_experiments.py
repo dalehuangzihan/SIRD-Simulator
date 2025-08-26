@@ -1263,7 +1263,7 @@ def incast_10to1_1458B_googleAllRpc_load_fullsweep():
     ) 
     print("FE_incast_12host_fullsweep_"+"_12host_GoogleAllRPC_loadtest_300ns_fromjson")
 
-def incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep():
+def incast_5to1_1458B_dctcpMsgSizeDistActual_load_fullsweep():
     assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
     run_experiment_from_saved_json(
         saved_json_file="FE_incast_12host_5to1_6host_DctcpMsgSizeDistActual_loadtest_1Kns_2025-08-25T_20-37-43Z.json",
@@ -1291,6 +1291,32 @@ def incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep():
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
     print("FE_incast_12host_fullsweep_"+"_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson")
+
+def incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep():
+    ''' USE THIS WORKLOAD DISTRIBUTION & FLOWSPEC FILE! '''
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
+    run_experiment_from_saved_json(
+        saved_json_file="FE_incast_12host_10to1_12host_DctcpMsgSizeDistActual_loadtest_2Kns_2025-08-26T_10-36-29Z.json",
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        num_flows_list=[1, 5, 10, 15, 20, 25, 30],
+        byteload_size_B_list=[1458]*7,
+        target_mean_byteload_interval_nanosec_list=[2000]*7,
+        flow_size_distr_list=[dale_experiment_rig.W5Distr_DctcpMsgSizeDistActual()]*7,
+        target_mean_flow_interarr_ns=1000,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.085]*7,
+        dctcp_sim_dur_list=[0.085]*7,
+        xpass_sim_dur_list=[0.085]*7,
+        is_full_postproc=True,
+        title_prefix="FE_incast_12host_fullsweep_",
+        title_addendum="_12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+    print("FE_incast_12host_fullsweep_"+"_12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson")
 
 ''' 
     ========== INCAST SSIRD FAIRSHARE POLICY EXPERIMENTS (FULL LOAD SWEEP): ==========
@@ -1403,7 +1429,7 @@ def incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_ssird_policy_fairshare
     ) 
     print("FE_incast_12host_fullsweep_ssird_policy_"+"_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird_fairshare")
 
-def incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare():
+def incast_5to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare():
     assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.FAIRSHARE)
     run_experiment_from_saved_json(
         saved_json_file="FE_incast_12host_5to1_6host_DctcpMsgSizeDistActual_loadtest_1Kns_2025-08-25T_20-37-43Z.json",
@@ -1432,6 +1458,32 @@ def incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairsh
     ) 
     print("FE_incast_12host_fullsweep_ssird_policy_"+"_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_ssird_fairshare")
 
+def incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare():
+    ''' USE THIS WORKLOAD DISTRIBUTION & FLOWSPEC FILE! '''
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.FAIRSHARE)
+    run_experiment_from_saved_json(
+        saved_json_file="FE_incast_12host_10to1_12host_DctcpMsgSizeDistActual_loadtest_2Kns_2025-08-26T_10-36-29Z.json",
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        num_flows_list=[1, 5, 10, 15, 20, 25, 30],
+        byteload_size_B_list=[1458]*7,
+        target_mean_byteload_interval_nanosec_list=[2000]*7,
+        flow_size_distr_list=[dale_experiment_rig.W5Distr_DctcpMsgSizeDistActual()]*7,
+        target_mean_flow_interarr_ns=1000,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.085]*7,
+        dctcp_sim_dur_list=[0.085]*7,
+        xpass_sim_dur_list=[0.085]*7,
+        is_full_postproc=True,
+        title_prefix="FE_incast_12host_fullsweep_ssird_policy_",
+        title_addendum="_12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson_ssird_fairshare",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+    print("FE_incast_12host_fullsweep_ssird_policy_"+"_12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson")
+
 if __name__ == "__main__":
 
     ''' FINAL EXPERIMENTS (1RTT DELAY TEST) '''
@@ -1455,7 +1507,7 @@ if __name__ == "__main__":
     # incast_10to1_1458B_fbCacheFollowerDist_loadtest()
     # incast_10to1_1458B_dctcpMsgSizeDist_loadtest()
 
-    incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest()
+    # incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest()
 
     # incast_10to1_1458B_expDistr_loadtest()
 
@@ -1465,6 +1517,7 @@ if __name__ == "__main__":
     # incast_10to1_1458B_fbHadoopDist_load_fullsweep()
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep()
     # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep()
+    # incast_5to1_1458B_dctcpMsgSizeDistActual_load_fullsweep()
     # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep()
 
     ''' FINAL EXPERIMENTS SSIRD POLICY (FULL LOAD SWEEP) '''
@@ -1472,7 +1525,8 @@ if __name__ == "__main__":
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_ssird_policy_fairshare()
     # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_ssird_policy_fairshare()
     # incast_10to1_1458B_fbHadoopDist_load_fullsweep_ssird_policy_fairshare()
-    # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare()
+    # incast_5to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare()
+    incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare()
 
     ''' TESTING '''
     # run_experiment(

@@ -29,6 +29,39 @@ VARY_BLOAD_SIZE = "Varying Byteload Size"
 VARY_INTERVAL = "Varying Intervals"
 VARY_FLOWRATE = "Varying Flow Rate"
 
+
+def get_theoretical_fct_single_flow_s(flow_size_B, byteload_size_B, inter_byteload_interval_nanosec, rtt_s):
+    fct = None
+
+    byteloads_B_list = []
+    remaining_flow_size_B = flow_size_B
+    while(remaining_flow_size_B >= byteload_size_B):
+        byteloads_B_list.append(byteload_size_B)
+        remaining_flow_size_B -= byteload_size_B
+    if (remaining_flow_size_B > 0):
+        byteloads_B_list.append(remaining_flow_size_B)
+
+    if (len(byteloads_B_list) == 1):
+        total_data_transmitted_b = byteloads_B_list[0] * 8
+        fct = 0.5*rtt_s +  total_data_transmitted_b / LINK_SPEED_BITS_PER_SEC
+        return fct
+
+    app_gdpt_bps = byteload_size_B * 8 / (inter_byteload_interval_nanosec * pow(10, -9))
+    # print(app_gdpt_bps*pow(10,-9))
+    if (app_gdpt_bps > LINK_SPEED_BITS_PER_SEC):
+        flow_size_b = sum(byteloads_B_list) * 8
+        fct = 0.5*rtt_s + flow_size_b/LINK_SPEED_BITS_PER_SEC
+    else:
+        flow_size_b = sum(byteloads_B_list[:-1]) * 8
+        # print(flow_size_b/8)
+        final_byteload_size_b = byteloads_B_list[-1] * 8
+        # print(final_byteload_size_b/8)
+        # fct = 0.5*rtt_s + flow_size_b/app_gdpt_bps + final_byteload_size_b/LINK_SPEED_BITS_PER_SEC
+        fct = 0.5*rtt_s + flow_size_b/app_gdpt_bps + final_byteload_size_b/app_gdpt_bps
+
+    assert(fct is not None)
+    return fct
+
 def get_theoretical_fct_parallel_flows_s(num_flows, num_byteloads_per_flow_list, byteload_size_B_list, inter_byteload_interval_us_list, rtt_s):
     '''
     NOTE: this is for exactly-parallel flows ONLY! All byteloads in each flow must be in sync with those in all other flows.
@@ -49,7 +82,7 @@ def get_theoretical_fct_parallel_flows_s(num_flows, num_byteloads_per_flow_list,
             total_data_transmitted_b = num_flows * flow_size_b
             fct = 0.5*rtt_s + total_data_transmitted_b/LINK_SPEED_BITS_PER_SEC 
         else:
-            if (byteload_size_B_list[i] > 1):
+            if (num_byteloads_per_flow_list[i] > 1):
                 flow_size_b = (num_byteloads_per_flow_list[i] - 1) * byteload_size_B_list[i] * 8
                 total_data_transmitted_b = num_flows * flow_size_b
                 fct = 0.5*rtt_s + total_data_transmitted_b/app_gdpt_bps + num_flows*byteload_size_B_list[i]*8/LINK_SPEED_BITS_PER_SEC
