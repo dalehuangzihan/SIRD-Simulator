@@ -481,6 +481,40 @@ def do_plots_for_fbHadoopDist_load_fullsweep_300ns():
         y_lim=(-100, 4000)
     ) 
 
+def do_plots_for_GoogleAlRPC_load_fullsweep_300ns():
+    # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__12host_GoogleAllRPC_load_fullsweep_300ns_fromjson/FE_incast_12host_fullsweep_10to1_12host_GoogleAllRPC_load_fullsweep_300ns_fromjson_2025-08-25T_20-22-19Z.log
+    plot_applied_downlink_load_vs_max_qing_KB(
+        applied_downlink_gdpt_list_gbps=[69.30391018293993, 70.7857044371271, 121.62004500253317, 126.25805407458553, 113.63642876066561, 155.70924994081523],
+        nw_elem=TOR,
+        src="tor_12",
+        dst="host_0",
+        num_flows_list=[5, 10, 20, 30, 40, 50],
+        target_per_host_perflo_gdpt_gbps=39,
+        byteload_size_B=1458,
+        inter_byteload_period_nanosec=300,
+        experiment_date="2025-08-25T_20-22-19Z",
+        experiment_family="FE_incast_12host_fullsweep_",
+        title_addendum="_12host_GoogleAllRPC_load_fullsweep_300ns_fromjson"
+    )    
+
+    # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__12host_GoogleAllRPC_load_fullsweep_300ns_fromjson/FE_incast_12host_fullsweep_10to1_12host_GoogleAllRPC_load_fullsweep_300ns_fromjson_2025-08-25T_20-22-19Z.log
+    plot_achieved_gdpt_vs_max_qing_KB(
+        ssird_downlink_gdpt_list=[46.41457780848999, 28.821291932221364, 74.28061968191255, 70.17051758612736, 78.15430679450465, 75.14720760446572],
+        xpass_downlink_gdpt_list=[8.936362962441274, 4.643197227307633, 10.82313891199723, 10.407306422404671, 17.560813862928974, 14.778013562163457],
+        dctcp_downlink_gdpt_list=[59.51840271961965, 47.600000002793145, 83.98957414893042, 80.90765695782548, 86.23716814060998, 84.58898935418667],
+        nw_elem=TOR,
+        src="tor_12",
+        dst="host_0",
+        num_flows_list=[5, 10, 20, 30, 40, 50],
+        target_per_host_perflo_gdpt_gbps=39,
+        byteload_size_B=1458,
+        inter_byteload_period_nanosec=300,
+        experiment_date="2025-08-25T_20-22-19Z",
+        experiment_family="FE_incast_12host_fullsweep_",
+        title_addendum="_12host_GoogleAllRPC_load_fullsweep_300ns_fromjson"
+        # y_lim=(-100, 4000)
+    ) 
+
 def plot_applied_downlink_load_vs_max_qing_KB_fbCacheFollower_sideloaded(applied_downlink_gdpt_list_gbps, nw_elem, src, dst, num_flows_list, target_per_host_perflo_gdpt_gbps, byteload_size_B, inter_byteload_period_nanosec):
 
     # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_sideloaded/FE_incast_12host_fullsweep_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_2025-08-22T_18-30-29Z.log
@@ -683,4 +717,4 @@ if __name__ == "__main__":
     do_plots_for_DctcpMsgSizeDist_load_fullsweep_800ns()
     do_plots_for_fbHadoopDist_load_fullsweep_300ns()
     do_plots_for_fbCacheFollower_load_fullsweep_5000ns_sideloaded()
-
+    do_plots_for_GoogleAlRPC_load_fullsweep_300ns()
