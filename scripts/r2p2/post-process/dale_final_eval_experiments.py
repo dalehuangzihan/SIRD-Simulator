@@ -968,27 +968,6 @@ def incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest():
     assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
     # run_experiment(
     #     proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
-    #     topo_yaml_file='12-hosts-dumbbell.yaml',
-    #     src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
-    #     num_flows_list=[1, 3, 5, 7, 10, 15, 20],
-    #     byteload_size_B_list=[1458]*7,
-    #     target_mean_byteload_interval_nanosec_list=[10000]*7,
-    #     max_interval_nanosec_list=[20000]*7,
-    #     flow_size_distr_list=[dale_experiment_rig.W5Distr_DctcpMsgSizeDistActual()]*7,
-    #     target_mean_flow_interarr_ns=1000,
-    #     is_use_poisson_byteload_intervals=True,
-    #     is_use_poisson_flow_interarr=True,
-    #     ssird_sim_dur_list=[0.1]*7,
-    #     dctcp_sim_dur_list=[0.1]*7,
-    #     xpass_sim_dur_list=[0.1]*7,
-    #     is_full_postproc=True,
-    #     title_prefix="FE_incast_12host_v2_",
-    #     title_addendum="_12host_DctcpMsgSizeDistActual_loadtest_10Kns",
-    #     log_level=dale_experiment_rig.LOG_LEVEL_2,
-    #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
-    # ) 
-    # run_experiment(
-    #     proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
     #     # topo_yaml_file='12-hosts-dumbbell.yaml',
     #     topo_yaml_file='6-hosts-dumbbell.yaml',
     #     # src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
@@ -1033,31 +1012,7 @@ def incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest():
     #     log_level=dale_experiment_rig.LOG_LEVEL_2,
     #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     # ) 
-    run_experiment(
-        proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
-        topo_yaml_file='12-hosts-dumbbell.yaml',
-        # topo_yaml_file='6-hosts-dumbbell.yaml',
-        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
-        # src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0)],
-        num_flows_list=[1, 5, 10, 15, 20, 25, 30],
-        byteload_size_B_list=[1458]*7,
-        target_mean_byteload_interval_nanosec_list=[2000]*7,
-        max_interval_nanosec_list=[20000]*7,
-        flow_size_distr_list=[dale_experiment_rig.W5Distr_DctcpMsgSizeDistActual()]*7,
-        target_mean_flow_interarr_ns=1000,
-        is_use_poisson_byteload_intervals=True,
-        is_use_poisson_flow_interarr=True,
-        ssird_sim_dur_list=[0.1]*7,
-        dctcp_sim_dur_list=[0.1]*7,
-        xpass_sim_dur_list=[0.1]*7,
-        is_full_postproc=True,
-        title_prefix="FE_incast_12host_",
-        title_addendum="_12host_DctcpMsgSizeDistActual_loadtest_2Kns",
-        log_level=dale_experiment_rig.LOG_LEVEL_2,
-        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
-    ) 
-    # run_experiment_from_saved_json(
-    #     saved_json_file="FE_incast_12host_10to1_12host_DctcpMsgSizeDistActual_loadtest_2Kns_2025-08-26T_10-36-29Z.json",
+    # run_experiment(
     #     proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
     #     topo_yaml_file='12-hosts-dumbbell.yaml',
     #     # topo_yaml_file='6-hosts-dumbbell.yaml',
@@ -1071,15 +1026,43 @@ def incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest():
     #     target_mean_flow_interarr_ns=1000,
     #     is_use_poisson_byteload_intervals=True,
     #     is_use_poisson_flow_interarr=True,
-    #     ssird_sim_dur_list=[0.083]*7,
-    #     dctcp_sim_dur_list=[0.083]*7,
-    #     xpass_sim_dur_list=[0.083]*7,
+    #     ssird_sim_dur_list=[0.1]*7,
+    #     dctcp_sim_dur_list=[0.1]*7,
+    #     xpass_sim_dur_list=[0.1]*7,
     #     is_full_postproc=True,
     #     title_prefix="FE_incast_12host_",
-    #     title_addendum="_12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry",
+    #     title_addendum="_12host_DctcpMsgSizeDistActual_loadtest_2Kns",
     #     log_level=dale_experiment_rig.LOG_LEVEL_2,
     #     experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     # ) 
+    run_experiment_from_saved_json(
+        saved_json_file="FE_incast_12host_10to1_12host_DctcpMsgSizeDistActual_loadtest_2Kns_2025-08-26T_10-36-29Z.json",
+        # saved_json_file="FE_incast_12host_10to1_12host_DctcpMsgSizeDistActual_loadtest_2Kns_2025-08-26T_12-17-15Z.json",
+        proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
+        # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        # topo_yaml_file='6-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        # src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0)],
+        num_flows_list=[1, 5, 10, 15, 20, 25, 30],
+        byteload_size_B_list=[1458]*7,
+        target_mean_byteload_interval_nanosec_list=[2000]*7,
+        flow_size_distr_list=[dale_experiment_rig.W5Distr_DctcpMsgSizeDistActual()]*7,
+        target_mean_flow_interarr_ns=1000,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.083]*7,
+        dctcp_sim_dur_list=[0.083]*7,
+        xpass_sim_dur_list=[0.083]*7,
+        # ssird_sim_dur_list=[0.15]*7,
+        # dctcp_sim_dur_list=[0.15]*7,
+        # xpass_sim_dur_list=[0.15]*7,
+        is_full_postproc=True,
+        title_prefix="FE_incast_12host_",
+        title_addendum="_12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
     print("12host_dctcpMsgSizeDistActual_loadtest")
 
 ''' 
