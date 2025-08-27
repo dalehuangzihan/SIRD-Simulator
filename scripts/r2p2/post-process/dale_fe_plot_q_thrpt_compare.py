@@ -411,7 +411,7 @@ def plot_achieved_gdpt_vs_max_qing_KB(
     #     ax.minorticks_off() # keep only your custom ticks
 
     Path(PATH_TO_LOAD_VS_QING_DIR).mkdir(parents=True, exist_ok=True)
-    filename = f"allproto_achieved_gdpt_vs_qing_{experiment_family}{title_addendum}.png"
+    filename = f"allproto_achieved_gdpt_vs_qing_{experiment_family}{title_addendum}_{experiment_date}.png"
     plt.savefig(f"{PATH_TO_LOAD_VS_QING_DIR}{filename}")
     plt.close()
 
@@ -720,9 +720,9 @@ def plot_achieved_gdpt_vs_max_qing_KB_fbCacheFollower_sideloaded(
     if (y_lim is not None):
         ax.set_ylim(y_lim)
 
-
+    experiment_date = "2025-08-22T_18-30-29Z_and_2025-08-24T_11-16-52Z"
     Path(PATH_TO_LOAD_VS_QING_DIR).mkdir(parents=True, exist_ok=True)
-    filename = f"allproto_achieved_gdpt_vs_qing_{experiment_family_overall}{title_addendum_overall}.png"
+    filename = f"allproto_achieved_gdpt_vs_qing_{experiment_family_overall}{title_addendum_overall}_{experiment_date}.png"
     plt.savefig(f"{PATH_TO_LOAD_VS_QING_DIR}{filename}")
     plt.close()
 
@@ -811,9 +811,9 @@ def plot_achieved_gdpt_vs_max_qing_KB_DctcpMsgSizeDistActual(
     if (y_lim is not None):
         ax.set_ylim(y_lim)
 
-
+    experiment_date = "2025-08-25T_21-36-46Z_and_2025-08-25T_21-17-11Z"
     Path(PATH_TO_LOAD_VS_QING_DIR).mkdir(parents=True, exist_ok=True)
-    filename = f"allproto_achieved_gdpt_vs_qing_{experiment_family_overall}{title_addendum_overall}.png"
+    filename = f"allproto_achieved_gdpt_vs_qing_{experiment_family_overall}{title_addendum_overall}_{experiment_date}.png"
     plt.savefig(f"{PATH_TO_LOAD_VS_QING_DIR}{filename}")
     plt.close()
 
