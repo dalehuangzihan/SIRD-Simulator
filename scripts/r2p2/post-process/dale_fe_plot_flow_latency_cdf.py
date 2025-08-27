@@ -475,7 +475,7 @@ def plot_ssird_flow_slowdown_cdf_single(
         # ax.set_xscale('log')
 
         Path(PATH_TO_FLOW_LATENCY_CDF).mkdir(parents=True, exist_ok=True)
-        filename = f"ssird_flow_latency_cdf_single_{num_flows_total}flo_{experiment_family}{title_addendum}_{experiment_date}.png"
+        filename = f"ssird_flow_slowdown_cdf_single_{num_flows_total}flo_{experiment_family}{title_addendum}_{experiment_date}.png"
         plt.savefig(f"{PATH_TO_FLOW_LATENCY_CDF}{filename}")
         plt.close()
         # return
