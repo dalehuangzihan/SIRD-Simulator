@@ -190,12 +190,14 @@ def plot_fct_diff_ssird_xpass_vs_dctcp(experiment_type, x_vals_list, ssird_fct_s
     plt.close()
 
 def plot_fct_diff_ssird_vs_ideal(
-        experiment_type,
-        x_vals_list, ssird_fct_s_list, ideal_fct_s_list,
-        num_flows, flow_size_B, total_gdpt_gbps,
-        percentile,
-        title_addendum="",
-        is_log_x=False, is_log_y=False, y_lim=None):
+    graph_name,
+    experiment_type,
+    x_vals_list, ssird_fct_s_list, ideal_fct_s_list,
+    num_flows, flow_size_B, total_gdpt_gbps,
+    percentile,
+    title_addendum="",
+    is_log_x=False, is_log_y=False, y_lim=None
+):
     ssird_fct_diff_s_list = [s - i for s, i in zip(ssird_fct_s_list, ideal_fct_s_list)]
     ssird_fct_diff_us_list = [x * pow(10,6) for x in ssird_fct_diff_s_list]
 
@@ -216,13 +218,30 @@ def plot_fct_diff_ssird_vs_ideal(
 
     print(f"{filename_prefix:} FCT Diff (us): {ssird_fct_diff_us_list}")
 
-    plt.ylabel(f'Flow Completion Time DIFF (us) ({percentile}-th percentile)')
-    plt.title(f"FCT Diff: SSIRD vs Ideal (Theoretical): {experiment_type}\n({num_flows} Flows; {flow_size_B}B per Flow; {total_gdpt_gbps}Gbps Total Goodput)\n {title_addendum}")
-    plt.legend()
+    plt.ylabel(f'FCT Delay (us) ({percentile}-th percentile)')
+    # plt.title(f"FCT Diff: SSIRD vs Ideal (Theoretical): {experiment_type}\n({num_flows} Flows; {flow_size_B}B per Flow; {total_gdpt_gbps}Gbps Total Goodput)\n {title_addendum}")
+    plt.title(f"SSIRD Flow Completion Time Delay\n{graph_name}")
+    # plt.legend()
     plt.grid(True)
-    if (is_log_x): plt.xscale('log')
-    if (is_log_y): plt.yscale('log')
+
+    ax = plt.gca()
+    ax.grid(True, which='both')
     if (y_lim): plt.ylim(y_lim)
+    if (is_log_y): plt.yscale('log')
+    if (is_log_x):
+        ax.set_xscale('log')
+        # place ticks at the exact datapoints
+        xticks = sorted({float(x) for x in x_vals_list})
+        ax.xaxis.set_major_locator(mticker.FixedLocator(xticks))
+        # show their raw values as labels
+        labels = []
+        for x in xticks:
+            labels.append(f"{int(x)}" if float(x).is_integer() else f"{x:g}")
+            ax.xaxis.set_major_formatter(mticker.FixedFormatter(labels))
+            # improve readability (optional)
+            # plt.setp(ax.get_xticklabels(), rotation=45, ha='right')
+            plt.setp(ax.get_xticklabels(), rotation=0, ha='center')
+            ax.minorticks_off() # keep only your custom ticks
 
     Path(PATH_TO_FCT_SLOWDOWN_PLOTS).mkdir(parents=True, exist_ok=True)
     filename = f"{filename_prefix}ssird_vs_ideal_{num_flows}flo_{flow_size_B}BperFlo_{total_gdpt_gbps}GbpsGdpt{title_addendum}.png"
@@ -316,10 +335,9 @@ def plot_fct_slowdown_ssird_vs_ideal(
     # percentile = round((num_flows-1)/num_flows * 100, 2)
     plt.ylabel(f'FCT Slowdown ({percentile}-th percentile)')
     plt.title(f"FCT Slowdown: SSIRD vs Ideal (Theoretical): {experiment_type}\n({num_flows} Flows; {flow_size_B}B per Flow; {total_gdpt_gbps}Gbps Total Goodput)\n {title_addendum}")
-    plt.legend()
+    # plt.legend()
 
     ax = plt.gca()
-
     ax.grid(True, which='both')
     if (y_lim): plt.ylim(y_lim)
     if (is_log_y): plt.yscale('log')
@@ -402,21 +420,23 @@ def analyse_fct_slowdown_ssird_vs_ideal(
         rtt_s=RTT_5US_S,
         title_addendum=""):
     # NOTE: max 1 out of 40 flows is 97.5th percentile 
-    ssird_fct_s_max_list = [max(l) for l in ssird_fct_s_list_list]
-    print(f"SSIRD FCT (s) MAX:{ssird_fct_s_max_list}")
+    ssird_fct_s_p_list = [np.percentile(l, percentile) for l in ssird_fct_s_list_list]
+    print(f"SSIRD FCT (s) MAX:{ssird_fct_s_p_list}")
 
     theoretical_fct_parallel_flows_s_list = get_theoretical_fct_parallel_flows_s(num_flows, num_byteloads_list, byteload_size_B_list, inter_byteload_period_us_list, rtt_s)
     print(f"THEORETICAL IDEAL Exactly-parallel FCT (s):{theoretical_fct_parallel_flows_s_list}")
 
-    ssird_fct_s_list = ssird_fct_s_max_list
+    ssird_fct_s_list = ssird_fct_s_p_list
     print("*** VS THEORY")
     ideal_fct_s_list = theoretical_fct_parallel_flows_s_list 
 
     # Plot FCT Diff
-    fct_diff_ylim = (0, 2000)
+    fct_diff_ylim = (500, 2000)
     # fct_diff_ylim = None
-    plot_fct_diff_ssird_vs_ideal(VARY_INTERVAL, inter_byteload_period_us_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, percentile, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
-    plot_fct_diff_ssird_vs_ideal(VARY_BLOAD_SIZE, byteload_size_B_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, percentile, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
+    graph_name_vary_interval = "Vary Interval"
+    plot_fct_diff_ssird_vs_ideal(graph_name_vary_interval, VARY_INTERVAL, inter_byteload_period_us_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, percentile, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
+    graph_name_vary_bload_size = "Fixed Flow Size & Rate, Vary Byteload Size, RTT = 1ms"
+    plot_fct_diff_ssird_vs_ideal(graph_name_vary_bload_size, VARY_BLOAD_SIZE, byteload_size_B_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, percentile, title_addendum, is_log_x=True, y_lim=fct_diff_ylim)
 
     # Plot FCT Slowdown
     fct_slowdown_ylim = (0, 4)
@@ -457,9 +477,10 @@ def analyse_fct_slowdown_ssird_vs_ideal_vary_flowrate(
         flow_rate_gbps_list.append(flow_rate_gbps) 
 
     # Plot FCT Diff
-    fct_diff_ylim = (0, 2000)
+    fct_diff_ylim = (500, 2000)
     # fct_diff_ylim = None
-    plot_fct_diff_ssird_vs_ideal(VARY_FLOWRATE, flow_rate_gbps_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, percentile, title_addendum, is_log_x=False, y_lim=fct_diff_ylim)
+    graph_name_vary_flowrate = "Fixed Flow & Byteload Size, Vary Flow Rate, RTT = 1ms"
+    plot_fct_diff_ssird_vs_ideal(graph_name_vary_flowrate, VARY_FLOWRATE, flow_rate_gbps_list, ssird_fct_s_list, ideal_fct_s_list, num_flows, flow_size_B, total_gdpt_gbps, percentile, title_addendum, is_log_x=False, y_lim=fct_diff_ylim)
 
     # Plot FCT Slowdown
     fct_slowdown_ylim = (0, 4)
@@ -626,8 +647,9 @@ def fe_analyse_ssird_vs_ideal_fct_fullrange_100Bto100KB_40flo_1msRTT():
 
     rtt_s = RTT_1MS_S
     num_flows_per_host_pair = 4
-    num_host_pairs = 5
-    percentile = round((num_flows_per_host_pair * num_host_pairs - 1) / (num_flows_per_host_pair * num_host_pairs) * 100, 1)
+    # num_host_pairs = 5
+    # percentile = round((num_flows_per_host_pair * num_host_pairs - 1) / (num_flows_per_host_pair * num_host_pairs) * 100, 1)
+    percentile = 90
     flow_size_B = 1000000
     total_gdpt_gbps = -1
     inter_byteload_period_us_list =  [0.5, 1, 5, 10, 50, 100]
@@ -657,8 +679,9 @@ def fe_analyse_ssird_vs_ideal_fct_flowratesweep_10flo_1458B_2000nsTo150ns_10flo_
 
     rtt_s = RTT_1MS_S
     num_flows_per_host_pair = 2
-    num_host_pairs = 5
-    percentile = round((num_flows_per_host_pair * num_host_pairs - 1) / (num_flows_per_host_pair * num_host_pairs) * 100, 1)
+    # num_host_pairs = 5
+    # percentile = round((num_flows_per_host_pair * num_host_pairs - 1) / (num_flows_per_host_pair * num_host_pairs) * 100, 1)
+    percentile = 90
     flow_size_B = -1
     total_gdpt_gbps = -1
     inter_byteload_period_us_list = [2, 1, 0.8, 0.6, 0.4, 0.3, 0.2, 0.15]
