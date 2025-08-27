@@ -503,7 +503,7 @@ def do_slowdown_cdf_plot_for_fbHadoopDist_fullsweep_300ns_10to1():
     )
 
     plot_ssird_flow_slowdown_cdf_single(
-        graph_title="Facebook Hadoop Workload (100% combined app load into downlink)",
+        graph_title="Facebook Hadoop Workload (88% Achieved Goodput)",
         experiment_date="2025-08-22T_18-46-14Z",
         experiment_family="FE_incast_12host_fullsweep_",
         title_addendum="_12host_fbHadoopDist_load_fullsweep_300ns_fromjson",
@@ -540,7 +540,7 @@ def do_slowdown_cdf_plot_for_fbCacheFollowerDist_fullsweep_5000ns_10to1():
     )
 
     plot_ssird_flow_slowdown_cdf_single(
-        graph_title="Facebook Cache Follower Workload (100% combined app load into downlink)",
+        graph_title="Facebook Cache Follower Workload (88Gbps Achieved Goodput)",
         experiment_date="2025-08-22T_18-30-29Z",
         experiment_family="FE_incast_12host_fullsweep_",
         title_addendum="_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson",
@@ -578,7 +578,7 @@ def do_slowdown_cdf_plot_for_DctcpMsgSizeDistActual_fullsweep_1000ns_5to1():
     )
 
     plot_ssird_flow_slowdown_cdf_single(
-        graph_title="Web Search Workload (100% combined app load into downlink)",
+        graph_title="Web Search Workload (88Gbps Achieved Goodput)",
         experiment_date="2025-08-25T_21-36-46Z",
         experiment_family="FE_incast_12host_fullsweep_",
         title_addendum="_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson",
