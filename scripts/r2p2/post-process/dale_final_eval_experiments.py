@@ -720,7 +720,7 @@ def incast_10to1_1458B_fbHadoopDist_loadtest():
         xpass_sim_dur_list=[0.01]*11,
         is_full_postproc=True,
         title_prefix="FE_incast_12host_",
-        title_addendum="_12host_fbHadoopDist_loadtest_300ns",
+        title_addendum="_12host_fbHadoopDist_loadtest_300ns",   # NOTE: this shdve been 600ns
         log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
@@ -1228,7 +1228,7 @@ def incast_10to1_1458B_fbHadoopDist_load_fullsweep():
         # title_addendum="_12host_fbHadoopDist_loadtest_300ns_retry_dctcp",
         # title_addendum="_12host_fbHadoopDist_loadtest_300ns_retry_xpass",
         title_prefix="FE_incast_12host_fullsweep_v3_",
-        title_addendum="_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_ssird",
+        title_addendum="_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_ssird",  # NOTE: this should've been 600ns
         log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
@@ -1550,7 +1550,7 @@ def incast_10to1_1458B_fbHadoopDist_load_fullsweep_ssird_policy_fairshare():
         # title_addendum="_12host_fbHadoopDist_loadtest_300ns_retry_xpass",
         # title_prefix="FE_incast_12host_fullsweep_v3_",
         title_prefix="FE_incast_12host_fullsweep_ssird_policy_v3_",
-        title_addendum="_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_ssird_fairshare",
+        title_addendum="_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_ssird_fairshare",    # NOTE: this shdve been 600ns
         log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 

@@ -503,7 +503,7 @@ def do_slowdown_cdf_plot_for_fbHadoopDist_fullsweep_300ns_10to1():
     )
 
     plot_ssird_flow_slowdown_cdf_single(
-        graph_title="Facebook Hadoop Workload (88% Achieved Goodput)",
+        graph_title="Facebook Hadoop Workload (88Gbps Achieved Goodput)",
         experiment_date="2025-08-22T_18-46-14Z",
         experiment_family="FE_incast_12host_fullsweep_",
         title_addendum="_12host_fbHadoopDist_load_fullsweep_300ns_fromjson",
