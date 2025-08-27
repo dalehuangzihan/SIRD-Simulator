@@ -195,7 +195,7 @@ def plot_slowdown_vs_flowsize_ranges_ssird_policy(
         pivot_df = combined_df.set_index(['category', 'set_name']).unstack('set_name')
         print(pivot_df)
 
-        fig, ax = plt.subplots(figsize=(10,7))
+        fig, ax = plt.subplots(figsize=(12,7))
 
         categories = list(["A", "B", "C", "D", "All"])
         x_pos = np.arange(len(categories))
@@ -213,7 +213,7 @@ def plot_slowdown_vs_flowsize_ranges_ssird_policy(
             'B': 'MSS ≤ Size < 1xBDP', 
             'C': '1xBDP ≤ Size < 8xBDP',
             'D': '8xBDP < Size',
-            'All': 'All'
+            'All': 'All Sizes'
         }
         categories_for_display = [custom_cateogry_names[cat] for cat in categories]
         for i, set_name in enumerate(['ssird_srpt', 'ssird_fairshare']):
@@ -261,7 +261,7 @@ def plot_slowdown_vs_flowsize_ranges_ssird_policy(
         ax.axvline(x=len(categories)-2+0.5, color='gray', linestyle='--', alpha=0.7, linewidth=1)
 
         ax.set_xticks(x_pos)
-        ax.set_xticklabels(x_labels, fontsize=8)
+        ax.set_xticklabels(x_labels, fontsize=10)
 
         # Add plot labels and title
         ax.set_xlabel('Flow Size Range Categories')
