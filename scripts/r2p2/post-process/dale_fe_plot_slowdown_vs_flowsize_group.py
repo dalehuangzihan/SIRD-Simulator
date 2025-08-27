@@ -204,6 +204,13 @@ def plot_slowdown_vs_flowsize_ranges_ssird_policy(
             'ssird_srpt': 'SSIRD (SRPT)',
             'ssird_fairshare': 'SSIRD (Fairshare)', 
         }
+        custom_cateogry_names = {
+            'A': '0 ≤ Size < MSS',
+            'B': 'MSS ≤ Size < 1xBDP', 
+            'C': '1xBDP ≤ Size < 8xBDP',
+            'D': '8xBDP < Size'
+        }
+        categories_for_display = [custom_cateogry_names[cat] for cat in categories]
         for i, set_name in enumerate(['ssird_srpt', 'ssird_fairshare']):
             offset = -width/2 if set_name == 'ssird_srpt' else width/2
             median_values = [pivot_df[('median', set_name)][cat] for cat in categories]
@@ -227,30 +234,25 @@ def plot_slowdown_vs_flowsize_ranges_ssird_policy(
 
         # Calculate and Set x-axis labels and ticks:
         set_percentages = {'ssird_srpt': {}, 'ssird_fairshare': {}}
-
         # Total elements for each set
         total_srpt = ssird_srpt_stats_df['count'].sum()
         total_fairshare = ssird_fairshare_stats_df['count'].sum()
-
         for category in categories:
             # Get counts for this category from both sets
             count_srpt = ssird_srpt_stats_df[ssird_srpt_stats_df['category'] == category]['count'].values[0]
             count_fairshare = ssird_fairshare_stats_df[ssird_fairshare_stats_df['category'] == category]['count'].values[0]
-            
             # Calculate percentages within each set
             srpt_pct = (count_srpt / total_srpt) * 100
             fairshare_pct = (count_fairshare / total_fairshare) * 100
-            
             set_percentages['ssird_srpt'][category] = srpt_pct
             set_percentages['ssird_fairshare'][category] = fairshare_pct
-
         # Create x-axis labels with within-set percentages
         x_labels = []
-        for category in categories:
+        for category, category_display in zip(categories, categories_for_display):
             srpt_pct = set_percentages['ssird_srpt'][category]
             fairshare_pct = set_percentages['ssird_fairshare'][category]
             # x_labels.append(f"{category}\n(SRPT: {srpt_pct:.0f}%)\n(FS: {fairshare_pct:.0f}%)")
-            x_labels.append(f"{category}\n({srpt_pct:.0f}%)") # all sets (srpt, fairshare) have the same percentage cuz they use the same flows
+            x_labels.append(f"{category_display}\n({srpt_pct:.0f}%)") # all sets (srpt, fairshare) have the same percentage cuz they use the same flows
 
         ax.set_xticks(x_pos)
         ax.set_xticklabels(x_labels, fontsize=10)
@@ -258,7 +260,7 @@ def plot_slowdown_vs_flowsize_ranges_ssird_policy(
         # Add plot labels and title
         ax.set_xlabel('Flow Size Range Categories')
         ax.set_ylabel('Slowdown')
-        ax.set_title(f'Slowdown Comparison (Median with {percentile}th Percentile Whiskers)\n{graph_title}')
+        ax.set_title(f'Slowdown Comparison (Median Bars, {percentile}th Percentile Whiskers)\n{graph_title}')
         # ax.set_title(f'Slowdown Comparison (Median with {percentile}th Percentile Whiskers) \
         #              \n{graph_title}   \
         #              \n{experiment_family}{title_addendum}{experiment_date}' \
@@ -420,6 +422,13 @@ def plot_slowdown_vs_flowsize_ranges_all_proto_compare(
             'dctcp': 'DCTCP', 
             'xpass': 'ExpressPass' 
         }
+        custom_cateogry_names = {
+            'A': '0 ≤ Size < MSS',
+            'B': 'MSS ≤ Size < 1xBDP', 
+            'C': '1xBDP ≤ Size < 8xBDP',
+            'D': '8xBDP < Size'
+        }
+        categories_for_display = [custom_cateogry_names[cat] for cat in categories]
         for i, set_name in enumerate(['ssird', 'dctcp', 'xpass']):
             # Calculate offset for each set (centered around each category)
             offset = width * (i - 1)  # This will position: ssird left, dctcp center, xpass right
@@ -458,12 +467,12 @@ def plot_slowdown_vs_flowsize_ranges_all_proto_compare(
             set_percentages['xpass'][category] = (count_xpass / total_xpass) * 100
         # Create x-axis labels with within-set percentages
         x_labels = []
-        for category in categories:
+        for category, category_display in zip(categories, categories_for_display):
             ssird_pct = set_percentages['ssird'][category]
             dctcp_pct = set_percentages['dctcp'][category]
             xpass_pct = set_percentages['xpass'][category]
             # x_labels.append(f"{category}\n(SSIRD: {ssird_pct:.0f}%)\n(DCTCP: {dctcp_pct:.0f}%)\n(XPASS: {xpass_pct:.0f}%)")
-            x_labels.append(f"{category}\n({ssird_pct:.0f}%)")  # all protos have the same percentage cuz they use the same flows
+            x_labels.append(f"{category_display}\n({ssird_pct:.0f}%)")  # all protos have the same percentage cuz they use the same flows
 
         ax.set_xticks(x_pos)
         ax.set_xticklabels(x_labels, fontsize=10)
@@ -471,7 +480,7 @@ def plot_slowdown_vs_flowsize_ranges_all_proto_compare(
         # Add plot labels and title
         ax.set_xlabel('Flow Size Range Categories')
         ax.set_ylabel('Slowdown')
-        ax.set_title(f'Slowdown Comparison (Median with {percentile}th Percentile Whiskers)\n{graph_title}')
+        ax.set_title(f'Slowdown Comparison (Median Bars, {percentile}th Percentile Whiskers)\n{graph_title}')
         # ax.set_title(f'Slowdown Comparison (Median with {percentile}th Percentile Whiskers) \
         #              \n{graph_title}   \
         #              \n{experiment_family}{title_addendum}{experiment_date}' \
