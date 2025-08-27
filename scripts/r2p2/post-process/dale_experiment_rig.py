@@ -13,7 +13,7 @@ import json
 # for thread pool
 # MAX_WORKERS = 4 
 # MAX_WORKERS = 12 # NOTE: use this for batch1 server
-MAX_WORKERS = 14 # NOTE: use this for octopus4 server
+MAX_WORKERS = 12 # NOTE: use this for octopus4 server
 
 MIN_BYTELOAD_INTERVAL_US = 0.001 # is 1ns
 
