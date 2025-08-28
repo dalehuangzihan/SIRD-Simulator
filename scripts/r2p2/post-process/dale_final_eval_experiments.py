@@ -1754,17 +1754,17 @@ if __name__ == "__main__":
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep()
     # incast_5to1_1458B_dctcpMsgSizeDistActual_load_fullsweep()
 
-    assert(False)
-    incast_10to1_1458B_fbHadoopDist_load_fullsweep()
-    incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep()
-    incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep()
+    # assert(False)
+    # incast_10to1_1458B_fbHadoopDist_load_fullsweep()
+    # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep()
+    # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep()
 
     ''' FINAL EXPERIMENTS SSIRD POLICY (FULL LOAD SWEEP) '''
     # incast_10to1_1458B_googleAllRpc_load_fullsweep_ssird_policy_fairshare()
     # incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_ssird_policy_fairshare()
     # incast_5to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare()
 
-    assert(False)
-    incast_10to1_1458B_fbHadoopDist_load_fullsweep_ssird_policy_fairshare()
+    # assert(False)
+    # incast_10to1_1458B_fbHadoopDist_load_fullsweep_ssird_policy_fairshare()
     incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_ssird_policy_fairshare()
-    incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare()
+    # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare()
