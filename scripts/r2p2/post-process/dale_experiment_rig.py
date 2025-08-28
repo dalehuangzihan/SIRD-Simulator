@@ -334,6 +334,14 @@ class ExperimentGroupResultsProcessed:
         self.sorted_flowsize_fct_list_list_dctcp = []
         self.sorted_flowsize_fct_list_list_xpass = []
 
+        # overall union goodput
+        self.total_app_gdpt_gbps_measured_list_union_ssird = []
+        self.total_app_gdpt_gbps_measured_list_union_dctcp = []
+        self.total_app_gdpt_gbps_measured_list_union_xpass = []
+        self.total_nw_gdpt_gbps_measured_list_union_ssird = []
+        self.total_nw_gdpt_gbps_measured_list_union_dctcp = []
+        self.total_nw_gdpt_gbps_measured_list_union_xpass = []
+
         for results in self.processed_results_list:
             self.ssird_fct_list.append(results.ssird_fct)
             self.dctcp_fct_list.append(results.dctcp_fct)
@@ -356,6 +364,15 @@ class ExperimentGroupResultsProcessed:
             self.sorted_flowsize_fct_list_list_ssird.append(results.ssird_sorted_flowsize_fct_list)
             self.sorted_flowsize_fct_list_list_dctcp.append(results.dctcp_sorted_flowsize_fct_list)
             self.sorted_flowsize_fct_list_list_xpass.append(results.xpass_sorted_flowsize_fct_list)
+
+            # overall union gdpt
+            self.total_app_gdpt_gbps_measured_list_union_ssird.append(results.ssird_total_app_gdpt_gbps_measured_union)
+            self.total_app_gdpt_gbps_measured_list_union_dctcp.append(results.dctcp_total_app_gdpt_gbps_measured_union)
+            self.total_app_gdpt_gbps_measured_list_union_xpass.append(results.xpass_total_app_gdpt_gbps_measured_union)
+            self.total_nw_gdpt_gbps_measured_list_union_ssird.append(results.ssird_total_nw_gdpt_gbps_measured_union)
+            self.total_nw_gdpt_gbps_measured_list_union_dctcp.append(results.dctcp_total_nw_gdpt_gbps_measured_union)
+            self.total_nw_gdpt_gbps_measured_list_union_xpass.append(results.xpass_total_nw_gdpt_gbps_measured_union)
+
 
 class ExperimentResultsProcessed:
     def __init__(self, ssird_experiment_metrics=None, dctcp_experiment_metrics=None, xpass_experiment_metrics=None, ssird_sorted_flowsize_fct_list=None, dctcp_sorted_flowsize_fct_list=None, xpass_sorted_flowsize_fct_list=None):
@@ -386,6 +403,14 @@ class ExperimentResultsProcessed:
         self.dctcp_nw_gdpt_gbps_measured_per_flow_list = None
         self.xpass_nw_gdpt_gbps_measured_per_flow_list = None
 
+        # union goodput
+        self.ssird_total_app_gdpt_gbps_measured_union = None
+        self.dctcp_total_app_gdpt_gbps_measured_union = None
+        self.xpass_total_app_gdpt_gbps_measured_union = None
+        self.ssird_total_nw_gdpt_gbps_measured_union = None
+        self.dctcp_total_nw_gdpt_gbps_measured_union = None
+        self.xpass_total_nw_gdpt_gbps_measured_union = None
+
         self.ingest_metrics()
 
     def ingest_metrics(self):
@@ -396,6 +421,9 @@ class ExperimentResultsProcessed:
             self.ssird_app_gdpt_gbps_measured_per_flow_list = self.ssird_experiment_metrics.app_gdpt_gbps_measured_per_flow_list
             self.ssird_total_nw_gdpt_gbps_measured = self.ssird_experiment_metrics.total_nw_gdpt_gbps_measured
             self.ssird_nw_gdpt_gbps_measured_per_flow_list = self.ssird_experiment_metrics.nw_gdpt_gbps_measured_per_flow_list
+            # union goodput
+            self.ssird_total_app_gdpt_gbps_measured_union = self.ssird_experiment_metrics.total_app_gdpt_gbps_union
+            self.ssird_total_nw_gdpt_gbps_measured_union = self.ssird_experiment_metrics.total_nw_gdpt_gbps_union
 
         if (self.dctcp_experiment_metrics):
             assert(DCTCP_PROTO_FAMILY_NAME in self.dctcp_experiment_metrics.proto)
@@ -404,6 +432,9 @@ class ExperimentResultsProcessed:
             self.dctcp_app_gdpt_gbps_measured_per_flow_list = self.dctcp_experiment_metrics.app_gdpt_gbps_measured_per_flow_list
             self.dctcp_total_nw_gdpt_gbps_measured = self.dctcp_experiment_metrics.total_nw_gdpt_gbps_measured
             self.dctcp_nw_gdpt_gbps_measured_per_flow_list = self.dctcp_experiment_metrics.nw_gdpt_gbps_measured_per_flow_list
+            # union goodput
+            self.dctcp_total_app_gdpt_gbps_measured_union = self.dctcp_experiment_metrics.total_app_gdpt_gbps_union
+            self.dctcp_total_nw_gdpt_gbps_measured_union = self.dctcp_experiment_metrics.total_nw_gdpt_gbps_union
 
         if (self.xpass_experiment_metrics):
             assert(XPASS_PROTO_NAME in self.xpass_experiment_metrics.proto)
@@ -412,9 +443,12 @@ class ExperimentResultsProcessed:
             self.xpass_app_gdpt_gbps_measured_per_flow_list = self.xpass_experiment_metrics.app_gdpt_gbps_measured_per_flow_list
             self.xpass_total_nw_gdpt_gbps_measured = self.xpass_experiment_metrics.total_nw_gdpt_gbps_measured
             self.xpass_nw_gdpt_gbps_measured_per_flow_list = self.xpass_experiment_metrics.nw_gdpt_gbps_measured_per_flow_list
+            # union goodput
+            self.xpass_total_app_gdpt_gbps_measured_union = self.xpass_experiment_metrics.total_app_gdpt_gbps_union
+            self.xpass_total_nw_gdpt_gbps_measured_union = self.xpass_experiment_metrics.total_nw_gdpt_gbps_union
 
 class ExperimentMetrics:
-    def __init__(self, proto, fct_list, total_app_gdpt_gbps_measured, app_gdpt_gbps_measured_per_flow_list, total_nw_gdpt_gbps_measured, nw_gdpt_gbps_measured_per_flow_list):
+    def __init__(self, proto, fct_list, total_app_gdpt_gbps_measured, app_gdpt_gbps_measured_per_flow_list, total_nw_gdpt_gbps_measured, nw_gdpt_gbps_measured_per_flow_list, total_app_gdpt_gbps_union, total_nw_gdpt_gbps_union):
         self.proto = proto
         self.fct_list = fct_list
 
@@ -423,6 +457,10 @@ class ExperimentMetrics:
 
         self.total_nw_gdpt_gbps_measured = total_nw_gdpt_gbps_measured 
         self.nw_gdpt_gbps_measured_per_flow_list = nw_gdpt_gbps_measured_per_flow_list 
+
+        # NEW: union-denominator (active-time) goodputs
+        self.total_app_gdpt_gbps_union = total_app_gdpt_gbps_union
+        self.total_nw_gdpt_gbps_union = total_nw_gdpt_gbps_union
 
 class ExperimentOutputRaw:
     '''
@@ -439,6 +477,25 @@ class ExperimentOutputRaw:
         self.num_flows = num_flows
         self.src_dst_pairs_to_flowspecs_dict = src_dst_pairs_to_flowspecs_dict
         self.target_flow_rate_gbps = target_flow_rate_gbps
+
+    def _union_length(self, intervals):
+        """
+        intervals: list of (start_s, end_s) tuples.
+        Returns the total length (seconds) of their union.
+        """
+        if not intervals:
+            return 0.0
+        intervals = sorted(intervals, key=lambda x: x[0])
+        merged = []
+        s, e = intervals[0]
+        for s2, e2 in intervals[1:]:
+            if s2 <= e:           # overlaps or touches
+                e = max(e, e2)
+            else:
+                merged.append((s, e))
+                s, e = s2, e2
+        merged.append((s, e))
+        return sum(e - s for s, e in merged)
 
     def process_results_fct(self):
         logger.info(f"Processing results from {self.app_trace_file_path}")
@@ -494,33 +551,96 @@ class ExperimentOutputRaw:
         except IOError:
             logger.error("An error occurred while reading the file")
 
-        # Measure per-flow app & nw gdpt:
+        # # Measure per-flow app & nw gdpt:
+        # fct_list = []
+        # measured_app_gdpt_gbps_per_flow_list = []
+        # measured_nw_gdpt_gbps_per_flow_list = []
+        # for _, flow_stats_obj in flow_stats_dict.items():
+        #     flow_stats_obj.check_flow_stats()
+        #     fct_list.append(flow_stats_obj.get_fct_s())
+        #     measured_app_gdpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_app_gdpt_for_flow_gbps())
+        #     measured_nw_gdpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_nw_gdpt_for_flow_gbps())
+        #     total_bytes_rcvd_B += flow_stats_obj.total_data_bytes_recv_B
+
+        # # TODO: FIX ME! This total-thrpt calc seems a lil iffy... it overestimates gbps by 5%. Why??
+        # # NOTE: this calculation of overall app gdpt assumes that all flows are being directed to a SINGLE sender!
+        # # Measure overal app gdpt:
+        # if (overall_final_srq_timestamp_s - overall_srq_start_time_s > 0):
+        #     measured_total_app_gdpt_gbps = (total_bytes_sent_until_penultimate_srq_B * 8) / (overall_final_srq_timestamp_s - overall_srq_start_time_s) * pow(10,-9)
+        # else:
+        #     measured_total_app_gdpt_gbps = -1
+
+        # # NOTE: this calculation of overall nw gdpt assumes that all flows are being directed to a SINGLE sender!
+        # # Measure overall nw gdpt:
+        # if (overall_final_rrq_timestamp_s is not None and overall_final_rrq_timestamp_s - overall_start_time_s > 0):
+        #     measured_total_nw_gdpt_gbps = (total_bytes_rcvd_B * 8) / (overall_final_rrq_timestamp_s - overall_start_time_s) * pow(10,-9)
+        # else:
+        #     measured_total_nw_gdpt_gbps = -1 
+
+        # return ExperimentMetrics(self.proto, fct_list, measured_total_app_gdpt_gbps, measured_app_gdpt_gbps_per_flow_list, measured_total_nw_gdpt_gbps, measured_nw_gdpt_gbps_per_flow_list), flow_stats_dict
+
+        # Measure per-flow app & nw gdpt and collect intervals for union denominators
         fct_list = []
         measured_app_gdpt_gbps_per_flow_list = []
         measured_nw_gdpt_gbps_per_flow_list = []
+
+        applied_intervals = []   # [ (start_s, last_send_s) ]
+        achieved_intervals = []  # [ (start_s, last_recv_s) ]
+
+        total_sent_B = 0
+        total_rcvd_B = 0
+
         for _, flow_stats_obj in flow_stats_dict.items():
             flow_stats_obj.check_flow_stats()
+
+            # Per-flow stats you already expose
             fct_list.append(flow_stats_obj.get_fct_s())
             measured_app_gdpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_app_gdpt_for_flow_gbps())
             measured_nw_gdpt_gbps_per_flow_list.append(flow_stats_obj.get_measured_nw_gdpt_for_flow_gbps())
-            total_bytes_rcvd_B += flow_stats_obj.total_data_bytes_recv_B
 
-        # TODO: FIX ME! This total-thrpt calc seems a lil iffy... it overestimates gbps by 5%. Why??
-        # NOTE: this calculation of overall app gdpt assumes that all flows are being directed to a SINGLE sender!
-        # Measure overal app gdpt:
+            # Accumulate totals
+            total_sent_B += flow_stats_obj.total_data_bytes_sent_B
+            total_rcvd_B += flow_stats_obj.total_data_bytes_recv_B
+
+            # Intervals for union denominators
+            # Applied = sender-active interval: [start, final_srq_timestamp]
+            if flow_stats_obj.final_srq_timestamp is not None and flow_stats_obj.final_srq_timestamp > flow_stats_obj.start_time_s:
+                applied_intervals.append((flow_stats_obj.start_time_s, flow_stats_obj.final_srq_timestamp))
+
+            # Achieved = end-to-end active interval: [start, end]
+            if flow_stats_obj.end_time_s > flow_stats_obj.start_time_s:
+                achieved_intervals.append((flow_stats_obj.start_time_s, flow_stats_obj.end_time_s))
+
+        total_bytes_rcvd_B = total_rcvd_B  # keep your original variable name if used later
+
+        # ---- EXISTING "span-like" overall app & nw goodput (kept as-is) ----
         if (overall_final_srq_timestamp_s - overall_srq_start_time_s > 0):
             measured_total_app_gdpt_gbps = (total_bytes_sent_until_penultimate_srq_B * 8) / (overall_final_srq_timestamp_s - overall_srq_start_time_s) * pow(10,-9)
         else:
             measured_total_app_gdpt_gbps = -1
 
-        # NOTE: this calculation of overall nw gdpt assumes that all flows are being directed to a SINGLE sender!
-        # Measure overall nw gdpt:
         if (overall_final_rrq_timestamp_s is not None and overall_final_rrq_timestamp_s - overall_start_time_s > 0):
             measured_total_nw_gdpt_gbps = (total_bytes_rcvd_B * 8) / (overall_final_rrq_timestamp_s - overall_start_time_s) * pow(10,-9)
         else:
-            measured_total_nw_gdpt_gbps = -1 
+            measured_total_nw_gdpt_gbps = -1
 
-        return ExperimentMetrics(self.proto, fct_list, measured_total_app_gdpt_gbps, measured_app_gdpt_gbps_per_flow_list, measured_total_nw_gdpt_gbps, measured_nw_gdpt_gbps_per_flow_list), flow_stats_dict
+        # ---- NEW: union denominators & union goodput (Gbps) ----
+        union_applied_den_s  = self._union_length(applied_intervals)
+        union_achieved_den_s = self._union_length(achieved_intervals)
+
+        total_app_gdpt_gbps_union = (total_sent_B * 8 / union_applied_den_s * 1e-9) if union_applied_den_s > 0 else -1
+        total_nw_gdpt_gbps_union  = (total_rcvd_B * 8 / union_achieved_den_s * 1e-9) if union_achieved_den_s > 0 else -1
+
+        return ExperimentMetrics(
+            self.proto,
+            fct_list,
+            measured_total_app_gdpt_gbps,
+            measured_app_gdpt_gbps_per_flow_list,
+            measured_total_nw_gdpt_gbps,
+            measured_nw_gdpt_gbps_per_flow_list,
+            total_app_gdpt_gbps_union=total_app_gdpt_gbps_union,
+            total_nw_gdpt_gbps_union=total_nw_gdpt_gbps_union
+        ), flow_stats_dict
 
 class FlowTraceEvent:
     SRQ_EVENT = "srq"
@@ -1020,48 +1140,149 @@ class ExperimentGroup:
 
 
     @staticmethod
-    def process_side_loaded_results(proto, src_dst_pairs_list, num_flows_list, src_dst_pairs_to_flowspecs_dict_list, target_flow_rate_gbps, app_trace_paths_list):
-        # TODO: update to use src_dst_pairs_to_flowspecs_dict
-        # NOTE: this mtd can only read results for 1 proto at a time
-        assert(len(set( [len(src_dst_pairs_to_flowspecs_dict_list), len(app_trace_paths_list)] )) == 1)
-        processed_results_list = []
+    def load_raw_experiment_results_from_app_trace_list(proto, app_trace_paths_list, src_dst_pairs_list, src_dst_pairs_to_flowspecs_dict_list, num_flows_list, target_flow_rate_gbps):
+        raw_experient_results_list = []
         for i in range(0, len(app_trace_paths_list)):
-            exp_output_raw = ExperimentOutputRaw(exp_id=None,
-                                              experiment_family=None,
-                                              experiment_name=None,
-                                              app_trace_file_path=app_trace_paths_list[i],
-                                              proto=proto,
-                                              src_dst_pairs_list=src_dst_pairs_list,
-                                              src_dst_pairs_to_flowspecs_dict=src_dst_pairs_to_flowspecs_dict_list[i],
-                                              num_flows=num_flows_list[i],
-                                              target_flow_rate_gbps=target_flow_rate_gbps)
-            exp_metrics, flow_stats_dict = exp_output_raw.process_results_fct() 
-            sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(flow_stats_dict)
+            exp_output_raw = ExperimentOutputRaw(
+                                exp_id=i,
+                                experiment_family=None,
+                                experiment_name=None,
+                                app_trace_file_path=app_trace_paths_list[i],
+                                proto=proto,
+                                src_dst_pairs_list=src_dst_pairs_list,
+                                src_dst_pairs_to_flowspecs_dict=src_dst_pairs_to_flowspecs_dict_list[i],
+                                num_flows=num_flows_list[i],
+                                target_flow_rate_gbps=target_flow_rate_gbps
+                            )
+            raw_experient_results_list.append(exp_output_raw)
+        return raw_experient_results_list
+
+    @staticmethod
+    def process_side_loaded_results(
+        proto_list,
+        src_dst_pairs_list,
+        num_flows_list,
+        src_dst_pairs_to_flowspecs_dict_list,
+        target_flow_rate_gbps,
+        ssird_app_trace_paths_list,
+        dctcp_app_trace_paths_list,
+        xpass_app_trace_paths_list
+    ):
+        
+        # check number of experiments
+        assert(len(set( [
+            len(src_dst_pairs_to_flowspecs_dict_list),
+            len(ssird_app_trace_paths_list),
+            len(dctcp_app_trace_paths_list),
+            len(xpass_app_trace_paths_list)
+        ] )) == 1)
+        num_experiments = len(src_dst_pairs_to_flowspecs_dict_list)
+
+
+        ssird_raw_experiment_results_list = None
+        dctcp_raw_experiment_results_list = None
+        xpass_raw_experiment_results_list = None
+
+        for proto in proto_list:
+            app_trace_paths_list = None
             if (SSIRD_PROTO_NAME in proto):
-                processed_result = ExperimentResultsProcessed(ssird_experiment_metrics=exp_metrics, ssird_sorted_flowsize_fct_list=sorted_flowsize_fct_list)
-            elif (DCTCP_PROTO_FAMILY_NAME in proto):
-                processed_result = ExperimentResultsProcessed(dctcp_experiment_metrics=exp_metrics, dctcp_sorted_flowsize_fct_list=sorted_flowsize_fct_list)
+                app_trace_paths_list = ssird_app_trace_paths_list
+                ssird_raw_experiment_results_list = ExperimentGroup.load_raw_experiment_results_from_app_trace_list(
+                    proto, app_trace_paths_list, src_dst_pairs_list, src_dst_pairs_to_flowspecs_dict_list, num_flows_list, target_flow_rate_gbps
+                )
+            elif (DCTCP_PROTO_NAME in proto):
+                app_trace_paths_list = dctcp_app_trace_paths_list
+                dctcp_raw_experiment_results_list = ExperimentGroup.load_raw_experiment_results_from_app_trace_list(
+                    proto, app_trace_paths_list, src_dst_pairs_list, src_dst_pairs_to_flowspecs_dict_list, num_flows_list, target_flow_rate_gbps
+                )
             elif (XPASS_PROTO_NAME in proto):
-                processed_result = ExperimentResultsProcessed(xpass_experiment_metrics=exp_metrics, xpass_sorted_flowsize_fct_list=sorted_flowsize_fct_list)
+                app_trace_paths_list = xpass_app_trace_paths_list
+                xpass_raw_experiment_results_list = ExperimentGroup.load_raw_experiment_results_from_app_trace_list(
+                    proto, app_trace_paths_list, src_dst_pairs_list, src_dst_pairs_to_flowspecs_dict_list, num_flows_list, target_flow_rate_gbps
+                )
             else:
                 raise ValueError(f"Unrecognised protocol name: {proto}")
+
+        assert(ssird_raw_experiment_results_list is not None and len(ssird_raw_experiment_results_list) == num_experiments)
+        assert(dctcp_raw_experiment_results_list is not None and len(dctcp_raw_experiment_results_list) == num_experiments)
+        assert(xpass_raw_experiment_results_list is not None and len(xpass_raw_experiment_results_list) == num_experiments)
+
+        if (SSIRD_PROTO_NAME in proto_list):
+            assert(all(r.exp_id == i for r, i in zip(ssird_raw_experiment_results_list, range(0, num_experiments))))
+        if (DCTCP_PROTO_NAME in proto):
+            assert(all(r.exp_id == i for r, i in zip(dctcp_raw_experiment_results_list, range(0, num_experiments))))
+        if (XPASS_PROTO_NAME in proto_list):
+            assert(all(r.exp_id == i for r, i in zip(xpass_raw_experiment_results_list, range(0, num_experiments))))
+
+        processed_results_list = []
+        print("\n##### POST PROCESS SIDELOADED RESULTS #####")
+        for exp_id in range(0, num_experiments):
+            print(f"=====\n** Num Flows: {num_flows_list[exp_id]}, Target Flow Rate (Gbps): {target_flow_rate_gbps}")
+
+            ssird_result = ssird_raw_experiment_results_list[exp_id]
+            if ssird_result == None:
+                print("ERROR: No results for SSIRD")
+                ssird_exp_metrics = None
+                ssird_sorted_flowsize_fct_list = None
+            else:
+                print(f"Processing SIRD results exp_id {ssird_result.exp_id}:: {ssird_result.num_flows}flo-{ssird_result.target_flow_rate_gbps}Gbps_target")
+                ssird_exp_metrics, ssird_flow_stats_dict = ssird_result.process_results_fct()
+                ssird_sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(ssird_flow_stats_dict)
+                print(f"{ssird_exp_metrics.proto} FCT (ms): {ssird_exp_metrics.fct_list}\nApp Gdpt (overall): {ssird_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {ssird_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {ssird_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {ssird_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
+
+            dctcp_result = dctcp_raw_experiment_results_list[exp_id]
+            if dctcp_result == None:
+                print("ERROR: No results for DCTCP")
+                dctcp_exp_metrics = None
+                dctcp_sorted_flowsize_fct_list = None
+            else:
+                print(f"Processing DCTCP results exp_id {dctcp_result.exp_id}:: {dctcp_result.num_flows}flo-{dctcp_result.target_flow_rate_gbps}Gbps_target")
+                dctcp_exp_metrics, dctcp_flow_stats_dict = dctcp_result.process_results_fct()
+                dctcp_sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(dctcp_flow_stats_dict)
+                print(f"{dctcp_exp_metrics.proto} FCT (ms): {dctcp_exp_metrics.fct_list}\nApp Gdpt (overall): {dctcp_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {dctcp_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {dctcp_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {dctcp_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
+
+            xpass_result = xpass_raw_experiment_results_list[exp_id]
+            if xpass_result == None:
+                print("ERROR: No results for ExpressPass")
+                xpass_exp_metrics = None
+                xpass_sorted_flowsize_fct_list = None
+            else:
+                print(f"Processing ExpressPass results exp_id {xpass_result.exp_id}:: {xpass_result.num_flows}flo-{xpass_result.target_flow_rate_gbps}Gbps_target")
+                xpass_exp_metrics, xpass_flow_stats_dict = xpass_result.process_results_fct()
+                xpass_sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(xpass_flow_stats_dict)
+                print(f"{xpass_exp_metrics.proto} FCT (ms): {xpass_exp_metrics.fct_list}\nApp Gdpt (overall): {xpass_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {xpass_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {xpass_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {xpass_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
+            
+            processed_result = ExperimentResultsProcessed(ssird_exp_metrics, dctcp_exp_metrics, xpass_exp_metrics, ssird_sorted_flowsize_fct_list, dctcp_sorted_flowsize_fct_list, xpass_sorted_flowsize_fct_list)
             processed_results_list.append(processed_result)
+
         exp_metrics = ExperimentGroupResultsProcessed(processed_results_list)
-        
+
+        print("#################################")
+
         print(f"Src-Dst pairs list: {src_dst_pairs_list}")
         print(f"Num Flows: {num_flows_list}")
         print(f"Target Flow Rate (Gbps): {target_flow_rate_gbps}")
 
-        print(f"APP Gdpt Gbps measured (SSIRD): {exp_metrics.total_app_gdpt_gbps_measured_list_ssird }")
-        print(f"APP Gdpt Gbps measured (DCTCP): {exp_metrics.total_app_gdpt_gbps_measured_list_dctcp}")
-        print(f"APP Gdpt Gbps measured (XPass): {exp_metrics.total_app_gdpt_gbps_measured_list_xpass}")
+        print(f"Protos tested: {proto_list}")
+        print(f"Src-Dst pairs list: {src_dst_pairs_list}")
+        print(f"Num Flows: {num_flows_list}")
+
+        print(f"- APP Gdpt Gbps measured (SSIRD): {exp_metrics.total_app_gdpt_gbps_measured_list_ssird }")
+        print(f"+ APP Gdpt Gbps union (SSIRD):    {exp_metrics.total_app_gdpt_gbps_measured_list_union_ssird }")
+        print(f"- APP Gdpt Gbps measured (DCTCP): {exp_metrics.total_app_gdpt_gbps_measured_list_dctcp}")
+        print(f"+ APP Gdpt Gbps union (DCTCP):    {exp_metrics.total_app_gdpt_gbps_measured_list_union_dctcp}")
+        print(f"- APP Gdpt Gbps measured (XPass): {exp_metrics.total_app_gdpt_gbps_measured_list_xpass}")
+        print(f"+ APP Gdpt Gbps union (XPass):    {exp_metrics.total_app_gdpt_gbps_measured_list_union_xpass}")
         print(f"APP Gdpt Gbps measured per flow (SSIRD): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_ssird}")
         print(f"APP Gdpt Gbps measured per flow (DCTCP): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_dctcp}")
         print(f"APP Gdpt Gbps measured per flow (XPass): {exp_metrics.app_gdpt_gbps_measured_per_flow_list_list_xpass}")
 
-        print(f"NW Gdpt Gbps measured (SSIRD): {exp_metrics.total_nw_gdpt_gbps_measured_list_ssird}")
-        print(f"NW Gdpt Gbps measured (DCTCP): {exp_metrics.total_nw_gdpt_gbps_measured_list_dctcp}")
-        print(f"NW Gdpt Gbps measured (Xpass): {exp_metrics.total_nw_gdpt_gbps_measured_list_xpass}")
+        print(f"- NW Gdpt Gbps measured (SSIRD): {exp_metrics.total_nw_gdpt_gbps_measured_list_ssird}")
+        print(f"+ NW Gdpt Gbps union (SSIRD):    {exp_metrics.total_nw_gdpt_gbps_measured_list_union_ssird}")
+        print(f"- NW Gdpt Gbps measured (DCTCP): {exp_metrics.total_nw_gdpt_gbps_measured_list_dctcp}")
+        print(f"+ NW Gdpt Gbps union (DCTCP):    {exp_metrics.total_nw_gdpt_gbps_measured_list_union_dctcp}")
+        print(f"- NW Gdpt Gbps measured (Xpass): {exp_metrics.total_nw_gdpt_gbps_measured_list_xpass}")
+        print(f"+ NW Gdpt Gbps union (Xpass):    {exp_metrics.total_nw_gdpt_gbps_measured_list_union_xpass}")
         print(f"NW Gdpt Gbps measured per flow (SSIRD): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_ssird}")
         print(f"NW Gdpt Gbps measured per flow (DCTCP): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_dctcp}")
         print(f"NW Gdpt Gbps measured per flow (XPass): {exp_metrics.nw_gdpt_gbps_measured_per_flow_list_list_xpass}")
@@ -1074,7 +1295,7 @@ class ExperimentGroup:
         print(f"** DCTCP FCT sorted: {exp_metrics.sorted_flowsize_fct_list_list_dctcp}")
         print(f"** XPass FCT sorted: {exp_metrics.sorted_flowsize_fct_list_list_xpass}")
 
-        return exp_metrics, flow_stats_dict
+        return exp_metrics
 
 
 class FlowSpec:
