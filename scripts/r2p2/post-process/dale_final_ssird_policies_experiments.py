@@ -480,7 +480,7 @@ def incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep():
     # print("FE_policy_ssird_"+f"_12host_DctcpMsgSizeDistActual_loadtest_2Knsx{2}_1458Bx{2}_srpt")
     # FACTOR = 3
     dale_final_eval_experiments.run_experiment_from_saved_json(
-        saved_json_file="scripts/r2p2/post-process/saved_flow_specs_json/FE_policy_PROBE_10to1_12host_DctcpMsgSizeDistActual_loadtest_2Knsx3_1458Bx3_2025-08-27T_22-08-04Z.json",
+        saved_json_file="FE_policy_PROBE_10to1_12host_DctcpMsgSizeDistActual_loadtest_2Knsx3_1458Bx3_2025-08-27T_22-08-04Z.json",
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
         src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
@@ -688,7 +688,7 @@ def incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairsh
     # print("FE_policy_ssird_"+f"_12host_DctcpMsgSizeDistActual_loadtest_2Knsx{2}_1458Bx{2}_fairshare")
     # FACTOR = 3
     dale_final_eval_experiments.run_experiment_from_saved_json(
-        saved_json_file="scripts/r2p2/post-process/saved_flow_specs_json/FE_policy_PROBE_10to1_12host_DctcpMsgSizeDistActual_loadtest_2Knsx3_1458Bx3_2025-08-27T_22-08-04Z.json",
+        saved_json_file="FE_policy_PROBE_10to1_12host_DctcpMsgSizeDistActual_loadtest_2Knsx3_1458Bx3_2025-08-27T_22-08-04Z.json",
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
         src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
@@ -726,12 +726,12 @@ if __name__ == "__main__":
     # assert(False)
     # incast_10to1_1458B_fbHadoopDist_load_fullsweep()
     # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep()
-    # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep()
+    incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep()
 
     ''' FINAL EXPERIMENTS SSIRD POLICY (FULL LOAD SWEEP) '''
     # incast_5to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare()
 
     # assert(False)
     # incast_10to1_1458B_fbHadoopDist_load_fullsweep_ssird_policy_fairshare()
-    incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_ssird_policy_fairshare()
-    # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare()
+    # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_ssird_policy_fairshare()
+    # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare() # TODO: run

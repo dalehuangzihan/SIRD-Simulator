@@ -60,6 +60,7 @@ class QmonResults:
         return statistics.mean(self.queueing_KB_list)         
     
     def get_max_qing_KB(self):
+        # print(f"queuing_kb_list: {self.queueing_KB_list}")
         return max(self.queueing_KB_list)
 
 def get_qts_timestamp_cutoff_from_csv(path_to_qts_csv):
@@ -642,7 +643,7 @@ def plot_achieved_gdpt_vs_max_qing_KB_fbHadoopDist_sideloaded(
         nw_elem, src, dst, num_flows_list, target_per_host_perflo_gdpt_gbps, byteload_size_B, inter_byteload_period_nanosec,
         x_lim=None, y_lim=None
     ):
-
+    print("fbHadoopDist")
     # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_sideloaded/FE_incast_12host_fullsweep_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_2025-08-22T_18-30-29Z.log
     ssird_max_qing_KB_list = get_max_qing_lists_for_experiment_single_proto(
         SSIRD_PROTO_NAME,
@@ -701,7 +702,9 @@ def plot_achieved_gdpt_vs_max_qing_KB_fbHadoopDist_sideloaded(
     xpass_downlink_gdpt_list_processed = [round(x, 1) for x in xpass_downlink_gdpt_list]
     dctcp_downlink_gdpt_list_processed = [round(x, 1) for x in dctcp_downlink_gdpt_list]
 
-    plt.figure(figsize=(10, 6))
+    # plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(8, 4))
+    plt.tight_layout()
     plt.xlabel(f'Acheived Goodput (Gbps)')
 
     ssird_max_qing_list = ssird_max_qing_KB_list
@@ -737,7 +740,7 @@ def plot_achieved_gdpt_vs_max_qing_KB_fbCacheFollower_sideloaded(
         nw_elem, src, dst, num_flows_list, target_per_host_perflo_gdpt_gbps, byteload_size_B, inter_byteload_period_nanosec,
         x_lim=None, y_lim=None
     ):
-
+    print("fbCacheFollower")
     # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_sideloaded/FE_incast_12host_fullsweep_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_2025-08-22T_18-30-29Z.log
     ssird_max_qing_KB_list = get_max_qing_lists_for_experiment_single_proto(
         SSIRD_PROTO_NAME,
@@ -797,7 +800,9 @@ def plot_achieved_gdpt_vs_max_qing_KB_fbCacheFollower_sideloaded(
     xpass_downlink_gdpt_list_processed = [round(x, 1) for x in xpass_downlink_gdpt_list]
     dctcp_downlink_gdpt_list_processed = [round(x, 1) for x in dctcp_downlink_gdpt_list]
 
-    plt.figure(figsize=(10, 6))
+    # plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(8, 4))
+    plt.tight_layout()
     plt.xlabel(f'Acheived Goodput (Gbps)')
 
     ssird_max_qing_list = ssird_max_qing_KB_list
@@ -833,7 +838,7 @@ def plot_achieved_gdpt_vs_max_qing_KB_DctcpMsgSizeDistActual(
         nw_elem, src, dst, num_flows_list, target_per_host_perflo_gdpt_gbps, byteload_size_B, inter_byteload_period_nanosec,
         x_lim=None, y_lim=None
     ):
-
+    print("DctcpMsgSizeDist")
     # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson/FE_incast_12host_fullsweep_5to1_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_2025-08-25T_21-36-46Z.log
     ssird_max_qing_KB_list = get_max_qing_lists_for_experiment_single_proto(
         SSIRD_PROTO_NAME,
@@ -892,7 +897,9 @@ def plot_achieved_gdpt_vs_max_qing_KB_DctcpMsgSizeDistActual(
     xpass_downlink_gdpt_list_processed = [round(x, 1) for x in xpass_downlink_gdpt_list]
     dctcp_downlink_gdpt_list_processed = [round(x, 1) for x in dctcp_downlink_gdpt_list]
 
-    plt.figure(figsize=(10, 6))
+    # plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(8, 4))
+    plt.tight_layout()
     plt.xlabel(f'Acheived Goodput (Gbps)')
 
     ssird_max_qing_list = ssird_max_qing_KB_list
@@ -958,19 +965,24 @@ def do_plots_for_fbHadoopDist_load_fullsweep_300ns():
     # ) 
 
     # scripts/r2p2/post-process/sideloaded_experiment_results/dctcp61-49_29_08_2025-1000h/fbHadoopDist_10to1_1458B_300ns_coarsegrained_dctcp61-49.txt
+    # + APP Gdpt Gbps union (SSIRD):    [65.12830655384931, 85.93877734367862, 108.19417906024054, 141.17965315641632, 168.5762726617921, 192.97282924372567]
+    num_flows_list=[1, 5, 10, 20, 30, 40]
+    ssird_downlink_gdpt_list=[43.41708211283275, 85.11775591699849, 88.4808674946757, 86.69933905883063, 89.77031884891248, 86.33009654652182]
+    xpass_downlink_gdpt_list=[8.770284553786706, 77.39269677484748, 65.08964120189057, 83.7108276491369, 84.158029070331, 83.90237402996948]
+    dctcp_downlink_gdpt_list=[55.34828509998, 85.66162157056998, 93.91935919103946, 94.08626520643149, 92.76388377043875, 86.94893493568334]
     plot_achieved_gdpt_vs_max_qing_KB_fbHadoopDist_sideloaded(
         graph_name="Facebook Hadoop Workload",
-        ssird_downlink_gdpt_list=[43.41708211283275, 85.11775591699849, 88.4808674946757, 86.69933905883063, 89.77031884891248, 86.33009654652182],
-        xpass_downlink_gdpt_list=[8.770284553786706, 77.39269677484748, 65.08964120189057, 83.7108276491369, 84.158029070331, 83.90237402996948],
-        dctcp_downlink_gdpt_list=[55.34828509998, 85.66162157056998, 93.91935919103946, 94.08626520643149, 92.76388377043875, 86.94893493568334],
+        ssird_downlink_gdpt_list=ssird_downlink_gdpt_list[:2],
+        xpass_downlink_gdpt_list=xpass_downlink_gdpt_list[:2],
+        dctcp_downlink_gdpt_list=dctcp_downlink_gdpt_list[:2],
         nw_elem=TOR,
         src="tor_12",
         dst="host_0",
-        num_flows_list=[1, 5, 10, 20, 30, 40],
+        num_flows_list=num_flows_list[:2],
         target_per_host_perflo_gdpt_gbps=39,
         byteload_size_B=1458,
         inter_byteload_period_nanosec=300,
-        y_lim=(-100, 4500)
+        # y_lim=(-100, 4500)
     ) 
 
 def do_plots_for_fbCacheFollower_load_fullsweep_5000ns_sideloaded():
@@ -1001,19 +1013,24 @@ def do_plots_for_fbCacheFollower_load_fullsweep_5000ns_sideloaded():
     # ) 
 
     # scripts/r2p2/post-process/sideloaded_experiment_results/dctcp61-49_29_08_2025-1000h/fbCacheFollowerDist_10to1_1458B_5000ns_coarsegrained_dctcp61-49.txt
+    # + APP Gdpt Gbps union (SSIRD):    [9.144754586950299, 26.35232235155296, 37.988333732985225, 109.15451804798336, 133.4143342142017, 170.9579756921012]
+    num_flows_list=[1, 5, 10, 20, 30, 40]
+    ssird_downlink_gdpt_list=[9.134202077546194, 26.32553284643731, 37.95294566072465, 89.43006085498727, 89.52309354471707, 89.62767124533248]
+    xpass_downlink_gdpt_list=[9.092464713438398, 26.130463987446454, 37.8627689451053, 87.64128771980654, 86.90807237053995, 86.70037460617901]
+    dctcp_downlink_gdpt_list=[9.141159089202306, 26.34297420635488, 37.97553233693869, 94.76226339425291, 94.07321890170886, 93.09438641162286]
     plot_achieved_gdpt_vs_max_qing_KB_fbCacheFollower_sideloaded(
         graph_name="Facebook Cache Follower",
-        ssird_downlink_gdpt_list=[9.134202077546194, 26.32553284643731, 37.95294566072465, 89.43006085498727, 89.52309354471707, 89.62767124533248],
-        xpass_downlink_gdpt_list=[9.092464713438398, 26.130463987446454, 37.8627689451053, 87.64128771980654, 86.90807237053995, 86.70037460617901],
-        dctcp_downlink_gdpt_list=[9.141159089202306, 26.34297420635488, 37.97553233693869, 94.76226339425291, 94.07321890170886, 93.09438641162286],
+        ssird_downlink_gdpt_list=ssird_downlink_gdpt_list[:3],
+        xpass_downlink_gdpt_list=xpass_downlink_gdpt_list[:3],
+        dctcp_downlink_gdpt_list=dctcp_downlink_gdpt_list[:3],
         nw_elem=TOR,
         src="tor_12",
         dst="host_0",
-        num_flows_list=[1, 5, 10, 20, 30, 40],
+        num_flows_list=num_flows_list[:3],
         target_per_host_perflo_gdpt_gbps=2,
         byteload_size_B=1458,
         inter_byteload_period_nanosec=5000,
-        y_lim=(-500, 10500)
+        # y_lim=(-500, 10500)
     ) 
 
 
@@ -1046,20 +1063,26 @@ def do_plots_for_DctcpMsgSizeDistActual_load_fullsweep_1000ns_sideloaded():
     # )
 
     # scripts/r2p2/post-process/sideloaded_experiment_results/dctcp61-49_29_08_2025-1000h/dctcpMsgSizeDistActual_5to1_1458B_1Kns_coarsegrained_dctcp61-49.txt
+    # + APP Gdpt Gbps union (SSIRD): [12.874836733375615, 27.045271987344606, 52.78103707914761, 96.32159205492195, 114.64125053831572, 131.77896662196625, 190.81734192646758]
+    num_flows_list=[1, 5, 10, 15, 20, 25, 30]
+    ssird_downlink_gdpt_list=[12.861161895588243, 27.029923151497393, 52.74087192145449, 88.11230315807097, 86.21895660544928, 88.2102401003706, 89.05507815444722]
+    xpass_downlink_gdpt_list=[12.80798983225859, 27.037898527264847, 52.69089692537962, 86.76359455251408, 86.85265056065828, 86.00249242200842, 85.16065960526134]
+    dctcp_downlink_gdpt_list=[12.870165868036004, 27.039935156735655, 52.76714471644643, 94.8442003319086, 94.8813748539235, 94.77973641701787, 94.83981014760082]
     plot_achieved_gdpt_vs_max_qing_KB_DctcpMsgSizeDistActual(
         graph_name="Web Search Workload",
-        ssird_downlink_gdpt_list=[12.861161895588243, 27.029923151497393, 52.74087192145449, 88.11230315807097, 86.21895660544928, 88.2102401003706, 89.05507815444722],
-        xpass_downlink_gdpt_list=[12.80798983225859, 27.037898527264847, 52.69089692537962, 86.76359455251408, 86.85265056065828, 86.00249242200842, 85.16065960526134],
-        dctcp_downlink_gdpt_list=[12.870165868036004, 27.039935156735655, 52.76714471644643, 94.8442003319086, 94.8813748539235, 94.77973641701787, 94.83981014760082],
+        ssird_downlink_gdpt_list=ssird_downlink_gdpt_list[:4],
+        xpass_downlink_gdpt_list=xpass_downlink_gdpt_list[:4],
+        dctcp_downlink_gdpt_list=dctcp_downlink_gdpt_list[:4],
         nw_elem=TOR,
         src="tor_6",
         dst="host_0",
-        num_flows_list=[1, 5, 10, 15, 20, 25, 30],
+        num_flows_list=num_flows_list[:4],
         target_per_host_perflo_gdpt_gbps=12,
         byteload_size_B=1458,
         inter_byteload_period_nanosec=1000,
-        y_lim=(-100, 4500)
+        # y_lim=(-100, 4500)
     )
+
 
 if __name__ == "__main__":
 

@@ -99,7 +99,9 @@ def plot_achieved_gdpt_vs_slowdown(
     ]))==1)
     num_experiments = len(ssird_flowsize_fct_s_pairs_list_list)
 
-    plt.figure(figsize=(10, 6))
+    # plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(8, 4))
+    plt.tight_layout()
     plt.xlabel(f'Acheived Goodput (Gbps)')
     plt.ylabel(f'Slowdown ({percentile}-th percentile)')
     # plt.title(f'Achieved Goodput vs Slowdown\n{experiment_family}{title_addendum}\n{experiment_date}')
@@ -322,6 +324,8 @@ def do_plot_for_DctcpMsgSizeDistActual_load_fullsweep_1000ns():
 
 def do_achv_gdpt_slowdown_plot_for_fbHadoopDist_load_fullsweep_300ns():
 
+    # + APP Gdpt Gbps union (SSIRD):    [65.12830655384931, 85.93877734367862, 108.19417906024054, 141.17965315641632, 168.5762726617921, 192.97282924372567]
+
     # # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson/FE_incast_12host_fullsweep_10to1_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_2025-08-22T_18-46-14Z.log
     # # INFO:__main__:NW Gdpt Gbps measured (SSIRD): [43.41708211283275, 85.11775591699849, 88.4808674946757, 86.69933905883063, 89.77031884891248, 86.33009654652182]
     # # INFO:__main__:NW Gdpt Gbps measured (DCTCP): [55.34828509998, 85.66162157056998, 93.91935919103946, 94.11016091089746, 91.45190459012693, 86.48900413806716]
@@ -364,20 +368,22 @@ def do_achv_gdpt_slowdown_plot_for_fbHadoopDist_load_fullsweep_300ns():
         graph_name="Facebook Hadoop Workload",
         experiment_date="2025-08-22T_18-46-14Z",
         experiment_family="FE_incast_12host_fullsweep_",
-        title_addendum="_12host_fbHadoopDist_load_fullsweep_300ns_fromjson",
+        title_addendum="_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_dctcp_61-49",
         byteload_size_B=1458,
         inter_byteload_interval_nanosec=300,
         rtt_s=dale_fe_analyse_fct_slowdown.RTT_5US_S,
-        ssird_achieved_gdpt_gbps_list=ssird_achieved_gdpt_gbps_list,
-        xpass_achieved_gdpt_gbps_list=xpass_achieved_gdpt_gbps_list,
-        dctcp_achieved_gdpt_gbps_list=dctcp_achieved_gdpt_gbps_list,
-        ssird_flowsize_fct_s_pairs_list_list=ssird_flowsize_fct_s_pairs_list_list,
-        xpass_flowsize_fct_s_pairs_list_list=xpass_flowsize_fct_s_pairs_list_list,
-        dctcp_flowsize_fct_s_pairs_list_list=dctcp_flowsize_fct_s_pairs_list_list,
+        ssird_achieved_gdpt_gbps_list=ssird_achieved_gdpt_gbps_list[:2],
+        xpass_achieved_gdpt_gbps_list=xpass_achieved_gdpt_gbps_list[:2],
+        dctcp_achieved_gdpt_gbps_list=dctcp_achieved_gdpt_gbps_list[:2],
+        ssird_flowsize_fct_s_pairs_list_list=ssird_flowsize_fct_s_pairs_list_list[:2],
+        xpass_flowsize_fct_s_pairs_list_list=xpass_flowsize_fct_s_pairs_list_list[:2],
+        dctcp_flowsize_fct_s_pairs_list_list=dctcp_flowsize_fct_s_pairs_list_list[:2],
         percentile=90
     )
 
 def do_achv_gdpt_slowdown_plot_for_fbCacheFollowerDist_load_fullsweep_5000ns():
+
+    # + APP Gdpt Gbps union (SSIRD):    [9.144754586950299, 26.35232235155296, 37.988333732985225, 109.15451804798336, 133.4143342142017, 170.9579756921012]
 
     # # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_sideloaded/ssird_FE_incast_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_fromjson_sideloaded_2025-08-22T_18-30-29Z.txt
     # # NW Gdpt Gbps measured (SSIRD): [9.134202077546194, 26.32553284643731, 37.95294566072465, 89.43006085498727, 89.52309354471707, 89.62767124533248]
@@ -416,20 +422,22 @@ def do_achv_gdpt_slowdown_plot_for_fbCacheFollowerDist_load_fullsweep_5000ns():
         graph_name="Facebook Cache Follower Workload",
         experiment_date="2025-08-22T_18-30-29Z_and_2025-08-24T_11-16-52Z",
         experiment_family="FE_incast_12host_fullsweep_",
-        title_addendum="_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson",
+        title_addendum="_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_61-49",
         byteload_size_B=1458,
         inter_byteload_interval_nanosec=5000,
         rtt_s=dale_fe_analyse_fct_slowdown.RTT_5US_S,
-        ssird_achieved_gdpt_gbps_list=ssird_achieved_gdpt_gbps_list,
-        xpass_achieved_gdpt_gbps_list=xpass_achieved_gdpt_gbps_list,
-        dctcp_achieved_gdpt_gbps_list=dctcp_achieved_gdpt_gbps_list,
-        ssird_flowsize_fct_s_pairs_list_list=ssird_flowsize_fct_s_pairs_list_list,
-        xpass_flowsize_fct_s_pairs_list_list=xpass_flowsize_fct_s_pairs_list_list,
-        dctcp_flowsize_fct_s_pairs_list_list=dctcp_flowsize_fct_s_pairs_list_list,
+        ssird_achieved_gdpt_gbps_list=ssird_achieved_gdpt_gbps_list[:3],
+        xpass_achieved_gdpt_gbps_list=xpass_achieved_gdpt_gbps_list[:3],
+        dctcp_achieved_gdpt_gbps_list=dctcp_achieved_gdpt_gbps_list[:3],
+        ssird_flowsize_fct_s_pairs_list_list=ssird_flowsize_fct_s_pairs_list_list[:3],
+        xpass_flowsize_fct_s_pairs_list_list=xpass_flowsize_fct_s_pairs_list_list[:3],
+        dctcp_flowsize_fct_s_pairs_list_list=dctcp_flowsize_fct_s_pairs_list_list[:3],
         percentile=90
     )
 
 def do_achv_gdpt_slowdown_plot_for_DctcpMsgSizeDistActual_load_fullsweep_1000ns():
+
+    # + APP Gdpt Gbps union (SSIRD):    [12.874836733375615, 27.045271987344606, 52.78103707914761, 96.32159205492195, 114.64125053831572, 131.77896662196625, 190.81734192646758]
 
     # # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson/FE_incast_12host_fullsweep_5to1_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_2025-08-25T_21-36-46Z.log
     # # INFO:__main__:NW Gdpt Gbps measured (SSIRD): [12.861161895588243, 27.029923151497393, 52.74087192145449, 88.11230315807097, 86.21895660544928, 88.2102401003706, 89.05507815444722]
@@ -468,16 +476,16 @@ def do_achv_gdpt_slowdown_plot_for_DctcpMsgSizeDistActual_load_fullsweep_1000ns(
         graph_name="Web Search Workload",
         experiment_date="2025-08-25T_21-36-46Z",
         experiment_family="FE_incast_12host_fullsweep_",
-        title_addendum="_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson",
+        title_addendum="_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_dctcp61-49",
         byteload_size_B=1458,
         inter_byteload_interval_nanosec=1000,
         rtt_s=dale_fe_analyse_fct_slowdown.RTT_5US_S,
-        ssird_achieved_gdpt_gbps_list=ssird_achieved_gdpt_gbps_list,
-        xpass_achieved_gdpt_gbps_list=xpass_achieved_gdpt_gbps_list,
-        dctcp_achieved_gdpt_gbps_list=dctcp_achieved_gdpt_gbps_list,
-        ssird_flowsize_fct_s_pairs_list_list=ssird_flowsize_fct_s_pairs_list_list,
-        xpass_flowsize_fct_s_pairs_list_list=xpass_flowsize_fct_s_pairs_list_list,
-        dctcp_flowsize_fct_s_pairs_list_list=dctcp_flowsize_fct_s_pairs_list_list,
+        ssird_achieved_gdpt_gbps_list=ssird_achieved_gdpt_gbps_list[:4],
+        xpass_achieved_gdpt_gbps_list=xpass_achieved_gdpt_gbps_list[:4],
+        dctcp_achieved_gdpt_gbps_list=dctcp_achieved_gdpt_gbps_list[:4],
+        ssird_flowsize_fct_s_pairs_list_list=ssird_flowsize_fct_s_pairs_list_list[:4],
+        xpass_flowsize_fct_s_pairs_list_list=xpass_flowsize_fct_s_pairs_list_list[:4],
+        dctcp_flowsize_fct_s_pairs_list_list=dctcp_flowsize_fct_s_pairs_list_list[:4],
         percentile=90
     )
 
