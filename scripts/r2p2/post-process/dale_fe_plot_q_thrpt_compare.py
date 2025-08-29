@@ -1063,6 +1063,10 @@ def do_plots_for_DctcpMsgSizeDistActual_load_fullsweep_1000ns_sideloaded():
     # )
 
     # scripts/r2p2/post-process/sideloaded_experiment_results/dctcp61-49_29_08_2025-1000h/dctcpMsgSizeDistActual_5to1_1458B_1Kns_coarsegrained_dctcp61-49.txt
+    # DctcpMsgSizeDist
+    # ssird_max_qing_KB_list=[1.16, 44.01, 55.01, 61.7]
+    # xpass_max_qing_KB_list=[1.77, 22.21, 115.56, 178.8]
+    # dctcp_max_qing_KB_list=[1.14, 906.51, 2328.57, 3189.42]
     # + APP Gdpt Gbps union (SSIRD): [12.874836733375615, 27.045271987344606, 52.78103707914761, 96.32159205492195, 114.64125053831572, 131.77896662196625, 190.81734192646758]
     num_flows_list=[1, 5, 10, 15, 20, 25, 30]
     ssird_downlink_gdpt_list=[12.861161895588243, 27.029923151497393, 52.74087192145449, 88.11230315807097, 86.21895660544928, 88.2102401003706, 89.05507815444722]
@@ -1092,6 +1096,6 @@ if __name__ == "__main__":
     # do_plots_for_DctcpMsgSizeDist_load_fullsweep_800ns()
     # do_plots_for_GoogleAlRPC_load_fullsweep_300ns()
 
-    do_plots_for_fbHadoopDist_load_fullsweep_300ns()
-    do_plots_for_fbCacheFollower_load_fullsweep_5000ns_sideloaded()
+    # do_plots_for_fbHadoopDist_load_fullsweep_300ns()
+    # do_plots_for_fbCacheFollower_load_fullsweep_5000ns_sideloaded()
     do_plots_for_DctcpMsgSizeDistActual_load_fullsweep_1000ns_sideloaded()

@@ -19,8 +19,6 @@ MIN_BYTELOAD_INTERVAL_US = 0.001 # is 1ns
 
 # Common experiment param; value is meaningful only when req_interval_distr is not 'manual'
 CLIENT_INJECTION_RATE_GBPS = "60"
-# DCTCP_ECN_MARKING_THRESHOLD = "50"
-# DCTCP_ECN_MARKING_THRESHOLD = "82"
 DCTCP_ECN_MARKING_THRESHOLD = "61"  # is 1.25BDP when BDP=75000B
 LINK_SPEED_BITS_PER_SEC = 100 * pow(10,9) * 8 # 100Gbps
 

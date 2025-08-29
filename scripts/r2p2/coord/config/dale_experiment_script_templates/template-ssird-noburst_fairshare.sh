@@ -6,7 +6,7 @@ source "config/examples/example-common.sh"
 max_threads='1'
 
 # ===================== Common Parameters =====================
-topology_file_l='4-hosts.yaml'
+topology_file_l='12-hosts-dumbbell.yaml'
 trace_last_ratio='1.0' # the % of the total simulation duration that will be traced / monitored
 trace_cc='1'
 
@@ -26,11 +26,16 @@ mean_req_size_B_l='121848' # only meanigful if req_size_distr is not manual
 global_debug='6' 
 
 # ===================== R2P2 Parameters =====================
+r2p2_ecn_threshold_min_l='61' # packets Dale: is 1.25xBDP when BDP = 75000B
+r2p2_ecn_threshold_max_l='61' # packets Dale: is 1.25xBDP when BDP = 75000B
 # # Dale: re-adjust sendr-recvr pair credit budget after changing RTT from 5us to 1ms
 # r2p2_budgets_intra_max_bytes_l='21600000'
 # r2p2_elet_srpb_l='14400000'
-r2p2_budgets_intra_max_bytes_l='108000'
-r2p2_elet_srpb_l='72000'
+# Dale: re-adjust credit budgets after changing RTT from 5us to 6us
+r2p2_budgets_intra_max_bytes_l='129600'
+r2p2_elet_srpb_l='86400'
+# r2p2_budgets_intra_max_bytes_l='108000'
+# r2p2_elet_srpb_l='72000'
 r2p2_unsolicited_thresh_bytes_l="0" # no bursts
 # sendr policy:: 0 -> fair sharing, 1-> SRPT for sender_policy_ratio_ of the BW, 2-> prioritize receivers with highest credit backlog (at sender_policy_ratio_ % of the BW)
 r2p2_hybrid_sender_policy_l="0"
