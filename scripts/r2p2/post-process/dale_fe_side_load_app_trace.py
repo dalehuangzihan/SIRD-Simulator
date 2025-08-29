@@ -33,6 +33,16 @@ def side_load_and_process_results(
     print("----------")
     print(saved_json_file)
     print("==========")
+    print("ssird_app_trace files:")
+    for file in ssird_app_trace_paths_list:
+        print(file)
+    print("dctcp_app_trace files:")
+    for file in dctcp_app_trace_paths_list:
+        print(file)
+    print("xpass_app_trace files:")
+    for file in xpass_app_trace_paths_list:
+        print(file)
+    print("##########\n")
 
     target_flow_rate_gbps = (byteload_size_B_list[0] * 8) / (target_mean_byteload_interval_nanosec_list[0] * pow(10,-9)) * pow(10, -9)
 
@@ -108,7 +118,8 @@ def side_load_incast_fbHadoopDist_load_fullsweep_10to1_1458B_300ns_coarsegrained
     # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson/FE_incast_12host_fullsweep_10to1_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_2025-08-22T_18-46-14Z.log
 
     experiment_logs_list = [
-        "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson/FE_incast_12host_fullsweep_10to1_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_2025-08-22T_18-46-14Z.log"
+        "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson/FE_incast_12host_fullsweep_10to1_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_2025-08-22T_18-46-14Z.log",
+        "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson_dctcp61-49/FE_incast_12host_fullsweep_10to1_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_dctcp61-49_2025-08-29T_08-05-37Z.log"
     ]
 
     proto_list = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME]
@@ -128,14 +139,23 @@ def side_load_incast_fbHadoopDist_load_fullsweep_10to1_1458B_300ns_coarsegrained
         "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__30flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/SSIRD/60/applications_trace.str",
         "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__40flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/SSIRD/60/applications_trace.str"
     ]
-    # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_fullsweep_/_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_1+5+10+20+30+40flo_39Gbps_2025-08-22T_18-46-14Z/DCTCP-50_app_traces.txt
+        # # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_fullsweep_/_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_1+5+10+20+30+40flo_39Gbps_2025-08-22T_18-46-14Z/DCTCP-50_app_traces.txt
+        # dctcp_app_trace_paths_list = [
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__1flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__5flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__10flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__20flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__30flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__40flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/DCTCP-50/60/applications_trace.str",
+        # ]
+    # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_fullsweep_/_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_dctcp61-49_1+5+10+20+30+40flo_39Gbps_2025-08-29T_08-05-37Z/DCTCP-61_app_traces.txt
     dctcp_app_trace_paths_list = [
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__1flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__5flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__10flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__20flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__30flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson__40flo-39Gbps-1458B-300ns-2025-08-22T_18-46-14Z/data/DCTCP-50/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson_dctcp61-49__1flo-39Gbps-1458B-300ns-2025-08-29T_08-05-37Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson_dctcp61-49__5flo-39Gbps-1458B-300ns-2025-08-29T_08-05-37Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson_dctcp61-49__10flo-39Gbps-1458B-300ns-2025-08-29T_08-05-37Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson_dctcp61-49__20flo-39Gbps-1458B-300ns-2025-08-29T_08-05-37Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson_dctcp61-49__30flo-39Gbps-1458B-300ns-2025-08-29T_08-05-37Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_fbHadoopDist_load_fullsweep_300ns_fromjson_dctcp61-49__40flo-39Gbps-1458B-300ns-2025-08-29T_08-05-37Z/data/DCTCP-61/60/applications_trace.str"
     ]
     # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_fullsweep_/_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_1+5+10+20+30+40flo_39Gbps_2025-08-22T_18-46-14Z/ExpressPass_app_traces.txt
     xpass_app_trace_paths_list = [
@@ -169,7 +189,8 @@ def side_load_incast_fbCacheFollowerDist_load_fullsweep_10to1_1458B_5000ns_coars
     experiment_logs_list = [
         "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_sideloaded/FE_incast_12host_fullsweep_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_2025-08-22T_18-30-29Z.log",
         "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_sideloaded/FE_incast_12host_fullsweep_dctcp_xpass_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass_2025-08-24T_11-16-52Z.log",
-        "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_sideloaded/ssird_FE_incast_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_fromjson_sideloaded_2025-08-22T_18-30-29Z.txt"
+        "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_sideloaded/ssird_FE_incast_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_fromjson_sideloaded_2025-08-22T_18-30-29Z.txt",
+        "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp61-49/FE_incast_12host_fullsweep_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp61-49_2025-08-29T_08-09-47Z.log"
     ]
 
     proto_list = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME]
@@ -189,14 +210,23 @@ def side_load_incast_fbCacheFollowerDist_load_fullsweep_10to1_1458B_5000ns_coars
         "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson__30flo-2Gbps-1458B-5000ns-2025-08-22T_18-30-29Z/data/SSIRD/60/applications_trace.str",
         "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson__40flo-2Gbps-1458B-5000ns-2025-08-22T_18-30-29Z/data/SSIRD/60/applications_trace.str"
     ]
-    # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_fullsweep_dctcp_xpass_/_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass_1+5+10+20+30+40flo_2Gbps_2025-08-24T_11-16-52Z/DCTCP-50_app_traces.txt
+        # # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_fullsweep_dctcp_xpass_/_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass_1+5+10+20+30+40flo_2Gbps_2025-08-24T_11-16-52Z/DCTCP-50_app_traces.txt
+        # dctcp_app_trace_paths_list = [
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep_dctcp_xpass__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass__1flo-2Gbps-1458B-5000ns-2025-08-24T_11-16-52Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep_dctcp_xpass__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass__5flo-2Gbps-1458B-5000ns-2025-08-24T_11-16-52Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep_dctcp_xpass__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass__10flo-2Gbps-1458B-5000ns-2025-08-24T_11-16-52Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep_dctcp_xpass__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass__20flo-2Gbps-1458B-5000ns-2025-08-24T_11-16-52Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep_dctcp_xpass__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass__30flo-2Gbps-1458B-5000ns-2025-08-24T_11-16-52Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep_dctcp_xpass__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass__40flo-2Gbps-1458B-5000ns-2025-08-24T_11-16-52Z/data/DCTCP-50/60/applications_trace.str"
+        # ]
+    # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_fullsweep_/_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp61-49_1+5+10+20+30+40flo_2Gbps_2025-08-29T_08-09-47Z/DCTCP-61_app_traces.txt
     dctcp_app_trace_paths_list = [
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep_dctcp_xpass__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass__1flo-2Gbps-1458B-5000ns-2025-08-24T_11-16-52Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep_dctcp_xpass__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass__5flo-2Gbps-1458B-5000ns-2025-08-24T_11-16-52Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep_dctcp_xpass__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass__10flo-2Gbps-1458B-5000ns-2025-08-24T_11-16-52Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep_dctcp_xpass__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass__20flo-2Gbps-1458B-5000ns-2025-08-24T_11-16-52Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep_dctcp_xpass__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass__30flo-2Gbps-1458B-5000ns-2025-08-24T_11-16-52Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host_fullsweep_dctcp_xpass__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass__40flo-2Gbps-1458B-5000ns-2025-08-24T_11-16-52Z/data/DCTCP-50/60/applications_trace.str"
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp61-49__1flo-2Gbps-1458B-5000ns-2025-08-29T_08-09-47Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp61-49__5flo-2Gbps-1458B-5000ns-2025-08-29T_08-09-47Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp61-49__10flo-2Gbps-1458B-5000ns-2025-08-29T_08-09-47Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp61-49__20flo-2Gbps-1458B-5000ns-2025-08-29T_08-09-47Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp61-49__30flo-2Gbps-1458B-5000ns-2025-08-29T_08-09-47Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp61-49__40flo-2Gbps-1458B-5000ns-2025-08-29T_08-09-47Z/data/DCTCP-61/60/applications_trace.str"
     ]
     # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_fullsweep_dctcp_xpass_/_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass_1+5+10+20+30+40flo_2Gbps_2025-08-24T_11-16-52Z/ExpressPass_app_traces.txt
     xpass_app_trace_paths_list = [
@@ -229,7 +259,8 @@ def side_load_incast_dctcpMsgSizeDistActual_load_fullsweep_5to1_1458B_1Kns_coars
 
     experiment_logs_list = [
         "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson/FE_incast_12host_fullsweep_5to1_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_2025-08-25T_21-36-46Z.log",
-        "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry/FE_incast_12host_5to1_6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry_2025-08-25T_21-17-11Z.log"
+        "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry/FE_incast_12host_5to1_6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry_2025-08-25T_21-17-11Z.log",
+        "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_dctcp61-49/FE_incast_12host_fullsweep_5to1_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_dctcp61-49_2025-08-29T_08-21-07Z.log"
     ]
 
     proto_list = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME]
@@ -250,15 +281,26 @@ def side_load_incast_dctcpMsgSizeDistActual_load_fullsweep_5to1_1458B_1Kns_coars
         "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson__25flo-12Gbps-1458B-1000ns-2025-08-25T_21-36-46Z/data/SSIRD/60/applications_trace.str",
         "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson__30flo-12Gbps-1458B-1000ns-2025-08-25T_21-36-46Z/data/SSIRD/60/applications_trace.str"
     ]
-    # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_/_6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry_1+5+10+15+20+25+30flo_12Gbps_2025-08-25T_21-17-11Z/DCTCP-50_app_traces.txt
+        # # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_/_6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry_1+5+10+15+20+25+30flo_12Gbps_2025-08-25T_21-17-11Z/DCTCP-50_app_traces.txt
+        # dctcp_app_trace_paths_list = [
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__1flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__5flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__10flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__15flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__20flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__25flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__30flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str"
+        # ]
+
+    # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_fullsweep_/_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_dctcp61-49_1+5+10+15+20+25+30flo_12Gbps_2025-08-29T_08-21-07Z/DCTCP-61_app_traces.txt
     dctcp_app_trace_paths_list = [
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__1flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__5flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__10flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__15flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__20flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__25flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry__30flo-12Gbps-1458B-1000ns-2025-08-25T_21-17-11Z/data/DCTCP-50/60/applications_trace.str"
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_dctcp61-49__1flo-12Gbps-1458B-1000ns-2025-08-29T_08-21-07Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_dctcp61-49__5flo-12Gbps-1458B-1000ns-2025-08-29T_08-21-07Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_dctcp61-49__10flo-12Gbps-1458B-1000ns-2025-08-29T_08-21-07Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_dctcp61-49__15flo-12Gbps-1458B-1000ns-2025-08-29T_08-21-07Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_dctcp61-49__20flo-12Gbps-1458B-1000ns-2025-08-29T_08-21-07Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_dctcp61-49__25flo-12Gbps-1458B-1000ns-2025-08-29T_08-21-07Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_dctcp61-49__30flo-12Gbps-1458B-1000ns-2025-08-29T_08-21-07Z/data/DCTCP-61/60/applications_trace.str"
     ]
     # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_/_6host_DctcpMsgSizeDistActual_loadtest_1Kns_retry_1+5+10+15+20+25+30flo_12Gbps_2025-08-25T_21-17-11Z/ExpressPass_app_traces.txt
     xpass_app_trace_paths_list = [
@@ -291,8 +333,9 @@ def side_load_incast_dctcpMsgSizeDistActual_load_fullsweep_5to1_1458B_1Kns_coars
 def side_load_incast_dctcpMsgSizeDistActual_load_fullsweep_10to1_1458B_2Kns_coarsegrained():
 
     experiment_logs_list = [
-        "scripts/r2p2/post-process/experiment_output/FE_incast_12host_fullsweep__12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson/FE_incast_12host_fullsweep_10to1_12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson_2025-08-26T_15-19-45Z.log",
-        "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry/FE_incast_12host_10to1_12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry_2025-08-26T_13-13-34Z.log"
+        #TODO: update # "scripts/r2p2/post-process/experiment_output/FE_incast_12host_fullsweep__12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson/FE_incast_12host_fullsweep_10to1_12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson_2025-08-26T_15-19-45Z.log",
+        "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry/FE_incast_12host_10to1_12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry_2025-08-26T_13-13-34Z.log",
+        "scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson_dctcp61-49/FE_incast_12host_fullsweep_10to1_12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson_dctcp61-49_2025-08-29T_08-27-25Z.log"
     ]
 
     proto_list = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME]
@@ -306,15 +349,25 @@ def side_load_incast_dctcpMsgSizeDistActual_load_fullsweep_10to1_1458B_2Kns_coar
     ssird_app_trace_paths_list = [
         # TODO
     ]
-    # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_/_12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry_1+5+10+15+20+25+30flo_6Gbps_2025-08-26T_13-13-34Z/DCTCP-50_app_traces.txt
+        # # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_/_12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry_1+5+10+15+20+25+30flo_6Gbps_2025-08-26T_13-13-34Z/DCTCP-50_app_traces.txt
+        # dctcp_app_trace_paths_list = [
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__1flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__5flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__10flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__15flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__20flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__25flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str",
+        #     "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__30flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str"
+        # ]
+    # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_fullsweep_/_12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson_dctcp61-49_1+5+10+15+20+25+30flo_6Gbps_2025-08-29T_08-27-25Z/DCTCP-61_app_traces.txt
     dctcp_app_trace_paths_list = [
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__1flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__5flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__10flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__15flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__20flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__25flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str",
-        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-50-FE_incast_12host__12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry__30flo-6Gbps-1458B-2000ns-2025-08-26T_13-13-34Z/data/DCTCP-50/60/applications_trace.str"
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson_dctcp61-49__1flo-6Gbps-1458B-2000ns-2025-08-29T_08-27-25Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson_dctcp61-49__5flo-6Gbps-1458B-2000ns-2025-08-29T_08-27-25Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson_dctcp61-49__10flo-6Gbps-1458B-2000ns-2025-08-29T_08-27-25Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson_dctcp61-49__15flo-6Gbps-1458B-2000ns-2025-08-29T_08-27-25Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson_dctcp61-49__20flo-6Gbps-1458B-2000ns-2025-08-29T_08-27-25Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson_dctcp61-49__25flo-6Gbps-1458B-2000ns-2025-08-29T_08-27-25Z/data/DCTCP-61/60/applications_trace.str",
+        "/home/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/DCTCP-61-FE_incast_12host_fullsweep__12host_DctcpMsgSizeDistActual_load_fullsweep_2Kns_fromjson_dctcp61-49__30flo-6Gbps-1458B-2000ns-2025-08-29T_08-27-25Z/data/DCTCP-61/60/applications_trace.str"
     ]
     # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_/_12host_DctcpMsgSizeDistActual_loadtest_2Kns_retry_1+5+10+15+20+25+30flo_6Gbps_2025-08-26T_13-13-34Z/DCTCP-50_app_traces.txt
     xpass_app_trace_paths_list = [

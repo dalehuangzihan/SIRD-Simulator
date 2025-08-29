@@ -30,6 +30,7 @@ global_debug='6'
 # ===================== dctcp parameters =====================
 # dctcp's ecn marking threshold in packets
 dctcp_k_l='DUMMY' 
+dctcp_init_cwnd_l='49' # in packets; is 1BDP's worth when BDP=75000B
 
 # ===================== homa parametrs =====================
 homa_workload_type=5
