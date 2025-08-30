@@ -6,7 +6,7 @@ source "config/examples/example-common.sh"
 max_threads='1'
 
 # ===================== common parameters =====================
-topology_file_l='4-hosts.yaml'
+topology_file_l='12-hosts-dumbbell.yaml'
 trace_last_ratio='1.0' # the % of the total simulation duration that will be traced / monitored
 trace_cc='1'
 
@@ -30,6 +30,7 @@ global_debug='6'
 # ===================== dctcp parameters =====================
 # dctcp's ecn marking threshold in packets
 dctcp_k_l='DUMMY' 
+dctcp_init_cwnd_l='49' # in packets; Dale: is 1xBDP's worth when BDP=75000B
 
 # ===================== homa parametrs =====================
 homa_workload_type=5
