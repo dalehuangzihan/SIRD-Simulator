@@ -602,6 +602,22 @@ def do_slowdown_vs_flowsize_ranges_plot_for_DctcpMsgSizeDistActual_ssird_policy(
         y_lim=(0, 15)
     )
 
+    plot_slowdown_vs_flowsize_ranges_ssird_policy(
+        graph_title="Web Search Workload (52% Offered Load)",
+        experiment_date="2025-08-25T_21-36-46Z",
+        experiment_family="FE_incast_12host_fullsweep_",
+        title_addendum="_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson",
+        byteload_size_B=1458,
+        inter_byteload_interval_nanosec=1000,
+        rtt_s=RTT_5US_S,
+        num_flows_list=[1, 5, 10, 15, 20, 25, 30],
+        incast_degree=5,
+        target_num_flows=10,
+        ssird_srpt_flowsize_fct_s_pairs_list_list=ssird_srpt_flowsize_fct_s_pairs_list_list,
+        ssird_fairshare_flowsize_fct_s_pairs_list_list=ssird_fairshare_flowsize_fct_s_pairs_list_list,
+        percentile=90,
+        y_lim=(0, 15)
+    )
 ''' Plots for comparing across different protos '''
 
 def do_slowdown_vs_flowsize_ranges_plot_for_fbHadoopDist_allproto():

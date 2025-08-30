@@ -105,7 +105,7 @@ def plot_achieved_gdpt_vs_slowdown(
     plt.xlabel(f'Acheived Goodput (Gbps)')
     plt.ylabel(f'Slowdown ({percentile}-th percentile)')
     # plt.title(f'Achieved Goodput vs Slowdown\n{experiment_family}{title_addendum}\n{experiment_date}')
-    plt.title(f'Achieved Goodput vs Slowdown\n{graph_name}')
+    plt.title(f'Slowdown vs Achieved Goodput\n{graph_name}')
 
     ssird_slowdown_list_list = [] 
     xpass_slowdown_list_list = []
@@ -497,6 +497,6 @@ if __name__ == "__main__":
     # do_plot_for_GoogleAllRPC_load_fullsweep_300ns()
     # do_plot_for_DctcpMsgSizeDistActual_load_fullsweep_300ns()
 
-    do_achv_gdpt_slowdown_plot_for_fbHadoopDist_load_fullsweep_300ns()
-    do_achv_gdpt_slowdown_plot_for_fbCacheFollowerDist_load_fullsweep_5000ns()
+    # do_achv_gdpt_slowdown_plot_for_fbHadoopDist_load_fullsweep_300ns()
+    # do_achv_gdpt_slowdown_plot_for_fbCacheFollowerDist_load_fullsweep_5000ns()
     do_achv_gdpt_slowdown_plot_for_DctcpMsgSizeDistActual_load_fullsweep_1000ns()

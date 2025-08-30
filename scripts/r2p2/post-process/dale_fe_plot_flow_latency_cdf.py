@@ -622,6 +622,23 @@ def do_slowdown_cdf_plot_for_DctcpMsgSizeDistActual_fullsweep_1000ns_5to1():
         ssird_fairshare_flowsize_fct_s_pairs_list_list=ssird_fairshare_flowsize_fct_s_pairs_list_list
     )
 
+    plot_ssird_flow_slowdown_cdf_single(
+        graph_title="Web Search Workload (50% Offered Load)",
+        experiment_date="2025-08-25T_21-36-46Z",
+        experiment_family="FE_incast_12host_fullsweep_",
+        title_addendum="_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson",
+        byteload_size_B=1458,
+        inter_byteload_interval_nanosec=1000,
+        rtt_s=dale_fe_analyse_fct_slowdown.RTT_5US_S,
+        num_flows_list_srpt=[1, 5, 10, 15, 20, 25, 30],
+        num_flows_list_fairshare=[1, 5, 10, 15, 20, 25, 30],
+        incast_degree=5,
+        target_num_flows_srpt=10,
+        target_num_flows_fairshare=10,
+        ssird_srpt_flowsize_fct_s_pairs_list_list=ssird_srpt_flowsize_fct_s_pairs_list_list,
+        ssird_fairshare_flowsize_fct_s_pairs_list_list=ssird_fairshare_flowsize_fct_s_pairs_list_list
+    )
+
 # def test_fbHadoopDist_bload_size_test():
 #     # NOTE: we cannot compare performance across different generated flows! (?)
 

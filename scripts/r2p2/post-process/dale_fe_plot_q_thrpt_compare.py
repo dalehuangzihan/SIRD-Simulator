@@ -1088,6 +1088,41 @@ def do_plots_for_DctcpMsgSizeDistActual_load_fullsweep_1000ns_sideloaded():
     )
 
 
+def get_max_quing_for_fbHaddopDist_600ns_NEW():
+
+    # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_sideloaded/FE_incast_12host_fullsweep_dctcp_xpass_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass_2025-08-24T_11-16-52Z.log
+    xpass_max_qing_KB_list = get_max_qing_lists_for_experiment_single_proto(
+        XPASS_PROTO_NAME,
+        nw_elem=TOR,
+        src="tor_12",
+        dst="host_0",
+        num_flows_list=[1, 5, 10, 15, 20, 24, 26, 28, 30, 25, 40],
+        target_per_host_perflo_gdpt_gbps=19,
+        byteload_size_B=1458,
+        inter_byteload_period_nanosec=600,
+        experiment_date="2025-08-30T_07-48-43Z",
+        experiment_family="FE_incast_12host_fullsweep_v3_",
+        title_addendum="_12host_fbHadoopDist_loadtest_300ns_retry_xpass",
+    )
+    # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_sideloaded/FE_incast_12host_fullsweep_dctcp_xpass_10to1_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_dctcp_xpass_2025-08-24T_11-16-52Z.log
+    dctcp_max_qing_KB_list = get_max_qing_lists_for_experiment_single_proto(
+        DCTCP_PROTO_NAME,
+        nw_elem=TOR,
+        src="tor_12",
+        dst="host_0",
+        num_flows_list=[1, 5, 10, 15, 20, 24, 26, 28, 30, 25, 40],
+        target_per_host_perflo_gdpt_gbps=19,
+        byteload_size_B=1458,
+        inter_byteload_period_nanosec=600,
+        experiment_date="2025-08-30T_07-47-25Z",
+        experiment_family="FE_incast_12host_fullsweep_v3_",
+        title_addendum="_12host_fbHadoopDist_loadtest_300ns_retry_dctcp",
+    )
+
+    print("fbHadoopDist v3")
+    print(f"xpass max quing raw KB: {xpass_max_qing_KB_list}")
+    print(f"dctcp max quing raw KB: {dctcp_max_qing_KB_list}")
+
 if __name__ == "__main__":
 
     # do_thrpt_qing_comparison_10to1_800ns_DctcpMsgSizeDist_load_fullsweep_experiment()
@@ -1098,4 +1133,7 @@ if __name__ == "__main__":
 
     # do_plots_for_fbHadoopDist_load_fullsweep_300ns()
     # do_plots_for_fbCacheFollower_load_fullsweep_5000ns_sideloaded()
+
     do_plots_for_DctcpMsgSizeDistActual_load_fullsweep_1000ns_sideloaded()
+
+    get_max_quing_for_fbHaddopDist_600ns_NEW()
