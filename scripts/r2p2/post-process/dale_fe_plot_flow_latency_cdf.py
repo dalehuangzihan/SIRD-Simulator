@@ -623,7 +623,7 @@ def do_slowdown_cdf_plot_for_DctcpMsgSizeDistActual_fullsweep_1000ns_5to1():
     )
 
     plot_ssird_flow_slowdown_cdf_single(
-        graph_title="Web Search Workload (50% Offered Load)",
+        graph_title="Web Search Workload (52% Offered Load)",
         experiment_date="2025-08-25T_21-36-46Z",
         experiment_family="FE_incast_12host_fullsweep_",
         title_addendum="_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson",
