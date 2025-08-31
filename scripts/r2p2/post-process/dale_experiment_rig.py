@@ -887,10 +887,10 @@ class Experiment():
             logger.info(f"Script failed with exit code {e.returncode}")
             logger.info("Error output:", e.stderr)
             sys.exit(1)
-        except FileNotFoundError:
-            logger.error("The file was not found")
-        except IOError:
-            logger.error("An error occurred while reading the file")
+        except FileNotFoundError as e:
+            logger.error(f"The file was not found\n{e}")
+        except IOError as e:
+            logger.error(f"An error occurred while reading the file\n{e}")
 
     @staticmethod
     def write_app_trace_paths_to_file(proto, experiment_family, title_addendum, num_flows_list, target_flow_rate_gbps, experiment_date, app_trace_file_paths_list):
@@ -1170,12 +1170,12 @@ class ExperimentGroup:
     ):
         
         # check number of experiments
-        assert(len(set( [
-            len(src_dst_pairs_to_flowspecs_dict_list),
-            len(ssird_app_trace_paths_list),
-            len(dctcp_app_trace_paths_list),
-            len(xpass_app_trace_paths_list)
-        ] )) == 1)
+        # assert(len(set( [
+        #     len(src_dst_pairs_to_flowspecs_dict_list),
+        #     len(ssird_app_trace_paths_list),
+        #     len(dctcp_app_trace_paths_list),
+        #     len(xpass_app_trace_paths_list)
+        # ] )) == 1)
         num_experiments = len(src_dst_pairs_to_flowspecs_dict_list)
 
 
@@ -1203,9 +1203,14 @@ class ExperimentGroup:
             else:
                 raise ValueError(f"Unrecognised protocol name: {proto}")
 
-        assert(ssird_raw_experiment_results_list is not None and len(ssird_raw_experiment_results_list) == num_experiments)
-        assert(dctcp_raw_experiment_results_list is not None and len(dctcp_raw_experiment_results_list) == num_experiments)
-        assert(xpass_raw_experiment_results_list is not None and len(xpass_raw_experiment_results_list) == num_experiments)
+
+        # if (ssird_raw_experiment_results_list is not None): assert(len(ssird_raw_experiment_results_list) == num_experiments)
+        # if (dctcp_raw_experiment_results_list is not None): assert(len(dctcp_raw_experiment_results_list) == num_experiments)
+        # if (xpass_raw_experiment_results_list is not None): assert(len(xpass_raw_experiment_results_list) == num_experiments)
+
+        # assert(ssird_raw_experiment_results_list is not None and len(ssird_raw_experiment_results_list) == num_experiments)
+        # assert(dctcp_raw_experiment_results_list is not None and len(dctcp_raw_experiment_results_list) == num_experiments)
+        # assert(xpass_raw_experiment_results_list is not None and len(xpass_raw_experiment_results_list) == num_experiments)
 
         if (SSIRD_PROTO_NAME in proto_list):
             assert(all(r.exp_id == i for r, i in zip(ssird_raw_experiment_results_list, range(0, num_experiments))))
@@ -1219,38 +1224,45 @@ class ExperimentGroup:
         for exp_id in range(0, num_experiments):
             print(f"=====\n** Num Flows: {num_flows_list[exp_id]}, Target Flow Rate (Gbps): {target_flow_rate_gbps}")
 
-            ssird_result = ssird_raw_experiment_results_list[exp_id]
-            if ssird_result == None:
-                print("ERROR: No results for SSIRD")
-                ssird_exp_metrics = None
-                ssird_sorted_flowsize_fct_list = None
-            else:
-                print(f"Processing SIRD results exp_id {ssird_result.exp_id}:: {ssird_result.num_flows}flo-{ssird_result.target_flow_rate_gbps}Gbps_target")
-                ssird_exp_metrics, ssird_flow_stats_dict = ssird_result.process_results_fct()
-                ssird_sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(ssird_flow_stats_dict)
-                print(f"{ssird_exp_metrics.proto} FCT (ms): {ssird_exp_metrics.fct_list}\nApp Gdpt (overall): {ssird_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {ssird_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {ssird_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {ssird_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
+            ssird_exp_metrics = None
+            ssird_sorted_flowsize_fct_list = None
+            if (ssird_raw_experiment_results_list is not None and len(ssird_raw_experiment_results_list) > 0):
+                print(len(ssird_raw_experiment_results_list))
+                if (exp_id > len(ssird_raw_experiment_results_list)-1): break
+                ssird_result = ssird_raw_experiment_results_list[exp_id]
+                if ssird_result == None:
+                    print("ERROR: No results for SSIRD")
+                else:
+                    print(f"Processing SIRD results exp_id {ssird_result.exp_id}:: {ssird_result.num_flows}flo-{ssird_result.target_flow_rate_gbps}Gbps_target")
+                    ssird_exp_metrics, ssird_flow_stats_dict = ssird_result.process_results_fct()
+                    ssird_sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(ssird_flow_stats_dict)
+                    print(f"{ssird_exp_metrics.proto} FCT (ms): {ssird_exp_metrics.fct_list}\nApp Gdpt (overall): {ssird_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {ssird_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {ssird_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {ssird_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
 
-            dctcp_result = dctcp_raw_experiment_results_list[exp_id]
-            if dctcp_result == None:
-                print("ERROR: No results for DCTCP")
-                dctcp_exp_metrics = None
-                dctcp_sorted_flowsize_fct_list = None
-            else:
-                print(f"Processing DCTCP results exp_id {dctcp_result.exp_id}:: {dctcp_result.num_flows}flo-{dctcp_result.target_flow_rate_gbps}Gbps_target")
-                dctcp_exp_metrics, dctcp_flow_stats_dict = dctcp_result.process_results_fct()
-                dctcp_sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(dctcp_flow_stats_dict)
-                print(f"{dctcp_exp_metrics.proto} FCT (ms): {dctcp_exp_metrics.fct_list}\nApp Gdpt (overall): {dctcp_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {dctcp_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {dctcp_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {dctcp_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
+            dctcp_exp_metrics = None
+            dctcp_sorted_flowsize_fct_list = None
+            if (dctcp_raw_experiment_results_list is not None and len(dctcp_raw_experiment_results_list) > 0):
+                if (exp_id > len(dctcp_raw_experiment_results_list)-1): break
+                dctcp_result = dctcp_raw_experiment_results_list[exp_id]
+                if dctcp_result == None:
+                    print("ERROR: No results for DCTCP")
+                else:
+                    print(f"Processing DCTCP results exp_id {dctcp_result.exp_id}:: {dctcp_result.num_flows}flo-{dctcp_result.target_flow_rate_gbps}Gbps_target")
+                    dctcp_exp_metrics, dctcp_flow_stats_dict = dctcp_result.process_results_fct()
+                    dctcp_sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(dctcp_flow_stats_dict)
+                    print(f"{dctcp_exp_metrics.proto} FCT (ms): {dctcp_exp_metrics.fct_list}\nApp Gdpt (overall): {dctcp_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {dctcp_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {dctcp_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {dctcp_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
 
-            xpass_result = xpass_raw_experiment_results_list[exp_id]
-            if xpass_result == None:
-                print("ERROR: No results for ExpressPass")
-                xpass_exp_metrics = None
-                xpass_sorted_flowsize_fct_list = None
-            else:
-                print(f"Processing ExpressPass results exp_id {xpass_result.exp_id}:: {xpass_result.num_flows}flo-{xpass_result.target_flow_rate_gbps}Gbps_target")
-                xpass_exp_metrics, xpass_flow_stats_dict = xpass_result.process_results_fct()
-                xpass_sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(xpass_flow_stats_dict)
-                print(f"{xpass_exp_metrics.proto} FCT (ms): {xpass_exp_metrics.fct_list}\nApp Gdpt (overall): {xpass_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {xpass_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {xpass_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {xpass_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
+            xpass_exp_metrics = None
+            xpass_sorted_flowsize_fct_list = None
+            if (xpass_raw_experiment_results_list is not None and len(xpass_raw_experiment_results_list) > 0):
+                if (exp_id > len(xpass_raw_experiment_results_list)-1): break
+                xpass_result = xpass_raw_experiment_results_list[exp_id]
+                if xpass_result == None:
+                    print("ERROR: No results for ExpressPass")
+                else:
+                    print(f"Processing ExpressPass results exp_id {xpass_result.exp_id}:: {xpass_result.num_flows}flo-{xpass_result.target_flow_rate_gbps}Gbps_target")
+                    xpass_exp_metrics, xpass_flow_stats_dict = xpass_result.process_results_fct()
+                    xpass_sorted_flowsize_fct_list = ExperimentGroup.get_sorted_flowsize_fct(xpass_flow_stats_dict)
+                    print(f"{xpass_exp_metrics.proto} FCT (ms): {xpass_exp_metrics.fct_list}\nApp Gdpt (overall): {xpass_exp_metrics.total_app_gdpt_gbps_measured} Gbps\nApp Gdpt (per flow): {xpass_exp_metrics.app_gdpt_gbps_measured_per_flow_list}\nNetwork Gdpt (overall): {xpass_exp_metrics.total_nw_gdpt_gbps_measured}\nNetwork Gdpt (per flow): {xpass_exp_metrics.nw_gdpt_gbps_measured_per_flow_list}")
             
             processed_result = ExperimentResultsProcessed(ssird_exp_metrics, dctcp_exp_metrics, xpass_exp_metrics, ssird_sorted_flowsize_fct_list, dctcp_sorted_flowsize_fct_list, xpass_sorted_flowsize_fct_list)
             processed_results_list.append(processed_result)
