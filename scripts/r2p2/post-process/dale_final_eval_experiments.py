@@ -744,9 +744,9 @@ def incast_10to1_1458B_fbHadoopDist_loadtest_NEW():
         proto_names = [dale_experiment_rig.XPASS_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
         src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
-        num_flows_list=[1, 5, 10, 15, 20, 24, 26, 28, 30, 35, 40],
+        num_flows_list=[1, 5, 10, 15, 20, 25, 30, 35, 40, 44, 48],
         byteload_size_B_list=[1458]*11,
-        target_mean_byteload_interval_nanosec_list=[1000]*11,
+        target_mean_byteload_interval_nanosec_list=[800]*11,
         max_interval_nanosec_list=[20000]*11,
         flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_HadoopDist_All.txt")]*11,
         target_mean_flow_interarr_ns=500,
@@ -757,7 +757,7 @@ def incast_10to1_1458B_fbHadoopDist_loadtest_NEW():
         xpass_sim_dur_list=[0.1]*11,
         is_full_postproc=True,
         title_prefix="FE_incast_12host_NEW_PROBE2_",
-        title_addendum="_12host_fbHadoopDist_loadtest_1000ns",   # NOTE: this shdve been 600ns
+        title_addendum="_12host_fbHadoopDist_loadtest_800ns",   # NOTE: this shdve been 600ns
         log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
@@ -1988,7 +1988,7 @@ if __name__ == "__main__":
 
     # incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest()
 
-    # incast_10to1_1458B_fbHadoopDist_loadtest_NEW()
+    incast_10to1_1458B_fbHadoopDist_loadtest_NEW()
     # incast_10to1_1458B_fbCacheFollowerDist_loadtest_NEW()
     # incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest_NEW()
 
@@ -2017,4 +2017,4 @@ if __name__ == "__main__":
     # incast_10to1_1458B_fbHadoopDist_load_fullsweep_ssird_policy_fairshare()
     # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_ssird_policy_fairshare()
     # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare()
-    incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare_v5()
+    # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare_v5()
