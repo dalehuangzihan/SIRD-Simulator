@@ -480,8 +480,14 @@ def plot_ssird_flow_slowdown_cdf_single(
     # plt.title(f'Flow Size vs Slowdown {num_flows_total}flo\n{experiment_family}{title_addendum}\n{experiment_date}')
     plt.title(f'Flow Size vs Slowdown\n{graph_title}')
 
-    plt.plot(ssird_srpt_slowdown, proportion_of_flows_completed_srpt, label="SSIRD (SRPT)", linestyle='-', marker=None, color=SSIRD_PLOT_COLOUR, linewidth=3, markersize=3, zorder=3)
-    plt.plot(ssird_fairshare_slowdown, proportion_of_flows_completed_fairshare, label="SSIRD (Fair Share)", linestyle='-', marker=None, color=XPASS_PLOT_COLOUR, linewidth=3, markersize=2, zorder=2)
+    if (max(ssird_srpt_slowdown) > max(ssird_fairshare_slowdown)):
+        srpt_zorder = 1
+        fairshare_zorder = 3
+    else:
+        srpt_zorder = 3
+        fairshare_zorder = 1
+    plt.plot(ssird_srpt_slowdown, proportion_of_flows_completed_srpt, label="SSIRD (SRPT)", linestyle='-', marker=None, color=SSIRD_PLOT_COLOUR, linewidth=3, markersize=3, zorder=srpt_zorder)
+    plt.plot(ssird_fairshare_slowdown, proportion_of_flows_completed_fairshare, label="SSIRD (Fair Share)", linestyle='-', marker=None, color=XPASS_PLOT_COLOUR, linewidth=3, markersize=2, zorder=fairshare_zorder)
 
     plt.legend()
 
@@ -623,7 +629,7 @@ def do_slowdown_cdf_plot_for_DctcpMsgSizeDistActual_fullsweep_1000ns_5to1():
     # )
 
     plot_ssird_flow_slowdown_cdf_single(
-        graph_title="Web Search Workload (52% Offered Load @ 50 flows)",
+        graph_title="Web Search Workload (52% Applied Load @ 50 flows)",
         experiment_date="2025-08-25T_21-36-46Z",
         experiment_family="FE_incast_12host_fullsweep_",
         title_addendum="_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson",
