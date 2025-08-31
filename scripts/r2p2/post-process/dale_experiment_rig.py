@@ -51,8 +51,8 @@ LOG_LEVEL_6 = 6
 SRPT = "srpt"
 FAIRSHARE = "fairshare"
 ''' ------ TODO: Manually set which SSIRD template you want to use! ------ '''
-# SSIRD_POLICY = SRPT
-SSIRD_POLICY = FAIRSHARE
+SSIRD_POLICY = SRPT
+# SSIRD_POLICY = FAIRSHARE
 ''' ------------ '''
 
 
