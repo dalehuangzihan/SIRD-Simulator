@@ -744,20 +744,20 @@ def incast_10to1_1458B_fbHadoopDist_loadtest_NEW():
         proto_names = [dale_experiment_rig.XPASS_PROTO_NAME],
         topo_yaml_file='12-hosts-dumbbell.yaml',
         src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
-        num_flows_list=[1, 5, 10, 20, 30, 40],
-        byteload_size_B_list=[1458]*6,
-        target_mean_byteload_interval_nanosec_list=[1000]*6,
-        max_interval_nanosec_list=[10000]*6,
-        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_HadoopDist_All.txt")]*6,
-        target_mean_flow_interarr_ns=1000,
+        num_flows_list=[1, 5, 10, 15, 20, 24, 26, 28, 30, 35, 40],
+        byteload_size_B_list=[1458]*11,
+        target_mean_byteload_interval_nanosec_list=[1000]*11,
+        max_interval_nanosec_list=[20000]*11,
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_HadoopDist_All.txt")]*11,
+        target_mean_flow_interarr_ns=500,
         is_use_poisson_byteload_intervals=True,
         is_use_poisson_flow_interarr=True,
-        ssird_sim_dur_list=[0.1]*6,
-        dctcp_sim_dur_list=[0.1]*6,
-        xpass_sim_dur_list=[0.1]*6,
+        ssird_sim_dur_list=[0.1]*11,
+        dctcp_sim_dur_list=[0.1]*11,
+        xpass_sim_dur_list=[0.1]*11,
         is_full_postproc=True,
-        title_prefix="FE_incast_12host_NEW_PROBE_",
-        title_addendum="_12host_fbHadoopDist_loadtest_1000ns",
+        title_prefix="FE_incast_12host_NEW_PROBE2_",
+        title_addendum="_12host_fbHadoopDist_loadtest_1000ns",   # NOTE: this shdve been 600ns
         log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
@@ -1898,8 +1898,8 @@ if __name__ == "__main__":
 
     # incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest()
 
-    # incast_10to1_1458B_fbHadoopDist_loadtest_NEW()
-    incast_10to1_1458B_fbCacheFollowerDist_loadtest_NEW()
+    incast_10to1_1458B_fbHadoopDist_loadtest_NEW()
+    # incast_10to1_1458B_fbCacheFollowerDist_loadtest_NEW()
     # incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest_NEW()
 
     # incast_20to1_1458B_fbHadoopDist_loadtest_NEW()
@@ -1915,7 +1915,7 @@ if __name__ == "__main__":
     # assert(False)
     # incast_10to1_1458B_fbHadoopDist_load_fullsweep()
     # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep()
-    # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep()
+    incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep()
 
     ''' FINAL EXPERIMENTS SSIRD POLICY (FULL LOAD SWEEP) '''
     # incast_10to1_1458B_googleAllRpc_load_fullsweep_ssird_policy_fairshare()
