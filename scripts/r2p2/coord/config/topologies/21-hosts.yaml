@@ -1,0 +1,36 @@
+---
+
+num_hosts: 21
+num_tors: 1
+num_aggr: 4
+host_placement: "manual"
+leaf_link_speed_gbps: 100
+core_link_speed_gbps: 100
+# Dale: use 0.0015ms leaf-link latency to maintain 6us RTT, so we don't have to change the sim params.
+leaf_link_latency_ms: 0.0015 # applies to host uplinks and downlinks
+
+hosts:
+  0: &host
+    tor: 0
+    client: true
+    server: true
+  1: *host
+  2: *host
+  3: *host
+  4: *host
+  5: *host
+  6: *host
+  7: *host
+  8: *host
+  9: *host
+  10: *host
+  11: *host
+  12: *host
+  13: *host
+  14: *host
+  15: *host
+  16: *host
+  17: *host
+  18: *host
+  19: *host
+  20: *host

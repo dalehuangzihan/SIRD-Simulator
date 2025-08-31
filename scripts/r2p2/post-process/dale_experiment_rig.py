@@ -887,10 +887,10 @@ class Experiment():
             logger.info(f"Script failed with exit code {e.returncode}")
             logger.info("Error output:", e.stderr)
             sys.exit(1)
-        except FileNotFoundError:
-            logger.error("The file was not found")
-        except IOError:
-            logger.error("An error occurred while reading the file")
+        except FileNotFoundError as e:
+            logger.error(f"The file was not found\n{e}")
+        except IOError as e:
+            logger.error(f"An error occurred while reading the file\n{e}")
 
     @staticmethod
     def write_app_trace_paths_to_file(proto, experiment_family, title_addendum, num_flows_list, target_flow_rate_gbps, experiment_date, app_trace_file_paths_list):
