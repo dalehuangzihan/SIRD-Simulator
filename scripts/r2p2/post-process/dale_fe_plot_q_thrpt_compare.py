@@ -1270,6 +1270,28 @@ def get_max_quing_for_fbHaddopDist_600ns_NEW():
     print(f"xpass max quing raw KB: {xpass_max_qing_KB_list}")
     print(f"dctcp max quing raw KB: {dctcp_max_qing_KB_list}")
 
+def get_max_quing_for_fbCacheFollowerDist_5000ns_v3():
+
+    # scripts/r2p2/post-process/sideloaded_experiment_results/fbCacheFollower_v3_ssird_srpt.txt
+    # SSIRD max quing raw KB: [0.28, 6.78, 42.17, 44.14, 45.61, 49.35]
+
+    ssird_max_qing_KB_list = get_max_qing_lists_for_experiment_single_proto(
+        SSIRD_PROTO_NAME,
+        nw_elem=TOR,
+        src="tor_12",
+        dst="host_0",
+        num_flows_list=[1, 5, 10, 14, 17, 20],
+        target_per_host_perflo_gdpt_gbps=2,
+        byteload_size_B=1458,
+        inter_byteload_period_nanosec=5000,
+        experiment_date="2025-08-28T_00-58-44Z",
+        experiment_family="FE_incast_12host_fullsweep_v3_",
+        title_addendum="_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird",
+    )
+
+    print("fbCacheFollowerDist v3")
+    print(f"SSIRD max quing raw KB: {ssird_max_qing_KB_list}")
+
 if __name__ == "__main__":
 
     # do_thrpt_qing_comparison_10to1_800ns_DctcpMsgSizeDist_load_fullsweep_experiment()
@@ -1283,3 +1305,5 @@ if __name__ == "__main__":
     # do_plots_for_DctcpMsgSizeDistActual_load_fullsweep_1000ns_sideloaded()
 
     do_plots_for_fbHadoopDist_load_fullsweep_600ns_sideloaded_NEW() 
+
+    get_max_quing_for_fbCacheFollowerDist_5000ns_v3()

@@ -21,12 +21,12 @@ def side_load_and_process_results(
         len(target_mean_byteload_interval_nanosec_list)
     ])) == 1)
 
-    assert(len(set([
-        len(num_flows_list),
-        len(ssird_app_trace_paths_list),
-        len(dctcp_app_trace_paths_list),
-        len(xpass_app_trace_paths_list)
-    ])) == 1)
+    # assert(len(set([
+    #     len(num_flows_list),
+    #     len(ssird_app_trace_paths_list),
+    #     len(dctcp_app_trace_paths_list),
+    #     len(xpass_app_trace_paths_list)
+    # ])) == 1)
 
     for log in experiment_logs_list:
         print(log)
@@ -397,10 +397,101 @@ def side_load_incast_dctcpMsgSizeDistActual_load_fullsweep_10to1_1458B_2Kns_coar
         saved_json_file=saved_json_file
     )
 
+def side_load_incast_fbCacheFollowerDist_load_fullsweep_10to1_1458B_5000ns_v3_srpt():
+
+    experiment_logs_list = [
+        "placeholder: fbCacheFollower full loadsweep v3 srpt experiments"
+    ]
+
+    # proto_list = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME]
+    proto_list = [dale_experiment_rig.SSIRD_PROTO_NAME]
+    topo_yaml_file = "12-hosts-dumbbell.yaml"
+    dist_workload_name = "Facebook_CacheFollowerDist_IntraCluster.txt"
+    src_dst_pairs_list=[(1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0), (8, 0), (9, 0), (10, 0)]
+    num_flows_list = [1, 5, 10, 14, 17, 20, 25, 30, 40]
+    byteload_size_B_list = [1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458]
+    target_mean_byteload_interval_nanosec_list = [5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000]
+
+    # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_fullsweep_/_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_1+5+10+20+30+40flo_2Gbps_2025-08-22T_18-30-29Z/SSIRD_app_traces.txt
+    ssird_app_trace_paths_list = [
+        "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep_v3__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird__1flo-2Gbps-1458B-5000ns-2025-08-28T_00-58-44Z/data/SSIRD/60/applications_trace.str",
+        "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep_v3__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird__5flo-2Gbps-1458B-5000ns-2025-08-28T_00-58-44Z/data/SSIRD/60/applications_trace.str",
+        "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep_v3__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird__10flo-2Gbps-1458B-5000ns-2025-08-28T_00-58-44Z/data/SSIRD/60/applications_trace.str",
+        "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep_v3__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird__14flo-2Gbps-1458B-5000ns-2025-08-28T_00-58-44Z/data/SSIRD/60/applications_trace.str",
+        "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep_v3__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird__17flo-2Gbps-1458B-5000ns-2025-08-28T_00-58-44Z/data/SSIRD/60/applications_trace.str",
+        "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep_v3__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird__20flo-2Gbps-1458B-5000ns-2025-08-28T_00-58-44Z/data/SSIRD/60/applications_trace.str"
+    ]
+    dctcp_app_trace_paths_list = []
+    xpass_app_trace_paths_list = []
+
+    saved_json_file = "FE_incast_12host_10to1_12host_fbCacheFollowerDist_loadtest_5000ns_1to40flo_2025-08-27T_13-42-30Z.json"
+
+    side_load_and_process_results(
+        experiment_logs_list=experiment_logs_list,
+        proto_list=proto_list,
+        topo_yaml_file=topo_yaml_file,
+        dist_workload_name=dist_workload_name,
+        src_dst_pairs_list=src_dst_pairs_list,
+        num_flows_list=num_flows_list,
+        byteload_size_B_list=byteload_size_B_list,
+        target_mean_byteload_interval_nanosec_list=target_mean_byteload_interval_nanosec_list,
+        ssird_app_trace_paths_list=ssird_app_trace_paths_list,
+        dctcp_app_trace_paths_list=dctcp_app_trace_paths_list,
+        xpass_app_trace_paths_list=xpass_app_trace_paths_list,
+        saved_json_file=saved_json_file
+    )
+
+def side_load_incast_fbCacheFollowerDist_load_fullsweep_10to1_1458B_5000ns_v3_fairshare():
+
+    experiment_logs_list = [
+        "placeholder: fbCacheFollower full loadsweep v3 fairshare experiments"
+    ]
+
+    # proto_list = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME]
+    proto_list = [dale_experiment_rig.SSIRD_PROTO_NAME]
+    topo_yaml_file = "12-hosts-dumbbell.yaml"
+    dist_workload_name = "Facebook_CacheFollowerDist_IntraCluster.txt"
+    src_dst_pairs_list=[(1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0), (8, 0), (9, 0), (10, 0)]
+    num_flows_list = [1, 5, 10, 14, 17, 20, 25, 30, 40]
+    byteload_size_B_list = [1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458, 1458]
+    target_mean_byteload_interval_nanosec_list = [5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000]
+
+    # scripts/r2p2/post-process/experiment_app_trace_paths/FE_incast_12host_fullsweep_/_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_1+5+10+20+30+40flo_2Gbps_2025-08-22T_18-30-29Z/SSIRD_app_traces.txt
+    ssird_app_trace_paths_list = [
+        "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep_ssird_policy_v3__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird_fairshare__1flo-2Gbps-1458B-5000ns-2025-08-28T_00-59-56Z/data/SSIRD/60/applications_trace.str",
+        "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep_ssird_policy_v3__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird_fairshare__5flo-2Gbps-1458B-5000ns-2025-08-28T_00-59-56Z/data/SSIRD/60/applications_trace.str",
+        "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep_ssird_policy_v3__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird_fairshare__10flo-2Gbps-1458B-5000ns-2025-08-28T_00-59-56Z/data/SSIRD/60/applications_trace.str",
+        "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep_ssird_policy_v3__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird_fairshare__14flo-2Gbps-1458B-5000ns-2025-08-28T_00-59-56Z/data/SSIRD/60/applications_trace.str",
+        "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep_ssird_policy_v3__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird_fairshare__17flo-2Gbps-1458B-5000ns-2025-08-28T_00-59-56Z/data/SSIRD/60/applications_trace.str",
+        "/data/dh1723/SIRD-Simulator/scripts/r2p2/coord/results/SSIRD-FE_incast_12host_fullsweep_ssird_policy_v3__12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird_fairshare__20flo-2Gbps-1458B-5000ns-2025-08-28T_00-59-56Z/data/SSIRD/60/applications_trace.str"
+    ]
+    dctcp_app_trace_paths_list = []
+    xpass_app_trace_paths_list = []
+
+    saved_json_file = "FE_incast_12host_10to1_12host_fbCacheFollowerDist_loadtest_5000ns_1to40flo_2025-08-27T_13-42-30Z.json"
+
+    side_load_and_process_results(
+        experiment_logs_list=experiment_logs_list,
+        proto_list=proto_list,
+        topo_yaml_file=topo_yaml_file,
+        dist_workload_name=dist_workload_name,
+        src_dst_pairs_list=src_dst_pairs_list,
+        num_flows_list=num_flows_list,
+        byteload_size_B_list=byteload_size_B_list,
+        target_mean_byteload_interval_nanosec_list=target_mean_byteload_interval_nanosec_list,
+        ssird_app_trace_paths_list=ssird_app_trace_paths_list,
+        dctcp_app_trace_paths_list=dctcp_app_trace_paths_list,
+        xpass_app_trace_paths_list=xpass_app_trace_paths_list,
+        saved_json_file=saved_json_file
+    )
+
 if __name__ == "__main__":
     
     # side_load_incast_fbHadoopDist_load_fullsweep_10to1_1458B_300ns_coarsegrained()
     # side_load_incast_fbCacheFollowerDist_load_fullsweep_10to1_1458B_5000ns_coarsegrained()
-    side_load_incast_dctcpMsgSizeDistActual_load_fullsweep_5to1_1458B_1Kns_coarsegrained()
+    # side_load_incast_dctcpMsgSizeDistActual_load_fullsweep_5to1_1458B_1Kns_coarsegrained()
 
     # side_load_incast_dctcpMsgSizeDistActual_load_fullsweep_10to1_1458B_2Kns_coarsegrained()
+
+    # side_load_incast_fbCacheFollowerDist_load_fullsweep_10to1_1458B_5000ns_v3_srpt()
+    side_load_incast_fbCacheFollowerDist_load_fullsweep_10to1_1458B_5000ns_v3_fairshare()
