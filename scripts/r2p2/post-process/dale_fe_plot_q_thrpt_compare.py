@@ -1180,23 +1180,11 @@ def do_plots_for_fbHadoopDist_load_fullsweep_600ns_sideloaded_NEW():
     del dctcp_max_qing_KB_list[5]
     del xpass_max_qing_KB_list[5]
     
-
-    # i, j = 4, 5
-    # measured_app_gdpt[i], measured_app_gdpt[j] = measured_app_gdpt[j], measured_app_gdpt[i]
-    # ssird_achieved_gdpt_gbps_list[i], ssird_achieved_gdpt_gbps_list[j] = ssird_achieved_gdpt_gbps_list[j], ssird_achieved_gdpt_gbps_list[i]
-    # dctcp_achieved_gdpt_gbps_list[i], dctcp_achieved_gdpt_gbps_list[j] = dctcp_achieved_gdpt_gbps_list[j], dctcp_achieved_gdpt_gbps_list[i]
-    # xpass_achieved_gdpt_gbps_list[i], xpass_achieved_gdpt_gbps_list[j] = xpass_achieved_gdpt_gbps_list[j], xpass_achieved_gdpt_gbps_list[i]
-    # ssird_flowsize_fct_s_pairs_list_list[i], ssird_flowsize_fct_s_pairs_list_list[j] = ssird_flowsize_fct_s_pairs_list_list[j], ssird_flowsize_fct_s_pairs_list_list[i]
-    # dctcp_flowsize_fct_s_pairs_list_list[i], dctcp_flowsize_fct_s_pairs_list_list[j] = dctcp_flowsize_fct_s_pairs_list_list[j], dctcp_flowsize_fct_s_pairs_list_list[i]
-    # xpass_flowsize_fct_s_pairs_list_list[i], xpass_flowsize_fct_s_pairs_list_list[j] = xpass_flowsize_fct_s_pairs_list_list[j], xpass_flowsize_fct_s_pairs_list_list[i]
-    # ssird_max_qing_KB_list[i], ssird_max_qing_KB_list[j] = ssird_max_qing_KB_list[j], ssird_max_qing_KB_list[i]
-    # dctcp_max_qing_KB_list[i], dctcp_max_qing_KB_list[j] = dctcp_max_qing_KB_list[j], dctcp_max_qing_KB_list[i]
-
     print(num_flows_list)
     print(measured_app_gdpt)
 
     experiment_family_overall = "FE_incast_12host_load_fullsweep_"
-    title_addendum_overall = "_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson"
+    title_addendum_overall = "_12host_fbHadoopDist_load_fullsweep_600ns_fromjson_NEW"
 
     print(f"ssird_max_qing_KB_list={ssird_max_qing_KB_list}")
     print(f"xpass_max_qing_KB_list={xpass_max_qing_KB_list}")
@@ -1230,7 +1218,7 @@ def do_plots_for_fbHadoopDist_load_fullsweep_600ns_sideloaded_NEW():
     # if (y_lim is not None):
     #     ax.set_ylim(y_lim)
 
-    experiment_date = "2025-08-25T_21-36-46Z_and_2025-08-25T_21-17-11Z"
+    experiment_date = "NEW"
     Path(PATH_TO_LOAD_VS_QING_DIR).mkdir(parents=True, exist_ok=True)
     filename = f"allproto_achieved_gdpt_vs_qing_{experiment_family_overall}{title_addendum_overall}_{experiment_date}.png"
     plt.savefig(f"{PATH_TO_LOAD_VS_QING_DIR}{filename}")
@@ -1319,7 +1307,7 @@ def do_plots_for_fbCacheFollowerDist_load_fullsweep_5000ns_sideloaded_v3():
     plt.plot(dctcp_downlink_gdpt_list_processed, dctcp_max_qing_list, label="DCTCP", linestyle='-', marker='o', color=DCTCP_PLOT_COLOUR, markersize=7, zorder=1)
 
     # plt.title(f"Peak Queuing vs Achieved Goodput\n{experiment_family_overall}{title_addendum_overall}")
-    plt.title(f"Peak Queuing vs Achieved Goodput\n{'Facebook Hadoop Workload'}")
+    plt.title(f"Peak Queuing vs Achieved Goodput\n{'Facebook Cache Follower Workload'}")
     plt.legend()
 
     ax = plt.gca()
