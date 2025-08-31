@@ -1518,9 +1518,9 @@ def incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_v5():
         target_mean_flow_interarr_ns=500,
         is_use_poisson_byteload_intervals=True,
         is_use_poisson_flow_interarr=True,
-        ssird_sim_dur_list=[0.1]*10,
-        dctcp_sim_dur_list=[0.1]*10,
-        xpass_sim_dur_list=[0.1]*10,
+        ssird_sim_dur_list=[0.035]*10,
+        dctcp_sim_dur_list=[0.035]*10,
+        xpass_sim_dur_list=[0.035]*10,
         is_full_postproc=True,
         title_prefix="FE_NEW_incast_12host_fullsweep_v5_",
         title_addendum="_12host_fbCacheFollowerDist_loadtest_5Kns_fromjson_xpass",
@@ -1855,6 +1855,33 @@ def incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_ssird_policy_fairshare
     ) 
     print("FE_incast_12host_fullsweep_ssird_policy_v3_"+"_12host_fbCacheFollowerDist_load_fullsweep_5000ns_1to40flo_fromjson_ssird_fairshare")
 
+def incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_ssird_policy_fairshare_v5():
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.FAIRSHARE)
+    assert(dale_experiment_rig.DCTCP_ECN_MARKING_THRESHOLD == "61")
+    run_experiment(
+        run_experiment_from_saved_json="FE_incast_12host_NEW_PROBE2_10to1_12host_fbCacheFollowerDist_loadtest_5Kns_2025-08-31T_14-17-55Z.json",
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        num_flows_list=[1, 4, 6, 8, 10, 12, 14, 16, 18, 20],
+        byteload_size_B_list=[1458]*10,
+        target_mean_byteload_interval_nanosec_list=[5000]*10,
+        # max_interval_nanosec_list=[10000]*10,
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_CacheFollowerDist_IntraCluster.txt")]*10,
+        target_mean_flow_interarr_ns=500,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.035]*10,
+        dctcp_sim_dur_list=[0.035]*10,
+        xpass_sim_dur_list=[0.035]*10,
+        is_full_postproc=True,
+        title_prefix="FE_NEW_incast_12host_fullsweep_v5_policy_",
+        title_addendum="_12host_fbCacheFollowerDist_loadtest_5Kns_fromjson_ssird_fairshare",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+    print("FE_NEW_incast_12host_fullsweep_v5_policy_" + "_12host_fbCacheFollowerDist_loadtest_5Kns_fromjson_ssird_fairshare")
+
 def incast_5to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare():
     assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.FAIRSHARE)
     run_experiment_from_saved_json(
@@ -1988,8 +2015,8 @@ if __name__ == "__main__":
 
     # incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest()
 
-    incast_10to1_1458B_fbHadoopDist_loadtest_NEW()
-    # incast_10to1_1458B_fbCacheFollowerDist_loadtest_NEW()
+    # incast_10to1_1458B_fbHadoopDist_loadtest_NEW()
+    incast_10to1_1458B_fbCacheFollowerDist_loadtest_NEW()
     # incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest_NEW()
 
     # incast_20to1_1458B_fbHadoopDist_loadtest_NEW()
