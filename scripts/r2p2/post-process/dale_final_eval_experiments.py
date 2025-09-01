@@ -1375,6 +1375,37 @@ def incast_10to1_1458B_fbHadoopDist_load_fullsweep():
     ) 
     print("FE_incast_12host_fullsweep_v3_"+"_12host_fbHadoopDist_load_fullsweep_300ns_fromjson")
 
+def incast_10to1_1458B_fbHadoopDist_800ns_load_fullsweep_v5():
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.SRPT)
+    assert(dale_experiment_rig.DCTCP_ECN_MARKING_THRESHOLD == "61")
+    run_experiment_from_saved_json(
+        saved_json_file="FE_incast_12host_NEW_PROBE2_10to1_12host_fbHadoopDist_loadtest_800ns_2025-08-31T_16-46-59Z.json",
+        # proto_names = [dale_experiment_rig.XPASS_PROTO_NAME],
+        # proto_names = [dale_experiment_rig.DCTCP_PROTO_NAME],
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        num_flows_list=[1, 5, 10, 15, 20, 25, 30, 35, 40, 44, 48],
+        byteload_size_B_list=[1458]*11,
+        target_mean_byteload_interval_nanosec_list=[800]*11,
+        # max_interval_nanosec_list=[20000]*11,
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_HadoopDist_All.txt")]*11,
+        target_mean_flow_interarr_ns=500,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.009]*11,
+        dctcp_sim_dur_list=[0.009]*11,
+        xpass_sim_dur_list=[0.009]*11,
+        is_full_postproc=True,
+        title_prefix="FE_NEW_incast_12host_fullsweep_v5_",
+        # title_addendum="_12host_fbHadoopDist_loadtest_800ns_fromjson_xpass",
+        # title_addendum="_12host_fbHadoopDist_loadtest_800ns_fromjson_dctcp",
+        title_addendum="_12host_fbHadoopDist_loadtest_800ns_fromjson_ssird",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+    print("FE_NEW_incast_12host_fullsweep_v5_" + "_12host_fbHadoopDist_loadtest_800ns_fromjson_xpass")
+
 def incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep():
     # run_experiment(
     #     proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME, dale_experiment_rig.DCTCP_PROTO_NAME, dale_experiment_rig.XPASS_PROTO_NAME],
@@ -1774,6 +1805,33 @@ def incast_10to1_1458B_fbHadoopDist_load_fullsweep_ssird_policy_fairshare():
     ) 
     print("FE_incast_12host_fullsweep_ssird_policy_v3_"+"_12host_fbHadoopDist_load_fullsweep_300ns_fromjson_ssird_fairshare")
 
+def incast_10to1_1458B_fbHadoopDist_800ns_load_fullsweep_ssird_policy_fairshare_v5():
+    assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.FAIRSHARE)
+    assert(dale_experiment_rig.DCTCP_ECN_MARKING_THRESHOLD == "61")
+    run_experiment_from_saved_json(
+        saved_json_file="FE_incast_12host_NEW_PROBE2_10to1_12host_fbHadoopDist_loadtest_800ns_2025-08-31T_16-46-59Z.json",
+        proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
+        topo_yaml_file='12-hosts-dumbbell.yaml',
+        src_dst_pairs_list=[(1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0), (8,0), (9,0), (10,0)],
+        num_flows_list=[1, 5, 10, 15, 20, 25, 30, 35, 40, 44, 48],
+        byteload_size_B_list=[1458]*11,
+        target_mean_byteload_interval_nanosec_list=[800]*11,
+        # max_interval_nanosec_list=[20000]*11,
+        flow_size_distr_list=[dale_experiment_rig.WxDistr(cdf_file_name="Facebook_HadoopDist_All.txt")]*11,
+        target_mean_flow_interarr_ns=500,
+        is_use_poisson_byteload_intervals=True,
+        is_use_poisson_flow_interarr=True,
+        ssird_sim_dur_list=[0.009]*11,
+        dctcp_sim_dur_list=[0.009]*11,
+        xpass_sim_dur_list=[0.009]*11,
+        is_full_postproc=True,
+        title_prefix="FE_NEW_incast_12host_fullsweep_v5_policy_",
+        title_addendum="_12host_fbHadoopDist_loadtest_800ns_fromjson_ssird_fairshare",
+        log_level=dale_experiment_rig.LOG_LEVEL_2,
+        experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
+    ) 
+    print("FE_NEW_incast_12host_fullsweep_v5_" + "_12host_fbHadoopDist_loadtest_800ns_fromjson_xpass")
+
 def incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_ssird_policy_fairshare():
     ''' USE THIS WORKLOAD DISTRIBUTION & FLOWSPEC FILE! '''
     assert(dale_experiment_rig.SSIRD_POLICY == dale_experiment_rig.FAIRSHARE)
@@ -2015,7 +2073,7 @@ if __name__ == "__main__":
 
     # incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest()
 
-    incast_10to1_1458B_fbHadoopDist_loadtest_NEW()
+    # incast_10to1_1458B_fbHadoopDist_loadtest_NEW()
     # incast_10to1_1458B_fbCacheFollowerDist_loadtest_NEW()
     # incast_10to1_1458B_dctcpMsgSizeDistActual_loadtest_NEW()
 
@@ -2034,6 +2092,7 @@ if __name__ == "__main__":
     # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep()
     # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep()
     # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_v5()
+    # incast_10to1_1458B_fbHadoopDist_800ns_load_fullsweep_v5()
 
     ''' FINAL EXPERIMENTS SSIRD POLICY (FULL LOAD SWEEP) '''
     # incast_10to1_1458B_googleAllRpc_load_fullsweep_ssird_policy_fairshare()
@@ -2045,3 +2104,4 @@ if __name__ == "__main__":
     # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_ssird_policy_fairshare()
     # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare()
     # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare_v5()
+    incast_10to1_1458B_fbHadoopDist_800ns_load_fullsweep_ssird_policy_fairshare_v5()
