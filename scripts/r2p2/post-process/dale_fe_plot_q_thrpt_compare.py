@@ -838,7 +838,7 @@ def plot_achieved_gdpt_vs_max_qing_KB_DctcpMsgSizeDistActual(
         nw_elem, src, dst, num_flows_list, target_per_host_perflo_gdpt_gbps, byteload_size_B, inter_byteload_period_nanosec,
         x_lim=None, y_lim=None
     ):
-    print("DctcpMsgSizeDist")
+    print("\nDctcpMsgSizeDist")
     # scripts/r2p2/post-process/saved_experiment_outputs/FE_incast_12host_fullsweep__6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson/FE_incast_12host_fullsweep_5to1_6host_DctcpMsgSizeDistActual_load_fullsweep_1Kns_fromjson_2025-08-25T_21-36-46Z.log
     ssird_max_qing_KB_list = get_max_qing_lists_for_experiment_single_proto(
         SSIRD_PROTO_NAME,
@@ -1140,6 +1140,7 @@ def do_plots_for_fbHadoopDist_load_fullsweep_600ns_sideloaded_NEW():
     xpass_max_qing_KB_list = [0.03, 10.16, 9.05, 41.92, 45.3, 61.81, 86.35, 227.01, 231.49, 140.51, 341.23]
     dctcp_max_qing_KB_list = [0.0, 788.28, 1057.42, 2772.71, 2879.49, 3735.6, 3489.2, 5297.63, 5760.85, 4393.27, 6682.97]
 
+    print(f"\nfbHadoopDist")
     print(f"ssird quing max: {ssird_max_qing_KB_list}") 
     print(f"xpass quing max: {xpass_max_qing_KB_list}")
     print(f"dctcp quing max: {dctcp_max_qing_KB_list}")
@@ -1276,6 +1277,7 @@ def do_plots_for_fbCacheFollowerDist_load_fullsweep_5000ns_sideloaded_v3():
         title_addendum="_12host_fbCacheFollowerDist_loadtest_5000ns_1to40flo_retry_dctcp",
     )
 
+    print(f"\nfbCacheFollowerDist")
     print(f"ssird quing max: {ssird_max_qing_KB_list}") 
     print(f"xpass quing max: {xpass_max_qing_KB_list}")
     print(f"dctcp quing max: {dctcp_max_qing_KB_list}")
