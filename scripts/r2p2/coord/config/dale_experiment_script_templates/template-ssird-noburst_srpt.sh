@@ -26,11 +26,13 @@ mean_req_size_B_l='121848' # only meanigful if req_size_distr is not manual
 global_debug='6' 
 
 # ===================== R2P2 Parameters =====================
+# r2p2_ecn_threshold_min_l='10160' # for when RTT = 1ms: 1.25xBDP when BDP = 12500000
+# r2p2_ecn_threshold_max_l='10160' # for when RTT = 1ms: 1.25xBDP when BDP = 12500000
 r2p2_ecn_threshold_min_l='61' # packets Dale: is 1.25xBDP when BDP = 75000B
 r2p2_ecn_threshold_max_l='61' # packets Dale: is 1.25xBDP when BDP = 75000B
 # # Dale: re-adjust sendr-recvr pair credit budget after changing RTT from 5us to 1ms
-# r2p2_budgets_intra_max_bytes_l='21600000'
-# r2p2_elet_srpb_l='14400000'
+# r2p2_budgets_intra_max_bytes_l='21600000' # for when RTT = 1ms
+# r2p2_elet_srpb_l='14400000' # for when RTT = 1ms
 # Dale: re-adjust credit budgets after changing RTT from 5us to 6us
 r2p2_budgets_intra_max_bytes_l='129600'
 r2p2_elet_srpb_l='86400'

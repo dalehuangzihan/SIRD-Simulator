@@ -477,9 +477,9 @@ def onertt_delay_p2p_lowload():
     # ) 
     run_experiment(
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
-        topo_yaml_file='10-hosts-dumbbell.yaml',
-        src_dst_pairs_list=[(0,5), (1,6), (2,7), (3,8), (4,9)],
-        num_flows_list=[4]*6,
+        topo_yaml_file='20-hosts-1msRTT.yaml',
+        src_dst_pairs_list=[(0,10), (1,11), (2,12), (3,13), (4,14), (5,15), (6,16), (7,17), (8,18), (9,19)],
+        num_flows_list=[1]*6,
         byteload_size_B_list=[500, 1000, 5000, 10000, 50000, 100000],
         target_mean_byteload_interval_nanosec_list=[500, 1000, 5000, 10000, 50000, 100000], 
         max_interval_nanosec_list=[500, 1000, 5000, 10000, 50000, 100000],
@@ -494,15 +494,16 @@ def onertt_delay_p2p_lowload():
         target_mean_flow_interarr_ns=0,
         is_use_poisson_byteload_intervals=False,
         is_use_poisson_flow_interarr=False,
-        ssird_sim_dur_list=[0.06]*6,
-        dctcp_sim_dur_list=[0.06]*6,
-        xpass_sim_dur_list=[0.06]*6,
+        ssird_sim_dur_list=[0.015]*6,
+        dctcp_sim_dur_list=[0.015]*6,
+        xpass_sim_dur_list=[0.015]*6,
         is_full_postproc=True,
-        title_prefix="FE_1rtt_delay_1msRTT_",
-        title_addendum="_10host_500Bto100KB_0pt8GbpsFlo_1msRTT_allproto",
+        title_prefix="FE_NEW_1rtt_delay_1msRTT_",
+        title_addendum="_20host_500Bto100KB_8GbpsFlo_1msRTT_allproto_1flo",
         log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
+    print("FE_NEW_1rtt_delay_1msRTT_" + "_20host_500Bto100KB_8GbpsFlo_1msRTT_allproto")
 
 def onertt_delay_p2p_flowrate_sweep():
     ''' 1 to 1 point-to-point experiment '''
@@ -531,9 +532,9 @@ def onertt_delay_p2p_flowrate_sweep():
     # ) 
     run_experiment(
         proto_names = [dale_experiment_rig.SSIRD_PROTO_NAME],
-        topo_yaml_file='10-hosts-dumbbell.yaml',
-        src_dst_pairs_list=[(0,5), (1,6), (2,7), (3,8), (4,9)],
-        num_flows_list=[2]*8,
+        topo_yaml_file='20-hosts-1msRTT.yaml',
+        src_dst_pairs_list=[(0,10), (1,11), (2,12), (3,13), (4,14), (5,15), (6,16), (7,17), (8,18), (9,19)],
+        num_flows_list=[1]*8,
         byteload_size_B_list=[1458]*8,
         target_mean_byteload_interval_nanosec_list=[2000, 1000, 800, 600, 400, 300, 200, 150], 
         max_interval_nanosec_list=[2000, 1000, 800, 600, 400, 300, 200, 150],
@@ -541,17 +542,17 @@ def onertt_delay_p2p_flowrate_sweep():
         target_mean_flow_interarr_ns=0,
         is_use_poisson_byteload_intervals=False,
         is_use_poisson_flow_interarr=False,
-        ssird_sim_dur_list=[0.06]*8,
-        dctcp_sim_dur_list=[0.06]*8,
-        xpass_sim_dur_list=[0.06]*8,
+        ssird_sim_dur_list=[0.015]*8,
+        dctcp_sim_dur_list=[0.015]*8,
+        xpass_sim_dur_list=[0.015]*8,
         is_full_postproc=True,
-        title_prefix="FE_1rtt_delay_flowrate_sweep_1msRTT_",
-        title_addendum="_10flo_1458B_2000nsTo150ns_1msRTT_allproto_test",
+        title_prefix="FE_NEW_1rtt_delay_flowrate_sweep_1msRTT_",
+        title_addendum="_20host_1458B_2000nsTo150ns_1msRTT_allproto_test",
         log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted(),
         is_all_same_flowrate=False
     ) 
-    print("FE_1rtt_delay_flowrate_sweep_"+"_10flo_1458B_2000nsTo150ns_5usRTT_allproto_test")
+    print("FE_NEW_1rtt_delay_flowrate_sweep_1msRTT_"+"_20host_1458B_2000nsTo150ns_1msRTT_allproto_test")
 
 ''' 
     ========== INCAST EXPERIMENTS (LOAD TEST): ==========
@@ -2051,9 +2052,8 @@ def incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairsh
 if __name__ == "__main__":
 
     ''' FINAL EXPERIMENTS (1RTT DELAY TEST) '''
-    # onertt_delay_p2p_lowload()
-    # onertt_delay_p2p_lowload()
-    # onertt_delay_p2p_flowrate_sweep_40flo()
+    onertt_delay_p2p_lowload()
+    # onertt_delay_p2p_flowrate_sweep()
 
     ''' FINAL EXPERIMENTS (LOAD TEST) '''
     # incast_3to1_1458B_fbHadoopDist()
@@ -2104,4 +2104,4 @@ if __name__ == "__main__":
     # incast_10to1_1458B_fbCacheFollowerDist_load_fullsweep_ssird_policy_fairshare()
     # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare()
     # incast_10to1_1458B_dctcpMsgSizeDistActual_load_fullsweep_ssird_policy_fairshare_v5()
-    incast_10to1_1458B_fbHadoopDist_800ns_load_fullsweep_ssird_policy_fairshare_v5()
+    # incast_10to1_1458B_fbHadoopDist_800ns_load_fullsweep_ssird_policy_fairshare_v5()

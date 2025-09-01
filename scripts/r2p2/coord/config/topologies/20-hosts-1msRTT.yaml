@@ -1,0 +1,35 @@
+---
+
+num_hosts: 20
+num_tors: 1
+num_aggr: 4
+host_placement: "manual"
+leaf_link_speed_gbps: 100
+core_link_speed_gbps: 100
+# Dale: increase leaf-link latency to 0.25ms help increase RTT to 1ms, to reduce margin of error in experiment latency measurements in h0->tor->h1 topo
+leaf_link_latency_ms: 0.25 # applies to host uplinks and downlinks
+
+hosts:
+  0: &host
+    tor: 0
+    client: true
+    server: true
+  1: *host
+  2: *host
+  3: *host
+  4: *host
+  5: *host
+  6: *host
+  7: *host
+  8: *host
+  9: *host
+  10: *host
+  11: *host
+  12: *host
+  13: *host
+  14: *host
+  15: *host
+  16: *host
+  17: *host
+  18: *host
+  19: *host
