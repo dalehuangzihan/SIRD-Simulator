@@ -1831,7 +1831,7 @@ def incast_10to1_1458B_fbHadoopDist_800ns_load_fullsweep_ssird_policy_fairshare_
         log_level=dale_experiment_rig.LOG_LEVEL_2,
         experiment_date=dale_experiment_rig.Experiment.get_date_now_formatted()
     ) 
-    print("FE_NEW_incast_12host_fullsweep_v5_" + "_12host_fbHadoopDist_loadtest_800ns_fromjson_xpass")
+    print("FE_NEW_incast_12host_fullsweep_v5_" + "_12host_fbHadoopDist_loadtest_800ns_fromjson_ssird_fairshare")
 
 def incast_10to1_1458B_dctcpMsgSizeDist_load_fullsweep_ssird_policy_fairshare():
     ''' USE THIS WORKLOAD DISTRIBUTION & FLOWSPEC FILE! '''
