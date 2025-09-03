@@ -229,7 +229,7 @@ def plot_slowdown_vs_flowsize_ranges_ssird_policy(
         x_pos = np.arange(len(categories))
         width = 0.35  # Width of each bar
         # Colors for each set
-        colors = {'ssird_srpt': '#ff7f0e', 'ssird_fairshare': '#1f77b4'}
+        colors = {'ssird_srpt': '#ff7f0e', 'ssird_fairshare': '#228B22'}
 
         # Plot bars for both sets
         custom_labels = {
