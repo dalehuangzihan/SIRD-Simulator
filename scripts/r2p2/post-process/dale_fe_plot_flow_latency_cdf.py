@@ -465,6 +465,8 @@ def plot_ssird_flow_slowdown_cdf_single(
         flowsize_fct_s_pairs_list=ssird_fairshare_flowsize_fct_s_pairs_list
     )
 
+    print(f"fairshare/srpt slowdown = {max(ssird_fairshare_slowdown)/max(ssird_srpt_slowdown)}")
+
     num_flows_total_srpt = num_flows_srpt*incast_degree
     num_flows_completed_count_cumulative_srpt = np.cumsum([1]*num_flows_total_srpt).tolist()
     proportion_of_flows_completed_srpt = [x / num_flows_total_srpt for x in num_flows_completed_count_cumulative_srpt]
@@ -696,6 +698,7 @@ def do_slowdown_cdf_plot_for_fbCacheFollowerDist_fullsweep_5000ns_10to1_NEW():
     print(num_flows)
     print(measured_app_gdpt)
 
+    print("\nfacebookCacheFollower")
     plot_ssird_flow_slowdown_cdf_single(
         graph_title="Facebook Cache Follower Workload (50% Applied Load @ 100 Flows)",
         experiment_date="various",
@@ -731,6 +734,7 @@ def do_slowdown_cdf_plot_for_DctcpMsgSizeDistActual_fullsweep_2000ns_10to1_NEW()
     del ssird_srpt_flowsize_fct_s_pairs_list_list[4]
     del ssird_fairshare_flowsize_fct_s_pairs_list_list[4]
 
+    print("\ndctcpMsgSizeDist")
     plot_ssird_flow_slowdown_cdf_single(
         graph_title="Web Search Workload (53% Applied Load @ 120 flows)",
         experiment_date="2025-08-31T_15-18-17Z",
@@ -787,6 +791,7 @@ def do_slowdown_cdf_plot_for_fbHadoopDist_fullsweep_800ns_v5():
     # del xpass_flowsize_fct_s_pairs_list_list[5:7]
     del ssird_fairshare_flowsize_fct_s_pairs_list_list[5:7]
 
+    print("\nfbHadoopDist")
     print(num_flows_list)
     print(measured_app_gdpt)
 
