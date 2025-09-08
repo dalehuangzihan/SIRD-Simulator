@@ -734,7 +734,7 @@ def plot_slowdown_vs_flowsize_ranges_all_proto_compare(
     # Add plot labels and title
     ax.set_xlabel('Flow Size Range Categories')
     ax.set_ylabel('Slowdown')
-    ax.set_title(f'SSIRD Policy Slowdown Comparison (Bars: Median, Whiskers: Maximum)\n{graph_title}')
+    ax.set_title(f'Slowdown Comparison (Bars: Median, Whiskers: Maximum)\n{graph_title}')
     # ax.set_title(f'Slowdown Comparison (Median with {percentile}th Percentile Whiskers) \
     #              \n{graph_title}   \
     #              \n{experiment_family}{title_addendum}{experiment_date}' \

@@ -480,7 +480,7 @@ def plot_ssird_flow_slowdown_cdf_single(
     plt.xlabel(f'Slowdown')
     plt.ylabel('Proportion of Flows Completed')
     # plt.title(f'Flow Size vs Slowdown {num_flows_total}flo\n{experiment_family}{title_addendum}\n{experiment_date}')
-    plt.title(f'Flow Size vs Slowdown\n{graph_title}')
+    plt.title(f'Proportion of Flows Completed vs Slowdown\n{graph_title}')
 
     if (max(ssird_srpt_slowdown) > max(ssird_fairshare_slowdown)):
         srpt_zorder = 1
