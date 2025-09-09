@@ -150,8 +150,8 @@ def plot_achieved_gdpt_vs_slowdown(
     print(xpass)
     print(dctcp)
 
-    xpass_vs_ssird = [xpass_slowdown/ssird_slowdown for xpass_slowdown, ssird_slowdown in zip(xpass_slowdown_90p, ssird_slowdown_90p)]
-    dctcp_vs_ssird = [dctcp_slowdown/ssird_slowdown for dctcp_slowdown, ssird_slowdown in zip(dctcp_slowdown_90p, ssird_slowdown_90p)]
+    xpass_vs_ssird = [float(xpass_slowdown/ssird_slowdown) for xpass_slowdown, ssird_slowdown in zip(xpass_slowdown_90p, ssird_slowdown_90p)]
+    dctcp_vs_ssird = [float(dctcp_slowdown/ssird_slowdown) for dctcp_slowdown, ssird_slowdown in zip(dctcp_slowdown_90p, ssird_slowdown_90p)]
     print(f"xpass_vs_ssird={xpass_vs_ssird}")
     print(f"dctcp_vs_ssird={dctcp_vs_ssird}")
 
