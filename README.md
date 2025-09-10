@@ -1,3 +1,23 @@
+# Streaming-SIRD (Imperial MSc Individual Project)
+
+## Branch
+The Streaming-SIRD simulator and accompanying implementations can be found on the `msg_project` branch of this repository.
+
+## Setup
+Follow the setup steps as detailed under the `nwsim` header in the readme to install and build the NS2 network simulator.
+
+## NS2 Simulator Implementation
+- Streaming-SIRD: `ns2.34/ns-2.34/apps/r2p2-cc/r2p2/`
+- DCTCP: `ns2.34/ns-2.34/apps/r2p2-cc/pfabric/`
+- ExpressPass: `ns2.34/ns-2.34/apps/r2p2-cc/xpass/`
+
+## Python Pipeline Infrastructure
+- Simulator Pipeline Rig: `scripts/r2p2/post-process/msc_proj/dale_experiment_rig.py`
+- Simulation experiments can be configured in and run from: `scripts/r2p2/post-process/msc_proj/dale_final_eval_experiments.py`
+
+---
+---
+
 # nwsim
 Network simulation using ns-2
 
